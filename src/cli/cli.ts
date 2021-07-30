@@ -1,7 +1,8 @@
 import {CliCommandError} from '../errors/cli-command-error';
 import {CliFlagError} from '../errors/cli-flag-error';
+import {CliCommand, CliCommandResult, validateCliCommand} from './cli-command';
 import {Color} from './color';
-import {CliCommand, CliCommandResult, cliCommands, validateCliCommand} from './commands';
+import {cliCommands} from './command-functions/all-command-functions';
 import {extractCliFlags} from './flags';
 
 export const cliErrorMessages = {

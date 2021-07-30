@@ -13,5 +13,5 @@
         "strict": true,
         "target": "es6"
     },
-    "exclude": ["node_modules", "downloads", "dist"]
+    "exclude": ["node_modules", "dist"]
 }

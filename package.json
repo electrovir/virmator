@@ -21,7 +21,7 @@
     "bin": "dist/cli/cli.js",
     "scripts": {
         "compile": "rm -rf dist && tsc",
-        "format:base": "prettier --ignore-path .gitignore \"./{,!(dist)/**/}*.+(ts|json|html|css|md)\"",
+        "format:base": "prettier \"./**/*.+(ts|json|html|css|md|js)\"",
         "format:check": "npm run format:base -- --check",
         "format": "npm run format:base -- --write",
         "prepublishOnly": "npm install && npm run test:full",

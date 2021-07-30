@@ -4,6 +4,7 @@ import {
     getEnumTypedValues,
     getObjectTypedKeys,
     getObjectTypedValues,
+    isEnumValue,
 } from './object';
 
 enum Planet {
@@ -42,6 +43,28 @@ testGroup({
             expect: [Planet.Mercury, Planet.Venus, Planet.Earth],
             test: () => {
                 return getEnumTypedValues(Planet);
+            },
+        });
+    },
+});
+
+testGroup({
+    description: isEnumValue.name,
+    tests: (runTest) => {
+        const testEnumValues = [
+            Planet.Mercury,
+            Planet.Venus,
+            Planet.Earth,
+            'moon',
+            'luna',
+            'not a planet',
+        ];
+
+        runTest({
+            description: 'matches all correct enum values',
+            expect: [Planet.Mercury, Planet.Venus, Planet.Earth],
+            test: () => {
+                return testEnumValues.filter((testValue) => isEnumValue(testValue, Planet));
             },
         });
     },

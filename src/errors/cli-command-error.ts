@@ -1,5 +1,5 @@
 import {getEnumTypedValues} from '../augments/object';
-import {CliCommand} from '../cli/commands';
+import {CliCommand} from '../cli/cli-command';
 
 export class CliCommandError extends Error {
     public readonly name = 'CliCommandError';
