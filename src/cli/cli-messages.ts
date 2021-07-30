@@ -8,10 +8,10 @@ export const cliErrorMessages = {
     },
 };
 
-export function printResultMessage(command: CliCommand, result: CliCommandResult) {
+export function getResultMessage(command: CliCommand, result: CliCommandResult) {
     if (result.success) {
-        console.info(`${Color.Bold}${Color.Success}${command} succeeded.${Color.Reset}`);
+        return `${Color.Bold}${Color.Success}${command} succeeded.${Color.Reset}`;
     } else {
-        console.info(`${Color.Bold}${Color.Fail}${command} failed.${Color.Reset}`);
+        return `${Color.Bold}${Color.Fail}${command} failed.${Color.Reset}`;
     }
 }

@@ -21,5 +21,5 @@ export type CommandFunction = (
 ) => CliCommandResult | Promise<CliCommandResult>;
 
 export function validateCliCommand(input: any): input is CliCommand {
-    return input in getEnumTypedValues(CliCommand);
+    return getEnumTypedValues(CliCommand).includes(input);
 }

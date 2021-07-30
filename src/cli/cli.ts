@@ -3,14 +3,12 @@
 import {VirmatorCliCommandError} from '../errors/cli-command-error';
 import {CliFlagError} from '../errors/cli-flag-error';
 import {validateCliCommand} from './cli-command';
-import {cliErrorMessages, printResultMessage} from './cli-messages';
+import {cliErrorMessages, getResultMessage} from './cli-messages';
 import {cliCommands} from './command-functions/all-command-functions';
 import {extractCliFlags} from './flags';
 
 export async function cli(rawArgs: string[]) {
     try {
-        console.info('\n');
-
         const {flags, invalidFlags, args} = extractCliFlags(rawArgs);
 
         if (invalidFlags.length) {
@@ -29,7 +27,7 @@ export async function cli(rawArgs: string[]) {
         const exitCode = commandResult.code ?? (commandResult.success ? 0 : 1);
 
         if (!flags.silent) {
-            printResultMessage(cliCommand, commandResult);
+            console.log(getResultMessage(cliCommand, commandResult));
         }
 
         process.exit(exitCode);

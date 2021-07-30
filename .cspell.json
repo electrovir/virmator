@@ -3,11 +3,12 @@
     "version": "0.1",
     "words": [
         "accum",
-        "prettierignore",
-        "transpiling",
         "electrovir",
+        "npmignore",
         "packagejson",
-        "virmator",
-        "npmignore"
+        "prettierignore",
+        "repos",
+        "transpiling",
+        "virmator"
     ]
 }

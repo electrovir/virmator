@@ -3,3 +3,4 @@
 *.test.js
 src
 test-repos
+dist/virmator-repo-paths*
