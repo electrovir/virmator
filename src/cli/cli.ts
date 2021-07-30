@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import {CliCommandError} from '../errors/cli-command-error';
 import {CliFlagError} from '../errors/cli-flag-error';
 import {CliCommand, CliCommandResult, validateCliCommand} from './cli-command';
