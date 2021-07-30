@@ -1,0 +1,16 @@
+.prettierrc.json
+*.test.js
+*.test.d.ts
+src
+files
+.vscode
+tsconfig.json
+prettierignore
+.cspell.json
+dist/sanitizer
+repo-paths*
+*.sh
+.git*
+dist/readme*
+dist/package-version*
+dist/bash*

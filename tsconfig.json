@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+        "declaration": true,
+        "esModuleInterop": true,
+        "forceConsistentCasingInFileNames": true,
+        "module": "commonjs",
+        "noImplicitAny": true,
+        "noImplicitReturns": true,
+        "noImplicitThis": true,
+        "noUncheckedIndexedAccess": true,
+        "outDir": "dist",
+        "skipDefaultLibCheck": true,
+        "strict": true,
+        "target": "es6"
+    },
+    "exclude": ["node_modules", "downloads", "dist"]
+}
