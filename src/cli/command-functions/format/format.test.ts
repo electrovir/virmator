@@ -1,6 +1,7 @@
 import {readFile, writeFile} from 'fs-extra';
 import {testGroup} from 'test-vir';
 import {testFormatPaths} from '../../../virmator-repo-paths';
+import {CliFlagName} from '../../flags';
 import {defaultFormatArgs, extractFormatArgs, FormatOperation, runFormatCommand} from './format';
 
 testGroup({
@@ -11,7 +12,11 @@ testGroup({
             expect: true,
             test: async () => {
                 return (
-                    await runFormatCommand(['check'], {silent: true}, testFormatPaths.validRepo)
+                    await runFormatCommand({
+                        rawArgs: [FormatOperation.Check],
+                        cliFlags: {[CliFlagName.Silent]: true},
+                        customDir: testFormatPaths.validRepo,
+                    })
                 ).success;
             },
         });
@@ -21,7 +26,11 @@ testGroup({
             expect: false,
             test: async () => {
                 return (
-                    await runFormatCommand(['check'], {silent: true}, testFormatPaths.invalidRepo)
+                    await runFormatCommand({
+                        rawArgs: [FormatOperation.Check],
+                        cliFlags: {[CliFlagName.Silent]: true},
+                        customDir: testFormatPaths.invalidRepo,
+                    })
                 ).success;
             },
         });
@@ -37,21 +46,41 @@ testGroup({
                 const results = [];
 
                 results.push(
-                    (await runFormatCommand(['check'], {silent: true}, testFormatPaths.invalidRepo))
-                        .success,
+                    (
+                        await runFormatCommand({
+                            rawArgs: [FormatOperation.Check],
+                            cliFlags: {[CliFlagName.Silent]: true},
+                            customDir: testFormatPaths.invalidRepo,
+                        })
+                    ).success,
                 );
                 results.push(
-                    (await runFormatCommand(['write'], {silent: true}, testFormatPaths.invalidRepo))
-                        .success,
+                    (
+                        await runFormatCommand({
+                            rawArgs: [FormatOperation.Write],
+                            cliFlags: {[CliFlagName.Silent]: true},
+                            customDir: testFormatPaths.invalidRepo,
+                        })
+                    ).success,
                 );
                 results.push(
-                    (await runFormatCommand(['check'], {silent: true}, testFormatPaths.invalidRepo))
-                        .success,
+                    (
+                        await runFormatCommand({
+                            rawArgs: [FormatOperation.Check],
+                            cliFlags: {[CliFlagName.Silent]: true},
+                            customDir: testFormatPaths.invalidRepo,
+                        })
+                    ).success,
                 );
                 await writeFile(testFormatPaths.invalidSourceFile, originalSource);
                 results.push(
-                    (await runFormatCommand(['check'], {silent: true}, testFormatPaths.invalidRepo))
-                        .success,
+                    (
+                        await runFormatCommand({
+                            rawArgs: [FormatOperation.Check],
+                            cliFlags: {[CliFlagName.Silent]: true},
+                            customDir: testFormatPaths.invalidRepo,
+                        })
+                    ).success,
                 );
                 results.push(
                     (await readFile(testFormatPaths.invalidSourceFile)).toString() ===

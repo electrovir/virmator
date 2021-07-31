@@ -6,9 +6,11 @@
         "derp",
         "derpy",
         "electrovir",
+        "gitattributes",
         "npmignore",
         "packagejson",
         "prettierignore",
+        "prettierrc",
         "repos",
         "transpiling",
         "virmator"

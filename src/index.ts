@@ -1,3 +1,3 @@
 export * from './augments/object';
+export * from './augments/type';
 export * from './bash-scripting';
-export * from './global-repo-paths';

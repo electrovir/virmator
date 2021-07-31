@@ -1,4 +1,5 @@
 import {getEnumTypedValues} from '../augments/object';
+import {ConfigFile} from './config/configs';
 import {CliFlags} from './flags';
 
 export enum CliCommand {
@@ -14,10 +15,19 @@ export type CliCommandResult = {
     code?: number;
 };
 
+export type CommandFunctionInput = {
+    rawArgs?: string[];
+    cliFlags?: Partial<CliFlags>;
+    customDir?: string;
+};
+
+export type CliCommandImplementation = {
+    configFile?: ConfigFile;
+    implementation: CommandFunction;
+};
+
 export type CommandFunction = (
-    args?: string[],
-    cliFlags?: CliFlags,
-    customDir?: string,
+    input: CommandFunctionInput,
 ) => CliCommandResult | Promise<CliCommandResult>;
 
 export function validateCliCommand(input: any): input is CliCommand {

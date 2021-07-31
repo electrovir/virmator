@@ -4,8 +4,8 @@ import {VirmatorCliCommandError} from '../errors/cli-command-error';
 import {CliFlagError} from '../errors/cli-flag-error';
 import {validateCliCommand} from './cli-command';
 import {cliErrorMessages, getResultMessage} from './cli-messages';
-import {cliCommands} from './command-functions/all-command-functions';
-import {extractCliFlags} from './flags';
+import {runCommand} from './command-functions/all-command-functions';
+import {CliFlagName, extractCliFlags} from './flags';
 
 export async function cli(rawArgs: string[]) {
     try {
@@ -22,11 +22,14 @@ export async function cli(rawArgs: string[]) {
         if (!validateCliCommand(cliCommand)) {
             throw new VirmatorCliCommandError(cliErrorMessages.invalidCliCommand(cliCommand));
         }
-        const commandResult = await cliCommands[cliCommand](args.slice(1));
+        const commandResult = await runCommand(cliCommand, {
+            rawArgs: args.slice(1),
+            cliFlags: flags,
+        });
 
         const exitCode = commandResult.code ?? (commandResult.success ? 0 : 1);
 
-        if (!flags.silent) {
+        if (!flags[CliFlagName.Silent]) {
             console.log(getResultMessage(cliCommand, commandResult));
         }
 

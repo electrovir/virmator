@@ -1,8 +1,9 @@
 import {join} from 'path';
 import {CliCommand} from './cli/cli-command';
-import {repoRootDir} from './global-repo-paths';
 
-export const testRepos = join(repoRootDir, 'test-repos');
+export const virmatorRootDir = __dirname.replace(/(?:src|node_modules\/dist|dist).*/, '');
+export const virmatorDistDir = join(virmatorRootDir, 'dist');
+export const testRepos = join(virmatorRootDir, 'test-repos');
 
 export function getCommandTestRepoDir(command: CliCommand) {
     return join(testRepos, command);

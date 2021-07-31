@@ -1,10 +1,25 @@
-export type CliFlags = {
-    silent: boolean;
-};
+import {isEnumValue} from '../augments/object';
 
-export const defaultCliFlags: Readonly<Required<Record<keyof CliFlags, false>>> = {
-    silent: false,
+export enum CliFlagName {
+    Silent = '--silent',
+    NoWriteConfig = '--no-write-config',
+    Help = '--help',
+}
+
+export type CliFlags = Record<CliFlagName, boolean>;
+
+export const defaultCliFlags: Readonly<Required<Record<CliFlagName, false>>> = {
+    [CliFlagName.Silent]: false,
+    [CliFlagName.NoWriteConfig]: false,
+    [CliFlagName.Help]: false,
 } as const;
+
+export const flagDescriptions: Record<CliFlagName, string> = {
+    [CliFlagName.Silent]: 'Turns off most logging.',
+    [CliFlagName.NoWriteConfig]:
+        'Prevents a command from overwriting its relevant config file (if one exists, which they usually do).',
+    [CliFlagName.Help]: 'Prints a help message and immediately exits.',
+};
 
 export type ExtractedCliFlags = {
     flags: CliFlags;
@@ -16,9 +31,8 @@ export function extractCliFlags(args: string[]): Required<ExtractedCliFlags> {
     const {inputFlags, invalidFlags, otherArgs} = args.reduce(
         (accum, currentArg) => {
             if (currentArg.startsWith('--')) {
-                const flagProperty = currentArg.replace(/^--/, '');
-                if (flagProperty in defaultCliFlags) {
-                    accum.inputFlags[flagProperty] = true;
+                if (isEnumValue(currentArg, CliFlagName)) {
+                    accum.inputFlags[currentArg] = true;
                 } else {
                     accum.invalidFlags.push(currentArg);
                 }

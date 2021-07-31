@@ -2,12 +2,13 @@ import {join} from 'path';
 import {testGroup} from 'test-vir';
 import {runBashCommand} from '../bash-scripting';
 import {VirmatorCliCommandError} from '../errors/cli-command-error';
-import {distDir} from '../global-repo-paths';
-import {testFormatPaths} from '../virmator-repo-paths';
+import {testFormatPaths, virmatorDistDir} from '../virmator-repo-paths';
 import {CliCommand} from './cli-command';
 import {cliErrorMessages, getResultMessage} from './cli-messages';
+import {FormatOperation} from './command-functions/format/format';
+import {CliFlagName} from './flags';
 
-const cliPath = join(distDir, 'cli', 'cli.js');
+const cliPath = join(virmatorDistDir, 'cli', 'cli.js');
 
 testGroup((runTest) => {
     type TestCliInput = {
@@ -72,7 +73,7 @@ testGroup((runTest) => {
     });
 
     testCli({
-        args: [CliCommand.Format, 'check'],
+        args: [CliCommand.Format, FormatOperation.Check, CliFlagName.NoWriteConfig],
         description: 'runs format',
         expect: {
             stdout: `Running format...\n${getResultMessage(CliCommand.Format, {success: true})}`,

@@ -1,8 +1,8 @@
 import {existsSync} from 'fs';
 import {join} from 'path';
 import {testGroup} from 'test-vir';
-import {getEnumTypedValues} from '../augments/object';
-import {repoRootDir} from '../global-repo-paths';
+import {getEnumTypedValues} from '../../augments/object';
+import {virmatorRootDir} from '../../virmator-repo-paths';
 import {ConfigFile} from './configs';
 
 testGroup((runTest) => {
@@ -11,7 +11,7 @@ testGroup((runTest) => {
         expect: [],
         test: () => {
             return getEnumTypedValues(ConfigFile).filter((configFilePath) => {
-                return !existsSync(join(repoRootDir, configFilePath));
+                return !existsSync(join(virmatorRootDir, configFilePath));
             });
         },
     });
