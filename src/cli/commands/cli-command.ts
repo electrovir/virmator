@@ -3,10 +3,11 @@ import {CliFlags} from '../cli-util/cli-flags';
 import {ConfigFile} from '../config/configs';
 
 export enum CliCommand {
+    Compile = 'compile',
     Format = 'format',
+    Help = 'help',
     SpellCheck = 'spellcheck',
     Test = 'test',
-    Help = 'help',
     UpdateConfigs = 'update-configs',
 }
 

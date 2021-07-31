@@ -18,7 +18,7 @@ export async function copyConfig(
     if (!existsSync(configPath) && !silent) {
         console.error(
             `Config file not found, creating new ${configPath}
-If this is undesired, use the ${CliFlagName} flag.`,
+If this is undesired, use the ${CliFlagName.NoWriteConfig} flag.`,
         );
     }
 

@@ -1,9 +1,9 @@
 import {isEnumValue} from '../../augments/object';
 
 export enum CliFlagName {
-    Silent = '--silent',
-    NoWriteConfig = '--no-write-config',
     Help = '--help',
+    NoWriteConfig = '--no-write-config',
+    Silent = '--silent',
 }
 
 export type CliFlags = Record<CliFlagName, boolean>;

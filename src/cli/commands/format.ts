@@ -1,6 +1,7 @@
 import {isEnumValue} from '../../augments/object';
 import {DeepWriteable} from '../../augments/type';
 import {runBashCommand} from '../../bash-scripting';
+import {packageName} from '../../package-name';
 import {CliFlagName, defaultCliFlags} from '../cli-util/cli-flags';
 import {ConfigFile} from '../config/configs';
 import {
@@ -42,19 +43,19 @@ export const formatImplementation: CliCommandImplementation = {
                         FormatOperation.Write
                     } is the default operation) only if they have the 
                     extension ".md" or ".json":
-                        virmator ${CliCommand.Format} md json
+                        ${packageName} ${CliCommand.Format} md json
             
             examples:
-                checks formatting for files
-                    virmator ${CliCommand.Format} ${FormatOperation.Check}
-                checks formatting only for .md files
-                    virmator ${CliCommand.Format} ${FormatOperation.Check} md
-                checks formatting only for .md and .json files
-                    virmator ${CliCommand.Format} ${FormatOperation.Check} md json
-                fixes formatting for files
-                    virmator ${CliCommand.Format}
+                checks formatting for files:
+                    ${packageName} ${CliCommand.Format} ${FormatOperation.Check}
+                checks formatting only for .md files:
+                    ${packageName} ${CliCommand.Format} ${FormatOperation.Check} md
+                checks formatting only for .md and .json files:
+                    ${packageName} ${CliCommand.Format} ${FormatOperation.Check} md json
+                fixes formatting for files:
+                    ${packageName} ${CliCommand.Format}
                     or
-                    virmator ${CliCommand.Format} ${FormatOperation.Write}`,
+                    ${packageName} ${CliCommand.Format} ${FormatOperation.Write}`,
     configFile: ConfigFile.Prettier,
     implementation: runFormatCommand,
 };
@@ -68,12 +69,10 @@ export async function runFormatCommand({
 
     const operationFlag = args.operation === FormatOperation.Check ? '--check' : '--write';
 
-    const prettierCommand = `prettier --color --ignore-path .gitignore \"./**/*.+(${args.fileExtensions.join(
+    const prettierCommand = `prettier --color \"./**/*.+(${args.fileExtensions.join(
         '|',
     )})\" ${operationFlag}`;
-    if (!cliFlags[CliFlagName.Silent]) {
-        console.info('Running format...');
-    }
+
     const results = await runBashCommand(prettierCommand, customDir);
 
     if (!cliFlags[CliFlagName.Silent]) {

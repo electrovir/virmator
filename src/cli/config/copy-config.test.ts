@@ -17,7 +17,7 @@ testGroup({
 
                 const configPath = await copyConfig(
                     ConfigFile.Prettier,
-                    false,
+                    true,
                     testFormatPaths.validRepo,
                 );
 

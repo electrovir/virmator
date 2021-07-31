@@ -22,6 +22,10 @@ export async function cli(rawArgs: string[]) {
         if (!validateCliCommand(cliCommand)) {
             throw new VirmatorCliCommandError(cliErrorMessages.invalidCliCommand(cliCommand));
         }
+
+        if (cliCommand !== CliCommand.Help && !flags[CliFlagName.Silent]) {
+            console.info(`running ${cliCommand}...`);
+        }
         const commandResult = await runCommand(cliCommand, {
             rawArgs: args.slice(1),
             cliFlags: flags,
