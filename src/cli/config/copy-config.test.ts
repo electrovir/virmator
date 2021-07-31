@@ -11,12 +11,12 @@ testGroup({
     tests: (runTest) => {
         runTest({
             description: 'copies the config file into the correct spot',
-            expect: [true, false, join(testFormatPaths.validRepo, ConfigFile.prettier)],
+            expect: [true, false, join(testFormatPaths.validRepo, ConfigFile.Prettier)],
             test: async () => {
                 const results: boolean[] = [];
 
                 const configPath = await copyConfig(
-                    ConfigFile.prettier,
+                    ConfigFile.Prettier,
                     false,
                     testFormatPaths.validRepo,
                 );

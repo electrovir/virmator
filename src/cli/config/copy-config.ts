@@ -1,8 +1,7 @@
-import {existsSync, readFile, writeFile} from 'fs-extra';
-import {join, resolve} from 'path';
-import {virmatorRootDir} from '../../virmator-repo-paths';
+import {existsSync, writeFile} from 'fs-extra';
+import {resolve} from 'path';
 import {CliFlagName} from '../flags';
-import {ConfigFile} from './configs';
+import {ConfigFile, readVirmatorVersionOfConfigFile} from './configs';
 
 export async function copyConfig(
     configFileName: ConfigFile,
@@ -23,7 +22,7 @@ If this is undesired, use the ${CliFlagName} flag.`,
         );
     }
 
-    const virmatorConfigContents = await readFile(join(virmatorRootDir, configFileName));
+    const virmatorConfigContents = await readVirmatorVersionOfConfigFile(configFileName);
 
     await writeFile(configPath, virmatorConfigContents);
 

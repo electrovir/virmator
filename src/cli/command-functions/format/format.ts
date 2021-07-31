@@ -23,7 +23,7 @@ export const defaultFormatArgs: FormatArgs = {
 } as const;
 
 export const formatImplementation: CliCommandImplementation = {
-    configFile: ConfigFile.prettier,
+    configFile: ConfigFile.Prettier,
     implementation: runFormatCommand,
 };
 
