@@ -1,22 +1,25 @@
 import {isEnumValue} from '../../../augments/object';
+import {DeepWriteable} from '../../../augments/type';
 import {runBashCommand} from '../../../bash-scripting';
 import {CliCommandResult, CommandFunction} from '../../cli-command';
 import {CliFlags, defaultCliFlags} from '../../flags';
 
-enum FormatOperation {
+export enum FormatOperation {
     Check = 'check',
     Write = 'write',
 }
 
-type FormatArgs = Required<{
-    operation: FormatOperation;
-    fileExtensions: string[];
-}>;
+type FormatArgs = Required<
+    Readonly<{
+        operation: FormatOperation;
+        fileExtensions: Readonly<string[]>;
+    }>
+>;
 
-const defaultFormatArgs: FormatArgs = {
+export const defaultFormatArgs: FormatArgs = {
     operation: FormatOperation.Write,
     fileExtensions: ['ts', 'json', 'html', 'css', 'md'],
-};
+} as const;
 
 export const runFormatCommand: CommandFunction = async (
     rawArgs: string[] = [],
@@ -51,18 +54,22 @@ export const runFormatCommand: CommandFunction = async (
     }
 };
 
-function extractFormatArgs(rawArgs: string[]): FormatArgs {
-    const extractedArgs: Partial<FormatArgs> = rawArgs.reduce((accum, currentRawArg) => {
-        if (isEnumValue(currentRawArg, FormatOperation)) {
-            accum.operation = currentRawArg;
-        } else {
-            if (!accum.fileExtensions) {
-                accum.fileExtensions = [];
+export function extractFormatArgs(rawArgs: string[]): FormatArgs {
+    const extractedArgs: Partial<DeepWriteable<FormatArgs>> = rawArgs.reduce(
+        (accum, currentRawArg) => {
+            if (isEnumValue(currentRawArg, FormatOperation)) {
+                accum.operation = currentRawArg;
+            } else {
+                if (!accum.fileExtensions) {
+                    accum.fileExtensions = [];
+                }
+                accum.fileExtensions.push(currentRawArg);
             }
-            accum.fileExtensions.push(currentRawArg);
-        }
-        return accum;
-    }, {} as Partial<FormatArgs>);
+            return accum;
+        },
+        {} as Partial<DeepWriteable<FormatArgs>>,
+    );
+
     const finalArgs: FormatArgs = {
         ...defaultFormatArgs,
         ...extractedArgs,
