@@ -2,7 +2,13 @@ import {readFile, writeFile} from 'fs-extra';
 import {testGroup} from 'test-vir';
 import {testFormatPaths} from '../../virmator-repo-paths';
 import {CliFlagName} from '../cli-util/cli-flags';
-import {defaultFormatArgs, extractFormatArgs, FormatOperation, runFormatCommand} from './format';
+import {
+    defaultFormatArgs,
+    extractFormatArgs,
+    filesMarkerArg,
+    FormatOperation,
+    runFormatCommand,
+} from './format';
 
 testGroup({
     description: runFormatCommand.name,
@@ -123,39 +129,27 @@ testGroup({
         const derpyExtensions = ['herp', 'derp', 'ts', 'js'];
 
         runTest({
-            description: 'everything else overrides file extensions',
+            description: 'accepts file extension arguments',
             expect: {...defaultFormatArgs, fileExtensions: derpyExtensions},
             test: () => {
-                return extractFormatArgs(derpyExtensions);
+                return extractFormatArgs([filesMarkerArg, ...derpyExtensions]);
             },
         });
 
         runTest({
-            description: 'ignores flag args',
-            expect: {operation: FormatOperation.Check, fileExtensions: derpyExtensions},
+            description: 'other arguments are assigned to Prettier flags',
+            expect: {
+                operation: FormatOperation.Check,
+                fileExtensions: derpyExtensions,
+                prettierFlags: [...defaultFormatArgs.prettierFlags, '--derp'],
+            },
             test: () => {
                 return extractFormatArgs([
-                    ...derpyExtensions,
                     FormatOperation.Check,
                     '--derp',
-                    CliFlagName.Silent,
+                    filesMarkerArg,
+                    ...derpyExtensions,
                 ]);
-            },
-        });
-
-        runTest({
-            description: 'allows mixing of check operation and file extensions',
-            expect: {operation: FormatOperation.Check, fileExtensions: derpyExtensions},
-            test: () => {
-                return extractFormatArgs(derpyExtensions.concat(FormatOperation.Check));
-            },
-        });
-
-        runTest({
-            description: 'allows mixing of write operation and file extensions',
-            expect: {operation: FormatOperation.Write, fileExtensions: derpyExtensions},
-            test: () => {
-                return extractFormatArgs(derpyExtensions.concat(FormatOperation.Write));
             },
         });
     },

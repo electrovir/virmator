@@ -44,6 +44,9 @@ export async function cli(rawArgs: string[]) {
     }
 }
 
+// To run the cli from within this repo itself, use the following bash command:
+// node dist/cli/cli.js
+// if you haven't compiled you'll also need to run npm run compile beforehand (and after all changes)
 if (require.main === module) {
     cli(process.argv.slice(2));
 } else {
