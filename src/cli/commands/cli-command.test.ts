@@ -1,5 +1,5 @@
 import {testGroup} from 'test-vir';
-import {getEnumTypedValues} from '../augments/object';
+import {getEnumTypedValues} from '../../augments/object';
 import {CliCommand, validateCliCommand} from './cli-command';
 
 testGroup({

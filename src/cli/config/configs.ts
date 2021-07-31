@@ -1,6 +1,7 @@
 import {readFile} from 'fs-extra';
-import {join} from 'path';
+import {join, posix, sep} from 'path';
 import {virmatorRootDir} from '../../virmator-repo-paths';
+
 export enum ConfigFile {
     SpellCheck = '.cspell.json',
     GitAttributes = '.gitattributes',
@@ -8,8 +9,9 @@ export enum ConfigFile {
     NpmIgnore = '.npmignore',
     Prettier = '.prettierrc.json',
     TsConfig = 'tsconfig.json',
+    VsCodeSettings = '.vscode/settings.json',
 }
 
 export async function readVirmatorVersionOfConfigFile(configFile: ConfigFile): Promise<Buffer> {
-    return await readFile(join(virmatorRootDir, configFile));
+    return await readFile(join(virmatorRootDir, configFile.split(posix.sep).join(sep)));
 }

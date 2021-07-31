@@ -1,5 +1,5 @@
 import {join} from 'path';
-import {CliCommand} from './cli/cli-command';
+import {CliCommand} from './cli/commands/cli-command';
 
 export const virmatorRootDir = __dirname.replace(/(?:src|node_modules\/dist|dist).*/, '');
 export const virmatorDistDir = join(virmatorRootDir, 'dist');

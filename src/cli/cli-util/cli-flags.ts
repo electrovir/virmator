@@ -1,4 +1,4 @@
-import {isEnumValue} from '../augments/object';
+import {isEnumValue} from '../../augments/object';
 
 export enum CliFlagName {
     Silent = '--silent',
@@ -15,10 +15,10 @@ export const defaultCliFlags: Readonly<Required<Record<CliFlagName, false>>> = {
 } as const;
 
 export const flagDescriptions: Record<CliFlagName, string> = {
-    [CliFlagName.Silent]: 'Turns off most logging.',
-    [CliFlagName.NoWriteConfig]:
-        'Prevents a command from overwriting its relevant config file (if one exists, which they usually do).',
-    [CliFlagName.Help]: 'Prints a help message and immediately exits.',
+    [CliFlagName.Silent]: 'turns off most logging',
+    [CliFlagName.NoWriteConfig]: `prevents a command from overwriting its relevant config file
+            (if one exists, which they usually do)`,
+    [CliFlagName.Help]: 'prints a help message',
 };
 
 export type ExtractedCliFlags = {

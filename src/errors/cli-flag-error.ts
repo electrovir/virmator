@@ -1,5 +1,5 @@
 import {getObjectTypedKeys} from '../augments/object';
-import {defaultCliFlags} from '../cli/flags';
+import {defaultCliFlags} from '../cli/cli-util/cli-flags';
 
 export class CliFlagError extends Error {
     public readonly name = 'CliFlagError';

@@ -1,5 +1,5 @@
-import {CliCommand, CliCommandResult} from './cli-command';
-import {Color} from './color';
+import {CliCommand, CliCommandResult} from '../commands/cli-command';
+import {Color} from './cli-color';
 
 export const cliErrorMessages = {
     missingCliCommand: `Missing a command for virmator.`,

@@ -1,6 +1,6 @@
-import {getEnumTypedValues} from '../augments/object';
-import {ConfigFile} from './config/configs';
-import {CliFlags} from './flags';
+import {getEnumTypedValues} from '../../augments/object';
+import {CliFlags} from '../cli-util/cli-flags';
+import {ConfigFile} from '../config/configs';
 
 export enum CliCommand {
     Format = 'format',
@@ -23,6 +23,7 @@ export type CommandFunctionInput = {
 
 export type CliCommandImplementation = {
     configFile?: ConfigFile;
+    description: string;
     implementation: CommandFunction;
 };
 

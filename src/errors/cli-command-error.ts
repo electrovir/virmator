@@ -1,5 +1,5 @@
 import {getEnumTypedValues} from '../augments/object';
-import {CliCommand} from '../cli/cli-command';
+import {CliCommand} from '../cli/commands/cli-command';
 
 export class VirmatorCliCommandError extends Error {
     public readonly name = 'VirmatorCliCommandError';

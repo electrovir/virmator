@@ -1,7 +1,7 @@
 import {readFile, writeFile} from 'fs-extra';
 import {testGroup} from 'test-vir';
-import {testFormatPaths} from '../../../virmator-repo-paths';
-import {CliFlagName} from '../../flags';
+import {testFormatPaths} from '../../virmator-repo-paths';
+import {CliFlagName} from '../cli-util/cli-flags';
 import {defaultFormatArgs, extractFormatArgs, FormatOperation, runFormatCommand} from './format';
 
 testGroup({
@@ -127,6 +127,19 @@ testGroup({
             expect: {...defaultFormatArgs, fileExtensions: derpyExtensions},
             test: () => {
                 return extractFormatArgs(derpyExtensions);
+            },
+        });
+
+        runTest({
+            description: 'ignores flag args',
+            expect: {operation: FormatOperation.Check, fileExtensions: derpyExtensions},
+            test: () => {
+                return extractFormatArgs([
+                    ...derpyExtensions,
+                    FormatOperation.Check,
+                    '--derp',
+                    CliFlagName.Silent,
+                ]);
             },
         });
 

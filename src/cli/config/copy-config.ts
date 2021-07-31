@@ -1,6 +1,6 @@
 import {existsSync, writeFile} from 'fs-extra';
 import {resolve} from 'path';
-import {CliFlagName} from '../flags';
+import {CliFlagName} from '../cli-util/cli-flags';
 import {ConfigFile, readVirmatorVersionOfConfigFile} from './configs';
 
 export async function copyConfig(

@@ -12,6 +12,7 @@
         "prettierignore",
         "prettierrc",
         "repos",
+        "subcommand",
         "transpiling",
         "virmator"
     ]
