@@ -28,7 +28,7 @@ export async function cli(rawArgs: string[]) {
         }
         const commandResult = await runCommand(cliCommand, {
             rawArgs: args.slice(1),
-            cliFlags: flags,
+            rawCliFlags: flags,
         });
 
         const exitCode = commandResult.code ?? (commandResult.success ? 0 : 1);

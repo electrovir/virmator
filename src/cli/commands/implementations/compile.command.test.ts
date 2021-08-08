@@ -1,8 +1,9 @@
 import {existsSync, unlink} from 'fs-extra';
 import {testGroup} from 'test-vir';
-import {testCompilePaths} from '../../virmator-repo-paths';
-import {CliFlagName} from '../cli-util/cli-flags';
-import {runCompileCommand} from './compile';
+import {testCompilePaths} from '../../../virmator-repo-paths';
+import {CliFlagName, fillInCliFlags} from '../../cli-util/cli-flags';
+import {fillInCommandInput} from '../cli-command';
+import {runCompileCommand} from './compile.command';
 
 testGroup({
     description: runCompileCommand.name,
@@ -13,9 +14,11 @@ testGroup({
             test: async () => {
                 const results = [];
                 results.push(existsSync(testCompilePaths.compiledValidSourceFile));
-                const commandResult = await runCompileCommand({
-                    customDir: testCompilePaths.validRepo,
-                });
+                const commandResult = await runCompileCommand(
+                    fillInCommandInput({
+                        customDir: testCompilePaths.validRepo,
+                    }),
+                );
                 results.push(commandResult.success);
                 results.push(existsSync(testCompilePaths.compiledValidSourceFile));
                 await unlink(testCompilePaths.compiledValidSourceFile);
@@ -31,10 +34,12 @@ testGroup({
             test: async () => {
                 const results = [];
                 results.push(existsSync(testCompilePaths.compiledInvalidSourceFile));
-                const commandResult = await runCompileCommand({
-                    cliFlags: {[CliFlagName.Silent]: true},
-                    customDir: testCompilePaths.invalidRepo,
-                });
+                const commandResult = await runCompileCommand(
+                    fillInCommandInput({
+                        cliFlags: fillInCliFlags({[CliFlagName.Silent]: true}),
+                        customDir: testCompilePaths.invalidRepo,
+                    }),
+                );
                 results.push(commandResult.success);
                 results.push(existsSync(testCompilePaths.compiledInvalidSourceFile));
                 await unlink(testCompilePaths.compiledInvalidSourceFile);
@@ -50,10 +55,12 @@ testGroup({
             test: async () => {
                 const results = [];
                 results.push(existsSync(testCompilePaths.compiledValidSourceFile));
-                const commandResult = await runCompileCommand({
-                    rawArgs: ['--noEmit'],
-                    customDir: testCompilePaths.validRepo,
-                });
+                const commandResult = await runCompileCommand(
+                    fillInCommandInput({
+                        rawArgs: ['--noEmit'],
+                        customDir: testCompilePaths.validRepo,
+                    }),
+                );
                 results.push(commandResult.success);
                 results.push(existsSync(testCompilePaths.compiledValidSourceFile));
 

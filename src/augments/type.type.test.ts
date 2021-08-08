@@ -1,4 +1,4 @@
-import {DeepWriteable, Writeable} from './type';
+import {DeepWriteable, Overwrite, Writeable} from './type';
 
 /** Testing Writeable<T> and DeepWriteable<T> */
 
@@ -37,3 +37,10 @@ const myDeeplyMutableMenu: DeepWriteable<Menu> = {
 
 myDeeplyMutableMenu.breakfast = [];
 myDeeplyMutableMenu.breakfast.push('egg');
+
+/** Overwrite */
+type thing1 = {a: string; b: number};
+const what: thing1 = {a: 'hello', b: 5};
+const who: Overwrite<thing1, {a: number}> = {...what, a: 2};
+// @ts-expect-error
+who.what = 'should not work';

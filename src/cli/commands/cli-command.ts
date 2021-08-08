@@ -1,5 +1,5 @@
 import {getEnumTypedValues} from '../../augments/object';
-import {CliFlags} from '../cli-util/cli-flags';
+import {CliFlagName, CliFlags, fillInCliFlags} from '../cli-util/cli-flags';
 import {ConfigFile} from '../config/configs';
 
 export enum CliCommand {
@@ -16,16 +16,55 @@ export type CliCommandResult = {
     code?: number;
 };
 
-export type CommandFunctionInput = {
-    rawArgs?: string[];
-    cliFlags?: Partial<CliFlags>;
+function extractRawFlags(
+    commandInput?: PartialCommandFunctionInput | Partial<CommandFunctionInput>,
+): Partial<Readonly<CliFlags>> | undefined {
+    if (!commandInput) {
+        return undefined;
+    } else if ('cliFlags' in commandInput) {
+        return commandInput.cliFlags;
+    } else if ('rawCliFlags' in commandInput) {
+        return commandInput.rawCliFlags;
+    } else {
+        return undefined;
+    }
+}
+
+export function fillInCommandInput(
+    commandInput?: PartialCommandFunctionInput | Partial<CommandFunctionInput>,
+): CommandFunctionInput {
+    if (!commandInput) {
+        return {
+            rawArgs: [],
+            cliFlags: fillInCliFlags(),
+        };
+    }
+
+    const rawCliFlags = extractRawFlags(commandInput);
+
+    return {
+        rawArgs: commandInput?.rawArgs || [],
+        cliFlags: fillInCliFlags(rawCliFlags),
+        customDir: commandInput.customDir,
+    };
+}
+
+export type CommandFunctionInput = Readonly<{
+    rawArgs: string[];
+    cliFlags: Required<Readonly<CliFlags>>;
     customDir?: string;
+}>;
+
+export type PartialCommandFunctionInput = Omit<Partial<CommandFunctionInput>, 'cliFlags'> & {
+    rawCliFlags?: Partial<Readonly<CliFlags>>;
 };
 
 export type CliCommandImplementation = {
+    commandName: CliCommand;
     configFile?: ConfigFile;
     description: string;
     implementation: CommandFunction;
+    configFlagSupport: Omit<Record<CliFlagName, boolean>, CliFlagName.Silent | CliFlagName.Help>;
 };
 
 export type CommandFunction = (

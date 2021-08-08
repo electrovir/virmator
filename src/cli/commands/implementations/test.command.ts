@@ -1,9 +1,20 @@
-import {runBashCommand} from '../../bash-scripting';
-import {CliCommandImplementation, CliCommandResult, CommandFunctionInput} from './cli-command';
+import {runBashCommand} from '../../../bash-scripting';
+import {CliFlagName} from '../../cli-util/cli-flags';
+import {
+    CliCommand,
+    CliCommandImplementation,
+    CliCommandResult,
+    CommandFunctionInput,
+} from '../cli-command';
 
-export const formatImplementation: CliCommandImplementation = {
+export const testCommandImplementation: CliCommandImplementation = {
+    commandName: CliCommand.Test,
     description: `runs all .test.js files with test-vir`,
     implementation: runTestCommand,
+    configFlagSupport: {
+        [CliFlagName.ExtendableConfig]: false,
+        [CliFlagName.NoWriteConfig]: false,
+    },
 };
 
 export async function runTestCommand({customDir}: CommandFunctionInput): Promise<CliCommandResult> {

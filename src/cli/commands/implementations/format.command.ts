@@ -1,15 +1,15 @@
-import {isEnumValue} from '../../augments/object';
-import {DeepWriteable} from '../../augments/type';
-import {runBashCommand} from '../../bash-scripting';
-import {packageName} from '../../package-name';
-import {CliFlagName, defaultCliFlags} from '../cli-util/cli-flags';
-import {ConfigFile} from '../config/configs';
+import {isEnumValue} from '../../../augments/object';
+import {DeepWriteable} from '../../../augments/type';
+import {runBashCommand} from '../../../bash-scripting';
+import {packageName} from '../../../package-name';
+import {CliFlagName} from '../../cli-util/cli-flags';
+import {ConfigFile} from '../../config/configs';
 import {
     CliCommand,
     CliCommandImplementation,
     CliCommandResult,
     CommandFunctionInput,
-} from './cli-command';
+} from '../cli-command';
 
 export enum FormatOperation {
     Check = 'check',
@@ -33,6 +33,7 @@ export const defaultFormatArgs: FormatArgs = {
 export const filesMarkerArg = '--format-files' as const;
 
 export const formatImplementation: CliCommandImplementation = {
+    commandName: CliCommand.Format,
     description: `formats source files with Prettier
             operation commands:
                 This is optional but if provided it must come first. ${FormatOperation.Write} is the default.
@@ -72,11 +73,15 @@ export const formatImplementation: CliCommandImplementation = {
                     ${packageName} ${CliCommand.Format} ${FormatOperation.Write}  --ignore-path .prettierignore ${filesMarkerArg} md json`,
     configFile: ConfigFile.Prettier,
     implementation: runFormatCommand,
+    configFlagSupport: {
+        [CliFlagName.ExtendableConfig]: true,
+        [CliFlagName.NoWriteConfig]: true,
+    },
 };
 
 export async function runFormatCommand({
-    rawArgs = [],
-    cliFlags = defaultCliFlags,
+    rawArgs,
+    cliFlags,
     customDir,
 }: CommandFunctionInput): Promise<CliCommandResult> {
     const args = extractFormatArgs(rawArgs);

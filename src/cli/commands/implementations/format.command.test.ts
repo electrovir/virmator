@@ -1,14 +1,14 @@
 import {readFile, writeFile} from 'fs-extra';
 import {testGroup} from 'test-vir';
-import {testFormatPaths} from '../../virmator-repo-paths';
-import {CliFlagName} from '../cli-util/cli-flags';
+import {testFormatPaths} from '../../../virmator-repo-paths';
+import {CliFlagName, fillInCliFlags} from '../../cli-util/cli-flags';
 import {
     defaultFormatArgs,
     extractFormatArgs,
     filesMarkerArg,
     FormatOperation,
     runFormatCommand,
-} from './format';
+} from './format.command';
 
 testGroup({
     description: runFormatCommand.name,
@@ -20,7 +20,7 @@ testGroup({
                 return (
                     await runFormatCommand({
                         rawArgs: [FormatOperation.Check],
-                        cliFlags: {[CliFlagName.Silent]: true},
+                        cliFlags: fillInCliFlags({[CliFlagName.Silent]: true}),
                         customDir: testFormatPaths.validRepo,
                     })
                 ).success;
@@ -34,7 +34,7 @@ testGroup({
                 return (
                     await runFormatCommand({
                         rawArgs: [FormatOperation.Check],
-                        cliFlags: {[CliFlagName.Silent]: true},
+                        cliFlags: fillInCliFlags({[CliFlagName.Silent]: true}),
                         customDir: testFormatPaths.invalidRepo,
                     })
                 ).success;
@@ -55,7 +55,7 @@ testGroup({
                     (
                         await runFormatCommand({
                             rawArgs: [FormatOperation.Check],
-                            cliFlags: {[CliFlagName.Silent]: true},
+                            cliFlags: fillInCliFlags({[CliFlagName.Silent]: true}),
                             customDir: testFormatPaths.invalidRepo,
                         })
                     ).success,
@@ -64,7 +64,7 @@ testGroup({
                     (
                         await runFormatCommand({
                             rawArgs: [FormatOperation.Write],
-                            cliFlags: {[CliFlagName.Silent]: true},
+                            cliFlags: fillInCliFlags({[CliFlagName.Silent]: true}),
                             customDir: testFormatPaths.invalidRepo,
                         })
                     ).success,
@@ -73,7 +73,7 @@ testGroup({
                     (
                         await runFormatCommand({
                             rawArgs: [FormatOperation.Check],
-                            cliFlags: {[CliFlagName.Silent]: true},
+                            cliFlags: fillInCliFlags({[CliFlagName.Silent]: true}),
                             customDir: testFormatPaths.invalidRepo,
                         })
                     ).success,
@@ -83,7 +83,7 @@ testGroup({
                     (
                         await runFormatCommand({
                             rawArgs: [FormatOperation.Check],
-                            cliFlags: {[CliFlagName.Silent]: true},
+                            cliFlags: fillInCliFlags({[CliFlagName.Silent]: true}),
                             customDir: testFormatPaths.invalidRepo,
                         })
                     ).success,

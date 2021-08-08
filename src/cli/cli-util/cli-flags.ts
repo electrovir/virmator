@@ -4,6 +4,7 @@ export enum CliFlagName {
     Help = '--help',
     NoWriteConfig = '--no-write-config',
     Silent = '--silent',
+    ExtendableConfig = '--extendable-config',
 }
 
 export type CliFlags = Record<CliFlagName, boolean>;
@@ -12,12 +13,15 @@ export const defaultCliFlags: Readonly<Required<Record<CliFlagName, false>>> = {
     [CliFlagName.Silent]: false,
     [CliFlagName.NoWriteConfig]: false,
     [CliFlagName.Help]: false,
+    [CliFlagName.ExtendableConfig]: false,
 } as const;
 
 export const flagDescriptions: Record<CliFlagName, string> = {
     [CliFlagName.Silent]: 'turns off most logging',
     [CliFlagName.NoWriteConfig]: `prevents a command from overwriting its relevant config file
             (if one exists, which they usually do)`,
+    [CliFlagName.ExtendableConfig]:
+        'not supported by all commands. Write an extendable config file so that the user can extend it and change / add values.',
     [CliFlagName.Help]: 'prints a help message',
 };
 
@@ -26,6 +30,12 @@ export type ExtractedCliFlags = {
     invalidFlags: string[];
     args: string[];
 };
+
+export function fillInCliFlags(
+    inputFlags?: Readonly<Partial<CliFlags>>,
+): Readonly<Required<CliFlags>> {
+    return {...defaultCliFlags, ...(inputFlags || {})};
+}
 
 export function extractCliFlags(args: string[]): Required<ExtractedCliFlags> {
     const {inputFlags, invalidFlags, otherArgs} = args.reduce(

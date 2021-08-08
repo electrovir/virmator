@@ -1,14 +1,16 @@
-import {runBashCommand} from '../../bash-scripting';
-import {packageName} from '../../package-name';
-import {CliFlagName, defaultCliFlags} from '../cli-util/cli-flags';
+import {runBashCommand} from '../../../bash-scripting';
+import {packageName} from '../../../package-name';
+import {CliFlagName} from '../../cli-util/cli-flags';
+import {ConfigFile} from '../../config/configs';
 import {
     CliCommand,
     CliCommandImplementation,
     CliCommandResult,
     CommandFunctionInput,
-} from './cli-command';
+} from '../cli-command';
 
 export const compileImplementation: CliCommandImplementation = {
+    commandName: CliCommand.Compile,
     description: `compile typescript files
             Pass any extra tsc flags to this command.
             
@@ -18,14 +20,20 @@ export const compileImplementation: CliCommandImplementation = {
                 one extra flag:
                     ${packageName} ${CliCommand.Compile} --noEmit`,
     implementation: runCompileCommand,
+    configFile: ConfigFile.TsConfig,
+    configFlagSupport: {
+        [CliFlagName.ExtendableConfig]: true,
+        [CliFlagName.NoWriteConfig]: true,
+    },
 };
 
 export async function runCompileCommand({
-    rawArgs = [],
-    cliFlags = defaultCliFlags,
+    rawArgs,
+    cliFlags,
     customDir,
 }: CommandFunctionInput): Promise<CliCommandResult> {
-    const compileCommand = `rm -rf dist && tsc ${rawArgs.map((arg) => `"${arg}"`).join(' ')}`;
+    const resetCommand = rawArgs.join(' ').includes('--noEmit') ? '' : 'rm -rf dist && ';
+    const compileCommand = `${resetCommand}tsc ${rawArgs.map((arg) => `"${arg}"`).join(' ')}`;
     const results = await runBashCommand(compileCommand, customDir);
 
     if (!cliFlags[CliFlagName.Silent]) {
