@@ -59,13 +59,15 @@ export type PartialCommandFunctionInput = Omit<Partial<CommandFunctionInput>, 'c
     rawCliFlags?: Partial<Readonly<CliFlags>>;
 };
 
-export type CliCommandImplementation = {
+export type CliCommandImplementation = Readonly<{
     commandName: CliCommand;
     configFile?: ConfigFile;
     description: string;
     implementation: CommandFunction;
-    configFlagSupport: Omit<Record<CliFlagName, boolean>, CliFlagName.Silent | CliFlagName.Help>;
-};
+    configFlagSupport: Readonly<
+        Omit<Record<CliFlagName, boolean>, CliFlagName.Silent | CliFlagName.Help>
+    >;
+}>;
 
 export type CommandFunction = (
     input: CommandFunctionInput,

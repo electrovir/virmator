@@ -4,8 +4,8 @@ import {VirmatorCliCommandError} from '../errors/cli-command-error';
 import {CliFlagError} from '../errors/cli-flag-error';
 import {CliFlagName, extractCliFlags} from './cli-util/cli-flags';
 import {cliErrorMessages, getResultMessage} from './cli-util/cli-messages';
-import {runCommand} from './commands/all-command-functions';
 import {CliCommand, validateCliCommand} from './commands/cli-command';
+import {runCommand} from './commands/run-command';
 
 export async function cli(rawArgs: string[]) {
     try {

@@ -1,16 +1,8 @@
 import {getEnumTypedValues, getObjectTypedKeys} from '../../augments/object';
-import {VirmatorCliCommandError} from '../../errors/cli-command-error';
 import {packageName} from '../../package-name';
 import {Color} from '../cli-util/cli-color';
-import {CliFlagName, CliFlags, fillInCliFlags, flagDescriptions} from '../cli-util/cli-flags';
-import {cliErrorMessages} from '../cli-util/cli-messages';
-import {copyConfig} from '../config/copy-config';
-import {
-    CliCommand,
-    CliCommandImplementation,
-    CliCommandResult,
-    PartialCommandFunctionInput,
-} from './cli-command';
+import {CliFlagName, CliFlags, flagDescriptions} from '../cli-util/cli-flags';
+import {CliCommand, CliCommandImplementation, CliCommandResult} from './cli-command';
 import {compileImplementation} from './implementations/compile.command';
 import {formatImplementation} from './implementations/format.command';
 
@@ -42,47 +34,6 @@ export function getUnsupportedFlags(
     });
 }
 
-export async function runCommand(
-    command: CliCommand,
-    commandInput: PartialCommandFunctionInput,
-): Promise<CliCommandResult> {
-    const commandImplementation = cliCommands[command];
-    const cliFlags = fillInCliFlags(commandInput.rawCliFlags);
-
-    const defaultFlagSupport = {
-        [CliFlagName.Silent]: true,
-        /**
-         * Allow the help flag for the help command but not any other command. In practice, when
-         * CliFlagName.Help is included, command will revert to CliCommand.Help so command ===
-         * CliCommand.Help will always be true when commandInput.cliFlags[CliFlagName.Help] is true.
-         */
-        [CliFlagName.Help]: command === CliCommand.Help,
-    };
-
-    const unsupportedFlagsInUse = getUnsupportedFlags(cliFlags, {
-        ...defaultFlagSupport,
-        ...commandImplementation.configFlagSupport,
-    });
-
-    if (unsupportedFlagsInUse.length) {
-        throw new VirmatorCliCommandError(
-            cliErrorMessages.unsupportedCliFlag(command, unsupportedFlagsInUse),
-        );
-    }
-
-    if (commandImplementation.configFile && !cliFlags?.[CliFlagName.NoWriteConfig]) {
-        await copyConfig(commandImplementation.configFile, !!cliFlags?.[CliFlagName.Silent]);
-    }
-
-    const commandResult = await commandImplementation.implementation({
-        ...commandInput,
-        cliFlags,
-        rawArgs: commandInput.rawArgs || [],
-    });
-
-    return commandResult;
-}
-
 export const helpImplementation: CliCommandImplementation = {
     commandName: CliCommand.Help,
     description: flagDescriptions[CliFlagName.Help],
@@ -106,7 +57,7 @@ export function runHelpCommand(): CliCommandResult {
     const commandsMessage = getEnumTypedValues(CliCommand)
         .sort()
         .map((commandName) => {
-            return `${Color.Bold}${Color.Info} ${commandName}${Color.Reset}: ${cliCommands[
+            return `${Color.Bold}${Color.Info} ${commandName}${Color.Reset}: ${allCliCommands[
                 commandName
             ].description.trim()}`;
         })
@@ -130,7 +81,7 @@ export function runHelpCommand(): CliCommandResult {
     return {success: true};
 }
 
-const cliCommands: Record<CliCommand, CliCommandImplementation> = {
+export const allCliCommands: Readonly<Record<CliCommand, CliCommandImplementation>> = {
     [CliCommand.Compile]: compileImplementation,
     [CliCommand.Format]: formatImplementation,
     [CliCommand.Help]: helpImplementation,
