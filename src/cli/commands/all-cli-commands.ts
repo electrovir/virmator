@@ -14,7 +14,6 @@ function createUnImplementedCommand(commandName: CliCommand): CliCommandImplemen
             throw new Error('This command has not been implemented yet.');
         },
         configFlagSupport: {
-            [CliFlagName.ExtendableConfig]: false,
             [CliFlagName.NoWriteConfig]: false,
         },
     };
@@ -39,8 +38,7 @@ export const helpImplementation: CliCommandImplementation = {
     description: flagDescriptions[CliFlagName.Help],
     implementation: runHelpCommand,
     configFlagSupport: {
-        [CliFlagName.ExtendableConfig]: true,
-        [CliFlagName.NoWriteConfig]: true,
+        [CliFlagName.NoWriteConfig]: false,
     },
 };
 

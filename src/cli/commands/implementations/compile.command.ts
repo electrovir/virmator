@@ -22,7 +22,6 @@ export const compileImplementation: CliCommandImplementation = {
     implementation: runCompileCommand,
     configFile: ConfigFile.TsConfig,
     configFlagSupport: {
-        [CliFlagName.ExtendableConfig]: true,
         [CliFlagName.NoWriteConfig]: true,
     },
 };

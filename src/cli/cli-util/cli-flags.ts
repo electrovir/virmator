@@ -58,10 +58,7 @@ export function extractCliFlags(args: string[]): Required<ExtractedCliFlags> {
         },
     );
 
-    const cliFlags: Required<CliFlags> = {
-        ...defaultCliFlags,
-        ...inputFlags,
-    };
+    const cliFlags: Required<CliFlags> = fillInCliFlags(inputFlags);
 
     return {
         flags: cliFlags,

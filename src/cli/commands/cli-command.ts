@@ -65,7 +65,10 @@ export type CliCommandImplementation = Readonly<{
     description: string;
     implementation: CommandFunction;
     configFlagSupport: Readonly<
-        Omit<Record<CliFlagName, boolean>, CliFlagName.Silent | CliFlagName.Help>
+        Omit<
+            Record<CliFlagName, boolean>,
+            CliFlagName.Silent | CliFlagName.Help | CliFlagName.ExtendableConfig
+        >
     >;
 }>;
 

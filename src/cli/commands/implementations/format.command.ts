@@ -74,7 +74,6 @@ export const formatImplementation: CliCommandImplementation = {
     configFile: ConfigFile.Prettier,
     implementation: runFormatCommand,
     configFlagSupport: {
-        [CliFlagName.ExtendableConfig]: true,
         [CliFlagName.NoWriteConfig]: true,
     },
 };

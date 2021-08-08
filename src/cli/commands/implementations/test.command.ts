@@ -12,7 +12,6 @@ export const testCommandImplementation: CliCommandImplementation = {
     description: `runs all .test.js files with test-vir`,
     implementation: runTestCommand,
     configFlagSupport: {
-        [CliFlagName.ExtendableConfig]: false,
         [CliFlagName.NoWriteConfig]: false,
     },
 };

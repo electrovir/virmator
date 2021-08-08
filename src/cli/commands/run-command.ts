@@ -1,6 +1,7 @@
 import {VirmatorCliCommandError} from '../../errors/cli-command-error';
 import {CliFlagName, fillInCliFlags} from '../cli-util/cli-flags';
 import {cliErrorMessages} from '../cli-util/cli-messages';
+import {isExtendableConfigSupported} from '../config/configs';
 import {copyConfig} from '../config/copy-config';
 import {allCliCommands, getUnsupportedFlags} from './all-cli-commands';
 import {CliCommand, CliCommandResult, PartialCommandFunctionInput} from './cli-command';
@@ -9,17 +10,16 @@ export async function runCommand(
     command: CliCommand,
     commandInput: PartialCommandFunctionInput,
 ): Promise<CliCommandResult> {
+    // await cleanupOldConfigFiles();
     const commandImplementation = allCliCommands[command];
     const cliFlags = fillInCliFlags(commandInput.rawCliFlags);
 
     const defaultFlagSupport = {
         [CliFlagName.Silent]: true,
-        /**
-         * Allow the help flag for the help command but not any other command. In practice, when
-         * CliFlagName.Help is included, command will revert to CliCommand.Help so command ===
-         * CliCommand.Help will always be true when commandInput.cliFlags[CliFlagName.Help] is true.
-         */
-        [CliFlagName.Help]: command === CliCommand.Help,
+        [CliFlagName.Help]: true,
+        [CliFlagName.ExtendableConfig]: isExtendableConfigSupported(
+            commandImplementation.configFile,
+        ),
     };
 
     const unsupportedFlagsInUse = getUnsupportedFlags(cliFlags, {
@@ -27,14 +27,18 @@ export async function runCommand(
         ...commandImplementation.configFlagSupport,
     });
 
-    if (unsupportedFlagsInUse.length) {
+    if (command !== CliCommand.Help && unsupportedFlagsInUse.length) {
         throw new VirmatorCliCommandError(
             cliErrorMessages.unsupportedCliFlag(command, unsupportedFlagsInUse),
         );
     }
 
-    if (commandImplementation.configFile && !cliFlags?.[CliFlagName.NoWriteConfig]) {
-        await copyConfig(commandImplementation.configFile, !!cliFlags?.[CliFlagName.Silent]);
+    if (commandImplementation.configFile && !cliFlags[CliFlagName.NoWriteConfig]) {
+        await copyConfig({
+            configFile: commandImplementation.configFile,
+            silent: cliFlags[CliFlagName.Silent],
+            extendableConfig: cliFlags[CliFlagName.ExtendableConfig],
+        });
     }
 
     const commandResult = await commandImplementation.implementation({
