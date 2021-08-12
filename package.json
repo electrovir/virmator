@@ -31,7 +31,7 @@
         "spellcheck": "cspell --unique \"./**/*\"",
         "test:file": "./test-specific-file.sh",
         "test:full": "npm run test && npm run spellcheck -- --no-progress && npm run format:check",
-        "test": "npm run compile && test-vir \"./**/!(*.type).test.js\""
+        "test": "npm run compile && test-vir \"./dist/**/!(*.type).test.js\""
     },
     "dependencies": {
         "ansi-styles": "^5.2.0",
