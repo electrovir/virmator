@@ -1,6 +1,7 @@
 import {existsSync, readFile, unlink, writeFile} from 'fs-extra';
 import {join} from 'path';
 import {testGroup} from 'test-vir';
+import {createSymLink} from '../augments/file-system';
 import {getObjectTypedKeys} from '../augments/object';
 import {runBashCommand} from '../bash-scripting';
 import {VirmatorCliCommandError} from '../errors/cli-command-error';
@@ -171,7 +172,7 @@ testGroup({
              * Create sym link from the test repo to the main repo's node_modules so that the config
              * imports still work.
              */
-            await runBashCommand(`ln -s "../../../node_modules" ${symlinkPath}`);
+            await createSymLink('../../../node_modules', symlinkPath);
 
             testResults.push({name: 'symlink was created', result: existsSync(symlinkPath)});
 
@@ -327,7 +328,6 @@ testGroup({
         });
 
         runTest({
-            forceOnly: true,
             description: 'verify that extendable format config is created',
             expect: [
                 {

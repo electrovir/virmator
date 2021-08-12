@@ -2,7 +2,8 @@ import {existsSync} from 'fs';
 import {unlink} from 'fs-extra';
 import {join} from 'path';
 import {testGroup} from 'test-vir';
-import {testFormatPaths} from '../../virmator-repo-paths';
+import {createSymLink} from '../../augments/file-system';
+import {extendedConfigsDir, testFormatPaths} from '../../virmator-repo-paths';
 import {ConfigFile, extendableConfigFiles} from './configs';
 import {copyConfig} from './copy-config';
 
@@ -34,10 +35,13 @@ testGroup({
 
         runTest({
             description: 'copies extendable config files',
-            expect: [false, true, false, true, false, expectedPrettierConfigPath],
+            expect: [false, true, true, false, true, false, expectedPrettierConfigPath],
             test: async () => {
                 const results: boolean[] = [existsSync(expectedPrettierConfigPath)];
 
+                const symlinkPath = join(extendedConfigsDir, 'node_modules');
+                await createSymLink('../node_modules', symlinkPath, 'dir');
+                results.push(existsSync(symlinkPath));
                 const configPath = await copyConfig({
                     configFile: ConfigFile.Prettier,
                     silent: true,
