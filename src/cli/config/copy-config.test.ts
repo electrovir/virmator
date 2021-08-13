@@ -29,6 +29,7 @@ testGroup({
                 await unlink(configPath);
                 results.push(existsSync(configPath));
 
+                //  (await readdir(dirname(configPath))).join(',')
                 return [...results, configPath];
             },
         });
@@ -40,7 +41,7 @@ testGroup({
                 const results: boolean[] = [existsSync(expectedPrettierConfigPath)];
 
                 const symlinkPath = join(extendedConfigsDir, 'node_modules');
-                await createSymLink('../node_modules', symlinkPath, 'dir');
+                await createSymLink('../node_modules', symlinkPath);
                 results.push(existsSync(symlinkPath));
                 const configPath = await copyConfig({
                     configFile: ConfigFile.Prettier,

@@ -2,6 +2,7 @@ import {existsSync, readFile, unlink, writeFile} from 'fs-extra';
 import {join} from 'path';
 import {testGroup} from 'test-vir';
 import {getObjectTypedKeys} from '../augments/object';
+import {interpolationSafeWindowsPath} from '../augments/string';
 import {runBashCommand} from '../bash-scripting';
 import {VirmatorCliCommandError} from '../errors/cli-command-error';
 import {testCompilePaths, testFormatPaths, virmatorDistDir} from '../virmator-repo-paths';
@@ -36,7 +37,7 @@ testGroup((runTest) => {
             forceOnly: inputs.forceOnly,
             test: async () => {
                 const results = await runBashCommand(
-                    `node ${cliPath} ${inputs.args.join(' ')}`,
+                    `node ${interpolationSafeWindowsPath(cliPath)} ${inputs.args.join(' ')}`,
                     inputs.cwd,
                 );
 
@@ -161,7 +162,10 @@ testGroup({
             }, Promise.resolve());
 
             /** Run format for the first time which will create the config file */
-            const firstFormatOutput = await runBashCommand(command, testFormatPaths.validRepo);
+            const firstFormatOutput = await runBashCommand(
+                interpolationSafeWindowsPath(command),
+                testFormatPaths.validRepo,
+            );
 
             testResults.push({
                 name: 'first format has stderr',
@@ -179,7 +183,10 @@ testGroup({
                 testResults.push({name: 'config was created', result: existsSync(configPath)});
             }, Promise.resolve());
 
-            const secondFormatOutput = await runBashCommand(command, testFormatPaths.validRepo);
+            const secondFormatOutput = await runBashCommand(
+                interpolationSafeWindowsPath(command),
+                testFormatPaths.validRepo,
+            );
 
             testResults.push({
                 name: 'second format has stderr',
@@ -316,8 +323,8 @@ testGroup({
                     result: true,
                 },
                 {
-                    name: 'prettier config got cleaned up',
-                    result: true,
+                    name: 'prettier config still exists',
+                    result: false,
                 },
             ],
             test: async () => {
@@ -363,8 +370,8 @@ module.exports = {...baseConfig, printWidth: 80};`;
                 });
                 await unlink(normalPrettierPath);
                 results.push({
-                    name: 'prettier config got cleaned up',
-                    result: !existsSync(normalPrettierPath),
+                    name: 'prettier config still exists',
+                    result: existsSync(normalPrettierPath),
                 });
 
                 return results;

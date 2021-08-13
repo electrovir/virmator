@@ -1,4 +1,5 @@
 import {testGroup} from 'test-vir';
+import {toPosixPath} from './augments/string';
 import {runBashCommand} from './bash-scripting';
 
 testGroup({
@@ -21,7 +22,7 @@ testGroup({
             expect: {
                 error: undefined,
                 stderr: '',
-                stdout: `${__dirname}\n`,
+                stdout: `${toPosixPath(__dirname)}\n`,
             },
             test: async () => {
                 return await runBashCommand('pwd', __dirname);

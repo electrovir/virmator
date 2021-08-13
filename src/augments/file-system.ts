@@ -1,4 +1,4 @@
-import {existsSync, lstat, readlink, symlink, SymlinkType} from 'fs-extra';
+import {existsSync, lstat, readlink, symlink} from 'fs-extra';
 
 export async function createSymLink(
     /**
@@ -8,7 +8,6 @@ export async function createSymLink(
     linkPath: string,
     /** The location and name the symlink file itself. */
     symlinkLocationPath: string,
-    type?: SymlinkType | undefined,
 ): Promise<void> {
     if (existsSync(symlinkLocationPath)) {
         if (!(await lstat(symlinkLocationPath)).isSymbolicLink()) {
@@ -22,6 +21,11 @@ export async function createSymLink(
             );
         }
     } else {
-        await symlink(linkPath, symlinkLocationPath, type);
+        await symlink(
+            linkPath,
+            symlinkLocationPath,
+            // use junction to fix permission issues on windows
+            'junction',
+        );
     }
 }
