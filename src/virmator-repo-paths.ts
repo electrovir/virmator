@@ -33,11 +33,10 @@ export const testCompilePaths = {
 };
 
 const testTestRepos = getCommandTestRepoDir(CliCommand.Test);
-const validTestRepo = join(testTestRepos, 'valid-test-repo');
-const invalidTestRepo = join(testTestRepos, 'invalid-test-repo');
 export const testTestPaths = {
-    validRepo: validTestRepo,
-    invalidRepo: invalidTestRepo,
+    validRepo: join(testTestRepos, 'valid-test-repo'),
+    invalidRepo: join(testTestRepos, 'invalid-test-repo'),
+    multiRepo: join(testTestRepos, 'multi-test-repo'),
 };
 
 export async function createNodeModulesSymLinkForTests(dir: string): Promise<string> {

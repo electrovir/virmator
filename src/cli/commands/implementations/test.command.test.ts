@@ -7,10 +7,9 @@ import {runCompileCommand} from './compile.command';
 import {runTestCommand} from './test.command';
 
 testGroup({
-    forceOnly: true,
     description: runTestCommand.name,
     tests: (runTest) => {
-        async function testTestCommand(customDir: string) {
+        async function testTestCommand(customDir: string, args: string[] = []) {
             const symlinkPath = await createNodeModulesSymLinkForTests(customDir);
 
             const compileResults = await runCompileCommand({
@@ -27,7 +26,7 @@ testGroup({
             }
 
             const results = await runTestCommand({
-                rawArgs: [],
+                rawArgs: args,
                 cliFlags: fillInCliFlags(),
                 customDir,
             });
@@ -60,6 +59,25 @@ testGroup({
             expect: false,
             test: async () => {
                 const results = await testTestCommand(testTestPaths.invalidRepo);
+                return results.success;
+            },
+        });
+
+        runTest({
+            description: 'when args are passed, only test those files',
+            expect: true,
+            test: async () => {
+                const results = await testTestCommand(testTestPaths.multiRepo, [
+                    'dist/**/valid.test.js',
+                ]);
+
+                if (!results.success) {
+                    console.info(`Test command output:`);
+                    console.info(results.stdout);
+                    console.error(results.stderr);
+                    console.error(results.error);
+                }
+
                 return results.success;
             },
         });

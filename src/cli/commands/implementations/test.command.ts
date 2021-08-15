@@ -16,8 +16,12 @@ export const testCommandImplementation: CliCommandImplementation = {
     },
 };
 
-export async function runTestCommand({customDir}: CommandFunctionInput): Promise<CliCommandResult> {
-    const testCommand = `test-vir \"./dist/**/!(*.type).test.js\"`;
+export async function runTestCommand({
+    rawArgs,
+    customDir,
+}: CommandFunctionInput): Promise<CliCommandResult> {
+    const args = rawArgs.length ? rawArgs : `\"./dist/**/!(*.type).test.js\"`;
+    const testCommand = `test-vir ${args}`;
     const results = await runBashCommand(testCommand, customDir);
 
     return {
