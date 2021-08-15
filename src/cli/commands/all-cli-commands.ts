@@ -5,6 +5,7 @@ import {CliFlagName, CliFlags, flagDescriptions} from '../cli-util/cli-flags';
 import {CliCommand, CliCommandImplementation, CliCommandResult} from './cli-command';
 import {compileImplementation} from './implementations/compile.command';
 import {formatImplementation} from './implementations/format.command';
+import {testCommandImplementation} from './implementations/test.command';
 
 function createUnImplementedCommand(commandName: CliCommand): CliCommandImplementation {
     return {
@@ -86,6 +87,6 @@ export const allCliCommands: Readonly<Record<CliCommand, CliCommandImplementatio
     [CliCommand.Format]: formatImplementation,
     [CliCommand.Help]: helpImplementation,
     [CliCommand.SpellCheck]: createUnImplementedCommand(CliCommand.SpellCheck),
-    [CliCommand.Test]: createUnImplementedCommand(CliCommand.Test),
+    [CliCommand.Test]: testCommandImplementation,
     [CliCommand.UpdateConfigs]: createUnImplementedCommand(CliCommand.UpdateConfigs),
 };

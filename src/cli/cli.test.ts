@@ -1,12 +1,16 @@
 import {existsSync, readFile, unlink, writeFile} from 'fs-extra';
 import {join} from 'path';
 import {testGroup} from 'test-vir';
-import {createSymLink} from '../augments/file-system';
 import {getObjectTypedKeys} from '../augments/object';
 import {interpolationSafeWindowsPath} from '../augments/string';
 import {runBashCommand} from '../bash-scripting';
 import {VirmatorCliCommandError} from '../errors/cli-command-error';
-import {testCompilePaths, testFormatPaths, virmatorDistDir} from '../virmator-repo-paths';
+import {
+    createNodeModulesSymLinkForTests,
+    testCompilePaths,
+    testFormatPaths,
+    virmatorDistDir,
+} from '../virmator-repo-paths';
 import {CliFlagName} from './cli-util/cli-flags';
 import {cliErrorMessages, getResultMessage} from './cli-util/cli-messages';
 import {CliCommand} from './commands/cli-command';
@@ -160,18 +164,7 @@ testGroup({
                 testResults.push({name: 'previous config exists', result: existsSync(configPath)});
             }, Promise.resolve());
 
-            const symlinkPath = join(testFormatPaths.validRepo, 'node_modules');
-
-            testResults.push({
-                name: 'previous symlink exists',
-                result: existsSync(symlinkPath),
-            });
-
-            /**
-             * Create sym link from the test repo to the main repo's node_modules so that the config
-             * imports still work.
-             */
-            await createSymLink('../../../node_modules', symlinkPath);
+            const symlinkPath = await createNodeModulesSymLinkForTests(testFormatPaths.validRepo);
 
             testResults.push({name: 'symlink was created', result: existsSync(symlinkPath)});
 
@@ -243,10 +236,6 @@ testGroup({
                     result: false,
                 },
                 {
-                    name: 'previous symlink exists',
-                    result: false,
-                },
-                {
                     name: 'symlink was created',
                     result: true,
                 },
@@ -286,10 +275,6 @@ testGroup({
                 },
                 {
                     name: 'previous config exists',
-                    result: false,
-                },
-                {
-                    name: 'previous symlink exists',
                     result: false,
                 },
                 {
@@ -341,10 +326,6 @@ testGroup({
                 },
                 {
                     name: 'previous config exists',
-                    result: false,
-                },
-                {
-                    name: 'previous symlink exists',
                     result: false,
                 },
                 {
