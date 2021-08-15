@@ -1,6 +1,7 @@
 import {existsSync, readFile, unlink, writeFile} from 'fs-extra';
 import {join} from 'path';
 import {testGroup} from 'test-vir';
+import {createSymLink} from '../augments/file-system';
 import {getObjectTypedKeys} from '../augments/object';
 import {interpolationSafeWindowsPath} from '../augments/string';
 import {runBashCommand} from '../bash-scripting';
@@ -161,6 +162,21 @@ testGroup({
                 testResults.push({name: 'previous config exists', result: existsSync(configPath)});
             }, Promise.resolve());
 
+            const symlinkPath = join(testFormatPaths.validRepo, 'node_modules');
+
+            testResults.push({
+                name: 'previous symlink exists',
+                result: existsSync(symlinkPath),
+            });
+
+            /**
+             * Create sym link from the test repo to the main repo's node_modules so that the config
+             * imports still work.
+             */
+            await createSymLink('../../../node_modules', symlinkPath);
+
+            testResults.push({name: 'symlink was created', result: existsSync(symlinkPath)});
+
             /** Run format for the first time which will create the config file */
             const firstFormatOutput = await runBashCommand(
                 interpolationSafeWindowsPath(command),
@@ -211,6 +227,13 @@ testGroup({
                 });
             }, Promise.resolve());
 
+            await unlink(symlinkPath);
+
+            testResults.push({
+                name: 'symlink exists after cleanup',
+                result: existsSync(symlinkPath),
+            });
+
             return testResults;
         }
 
@@ -220,6 +243,14 @@ testGroup({
                 {
                     name: 'previous config exists',
                     result: false,
+                },
+                {
+                    name: 'previous symlink exists',
+                    result: false,
+                },
+                {
+                    name: 'symlink was created',
+                    result: true,
                 },
                 {
                     name: 'first format has stderr',
@@ -235,6 +266,10 @@ testGroup({
                 },
                 {
                     name: 'config exists after cleanup',
+                    result: false,
+                },
+                {
+                    name: 'symlink exists after cleanup',
                     result: false,
                 },
             ],
@@ -256,6 +291,14 @@ testGroup({
                     result: false,
                 },
                 {
+                    name: 'previous symlink exists',
+                    result: false,
+                },
+                {
+                    name: 'symlink was created',
+                    result: true,
+                },
+                {
                     name: 'first format has stderr',
                     result: true,
                 },
@@ -277,6 +320,10 @@ testGroup({
                 },
                 {
                     name: 'config exists after cleanup',
+                    result: false,
+                },
+                {
+                    name: 'symlink exists after cleanup',
                     result: false,
                 },
             ],
@@ -299,6 +346,14 @@ testGroup({
                     result: false,
                 },
                 {
+                    name: 'previous symlink exists',
+                    result: false,
+                },
+                {
+                    name: 'symlink was created',
+                    result: true,
+                },
+                {
                     name: 'first format has stderr',
                     result: true,
                 },
@@ -312,6 +367,10 @@ testGroup({
                 },
                 {
                     name: 'config exists after cleanup',
+                    result: false,
+                },
+                {
+                    name: 'symlink exists after cleanup',
                     result: false,
                 },
                 {

@@ -21,11 +21,6 @@ export async function createSymLink(
             );
         }
     } else {
-        await symlink(
-            linkPath,
-            symlinkLocationPath,
-            // use junction to fix permission issues on windows
-            'junction',
-        );
+        await symlink(linkPath, symlinkLocationPath);
     }
 }

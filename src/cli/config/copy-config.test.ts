@@ -36,11 +36,22 @@ testGroup({
 
         runTest({
             description: 'copies extendable config files',
-            expect: [false, true, true, false, true, false, expectedPrettierConfigPath],
+            expect: [
+                false,
+                false,
+                true,
+                true,
+                false,
+                true,
+                false,
+                false,
+                expectedPrettierConfigPath,
+            ],
             test: async () => {
                 const results: boolean[] = [existsSync(expectedPrettierConfigPath)];
 
                 const symlinkPath = join(extendedConfigsDir, 'node_modules');
+                results.push(existsSync(symlinkPath));
                 await createSymLink('../node_modules', symlinkPath);
                 results.push(existsSync(symlinkPath));
                 const configPath = await copyConfig({
@@ -61,6 +72,9 @@ testGroup({
                     results.push(existsSync(path));
                     return;
                 }, Promise.resolve());
+
+                await unlink(symlinkPath);
+                results.push(existsSync(symlinkPath));
 
                 return [...results, configPath];
             },
