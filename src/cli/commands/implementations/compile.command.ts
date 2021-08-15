@@ -28,25 +28,16 @@ export const compileImplementation: CliCommandImplementation = {
 
 export async function runCompileCommand({
     rawArgs,
-    cliFlags,
     customDir,
 }: CommandFunctionInput): Promise<CliCommandResult> {
     const resetCommand = rawArgs.join(' ').includes('--noEmit') ? '' : 'rm -rf dist && ';
     const compileCommand = `${resetCommand}tsc ${rawArgs.map((arg) => `"${arg}"`).join(' ')}`;
     const results = await runBashCommand(compileCommand, customDir);
 
-    if (!cliFlags[CliFlagName.Silent]) {
-        if (results.stdout) {
-            console.error(results.stdout);
-        }
-        if (results.stderr) {
-            console.error(results.stderr);
-        }
-    }
-
-    if (results.error) {
-        return {success: false};
-    } else {
-        return {success: true};
-    }
+    return {
+        success: !results.error,
+        stdout: results.stdout,
+        stderr: results.stderr,
+        error: results.error,
+    };
 }

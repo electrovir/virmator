@@ -47,5 +47,18 @@ export async function runCommand(
         rawArgs: commandInput.rawArgs || [],
     });
 
+    if (!cliFlags[CliFlagName.Silent] || command === CliCommand.Help) {
+        if (commandResult.stdout) {
+            console.info(commandResult.stdout);
+        }
+        if (commandResult.stderr) {
+            console.error(commandResult.stderr);
+        }
+    }
+
+    if (commandResult.error) {
+        console.error(commandResult.stderr);
+        throw commandResult.error;
+    }
     return commandResult;
 }

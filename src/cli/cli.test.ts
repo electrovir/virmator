@@ -98,9 +98,7 @@ testGroup((runTest) => {
         expect: {
             stdout: `running format...\nAll matched files use Prettier code style!\n\n${getResultMessage(
                 CliCommand.Format,
-                {
-                    success: true,
-                },
+                true,
             )}`,
         },
         cwd: testFormatPaths.validRepo,
@@ -122,7 +120,7 @@ testGroup((runTest) => {
         args: [CliFlagName.NoWriteConfig, CliCommand.Compile],
         description: 'runs compile',
         expect: {
-            stdout: `running compile...\n${getResultMessage(CliCommand.Compile, {success: true})}`,
+            stdout: `running compile...\n${getResultMessage(CliCommand.Compile, true)}`,
         },
         cwd: testCompilePaths.validRepo,
         cleanup: async () => {

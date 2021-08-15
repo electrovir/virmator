@@ -17,14 +17,13 @@ export const testCommandImplementation: CliCommandImplementation = {
 };
 
 export async function runTestCommand({customDir}: CommandFunctionInput): Promise<CliCommandResult> {
-    const testCommand = `test-vir \"./**/!(*.type).test.js\"`;
+    const testCommand = `test-vir \"./dist/**/!(*.type).test.js\"`;
     const results = await runBashCommand(testCommand, customDir);
-    console.info(results.stdout);
-    console.error(results.stderr);
 
-    if (results.error) {
-        return {success: false};
-    } else {
-        return {success: true};
-    }
+    return {
+        stdout: results.stdout,
+        stderr: results.stderr,
+        success: !results.error,
+        error: results.error,
+    };
 }

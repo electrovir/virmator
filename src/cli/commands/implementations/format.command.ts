@@ -93,20 +93,12 @@ export async function runFormatCommand({
 
     const results = await runBashCommand(prettierCommand, customDir);
 
-    if (!cliFlags[CliFlagName.Silent]) {
-        if (results.stdout) {
-            console.info(results.stdout.replace('Checking formatting...\n', ''));
-        }
-        if (results.stderr) {
-            console.error(results.stderr);
-        }
-    }
-
-    if (results.error) {
-        return {success: false};
-    } else {
-        return {success: true};
-    }
+    return {
+        success: !results.error,
+        stdout: results.stdout.replace('Checking formatting...\n', ''),
+        stderr: results.stderr,
+        error: results.error,
+    };
 }
 
 export function extractFormatArgs(rawArgs: string[]): FormatArgs {

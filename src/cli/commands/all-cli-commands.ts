@@ -74,9 +74,11 @@ export function runHelpCommand(): CliCommandResult {
     ${Color.Info} available commands:${Color.Reset}
         ${commandsMessage}`;
 
-    console.info(helpMessage);
-
-    return {success: true};
+    return {
+        success: true,
+        stdout: helpMessage,
+        stderr: '',
+    };
 }
 
 export const allCliCommands: Readonly<Record<CliCommand, CliCommandImplementation>> = {

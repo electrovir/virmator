@@ -1,4 +1,4 @@
-import {CliCommand, CliCommandResult} from '../commands/cli-command';
+import {CliCommand} from '../commands/cli-command';
 import {Color} from './cli-color';
 import {CliFlagName} from './cli-flags';
 
@@ -12,8 +12,8 @@ export const cliErrorMessages = {
     },
 };
 
-export function getResultMessage(command: CliCommand, result: CliCommandResult) {
-    if (result.success) {
+export function getResultMessage(command: CliCommand, success: boolean) {
+    if (success) {
         return `${Color.Bold}${Color.Success}${command} succeeded.${Color.Reset}`;
     } else {
         return `${Color.Bold}${Color.Fail}${command} failed.${Color.Reset}`;

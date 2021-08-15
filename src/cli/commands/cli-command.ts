@@ -13,7 +13,10 @@ export enum CliCommand {
 
 export type CliCommandResult = {
     success: boolean;
-    code?: number;
+    stdout: string;
+    stderr: string;
+    error?: any;
+    exitCode?: number;
 };
 
 function extractRawFlags(

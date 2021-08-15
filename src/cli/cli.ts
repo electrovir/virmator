@@ -31,10 +31,10 @@ export async function cli(rawArgs: string[]) {
             rawCliFlags: flags,
         });
 
-        const exitCode = commandResult.code ?? (commandResult.success ? 0 : 1);
+        const exitCode = commandResult.exitCode ?? (commandResult.success ? 0 : 1);
 
         if (cliCommand !== CliCommand.Help && !flags[CliFlagName.Silent]) {
-            console.log(getResultMessage(cliCommand, commandResult));
+            console.log(getResultMessage(cliCommand, commandResult.success));
         }
 
         process.exit(exitCode);
