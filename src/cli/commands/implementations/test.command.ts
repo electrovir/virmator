@@ -1,3 +1,4 @@
+import {interpolationSafeWindowsPath} from '../../../augments/string';
 import {runBashCommand} from '../../../bash-scripting';
 import {CliFlagName} from '../../cli-util/cli-flags';
 import {
@@ -20,7 +21,9 @@ export async function runTestCommand({
     rawArgs,
     customDir,
 }: CommandFunctionInput): Promise<CliCommandResult> {
-    const args = rawArgs.length ? rawArgs : `\"./dist/**/!(*.type).test.js\"`;
+    const args: string = rawArgs.length
+        ? interpolationSafeWindowsPath(rawArgs.join(' '))
+        : `\"./dist/**/!(*.type).test.js\"`;
     const testCommand = `test-vir ${args}`;
     const results = await runBashCommand(testCommand, customDir);
 
