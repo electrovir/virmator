@@ -7,7 +7,7 @@ import {
     extendedConfigsDir,
     testFormatPaths,
 } from '../../virmator-repo-paths';
-import {ConfigFile, extendableConfigFiles} from './configs';
+import {ConfigFile, extendableConfigFile} from './configs';
 import {copyConfig} from './copy-config';
 
 testGroup({
@@ -53,7 +53,7 @@ testGroup({
                 });
                 const extendablePath = join(
                     testFormatPaths.validRepo,
-                    extendableConfigFiles[ConfigFile.Prettier],
+                    extendableConfigFile[ConfigFile.Prettier],
                 );
 
                 await [extendablePath, configPath].reduce(async (accum, path) => {

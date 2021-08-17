@@ -3,7 +3,7 @@ import {join} from 'path';
 import {testGroup} from 'test-vir';
 import {getEnumTypedValues} from '../../augments/object';
 import {extendedConfigsDir, virmatorRootDir} from '../../virmator-repo-paths';
-import {ConfigFile, extendableConfigFiles, isExtendableConfigSupported} from './configs';
+import {ConfigFile, extendableConfigFile, isExtendableConfigSupported} from './configs';
 
 testGroup((runTest) => {
     runTest({
@@ -21,12 +21,12 @@ testGroup((runTest) => {
         expect: [],
         test: () => {
             return getEnumTypedValues(ConfigFile)
-                .filter((configFile): configFile is keyof typeof extendableConfigFiles =>
+                .filter((configFile): configFile is keyof typeof extendableConfigFile =>
                     isExtendableConfigSupported(configFile),
                 )
                 .filter((configFile) => {
                     return (
-                        !existsSync(join(extendedConfigsDir, extendableConfigFiles[configFile])) &&
+                        !existsSync(join(extendedConfigsDir, extendableConfigFile[configFile])) &&
                         !existsSync(join(extendedConfigsDir, configFile))
                     );
                 });

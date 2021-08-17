@@ -5,6 +5,11 @@ import {CliCommand} from './cli/commands/cli-command';
 export const virmatorRootDir = __dirname.replace(/(?:src|node_modules\/dist|dist).*/, '');
 export const virmatorDistDir = join(virmatorRootDir, 'dist');
 export const extendedConfigsDir = join(virmatorRootDir, 'extended-configs');
+
+//
+// File paths for testing purposes
+//
+
 export const testRepos = join(virmatorRootDir, 'test-repos');
 
 export function getCommandTestRepoDir(command: CliCommand) {

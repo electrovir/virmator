@@ -3,7 +3,7 @@ import {join, posix, sep} from 'path';
 import {extendedConfigsDir, virmatorRootDir} from '../../virmator-repo-paths';
 
 export enum ConfigFile {
-    SpellCheck = '.cspell.json',
+    Cspell = '.cspell.json',
     GitAttributes = '.gitattributes',
     GitIgnore = '.gitignore',
     NpmIgnore = '.npmignore',
@@ -12,8 +12,9 @@ export enum ConfigFile {
     VsCodeSettings = '.vscode/settings.json',
 }
 
-export const extendableConfigFiles = {
+export const extendableConfigFile = {
     [ConfigFile.Prettier]: '.prettierrc-base.js',
+    [ConfigFile.Cspell]: '.cspell-base.json',
 } as const;
 
 export async function readVirmatorVersionOfConfigFile(
@@ -30,9 +31,9 @@ export async function readVirmatorVersionOfConfigFile(
 
 export function isExtendableConfigSupported(
     configFile?: ConfigFile,
-): configFile is keyof typeof extendableConfigFiles {
+): configFile is keyof typeof extendableConfigFile {
     if (!configFile) {
         return false;
     }
-    return configFile in extendableConfigFiles;
+    return configFile in extendableConfigFile;
 }

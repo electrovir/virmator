@@ -15,7 +15,7 @@ import {CliFlagName} from './cli-util/cli-flags';
 import {cliErrorMessages, getResultMessage} from './cli-util/cli-messages';
 import {CliCommand} from './commands/cli-command';
 import {FormatOperation} from './commands/implementations/format.command';
-import {ConfigFile, extendableConfigFiles} from './config/configs';
+import {ConfigFile, extendableConfigFile} from './config/configs';
 
 const cliPath = join(virmatorDistDir, 'cli', 'cli.js');
 
@@ -313,7 +313,7 @@ testGroup({
             test: async () =>
                 await checkConfigs(`node ${cliPath} format ${CliFlagName.ExtendableConfig}`, [
                     join(testFormatPaths.validRepo, ConfigFile.Prettier),
-                    join(testFormatPaths.validRepo, extendableConfigFiles[ConfigFile.Prettier]),
+                    join(testFormatPaths.validRepo, extendableConfigFile[ConfigFile.Prettier]),
                 ]),
         });
 
@@ -385,7 +385,7 @@ module.exports = {...baseConfig, printWidth: 80};`;
                         [
                             join(
                                 testFormatPaths.validRepo,
-                                extendableConfigFiles[ConfigFile.Prettier],
+                                extendableConfigFile[ConfigFile.Prettier],
                             ),
                         ],
                     )),

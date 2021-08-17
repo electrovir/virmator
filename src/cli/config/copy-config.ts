@@ -4,7 +4,7 @@ import {ConfigFileError} from '../../errors/config-file-error';
 import {CliFlagName} from '../cli-util/cli-flags';
 import {
     ConfigFile,
-    extendableConfigFiles,
+    extendableConfigFile,
     isExtendableConfigSupported,
     readVirmatorVersionOfConfigFile,
 } from './configs';
@@ -27,11 +27,11 @@ export async function copyConfig({
 
     const configPath = resolve(configFile);
     const configExists = existsSync(configPath);
+    const ifUndesiredMessage = `If this is undesired, use the ${CliFlagName.NoWriteConfig} flag to prevent config file updates.`;
 
     if (!configExists && !silent) {
         console.error(
-            `Config file not found, creating new file: ${configPath}
-If this is undesired, use the ${CliFlagName.NoWriteConfig} flag to prevent config file updates.`,
+            `Config file not found, creating new file: ${configPath}\n${ifUndesiredMessage}`,
         );
     }
 
@@ -41,31 +41,36 @@ If this is undesired, use the ${CliFlagName.NoWriteConfig} flag to prevent confi
                 `Extendable config files are not supported for ${configFile}`,
             );
         }
-        const extendThisOneContents = (
-            await readVirmatorVersionOfConfigFile(configFile, false)
-        ).toString();
 
+        // check that the config file which should extend virmator's config file exists
         if (!configExists) {
+            // if it does not exist, create it
             const extendInHereContents = await readVirmatorVersionOfConfigFile(configFile, true);
             await writeFile(configPath, extendInHereContents);
         }
 
-        const baseConfigPath = resolve(extendableConfigFiles[configFile]);
-        const baseConfigExists = existsSync(baseConfigPath);
+        const userCurrentBaseConfigPath = resolve(extendableConfigFile[configFile]);
+        const userCurrentBaseConfigExists = existsSync(userCurrentBaseConfigPath);
 
-        if (!baseConfigExists && !silent) {
-            console.error(`Base config file not found, creating new file: ${baseConfigPath}`);
+        if (!userCurrentBaseConfigExists && !silent) {
+            console.error(
+                `Base config file not found, creating new file: ${userCurrentBaseConfigPath}\n`,
+            );
         }
 
-        const baseConfigContents = baseConfigExists
-            ? (await readFile(baseConfigPath)).toString()
+        const userCurrentBaseConfigContents = userCurrentBaseConfigExists
+            ? (await readFile(userCurrentBaseConfigPath)).toString()
             : undefined;
 
-        if (baseConfigContents !== extendThisOneContents) {
+        const virmatorConfigContents = (
+            await readVirmatorVersionOfConfigFile(configFile, false)
+        ).toString();
+
+        if (userCurrentBaseConfigContents !== virmatorConfigContents) {
             if (!silent) {
-                console.info(`Updating ${baseConfigPath}`);
+                console.info(`Updating ${userCurrentBaseConfigPath}\n${ifUndesiredMessage}`);
             }
-            await writeFile(baseConfigPath, extendThisOneContents);
+            await writeFile(userCurrentBaseConfigPath, virmatorConfigContents);
         }
     } else {
         const virmatorConfigContents = (
