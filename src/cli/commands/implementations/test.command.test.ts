@@ -89,7 +89,7 @@ testGroup({
             description: 'when multiple args are passed, no files are missing from the output',
             expect: [],
             test: async () => {
-                const files = ['dist/valid.test.js', 'dist/invalid.test.js'];
+                const files = [join('dist', 'valid.test.js'), join('dist', 'invalid.test.js')];
 
                 const results = await testTestCommand(testTestPaths.multiRepo, false, files);
 
