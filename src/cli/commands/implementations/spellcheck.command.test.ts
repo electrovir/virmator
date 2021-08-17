@@ -1,3 +1,4 @@
+import {join, relative} from 'path';
 import {testGroup} from 'test-vir';
 import {spellcheckTestPaths} from '../../../virmator-repo-paths';
 import {fillInCliFlags} from '../../cli-util/cli-flags';
@@ -91,16 +92,16 @@ testGroup({
         runTest({
             description: 'checks "hidden" (starts with ".") files and dirs',
             expect: [
-                './.hidden/.stuff',
-                './.hidden/stuff',
-                './.stuff',
-                './not-hidden/.hidden/.stuff',
-                './not-hidden/.hidden/deeper-not-hidden/.stuff',
-                './not-hidden/.hidden/deeper-not-hidden/stuff',
-                './not-hidden/.hidden/stuff',
-                './not-hidden/.stuff',
-                './not-hidden/stuff',
-                './stuff',
+                join('.hidden', '.stuff'),
+                join('.hidden', 'stuff'),
+                join('.stuff'),
+                join('not-hidden', '.hidden', '.stuff'),
+                join('not-hidden', '.hidden', 'deeper-not-hidden', '.stuff'),
+                join('not-hidden', '.hidden', 'deeper-not-hidden', 'stuff'),
+                join('not-hidden', '.hidden', 'stuff'),
+                join('not-hidden', '.stuff'),
+                join('not-hidden', 'stuff'),
+                join('stuff'),
             ],
             test: async () => {
                 const commandResult = await runSpellcheckCommand({
@@ -117,7 +118,7 @@ testGroup({
                     .trim()
                     .split('\n')
                     .filter((line) => line.includes('stuff.js'))
-                    .map((line) => line.match(/\d+\/\d+ (.+?).js /)![1]);
+                    .map((line) => relative('.', line.match(/\d+\/\d+ (.+?).js /)![1]!));
 
                 return filtered;
             },
