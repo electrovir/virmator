@@ -55,4 +55,5 @@ const spellcheckTestRepos = getCommandTestRepoDir(CliCommand.SpellCheck);
 export const spellcheckTestPaths = {
     validRepo: join(spellcheckTestRepos, 'valid-spellcheck-repo'),
     invalidRepo: join(spellcheckTestRepos, 'invalid-spellcheck-repo'),
+    hiddenStuffRepo: join(spellcheckTestRepos, 'hidden-stuff-spellcheck-repo'),
 };

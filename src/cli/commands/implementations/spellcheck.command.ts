@@ -20,7 +20,7 @@ export async function runSpellcheckCommand({
     rawArgs,
     customDir,
 }: CommandFunctionInput): Promise<CliCommandResult> {
-    const spellcheckCommand = `cspell "./**/*" ${rawArgs.join(' ')}`;
+    const spellcheckCommand = `cspell --color "{*,.*,**/{.*,*}/**/{.*,*}}" ${rawArgs.join(' ')}`;
     const results = await runBashCommand(spellcheckCommand, customDir);
 
     return {

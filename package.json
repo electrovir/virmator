@@ -28,7 +28,7 @@
         "sanitize:all": "./bulk-sanitize.sh files/downloads",
         "sanitize:no-compile": "node dist/sanitizer/sanitize-for-test-file-cli.js",
         "sanitize": "npm run compile && node dist/sanitizer/sanitize-for-test-file-cli.js",
-        "spellcheck": "cspell \"./**/*\"",
+        "spellcheck": "cspell \"{*,.*,**/{.*,*}/**/{.*,*}}\" --exclude \"test-repos/spellcheck/invalid-spellcheck-repo/**/*\" --exclude \"extended-configs\"",
         "test:file": "./test-specific-file.sh",
         "test:full": "npm run test && npm run spellcheck -- --no-progress && npm run format:check",
         "test": "npm run compile && test-vir \"./dist/**/!(*.type).test.js\""

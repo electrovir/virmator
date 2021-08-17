@@ -14,7 +14,6 @@ function logFailure(commandResults: CliCommandResult) {
 }
 
 testGroup({
-    forceOnly: true,
     description: runSpellcheckCommand.name,
     tests: (runTest) => {
         runTest({
@@ -86,6 +85,41 @@ testGroup({
                 }
 
                 return commandResultWithArgs.stderr.trim().split('\n').length;
+            },
+        });
+
+        runTest({
+            description: 'checks "hidden" (starts with ".") files and dirs',
+            expect: [
+                './.hidden/.stuff',
+                './.hidden/stuff',
+                './.stuff',
+                './not-hidden/.hidden/.stuff',
+                './not-hidden/.hidden/deeper-not-hidden/.stuff',
+                './not-hidden/.hidden/deeper-not-hidden/stuff',
+                './not-hidden/.hidden/stuff',
+                './not-hidden/.stuff',
+                './not-hidden/stuff',
+                './stuff',
+            ],
+            test: async () => {
+                const commandResult = await runSpellcheckCommand({
+                    rawArgs: ['--no-color'],
+                    cliFlags: fillInCliFlags(),
+                    customDir: spellcheckTestPaths.hiddenStuffRepo,
+                });
+
+                if (!commandResult.success) {
+                    logFailure(commandResult);
+                }
+
+                const filtered = commandResult.stderr
+                    .trim()
+                    .split('\n')
+                    .filter((line) => line.includes('stuff.js'))
+                    .map((line) => line.match(/\d+\/\d+ (.+?).js /)![1]);
+
+                return filtered;
             },
         });
     },

@@ -1,11 +1,12 @@
 {
-    "ignorePaths": ["node_modules", "package-lock.json", "dist", "files"],
+    "ignorePaths": [".DS_Store", ".git/", "dist/", "node_modules/", "package-lock.json"],
     "version": "0.1",
     "words": [
         "accum",
         "derp",
         "derpy",
         "electrovir",
+        "esbenp",
         "gitattributes",
         "npmignore",
         "packagejson",
