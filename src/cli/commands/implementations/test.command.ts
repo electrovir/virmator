@@ -10,7 +10,7 @@ import {
 
 export const testCommandImplementation: CliCommandImplementation = {
     commandName: CliCommand.Test,
-    description: `runs all .test.js files with test-vir`,
+    description: `Test all .test.js files with test-vir. By default it tests all .test.js files that are not .type.test.js files. To override this behavior, pass in a list of files or a quoted glob which will be expanded by test-vir itself.`,
     implementation: runTestCommand,
     configFlagSupport: {
         [CliFlagName.NoWriteConfig]: false,

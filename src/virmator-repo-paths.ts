@@ -10,7 +10,14 @@ export const extendedConfigsDir = join(virmatorRootDir, 'extended-configs');
 // File paths for testing purposes
 //
 
-export const testRepos = join(virmatorRootDir, 'test-repos');
+export async function createNodeModulesSymLinkForTests(dir: string): Promise<string> {
+    const symlinkPath = join(dir, 'node_modules');
+
+    await createSymLink(join(virmatorRootDir, 'node_modules'), symlinkPath);
+    return symlinkPath;
+}
+
+const testRepos = join(virmatorRootDir, 'test-repos');
 
 export function getCommandTestRepoDir(command: CliCommand) {
     return join(testRepos, command);
@@ -44,9 +51,8 @@ export const testTestPaths = {
     multiRepo: join(testTestRepos, 'multi-test-repo'),
 };
 
-export async function createNodeModulesSymLinkForTests(dir: string): Promise<string> {
-    const symlinkPath = join(dir, 'node_modules');
-
-    await createSymLink(join(virmatorRootDir, 'node_modules'), symlinkPath);
-    return symlinkPath;
-}
+const spellcheckTestRepos = getCommandTestRepoDir(CliCommand.SpellCheck);
+export const spellcheckTestPaths = {
+    validRepo: join(spellcheckTestRepos, 'valid-spellcheck-repo'),
+    invalidRepo: join(spellcheckTestRepos, 'invalid-spellcheck-repo'),
+};
