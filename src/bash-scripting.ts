@@ -10,3 +10,15 @@ export async function runBashCommand(command: string, cwd?: string): Promise<Bas
         });
     });
 }
+
+export function printBashOutput(bashOutput: BashOutput) {
+    if (bashOutput.stdout) {
+        console.info(bashOutput.stdout);
+    }
+    if (bashOutput.stderr) {
+        console.error(bashOutput.stderr);
+    }
+    if (bashOutput.error) {
+        throw bashOutput.error;
+    }
+}
