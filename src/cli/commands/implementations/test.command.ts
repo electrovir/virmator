@@ -10,7 +10,16 @@ import {
 
 export const testCommandImplementation: CliCommandImplementation = {
     commandName: CliCommand.Test,
-    description: `Test all .test.js files with test-vir. By default it tests all .test.js files that are not .type.test.js files. To override this behavior, pass in a list of files or a quoted glob which will be expanded by test-vir itself.`,
+    description: `Test all .test.js files with test-vir. 
+            By default this command tests all .test.js files in dist that are not 
+            .type.test.js files. To override this behavior, pass in a list of files or a
+            quoted glob which will be expanded by the package test-vir itself.
+            
+            examples:
+                virmator test ./path/to/single/file.js
+                virmator test "./**/single-file.js"
+                virmator test "./dist/**/!(*.type).test.js"
+            `,
     implementation: runTestCommand,
     configFlagSupport: {
         [CliFlagName.NoWriteConfig]: false,

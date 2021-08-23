@@ -37,6 +37,7 @@ export const formatImplementation: CliCommandImplementation = {
     description: `formats source files with Prettier
             operation commands:
                 This is optional but if provided it must come first. ${FormatOperation.Write} is the default.
+                
                 ${FormatOperation.Write}: overwrites files to fix formatting.
                 ${FormatOperation.Check}: checks the formatting, does not write to files
             

@@ -20,8 +20,9 @@ export const flagDescriptions: Record<CliFlagName, string> = {
     [CliFlagName.Silent]: 'turns off most logging',
     [CliFlagName.NoWriteConfig]: `prevents a command from overwriting its relevant config file
             (if one exists, which they usually do)`,
-    [CliFlagName.ExtendableConfig]:
-        'not supported by all commands. Write an extendable config file so that the user can extend it and change / add values.',
+    [CliFlagName.ExtendableConfig]: `not supported by all commands. Rather than updating the
+            the current command's relevant config file directly, commands will write an extendable
+            config file so that the user can extend and override config values.`,
     [CliFlagName.Help]: 'prints a help message',
 };
 
