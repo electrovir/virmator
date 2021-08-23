@@ -1,6 +1,6 @@
 import {getEnumTypedValues} from '../../augments/object';
 import {CliFlagName, CliFlags, fillInCliFlags} from '../cli-util/cli-flags';
-import {ConfigFile} from '../config/configs';
+import {CommandConfigFile} from '../config/configs';
 
 export enum CliCommand {
     Compile = 'compile',
@@ -8,7 +8,8 @@ export enum CliCommand {
     Help = 'help',
     SpellCheck = 'spellcheck',
     Test = 'test',
-    UpdateConfigs = 'update-configs',
+    UpdateBareConfigs = 'update-bare-configs',
+    UpdateAllConfigs = 'update-all-configs',
 }
 
 export type CliCommandResult = {
@@ -64,7 +65,7 @@ export type PartialCommandFunctionInput = Omit<Partial<CommandFunctionInput>, 'c
 
 export type CliCommandImplementation = Readonly<{
     commandName: CliCommand;
-    configFile?: ConfigFile;
+    configFile?: CommandConfigFile;
     description: string;
     implementation: CommandFunction;
     configFlagSupport: Readonly<

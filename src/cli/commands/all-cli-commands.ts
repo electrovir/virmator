@@ -5,7 +5,9 @@ import {CliFlagName, CliFlags, flagDescriptions} from '../cli-util/cli-flags';
 import {CliCommand, CliCommandImplementation, CliCommandResult} from './cli-command';
 import {compileImplementation} from './implementations/compile.command';
 import {formatImplementation} from './implementations/format.command';
+import {spellcheckCommandImplementation} from './implementations/spellcheck.command';
 import {testCommandImplementation} from './implementations/test.command';
+import {updateBareConfigsCommandImplementation} from './implementations/update-bare-configs.command';
 
 function createUnImplementedCommand(commandName: CliCommand): CliCommandImplementation {
     return {
@@ -86,7 +88,8 @@ export const allCliCommands: Readonly<Record<CliCommand, CliCommandImplementatio
     [CliCommand.Compile]: compileImplementation,
     [CliCommand.Format]: formatImplementation,
     [CliCommand.Help]: helpImplementation,
-    [CliCommand.SpellCheck]: createUnImplementedCommand(CliCommand.SpellCheck),
+    [CliCommand.SpellCheck]: spellcheckCommandImplementation,
     [CliCommand.Test]: testCommandImplementation,
-    [CliCommand.UpdateConfigs]: createUnImplementedCommand(CliCommand.UpdateConfigs),
+    [CliCommand.UpdateAllConfigs]: createUnImplementedCommand(CliCommand.UpdateAllConfigs),
+    [CliCommand.UpdateBareConfigs]: updateBareConfigsCommandImplementation,
 };

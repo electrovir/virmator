@@ -10,7 +10,6 @@ export async function runCommand(
     command: CliCommand,
     commandInput: PartialCommandFunctionInput,
 ): Promise<CliCommandResult> {
-    // await cleanupOldConfigFiles();
     const commandImplementation = allCliCommands[command];
     const cliFlags = fillInCliFlags(commandInput.rawCliFlags);
 
