@@ -1,49 +1,57 @@
 import {readFile} from 'fs-extra';
-import {join, posix, sep} from 'path';
+import {join} from 'path';
 import {extendedConfigsDir, virmatorRootDir} from '../../virmator-repo-paths';
 
 /** These config files are not used by any virmator commands but they are still helpful. */
-export enum BareConfigFile {
-    GitAttributes = '.gitattributes',
-    GitIgnore = '.gitignore',
-    GitHubActionsTest = '.github/workflows/virmator-tests.yml',
-    NpmIgnore = '.npmignore',
-    VsCodeSettings = '.vscode/settings.json',
+export enum BareConfigKey {
+    GitAttributes = 'GitAttributes',
+    GitHubActionsTest = 'GitHubActionsTest',
+    GitIgnore = 'GitIgnore',
+    NpmIgnore = 'NpmIgnore',
+    VsCodeSettings = 'VsCodeSettings',
 }
 
-/** These are config files used by virmator commands */
-export enum CommandConfigFile {
-    Cspell = '.cspell.json',
-    Prettier = '.prettierrc.js',
-    TsConfig = 'tsconfig.json',
+/** These are config files used by virmator commands. */
+export enum CommandConfigKey {
+    Cspell = 'Cspell',
+    Prettier = 'Prettier',
+    TsConfig = 'TsConfig',
 }
 
-export const ConfigFile = {...CommandConfigFile, ...BareConfigFile};
-export type ConfigFile = CommandConfigFile | BareConfigFile;
+export const ConfigKey = {...CommandConfigKey, ...BareConfigKey};
+export type ConfigKey = CommandConfigKey | BareConfigKey;
 
-export const extendableConfigFile = {
-    [ConfigFile.Prettier]: '.prettierrc-base.js',
-    [ConfigFile.Cspell]: '.cspell-base.json',
-    [ConfigFile.TsConfig]: 'tsconfig-base.json',
+export const configFileMap: Readonly<Record<ConfigKey, string>> = {
+    [ConfigKey.Cspell]: '.cspell.json',
+    [ConfigKey.GitAttributes]: '.gitattributes',
+    [ConfigKey.GitHubActionsTest]: join('.github', 'workflows', 'virmator-tests.yml'),
+    [ConfigKey.GitIgnore]: '.gitignore',
+    [ConfigKey.NpmIgnore]: '.npmignore',
+    [ConfigKey.Prettier]: '.prettierrc.js',
+    [ConfigKey.TsConfig]: 'tsconfig.json',
+    [ConfigKey.VsCodeSettings]: join('.vscode', 'settings.json'),
+} as const;
+
+export const extendableConfigFileMap = {
+    [ConfigKey.Prettier]: '.prettierrc-base.js',
+    [ConfigKey.Cspell]: '.cspell-base.json',
+    [ConfigKey.TsConfig]: 'tsconfig-base.json',
 } as const;
 
 export async function readVirmatorVersionOfConfigFile(
-    configFile: ConfigFile,
+    ConfigKey: ConfigKey,
     extender = false,
 ): Promise<Buffer> {
     return await readFile(
-        join(
-            extender ? extendedConfigsDir : virmatorRootDir,
-            configFile.split(posix.sep).join(sep),
-        ),
+        join(extender ? extendedConfigsDir : virmatorRootDir, configFileMap[ConfigKey]),
     );
 }
 
 export function isExtendableConfigSupported(
-    configFile?: ConfigFile,
-): configFile is keyof typeof extendableConfigFile {
-    if (!configFile) {
+    ConfigKey?: ConfigKey,
+): ConfigKey is keyof typeof extendableConfigFileMap {
+    if (!ConfigKey) {
         return false;
     }
-    return configFile in extendableConfigFile;
+    return ConfigKey in extendableConfigFileMap;
 }

@@ -16,8 +16,8 @@ export async function runCommand(
     const defaultFlagSupport = {
         [CliFlagName.Silent]: true,
         [CliFlagName.Help]: true,
-        [CliFlagName.ExtendableConfig]: isExtendableConfigSupported(
-            commandImplementation.configFile,
+        [CliFlagName.ExtendableConfig]: !!commandImplementation.configKeys?.every((configKey) =>
+            isExtendableConfigSupported(configKey),
         ),
     };
 
@@ -32,12 +32,23 @@ export async function runCommand(
         );
     }
 
-    if (commandImplementation.configFile && !cliFlags[CliFlagName.NoWriteConfig]) {
-        await copyConfig({
-            configFile: commandImplementation.configFile,
-            silent: cliFlags[CliFlagName.Silent],
-            extendableConfig: cliFlags[CliFlagName.ExtendableConfig],
-        });
+    if (commandImplementation.configKeys?.length && !cliFlags[CliFlagName.NoWriteConfig]) {
+        await Promise.all(
+            commandImplementation.configKeys.map(async (configKey) => {
+                const copyOutput = await copyConfig({
+                    configKey: configKey,
+                    extendableConfig: cliFlags[CliFlagName.ExtendableConfig],
+                });
+
+                copyOutput.logs.forEach((log) => {
+                    if (log.stderr) {
+                        console.error(log.log);
+                    } else {
+                        console.info(log.log);
+                    }
+                });
+            }),
+        );
     }
 
     const commandResult = await commandImplementation.implementation({

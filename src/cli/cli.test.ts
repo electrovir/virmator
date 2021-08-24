@@ -15,7 +15,7 @@ import {CliFlagName} from './cli-util/cli-flags';
 import {cliErrorMessages, getResultMessage} from './cli-util/cli-messages';
 import {CliCommand} from './commands/cli-command';
 import {FormatOperation} from './commands/implementations/format.command';
-import {ConfigFile, extendableConfigFile} from './config/configs';
+import {configFileMap, ConfigKey, extendableConfigFileMap} from './config/configs';
 
 const cliPath = join(virmatorDistDir, 'cli', 'cli.js');
 
@@ -262,7 +262,7 @@ testGroup({
             ],
             test: async () =>
                 await checkConfigs(`node ${cliPath} format`, [
-                    join(testFormatPaths.validRepo, ConfigFile.Prettier),
+                    join(testFormatPaths.validRepo, configFileMap[ConfigKey.Prettier]),
                 ]),
         });
 
@@ -312,8 +312,8 @@ testGroup({
             ],
             test: async () =>
                 await checkConfigs(`node ${cliPath} format ${CliFlagName.ExtendableConfig}`, [
-                    join(testFormatPaths.validRepo, ConfigFile.Prettier),
-                    join(testFormatPaths.validRepo, extendableConfigFile[ConfigFile.Prettier]),
+                    join(testFormatPaths.validRepo, configFileMap[ConfigKey.Prettier]),
+                    join(testFormatPaths.validRepo, extendableConfigFileMap[ConfigKey.Prettier]),
                 ]),
         });
 
@@ -366,7 +366,10 @@ testGroup({
                 },
             ],
             test: async () => {
-                const normalPrettierPath = join(testFormatPaths.validRepo, ConfigFile.Prettier);
+                const normalPrettierPath = join(
+                    testFormatPaths.validRepo,
+                    configFileMap[ConfigKey.Prettier],
+                );
                 const originalFileContents = `const baseConfig = require('./.prettierrc-base');
 
 module.exports = {...baseConfig, printWidth: 80};`;
@@ -385,7 +388,7 @@ module.exports = {...baseConfig, printWidth: 80};`;
                         [
                             join(
                                 testFormatPaths.validRepo,
-                                extendableConfigFile[ConfigFile.Prettier],
+                                extendableConfigFileMap[ConfigKey.Prettier],
                             ),
                         ],
                     )),

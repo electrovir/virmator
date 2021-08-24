@@ -1,7 +1,7 @@
 import {runBashCommand} from '../../../bash-scripting';
 import {packageName} from '../../../package-name';
 import {CliFlagName} from '../../cli-util/cli-flags';
-import {ConfigFile} from '../../config/configs';
+import {ConfigKey} from '../../config/configs';
 import {
     CliCommand,
     CliCommandImplementation,
@@ -20,7 +20,7 @@ export const compileImplementation: CliCommandImplementation = {
                 one extra flag:
                     ${packageName} ${CliCommand.Compile} --noEmit`,
     implementation: runCompileCommand,
-    configFile: ConfigFile.TsConfig,
+    configKeys: [ConfigKey.TsConfig],
     configFlagSupport: {
         [CliFlagName.NoWriteConfig]: true,
     },

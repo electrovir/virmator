@@ -7,13 +7,13 @@ import {
     extendedConfigsDir,
     testFormatPaths,
 } from '../../virmator-repo-paths';
-import {ConfigFile, extendableConfigFile} from './configs';
+import {ConfigKey, extendableConfigFileMap} from './configs';
 import {copyConfig} from './copy-config';
 
 testGroup({
     description: copyConfig.name,
     tests: (runTest) => {
-        const expectedPrettierConfigPath = join(testFormatPaths.validRepo, ConfigFile.Prettier);
+        const expectedPrettierConfigPath = join(testFormatPaths.validRepo, ConfigKey.Prettier);
 
         runTest({
             description: 'copies the config file into the correct spot',
@@ -21,12 +21,13 @@ testGroup({
             test: async () => {
                 const results: boolean[] = [existsSync(expectedPrettierConfigPath)];
 
-                const configPath = await copyConfig({
-                    configFile: ConfigFile.Prettier,
-                    silent: true,
-                    extendableConfig: false,
-                    customDir: testFormatPaths.validRepo,
-                });
+                const configPath = (
+                    await copyConfig({
+                        configKey: ConfigKey.Prettier,
+                        extendableConfig: false,
+                        customDir: testFormatPaths.validRepo,
+                    })
+                ).outputFilePath;
 
                 results.push(existsSync(configPath));
                 await unlink(configPath);
@@ -45,15 +46,16 @@ testGroup({
 
                 const symlinkPath = await createNodeModulesSymLinkForTests(extendedConfigsDir);
                 results.push(existsSync(symlinkPath));
-                const configPath = await copyConfig({
-                    configFile: ConfigFile.Prettier,
-                    silent: true,
-                    extendableConfig: true,
-                    customDir: testFormatPaths.validRepo,
-                });
+                const configPath = (
+                    await copyConfig({
+                        configKey: ConfigKey.Prettier,
+                        extendableConfig: true,
+                        customDir: testFormatPaths.validRepo,
+                    })
+                ).outputFilePath;
                 const extendablePath = join(
                     testFormatPaths.validRepo,
-                    extendableConfigFile[ConfigFile.Prettier],
+                    extendableConfigFileMap[ConfigKey.Prettier],
                 );
 
                 await [extendablePath, configPath].reduce(async (accum, path) => {

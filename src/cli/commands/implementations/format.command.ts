@@ -3,7 +3,7 @@ import {DeepWriteable} from '../../../augments/type';
 import {runBashCommand} from '../../../bash-scripting';
 import {packageName} from '../../../package-name';
 import {CliFlagName} from '../../cli-util/cli-flags';
-import {ConfigFile} from '../../config/configs';
+import {ConfigKey} from '../../config/configs';
 import {
     CliCommand,
     CliCommandImplementation,
@@ -72,7 +72,7 @@ export const formatImplementation: CliCommandImplementation = {
                     ${packageName} ${CliCommand.Format} --ignore-path .prettierignore
                     ${packageName} ${CliCommand.Format} ${FormatOperation.Write}  --ignore-path .prettierignore
                     ${packageName} ${CliCommand.Format} ${FormatOperation.Write}  --ignore-path .prettierignore ${filesMarkerArg} md json`,
-    configFile: ConfigFile.Prettier,
+    configKeys: [ConfigKey.Prettier],
     implementation: runFormatCommand,
     configFlagSupport: {
         [CliFlagName.NoWriteConfig]: true,

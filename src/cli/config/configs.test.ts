@@ -3,15 +3,20 @@ import {join} from 'path';
 import {testGroup} from 'test-vir';
 import {getEnumTypedValues} from '../../augments/object';
 import {extendedConfigsDir, virmatorRootDir} from '../../virmator-repo-paths';
-import {ConfigFile, extendableConfigFile, isExtendableConfigSupported} from './configs';
+import {
+    configFileMap,
+    ConfigKey,
+    extendableConfigFileMap,
+    isExtendableConfigSupported,
+} from './configs';
 
 testGroup((runTest) => {
     runTest({
         description: 'no config files are missing',
         expect: [],
         test: () => {
-            return getEnumTypedValues(ConfigFile).filter((configFile) => {
-                return !existsSync(join(virmatorRootDir, configFile));
+            return getEnumTypedValues(ConfigKey).filter((configKey) => {
+                return !existsSync(join(virmatorRootDir, configFileMap[configKey]));
             });
         },
     });
@@ -20,14 +25,14 @@ testGroup((runTest) => {
         description: 'no extendable config files are missing',
         expect: [],
         test: () => {
-            return getEnumTypedValues(ConfigFile)
-                .filter((configFile): configFile is keyof typeof extendableConfigFile =>
-                    isExtendableConfigSupported(configFile),
+            return getEnumTypedValues(ConfigKey)
+                .filter((configKey): configKey is keyof typeof extendableConfigFileMap =>
+                    isExtendableConfigSupported(configKey),
                 )
-                .filter((configFile) => {
+                .filter((configKey) => {
                     return (
-                        !existsSync(join(extendedConfigsDir, extendableConfigFile[configFile])) &&
-                        !existsSync(join(extendedConfigsDir, configFile))
+                        !existsSync(join(extendedConfigsDir, extendableConfigFileMap[configKey])) &&
+                        !existsSync(join(extendedConfigsDir, configKey))
                     );
                 });
         },
