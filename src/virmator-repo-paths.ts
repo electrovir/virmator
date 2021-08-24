@@ -57,3 +57,8 @@ export const spellcheckTestPaths = {
     invalidRepo: join(spellcheckTestRepos, 'invalid-spellcheck-repo'),
     hiddenStuffRepo: join(spellcheckTestRepos, 'hidden-stuff-spellcheck-repo'),
 };
+
+const updateBareConfigsTestRepos = getCommandTestRepoDir(CliCommand.UpdateBareConfigs);
+export const updateBareConfigsTestPaths = {
+    emptyRepo: join(updateBareConfigsTestRepos, 'empty-update-bare-configs-repo'),
+};
