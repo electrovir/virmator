@@ -1,4 +1,5 @@
-import {getEnumTypedKeys, getEnumTypedValues} from '../../../augments/object';
+import {existsSync} from 'fs-extra';
+import {getEnumTypedValues} from '../../../augments/object';
 import {joinWithFinalConjunction} from '../../../augments/string';
 import {packageName} from '../../../package-name';
 import {CliFlagName} from '../../cli-util/cli-flags';
@@ -22,7 +23,7 @@ export const updateBareConfigsCommandImplementation: CliCommandImplementation = 
             If no arguments are given, this command copies all the bare config files.
             
             list of possible arguments:
-                ${getEnumTypedKeys(BareConfigKey).join('\n                ')}
+                ${getEnumTypedValues(BareConfigKey).join('\n                ')}
             
             examples:
                 update all bare config files:
@@ -60,6 +61,12 @@ export async function runUpdateBareConfigsCommand({
                     })
                 ).outputFilePath;
 
+                if (!existsSync(writtenFile)) {
+                    throw new Error(
+                        `Tried to write bare config file but it didn't actually get written: ${writtenFile}`,
+                    );
+                }
+
                 writtenFiles.push({
                     key: configKey,
                     path: writtenFile,
@@ -94,7 +101,9 @@ export async function runUpdateBareConfigsCommand({
 }
 
 export function extractUpdateBareConfigsArgs(rawArgs: string[]): BareConfigKey[] {
-    const filteredArgs = rawArgs.filter((arg): arg is BareConfigKey => arg in BareConfigKey);
+    const filteredArgs = rawArgs.filter((arg): arg is BareConfigKey =>
+        getEnumTypedValues(BareConfigKey).includes(arg as BareConfigKey),
+    );
 
-    return filteredArgs;
+    return filteredArgs.sort();
 }

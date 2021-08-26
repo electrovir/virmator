@@ -1,4 +1,4 @@
-import {existsSync, unlink} from 'fs-extra';
+import {emptyDir, existsSync} from 'fs-extra';
 import {join} from 'path';
 import {testGroup} from 'test-vir';
 import {getEnumTypedValues} from '../../../augments/object';
@@ -35,15 +35,35 @@ testGroup({
             description: 'all config files were written without error',
             expect: allBareConfigKeys.sort(),
             test: async () => {
-                const commandOutput = await testUpdateBareConfigs({
-                    customDir: updateBareConfigsTestPaths.emptyRepo,
-                });
-
                 const configsExistedAlready: boolean[] = allBareConfigKeys.map((currentKey) => {
                     return existsSync(
                         join(updateBareConfigsTestPaths.emptyRepo, configFileMap[currentKey]),
                     );
                 });
+
+                const alreadyExistingByKey = allBareConfigKeys.filter((_, index) => {
+                    return configsExistedAlready[index];
+                });
+
+                if (alreadyExistingByKey.length) {
+                    console.error(
+                        `Already existing bare configs: ${alreadyExistingByKey.join(', ')}`,
+                    );
+                }
+
+                const commandOutput = await testUpdateBareConfigs({
+                    customDir: updateBareConfigsTestPaths.emptyRepo,
+                });
+
+                if (!commandOutput.success) {
+                    console.error(
+                        `Update bare configs command failed: ${JSON.stringify(
+                            commandOutput,
+                            null,
+                            4,
+                        )}`,
+                    );
+                }
 
                 const writtenConfigs: BareConfigKey[] = allBareConfigKeys.filter((configKey) => {
                     return (
@@ -56,18 +76,18 @@ testGroup({
                     );
                 });
 
+                try {
+                    await emptyDir(updateBareConfigsTestPaths.emptyRepo);
+                } catch (error) {}
+
                 const configsDeleted: boolean[] = await Promise.all(
                     allBareConfigKeys.map(async (configKey) => {
-                        const configFile = configFileMap[configKey];
-                        const configPath = join(updateBareConfigsTestPaths.emptyRepo, configFile);
-                        await unlink(configPath);
-                        return existsSync(
+                        return !existsSync(
                             join(updateBareConfigsTestPaths.emptyRepo, configFileMap[configKey]),
                         );
                     }),
                 );
 
-                console.log(commandOutput.stdout);
                 return writtenConfigs
                     .filter((writtenConfig, index) => {
                         if (configsExistedAlready[index]) {
@@ -110,28 +130,32 @@ testGroup({
 
         runTest({
             description: 'includes valid config file strings',
-            expect: ['GitIgnore', 'NpmIgnore'],
+            expect: [BareConfigKey.GitIgnore, BareConfigKey.NpmIgnore],
             test: () => {
                 return extractUpdateBareConfigsArgs([
                     'abcdef',
                     'quick',
                     'eat the tofu',
-                    'GitIgnore',
-                    'NpmIgnore',
+                    BareConfigKey.GitIgnore,
+                    BareConfigKey.NpmIgnore,
                 ]);
             },
         });
 
         runTest({
-            description: 'ignores the actual file paths in the bare config enum',
-            expect: ['GitIgnore', 'NpmIgnore'],
+            description: 'output is sorted',
+            expect: [
+                BareConfigKey.GitHubActionsTest,
+                BareConfigKey.GitIgnore,
+                BareConfigKey.NpmIgnore,
+            ],
             test: () => {
                 return extractUpdateBareConfigsArgs([
-                    BareConfigKey.GitHubActionsTest,
                     'quick',
                     'eat the tofu',
-                    'GitIgnore',
-                    'NpmIgnore',
+                    BareConfigKey.GitIgnore,
+                    BareConfigKey.NpmIgnore,
+                    BareConfigKey.GitHubActionsTest,
                 ]);
             },
         });
