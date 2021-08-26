@@ -1,5 +1,6 @@
-import {existsSync, readFile, writeFile} from 'fs-extra';
+import {existsSync, readFile} from 'fs-extra';
 import {resolve} from 'path';
+import {writeFileAndDir} from '../../augments/file-system';
 import {ConfigFileError} from '../../errors/config-file-error';
 import {CliFlagName} from '../cli-util/cli-flags';
 import {
@@ -51,7 +52,7 @@ export async function copyConfig({
         if (!configExists) {
             // if it does not exist, create it
             const extendInHereContents = await readVirmatorVersionOfConfigFile(configKey, true);
-            await writeFile(configPath, extendInHereContents);
+            await writeFileAndDir(configPath, extendInHereContents);
         }
 
         const userCurrentBaseConfigPath = resolve(extendableConfigFileMap[configKey]);
@@ -77,7 +78,7 @@ export async function copyConfig({
                 stderr: false,
                 log: `Updating ${userCurrentBaseConfigPath}\n${ifUndesiredMessage}`,
             });
-            await writeFile(userCurrentBaseConfigPath, virmatorConfigContents);
+            await writeFileAndDir(userCurrentBaseConfigPath, virmatorConfigContents);
         }
     } else {
         const virmatorConfigContents = (
@@ -101,7 +102,7 @@ export async function copyConfig({
                     log: `Updating ${configPath}`,
                 });
             }
-            await writeFile(configPath, virmatorConfigContents);
+            await writeFileAndDir(configPath, virmatorConfigContents);
         }
     }
 

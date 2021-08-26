@@ -1,4 +1,5 @@
-import {existsSync, lstat, readlink, symlink} from 'fs-extra';
+import {ensureDir, existsSync, lstat, readlink, symlink, writeFile} from 'fs-extra';
+import {dirname} from 'path';
 
 export async function createSymLink(
     /**
@@ -23,4 +24,12 @@ export async function createSymLink(
     } else {
         await symlink(linkPath, symlinkLocationPath);
     }
+}
+
+export async function writeFileAndDir(
+    path: string,
+    contents: string | NodeJS.ArrayBufferView,
+): Promise<void> {
+    await ensureDir(dirname(path));
+    await writeFile(path, contents);
 }
