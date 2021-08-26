@@ -1,4 +1,4 @@
-import {existsSync, readFile, unlink, writeFile} from 'fs-extra';
+import {existsSync, readFile, remove, writeFile} from 'fs-extra';
 import {join} from 'path';
 import {testGroup} from 'test-vir';
 import {getObjectTypedKeys} from '../augments/object';
@@ -131,7 +131,7 @@ testGroup((runTest) => {
             if (!existsSync(testCompilePaths.compiledValidSourceFile)) {
                 return `compile command didn't actually compile`;
             }
-            await unlink(testCompilePaths.compiledValidSourceFile);
+            await remove(testCompilePaths.compiledValidSourceFile);
             if (existsSync(testCompilePaths.compiledValidSourceFile)) {
                 return `compile command test cleanup didn't remove compiled file`;
             }
@@ -209,7 +209,7 @@ testGroup({
             await configPaths.reduce(async (lastPromise, configPath) => {
                 if (!persistConfig) {
                     await lastPromise;
-                    await unlink(configPath);
+                    await remove(configPath);
                 }
 
                 testResults.push({
@@ -218,7 +218,7 @@ testGroup({
                 });
             }, Promise.resolve());
 
-            await unlink(symlinkPath);
+            await remove(symlinkPath);
 
             testResults.push({
                 name: 'symlink exists after cleanup',
@@ -409,7 +409,7 @@ module.exports = {...baseConfig, printWidth: 80};`;
                     name: 'prettier config exists still after test',
                     result: existsSync(normalPrettierPath),
                 });
-                await unlink(normalPrettierPath);
+                await remove(normalPrettierPath);
                 results.push({
                     name: 'prettier config still exists',
                     result: existsSync(normalPrettierPath),

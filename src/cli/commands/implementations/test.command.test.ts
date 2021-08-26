@@ -1,4 +1,4 @@
-import {remove, unlink} from 'fs-extra';
+import {remove} from 'fs-extra';
 import {join} from 'path';
 import {testGroup} from 'test-vir';
 import {createNodeModulesSymLinkForTests, testTestPaths} from '../../../virmator-repo-paths';
@@ -35,7 +35,7 @@ testGroup({
                 customDir,
             });
 
-            await unlink(symlinkPath);
+            await remove(symlinkPath);
             await remove(join(customDir, 'dist'));
 
             if (results.success !== successCondition) {

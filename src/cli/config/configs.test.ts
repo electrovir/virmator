@@ -32,7 +32,7 @@ testGroup((runTest) => {
                 .filter((configKey) => {
                     return (
                         !existsSync(join(extendedConfigsDir, extendableConfigFileMap[configKey])) &&
-                        !existsSync(join(extendedConfigsDir, configKey))
+                        !existsSync(join(extendedConfigsDir, configFileMap[configKey]))
                     );
                 });
         },

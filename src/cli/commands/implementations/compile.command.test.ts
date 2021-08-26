@@ -1,4 +1,4 @@
-import {existsSync, unlink} from 'fs-extra';
+import {existsSync, remove} from 'fs-extra';
 import {testGroup} from 'test-vir';
 import {testCompilePaths} from '../../../virmator-repo-paths';
 import {CliFlagName, fillInCliFlags} from '../../cli-util/cli-flags';
@@ -21,7 +21,7 @@ testGroup({
                 );
                 results.push(commandResult.success);
                 results.push(existsSync(testCompilePaths.compiledValidSourceFile));
-                await unlink(testCompilePaths.compiledValidSourceFile);
+                await remove(testCompilePaths.compiledValidSourceFile);
                 results.push(existsSync(testCompilePaths.compiledValidSourceFile));
 
                 return results;
@@ -42,7 +42,7 @@ testGroup({
                 );
                 results.push(commandResult.success);
                 results.push(existsSync(testCompilePaths.compiledInvalidSourceFile));
-                await unlink(testCompilePaths.compiledInvalidSourceFile);
+                await remove(testCompilePaths.compiledInvalidSourceFile);
                 results.push(existsSync(testCompilePaths.compiledInvalidSourceFile));
 
                 return results;

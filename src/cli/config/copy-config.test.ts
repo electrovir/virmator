@@ -1,5 +1,5 @@
 import {existsSync} from 'fs';
-import {unlink} from 'fs-extra';
+import {remove} from 'fs-extra';
 import {join} from 'path';
 import {testGroup} from 'test-vir';
 import {
@@ -7,13 +7,16 @@ import {
     extendedConfigsDir,
     testFormatPaths,
 } from '../../virmator-repo-paths';
-import {ConfigKey, extendableConfigFileMap} from './configs';
+import {configFileMap, ConfigKey, extendableConfigFileMap} from './configs';
 import {copyConfig} from './copy-config';
 
 testGroup({
     description: copyConfig.name,
     tests: (runTest) => {
-        const expectedPrettierConfigPath = join(testFormatPaths.validRepo, ConfigKey.Prettier);
+        const expectedPrettierConfigPath = join(
+            testFormatPaths.validRepo,
+            configFileMap[ConfigKey.Prettier],
+        );
 
         runTest({
             description: 'copies the config file into the correct spot',
@@ -30,10 +33,9 @@ testGroup({
                 ).outputFilePath;
 
                 results.push(existsSync(configPath));
-                await unlink(configPath);
+                await remove(configPath);
                 results.push(existsSync(configPath));
 
-                //  (await readdir(dirname(configPath))).join(',')
                 return [...results, configPath];
             },
         });
@@ -61,12 +63,12 @@ testGroup({
                 await [extendablePath, configPath].reduce(async (accum, path) => {
                     await accum;
                     results.push(existsSync(path));
-                    await unlink(path);
+                    await remove(path);
                     results.push(existsSync(path));
                     return;
                 }, Promise.resolve());
 
-                await unlink(symlinkPath);
+                await remove(symlinkPath);
                 results.push(existsSync(symlinkPath));
 
                 return [...results, configPath];
