@@ -1,4 +1,4 @@
-import {emptyDir, existsSync} from 'fs-extra';
+import {emptyDir, ensureDir, existsSync} from 'fs-extra';
 import {join} from 'path';
 import {testGroup} from 'test-vir';
 import {getEnumTypedValues} from '../../../augments/object';
@@ -10,22 +10,6 @@ import {
     runUpdateBareConfigsCommand,
 } from './update-bare-configs.command';
 
-async function testUpdateBareConfigs({
-    customDir,
-    rawArgs = [],
-}: {
-    customDir?: string;
-    rawArgs?: string[];
-} = {}) {
-    const results = await runUpdateBareConfigsCommand({
-        rawArgs,
-        cliFlags: fillInCliFlags(),
-        customDir,
-    });
-
-    return results;
-}
-
 testGroup({
     description: runUpdateBareConfigsCommand.name,
     tests: (runTest) => {
@@ -35,6 +19,12 @@ testGroup({
             description: 'all config files were written without error',
             expect: allBareConfigKeys.sort(),
             test: async () => {
+                /**
+                 * Since this folder is literally empty, it doesn't get added to git and we have to
+                 * recreate it.
+                 */
+                await ensureDir(updateBareConfigsTestPaths.emptyRepo);
+
                 const configsExistedAlready: boolean[] = allBareConfigKeys.map((currentKey) => {
                     return existsSync(
                         join(updateBareConfigsTestPaths.emptyRepo, configFileMap[currentKey]),
@@ -51,7 +41,9 @@ testGroup({
                     );
                 }
 
-                const commandOutput = await testUpdateBareConfigs({
+                const commandOutput = await runUpdateBareConfigsCommand({
+                    rawArgs: [],
+                    cliFlags: fillInCliFlags(),
                     customDir: updateBareConfigsTestPaths.emptyRepo,
                 });
 
