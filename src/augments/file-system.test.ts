@@ -30,7 +30,11 @@ testGroup({
 testGroup({
     description: writeFileAndDir.name,
     tests: (runTest) => {
-        const paths = ['test-dir-eeeefffff', 'test-dir-2-gggg', 'blah-blah-file.txt'] as const;
+        const paths = [
+            'test-dir-long-gibberish-name',
+            'test-dir-2-less-long',
+            'blah-blah-file.txt',
+        ] as const;
         const testOutputPath = join(...paths);
         const testFileContent = 'blah blah blah';
 
