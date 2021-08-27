@@ -63,6 +63,7 @@ testGroup({
                             4,
                         )}`,
                     );
+                    console.error(commandOutput.error);
                 }
 
                 const writtenConfigs: BareConfigKey[] = allBareConfigKeys.filter((configKey) => {
