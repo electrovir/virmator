@@ -1,5 +1,6 @@
 import {readFile, writeFile} from 'fs-extra';
 import {testGroup} from 'test-vir';
+import {printCommandOutput} from '../../../bash-scripting';
 import {testFormatPaths} from '../../../virmator-repo-paths';
 import {CliFlagName, fillInCliFlags} from '../../cli-util/cli-flags';
 import {
@@ -17,16 +18,20 @@ testGroup({
             description: 'check passes on valid files',
             expect: true,
             test: async () => {
-                return (
-                    await runFormatCommand({
-                        rawArgs: [FormatOperation.Check],
-                        cliFlags: fillInCliFlags({
-                            [CliFlagName.Silent]: true,
-                            [CliFlagName.NoWriteConfig]: true,
-                        }),
-                        customDir: testFormatPaths.validRepo,
-                    })
-                ).success;
+                const result = await runFormatCommand({
+                    rawArgs: [FormatOperation.Check],
+                    cliFlags: fillInCliFlags({
+                        [CliFlagName.Silent]: true,
+                        [CliFlagName.NoWriteConfig]: true,
+                    }),
+                    customDir: testFormatPaths.validRepo,
+                });
+
+                if (!result.success) {
+                    printCommandOutput(result);
+                }
+
+                return result.success;
             },
         });
 
