@@ -14,9 +14,9 @@ export enum CliCommand {
 
 export type CliCommandResult = {
     success: boolean;
-    stdout: string;
-    stderr: string;
-    error?: any;
+    stdout?: string | undefined;
+    stderr?: string | undefined;
+    error?: unknown | undefined;
     exitCode?: number;
 };
 

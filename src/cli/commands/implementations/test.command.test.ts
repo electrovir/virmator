@@ -78,10 +78,10 @@ testGroup({
                 ]);
 
                 const linesWith1Test = results.stdout
-                    .split('\n')
+                    ?.split('\n')
                     .filter((line) => line.includes('(1 test)'));
 
-                return linesWith1Test.length;
+                return linesWith1Test?.length;
             },
         });
 
@@ -93,7 +93,7 @@ testGroup({
 
                 const results = await testTestCommand(testTestPaths.multiRepo, false, files);
 
-                const missingFiles = files.filter((file) => !results.stdout.includes(file));
+                const missingFiles = files.filter((file) => !results.stdout?.includes(file));
 
                 return missingFiles;
             },

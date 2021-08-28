@@ -67,7 +67,6 @@ export async function runCommand(
     }
 
     if (commandResult.error) {
-        console.error(commandResult.stderr);
         throw commandResult.error;
     }
     return commandResult;

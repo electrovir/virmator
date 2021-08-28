@@ -60,8 +60,8 @@ testGroup({
 
                 const writtenConfigs: BareConfigKey[] = allBareConfigKeys.filter((configKey) => {
                     return (
-                        commandOutput.stdout.includes(configKey) &&
-                        !commandOutput.stderr.includes(configKey) &&
+                        commandOutput.stdout?.includes(configKey) &&
+                        !commandOutput.stderr?.includes(configKey) &&
                         commandOutput.success &&
                         existsSync(
                             join(updateBareConfigsTestPaths.emptyRepo, configFileMap[configKey]),

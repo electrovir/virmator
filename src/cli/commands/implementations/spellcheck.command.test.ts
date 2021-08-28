@@ -8,8 +8,8 @@ import {runSpellcheckCommand} from './spellcheck.command';
 function logFailure(commandResults: CliCommandResult) {
     console.info('stdout');
     console.info(commandResults.stdout);
-    console.error('stderr');
-    console.error(commandResults.stderr);
+    console.info('stderr');
+    console.info(commandResults.stderr);
     console.error('error');
     console.error(commandResults.error);
 }
@@ -67,7 +67,7 @@ testGroup({
                     logFailure(commandResultNoArgs);
                 }
 
-                return commandResultNoArgs.stderr.trim().split('\n').length;
+                return commandResultNoArgs.stderr?.trim().split('\n').length;
             },
         });
 
@@ -85,7 +85,7 @@ testGroup({
                     logFailure(commandResultWithArgs);
                 }
 
-                return commandResultWithArgs.stderr.trim().split('\n').length;
+                return commandResultWithArgs.stdout?.trim().split('\n').length;
             },
         });
 
@@ -115,7 +115,7 @@ testGroup({
                 }
 
                 const filtered = commandResult.stderr
-                    .trim()
+                    ?.trim()
                     .split('\n')
                     .filter((line) => line.includes('stuff.js'))
                     .map((line) => relative('.', line.match(/\d+\/\d+ (.+?).js /)![1]!));
