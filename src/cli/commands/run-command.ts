@@ -2,8 +2,8 @@ import {VirmatorCliCommandError} from '../../errors/cli-command-error';
 import {CliCommandName} from '../cli-util/cli-command-name';
 import {CliFlagName, fillInCliFlags} from '../cli-util/cli-flags';
 import {cliErrorMessages} from '../cli-util/cli-messages';
-import {isExtendableConfigSupported} from '../config/configs';
 import {copyConfig} from '../config/copy-config';
+import {isExtendableConfig} from '../config/extendable-config';
 import {allCliCommands, getUnsupportedFlags} from './all-cli-commands';
 import {CliCommandResult, PartialCommandFunctionInput} from './cli-command';
 
@@ -18,7 +18,7 @@ export async function runCommand(
         [CliFlagName.Silent]: true,
         [CliFlagName.Help]: true,
         [CliFlagName.ExtendableConfig]: !!commandImplementation.configKeys?.every((configKey) =>
-            isExtendableConfigSupported(configKey),
+            isExtendableConfig(configKey),
         ),
     };
 
@@ -38,7 +38,7 @@ export async function runCommand(
             commandImplementation.configKeys.map(async (configKey) => {
                 const copyOutput = await copyConfig({
                     configKey: configKey,
-                    extendableConfig: cliFlags[CliFlagName.ExtendableConfig],
+                    forceExtendableConfig: cliFlags[CliFlagName.ExtendableConfig],
                 });
 
                 copyOutput.logs.forEach((log) => {

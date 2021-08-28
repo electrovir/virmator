@@ -1,7 +1,10 @@
 import {remove} from 'fs-extra';
 import {join} from 'path';
 import {testGroup} from 'test-vir';
-import {createNodeModulesSymLinkForTests, testTestPaths} from '../../../virmator-repo-paths';
+import {
+    createNodeModulesSymLinkForTests,
+    testTestPaths,
+} from '../../../file-paths/virmator-repo-paths';
 import {fillInCliFlags} from '../../cli-util/cli-flags';
 import {runCompileCommand} from './compile.command';
 import {runTestCommand} from './test.command';

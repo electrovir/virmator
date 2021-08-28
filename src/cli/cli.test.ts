@@ -1,21 +1,23 @@
 import {existsSync, readFile, remove, writeFile} from 'fs-extra';
 import {join} from 'path';
 import {testGroup, TestInputObject} from 'test-vir';
+import {runBashCommand} from '../augments/bash';
 import {getObjectTypedKeys} from '../augments/object';
 import {interpolationSafeWindowsPath} from '../augments/string';
-import {runBashCommand} from '../bash-scripting';
 import {VirmatorCliCommandError} from '../errors/cli-command-error';
 import {
     createNodeModulesSymLinkForTests,
     testCompilePaths,
     testFormatPaths,
     virmatorDistDir,
-} from '../virmator-repo-paths';
+} from '../file-paths/virmator-repo-paths';
 import {CliCommandName} from './cli-util/cli-command-name';
 import {CliFlagName} from './cli-util/cli-flags';
 import {cliErrorMessages, getResultMessage} from './cli-util/cli-messages';
 import {FormatOperation} from './commands/implementations/format.command';
-import {configFileMap, ConfigKey, extendableConfigFileMap} from './config/configs';
+import {ConfigKey} from './config/config-key';
+import {getRepoConfigFilePath} from './config/config-paths';
+import {getRepoExtendableConfigPath} from './config/extendable-config';
 
 const cliPath = join(virmatorDistDir, 'cli', 'cli.js');
 
@@ -267,7 +269,7 @@ testGroup({
             ],
             test: async () =>
                 await checkConfigs(`node ${cliPath} format`, [
-                    join(testFormatPaths.validRepo, configFileMap[ConfigKey.Prettier]),
+                    join(testFormatPaths.validRepo, getRepoConfigFilePath(ConfigKey.Prettier)),
                 ]),
         });
 
@@ -317,8 +319,11 @@ testGroup({
             ],
             test: async () =>
                 await checkConfigs(`node ${cliPath} format ${CliFlagName.ExtendableConfig}`, [
-                    join(testFormatPaths.validRepo, configFileMap[ConfigKey.Prettier]),
-                    join(testFormatPaths.validRepo, extendableConfigFileMap[ConfigKey.Prettier]),
+                    join(testFormatPaths.validRepo, getRepoConfigFilePath(ConfigKey.Prettier)),
+                    join(
+                        testFormatPaths.validRepo,
+                        getRepoExtendableConfigPath(ConfigKey.Prettier),
+                    ),
                 ]),
         });
 
@@ -373,7 +378,7 @@ testGroup({
             test: async () => {
                 const normalPrettierPath = join(
                     testFormatPaths.validRepo,
-                    configFileMap[ConfigKey.Prettier],
+                    getRepoConfigFilePath(ConfigKey.Prettier),
                 );
                 const originalFileContents = `const baseConfig = require('./.prettierrc-base');
 
@@ -393,7 +398,7 @@ module.exports = {...baseConfig, printWidth: 80};`;
                         [
                             join(
                                 testFormatPaths.validRepo,
-                                extendableConfigFileMap[ConfigKey.Prettier],
+                                getRepoExtendableConfigPath(ConfigKey.Prettier),
                             ),
                         ],
                     )),

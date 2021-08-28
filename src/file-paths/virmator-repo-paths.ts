@@ -1,15 +1,16 @@
 import {existsSync} from 'fs-extra';
 import {join} from 'path';
-import {createSymLink} from './augments/file-system';
-import {CliCommandName} from './cli/cli-util/cli-command-name';
+import {createSymLink} from '../augments/file-system';
+import {CliCommandName} from '../cli/cli-util/cli-command-name';
 
 export const virmatorRootDir = __dirname.replace(/(?:src|node_modules\/dist|dist).*/, '');
 export const virmatorDistDir = join(virmatorRootDir, 'dist');
 export const extendedConfigsDir = join(virmatorRootDir, 'extended-configs');
+export const separateConfigsDir = join(virmatorRootDir, 'separate-configs');
 
 const virmatorNodeBin = join(virmatorRootDir, 'node_modules', '.bin');
 
-export function getBinPath(command: string): string {
+export function getNpmBinPath(command: string): string {
     const virmatorBinPath = join(virmatorNodeBin, command);
 
     if (existsSync(virmatorBinPath)) {

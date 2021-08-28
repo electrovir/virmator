@@ -91,6 +91,7 @@ export function runHelpCommand(): CliCommandResult {
 }
 
 export const allCliCommands: Readonly<Record<CliCommandName, CliCommandImplementation>> = {
+    // use createUnImplementedCommand when adding a new command that hasn't been implemented yet
     [CliCommandName.Compile]: compileImplementation,
     [CliCommandName.Format]: formatImplementation,
     [CliCommandName.Help]: helpImplementation,

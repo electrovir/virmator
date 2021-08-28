@@ -1,6 +1,6 @@
 import {CliCommandName} from '../cli-util/cli-command-name';
 import {CliFlagName, CliFlags, fillInCliFlags} from '../cli-util/cli-flags';
-import {CommandConfigKey} from '../config/configs';
+import {CommandConfigKey} from '../config/config-key';
 
 export type CliCommandResult = {
     success: boolean;

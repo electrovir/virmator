@@ -1,11 +1,11 @@
+import {runBashCommand} from '../../../augments/bash';
 import {isEnumValue} from '../../../augments/object';
 import {DeepWriteable} from '../../../augments/type';
-import {runBashCommand} from '../../../bash-scripting';
+import {getNpmBinPath} from '../../../file-paths/virmator-repo-paths';
 import {packageName} from '../../../package-name';
-import {getBinPath} from '../../../virmator-repo-paths';
 import {CliCommandName} from '../../cli-util/cli-command-name';
 import {CliFlagName} from '../../cli-util/cli-flags';
-import {ConfigKey} from '../../config/configs';
+import {ConfigKey} from '../../config/config-key';
 import {CliCommandImplementation, CliCommandResult, CommandFunctionInput} from '../cli-command';
 
 export enum FormatOperation {
@@ -76,7 +76,7 @@ export const formatImplementation: CliCommandImplementation = {
     },
 };
 
-const prettierPath = getBinPath('prettier');
+const prettierPath = getNpmBinPath('prettier');
 
 export async function runFormatCommand({
     rawArgs,

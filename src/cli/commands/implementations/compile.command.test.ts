@@ -1,6 +1,6 @@
 import {existsSync, remove} from 'fs-extra';
 import {testGroup} from 'test-vir';
-import {testCompilePaths} from '../../../virmator-repo-paths';
+import {testCompilePaths} from '../../../file-paths/virmator-repo-paths';
 import {CliFlagName, fillInCliFlags} from '../../cli-util/cli-flags';
 import {fillInCommandInput} from '../cli-command';
 import {runCompileCommand} from './compile.command';

@@ -4,7 +4,7 @@ import {joinWithFinalConjunction} from '../../../augments/string';
 import {packageName} from '../../../package-name';
 import {CliCommandName} from '../../cli-util/cli-command-name';
 import {CliFlagName} from '../../cli-util/cli-flags';
-import {BareConfigKey} from '../../config/configs';
+import {BareConfigKey} from '../../config/config-key';
 import {copyConfig} from '../../config/copy-config';
 import {CliCommandImplementation, CliCommandResult, CommandFunctionInput} from '../cli-command';
 
@@ -52,7 +52,7 @@ export async function runUpdateBareConfigsCommand({
                 const writtenFile = (
                     await copyConfig({
                         configKey,
-                        extendableConfig: cliFlags[CliFlagName.ExtendableConfig],
+                        forceExtendableConfig: cliFlags[CliFlagName.ExtendableConfig],
                         customDir,
                     })
                 ).outputFilePath;

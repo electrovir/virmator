@@ -1,0 +1,12 @@
+.prettierignore
+.gitignore
+.gitattributes
+*.test.d.ts
+*.test.js
+src
+test-repos
+scripts
+.cspell-base.json
+.cpsell.json
+.prettierrc.js
+.vscode

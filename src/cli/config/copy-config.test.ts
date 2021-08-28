@@ -6,16 +6,18 @@ import {
     createNodeModulesSymLinkForTests,
     extendedConfigsDir,
     testFormatPaths,
-} from '../../virmator-repo-paths';
-import {configFileMap, ConfigKey, extendableConfigFileMap} from './configs';
+} from '../../file-paths/virmator-repo-paths';
+import {ConfigKey} from './config-key';
+import {getRepoConfigFilePath} from './config-paths';
 import {copyConfig} from './copy-config';
+import {getVirmatorExtendableConfigPath} from './extendable-config';
 
 testGroup({
     description: copyConfig.name,
     tests: (runTest) => {
         const expectedPrettierConfigPath = join(
             testFormatPaths.validRepo,
-            configFileMap[ConfigKey.Prettier],
+            getRepoConfigFilePath(ConfigKey.Prettier),
         );
 
         runTest({
@@ -27,7 +29,7 @@ testGroup({
                 const configPath = (
                     await copyConfig({
                         configKey: ConfigKey.Prettier,
-                        extendableConfig: false,
+                        forceExtendableConfig: false,
                         customDir: testFormatPaths.validRepo,
                     })
                 ).outputFilePath;
@@ -51,13 +53,13 @@ testGroup({
                 const configPath = (
                     await copyConfig({
                         configKey: ConfigKey.Prettier,
-                        extendableConfig: true,
+                        forceExtendableConfig: true,
                         customDir: testFormatPaths.validRepo,
                     })
                 ).outputFilePath;
                 const extendablePath = join(
                     testFormatPaths.validRepo,
-                    extendableConfigFileMap[ConfigKey.Prettier],
+                    getVirmatorExtendableConfigPath(ConfigKey.Prettier),
                 );
 
                 await [extendablePath, configPath].reduce(async (accum, path) => {

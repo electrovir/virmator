@@ -1,9 +1,9 @@
-import {runBashCommand} from '../../../bash-scripting';
+import {runBashCommand} from '../../../augments/bash';
+import {getNpmBinPath} from '../../../file-paths/virmator-repo-paths';
 import {packageName} from '../../../package-name';
-import {getBinPath} from '../../../virmator-repo-paths';
 import {CliCommandName} from '../../cli-util/cli-command-name';
 import {CliFlagName} from '../../cli-util/cli-flags';
-import {ConfigKey} from '../../config/configs';
+import {ConfigKey} from '../../config/config-key';
 import {CliCommandImplementation, CliCommandResult, CommandFunctionInput} from '../cli-command';
 
 export const compileImplementation: CliCommandImplementation = {
@@ -23,7 +23,7 @@ export const compileImplementation: CliCommandImplementation = {
     },
 };
 
-const tscPath = getBinPath('tsc');
+const tscPath = getNpmBinPath('tsc');
 
 export async function runCompileCommand({
     rawArgs,

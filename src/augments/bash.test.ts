@@ -1,6 +1,6 @@
 import {testGroup} from 'test-vir';
-import {toPosixPath} from './augments/string';
-import {runBashCommand} from './bash-scripting';
+import {runBashCommand} from './bash';
+import {toPosixPath} from './string';
 
 testGroup({
     description: runBashCommand.name,

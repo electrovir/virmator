@@ -2,9 +2,10 @@ import {emptyDir, ensureDir, existsSync} from 'fs-extra';
 import {join} from 'path';
 import {testGroup} from 'test-vir';
 import {getEnumTypedValues} from '../../../augments/object';
-import {updateBareConfigsTestPaths} from '../../../virmator-repo-paths';
+import {updateBareConfigsTestPaths} from '../../../file-paths/virmator-repo-paths';
 import {fillInCliFlags} from '../../cli-util/cli-flags';
-import {BareConfigKey, configFileMap} from '../../config/configs';
+import {BareConfigKey} from '../../config/config-key';
+import {getRepoConfigFilePath} from '../../config/config-paths';
 import {
     extractUpdateBareConfigsArgs,
     runUpdateBareConfigsCommand,
@@ -27,7 +28,10 @@ testGroup({
 
                 const configsExistedAlready: boolean[] = allBareConfigKeys.map((currentKey) => {
                     return existsSync(
-                        join(updateBareConfigsTestPaths.emptyRepo, configFileMap[currentKey]),
+                        join(
+                            updateBareConfigsTestPaths.emptyRepo,
+                            getRepoConfigFilePath(currentKey),
+                        ),
                     );
                 });
 
@@ -64,7 +68,10 @@ testGroup({
                         !commandOutput.stderr?.includes(configKey) &&
                         commandOutput.success &&
                         existsSync(
-                            join(updateBareConfigsTestPaths.emptyRepo, configFileMap[configKey]),
+                            join(
+                                updateBareConfigsTestPaths.emptyRepo,
+                                getRepoConfigFilePath(configKey),
+                            ),
                         )
                     );
                 });
@@ -76,7 +83,10 @@ testGroup({
                 const configsDeleted: boolean[] = await Promise.all(
                     allBareConfigKeys.map(async (configKey) => {
                         return !existsSync(
-                            join(updateBareConfigsTestPaths.emptyRepo, configFileMap[configKey]),
+                            join(
+                                updateBareConfigsTestPaths.emptyRepo,
+                                getRepoConfigFilePath(configKey),
+                            ),
                         );
                     }),
                 );

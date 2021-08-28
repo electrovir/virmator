@@ -1,6 +1,6 @@
+import {runBashCommand} from '../../../augments/bash';
 import {interpolationSafeWindowsPath} from '../../../augments/string';
-import {runBashCommand} from '../../../bash-scripting';
-import {getBinPath} from '../../../virmator-repo-paths';
+import {getNpmBinPath} from '../../../file-paths/virmator-repo-paths';
 import {CliCommandName} from '../../cli-util/cli-command-name';
 import {CliFlagName} from '../../cli-util/cli-flags';
 import {CliCommandImplementation, CliCommandResult, CommandFunctionInput} from '../cli-command';
@@ -23,7 +23,7 @@ export const testCommandImplementation: CliCommandImplementation = {
     },
 };
 
-const testVirPath = getBinPath('test-vir');
+const testVirPath = getNpmBinPath('test-vir');
 
 export async function runTestCommand({
     rawArgs,

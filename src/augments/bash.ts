@@ -4,6 +4,7 @@ export type BashOutput = {error: ExecException | undefined; stderr: string; stdo
 
 export async function runBashCommand(command: string, cwd?: string): Promise<BashOutput> {
     return new Promise<BashOutput>((resolve) => {
+        // this needs to do some kind of buffer reading I think, but I haven't run into that yet...
         exec(command, {shell: 'bash', cwd}, (error, stdout, stderr) => {
             const output: BashOutput = {error: error ?? undefined, stdout, stderr};
             return resolve(output);

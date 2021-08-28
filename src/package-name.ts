@@ -1,1 +1,1 @@
-export const packageName = 'virmator';
+export const packageName = 'virmator' as const;

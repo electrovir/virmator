@@ -4,8 +4,9 @@ import {joinWithFinalConjunction} from '../../../augments/string';
 import {packageName} from '../../../package-name';
 import {CliCommandName} from '../../cli-util/cli-command-name';
 import {CliFlagName} from '../../cli-util/cli-flags';
-import {ConfigKey, isExtendableConfigSupported} from '../../config/configs';
+import {ConfigKey} from '../../config/config-key';
 import {copyConfig} from '../../config/copy-config';
+import {isExtendableConfig} from '../../config/extendable-config';
 import {CliCommandImplementation, CliCommandResult, CommandFunctionInput} from '../cli-command';
 
 const exampleFlags: ConfigKey[] = [ConfigKey.Cspell, ConfigKey.GitIgnore];
@@ -51,9 +52,8 @@ export async function runUpdateAllConfigsCommand({
                 const writtenFile = (
                     await copyConfig({
                         configKey,
-                        extendableConfig:
-                            cliFlags[CliFlagName.ExtendableConfig] &&
-                            isExtendableConfigSupported(configKey),
+                        forceExtendableConfig:
+                            cliFlags[CliFlagName.ExtendableConfig] && isExtendableConfig(configKey),
                         customDir,
                     })
                 ).outputFilePath;
