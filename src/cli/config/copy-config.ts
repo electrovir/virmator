@@ -23,7 +23,7 @@ export async function copyConfig({
 }: {
     configKey: ConfigKey;
     extendableConfig: boolean;
-    customDir?: string;
+    customDir?: string | undefined;
 }): Promise<{logs: CopyConfigLog[]; outputFilePath: string}> {
     const logs: CopyConfigLog[] = [];
 

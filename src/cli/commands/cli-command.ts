@@ -56,7 +56,7 @@ export function fillInCommandInput(
 export type CommandFunctionInput = Readonly<{
     rawArgs: string[];
     cliFlags: Required<Readonly<CliFlags>>;
-    customDir?: string;
+    customDir?: string | undefined;
 }>;
 
 export type PartialCommandFunctionInput = Omit<Partial<CommandFunctionInput>, 'cliFlags'> & {

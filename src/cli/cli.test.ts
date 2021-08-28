@@ -1,6 +1,6 @@
 import {existsSync, readFile, remove, writeFile} from 'fs-extra';
 import {join} from 'path';
-import {testGroup} from 'test-vir';
+import {testGroup, TestInputObject} from 'test-vir';
 import {getObjectTypedKeys} from '../augments/object';
 import {interpolationSafeWindowsPath} from '../augments/string';
 import {runBashCommand} from '../bash-scripting';
@@ -31,15 +31,20 @@ testGroup((runTest) => {
     };
 
     function testCli(inputs: TestCliInput) {
-        const expectedOutput: {stdout?: string | boolean; stderr?: string | boolean} = {
+        const expectedOutput: {
+            stdout: string | boolean | undefined;
+            stderr: string | boolean | undefined;
+        } = {
             stderr: inputs.expect.stderr instanceof RegExp ? true : inputs.expect.stderr,
             stdout: inputs.expect.stdout instanceof RegExp ? true : inputs.expect.stdout,
         };
 
-        const testInput = {
+        type TestResult = {output: typeof expectedOutput; cleanupResult: string | void | undefined};
+
+        const testInput: TestInputObject<TestResult, undefined> = {
             description: inputs.description,
             expect: {output: expectedOutput, cleanupResult: undefined},
-            forceOnly: inputs.forceOnly,
+            forceOnly: inputs.forceOnly || false,
             test: async () => {
                 const results = await runBashCommand(
                     `node ${interpolationSafeWindowsPath(cliPath)} ${inputs.args.join(' ')}`,
@@ -67,11 +72,13 @@ testGroup((runTest) => {
                         accum[key] = !!expectValue.exec(String(value));
                     }
                     return accum;
-                }, {} as {stdout?: string | boolean; stderr?: string | boolean});
+                }, {} as {stdout: string | boolean | undefined; stderr: string | boolean | undefined});
 
                 const cleanupResult = inputs.cleanup && (await inputs.cleanup());
 
-                return {output, cleanupResult};
+                const testResult: TestResult = {output, cleanupResult};
+
+                return testResult;
             },
         };
 

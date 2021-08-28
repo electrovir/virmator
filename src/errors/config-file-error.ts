@@ -1,3 +1,3 @@
 export class ConfigFileError extends Error {
-    public readonly name = 'ConfigFileError';
+    public override readonly name = 'ConfigFileError';
 }
