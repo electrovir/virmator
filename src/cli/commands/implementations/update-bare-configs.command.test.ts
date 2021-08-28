@@ -17,8 +17,8 @@ testGroup({
         const allBareConfigKeys = getEnumTypedValues(BareConfigKey);
 
         runTest({
-            description: 'all config files were written without error',
-            expect: allBareConfigKeys.sort(),
+            description: 'no config files were written with errors',
+            expect: [],
             test: async () => {
                 /**
                  * Since this folder is literally empty, it doesn't get added to git and we have to
@@ -62,26 +62,42 @@ testGroup({
                     console.error(commandOutput.error);
                 }
 
-                const writtenConfigs: BareConfigKey[] = allBareConfigKeys.filter((configKey) => {
-                    return (
-                        commandOutput.stdout?.includes(configKey) &&
-                        !commandOutput.stderr?.includes(configKey) &&
-                        commandOutput.success &&
-                        existsSync(
+                const {writtenConfigs, invalidConfigs} = allBareConfigKeys.reduce(
+                    (accum, configKey) => {
+                        const stdoutHasKey = commandOutput.stdout?.includes(configKey);
+                        const stderrHasKey = commandOutput.stderr?.includes(configKey);
+                        const configWasWritten = existsSync(
                             join(
                                 updateBareConfigsTestPaths.emptyRepo,
                                 getRepoConfigFilePath(configKey),
                             ),
-                        )
-                    );
-                });
+                        );
+
+                        const writtenSuccessfully =
+                            stdoutHasKey && !stderrHasKey && configWasWritten;
+
+                        if (writtenSuccessfully) {
+                            accum.writtenConfigs.push(configKey);
+                        } else {
+                            console.error({
+                                configKey,
+                                stdoutHasKey,
+                                stderrHasKey,
+                                configWasWritten,
+                            });
+                            accum.invalidConfigs.push(configKey);
+                        }
+                        return accum;
+                    },
+                    {writtenConfigs: [] as BareConfigKey[], invalidConfigs: [] as BareConfigKey[]},
+                );
 
                 try {
                     await emptyDir(updateBareConfigsTestPaths.emptyRepo);
                 } catch (error) {}
 
                 const configsDeleted: boolean[] = await Promise.all(
-                    allBareConfigKeys.map(async (configKey) => {
+                    writtenConfigs.map(async (configKey) => {
                         return !existsSync(
                             join(
                                 updateBareConfigsTestPaths.emptyRepo,
@@ -91,22 +107,23 @@ testGroup({
                     }),
                 );
 
-                return writtenConfigs
-                    .filter((writtenConfig, index) => {
-                        if (configsExistedAlready[index]) {
+                return [
+                    ...invalidConfigs,
+                    ...writtenConfigs.filter((writtenConfig, index) => {
+                        if (alreadyExistingByKey.includes(writtenConfig)) {
                             console.error(
                                 `"${writtenConfig}" already existed before running the test`,
                             );
-                            return false;
+                            return true;
                         }
                         if (!configsDeleted[index]) {
                             console.error(`"${writtenConfig}" was not removed after the test`);
-                            return false;
+                            return true;
                         }
 
-                        return true;
-                    })
-                    .sort();
+                        return false;
+                    }),
+                ];
             },
         });
     },

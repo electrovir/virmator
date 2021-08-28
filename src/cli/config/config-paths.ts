@@ -1,8 +1,12 @@
 import {readFile, writeFile} from 'fs-extra';
 import {join} from 'path';
-import {separateConfigsDir, virmatorRootDir} from '../../file-paths/virmator-repo-paths';
+import {
+    extenderConfigsDir,
+    relativeSeparateConfigsDir,
+    virmatorRootDir,
+} from '../../file-paths/virmator-repo-paths';
 import {ConfigKey} from './config-key';
-import {getVirmatorExtendableConfigPath} from './extendable-config';
+import {getExtendableBaseConfigName, isExtendableConfig} from './extendable-config';
 
 enum DifferentConfigPathTypes {
     /** The path the config file within virmator */
@@ -22,10 +26,16 @@ const configFileMap: Readonly<
     [ConfigKey.Cspell]: '.cspell.json',
     [ConfigKey.GitAttributes]: '.gitattributes',
     [ConfigKey.GitHubActionsTest]: join('.github', 'workflows', 'virmator-tests.yml'),
-    [ConfigKey.GitIgnore]: {virmator: join(separateConfigsDir, '.gitignore'), repo: 'gitignore'},
-    [ConfigKey.NpmIgnore]: '.npmignore',
+    [ConfigKey.GitIgnore]: '.gitignore',
+    [ConfigKey.NpmIgnore]: {
+        virmator: join(relativeSeparateConfigsDir, '.npmignore'),
+        repo: '.npmignore',
+    },
     [ConfigKey.Prettier]: '.prettierrc.js',
-    [ConfigKey.PrettierIgnore]: '.prettierignore',
+    [ConfigKey.PrettierIgnore]: {
+        virmator: join(relativeSeparateConfigsDir, '.prettierignore'),
+        repo: '.prettierignore',
+    },
     [ConfigKey.TsConfig]: 'tsconfig.json',
     [ConfigKey.VsCodeSettings]: join('.vscode', 'settings.json'),
 } as const;
@@ -37,12 +47,23 @@ function getConfigPath(configKey: ConfigKey, key: DifferentConfigPathTypes): str
     return path;
 }
 
-export function getRepoConfigFilePath(configKey: ConfigKey): string {
-    return getConfigPath(configKey, DifferentConfigPathTypes.Repo);
+export function getRepoConfigFilePath(configKey: ConfigKey, extendable = false): string {
+    return extendable
+        ? getExtendableBaseConfigName(configKey)
+        : getConfigPath(configKey, DifferentConfigPathTypes.Repo);
 }
 
-export function getVirmatorConfigFilePath(configKey: ConfigKey): string {
-    return join(virmatorRootDir, getConfigPath(configKey, DifferentConfigPathTypes.Virmator));
+export function getVirmatorConfigFilePath(configKey: ConfigKey, extender = false): string {
+    if (extender && !isExtendableConfig(configKey)) {
+        throw new Error(
+            `Cannot get path for extendable config "${configKey}", this config is not extendable.`,
+        );
+    }
+
+    const relativePath = getConfigPath(configKey, DifferentConfigPathTypes.Virmator);
+    const basePath = extender ? extenderConfigsDir : virmatorRootDir;
+
+    return join(basePath, relativePath);
 }
 
 export async function writeRepoConfigFile(configKey: ConfigKey, contents: string): Promise<string> {
@@ -53,11 +74,9 @@ export async function writeRepoConfigFile(configKey: ConfigKey, contents: string
 
 export async function readVirmatorConfigFile(
     configKey: ConfigKey,
-    extended = false,
+    extendable = false,
 ): Promise<Buffer> {
-    const virmatorConfigPath = extended
-        ? getVirmatorExtendableConfigPath(configKey)
-        : getVirmatorConfigFilePath(configKey);
+    const filePath = getVirmatorConfigFilePath(configKey, extendable);
 
-    return await readFile(virmatorConfigPath);
+    return await readFile(filePath);
 }

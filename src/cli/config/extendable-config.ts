@@ -1,6 +1,4 @@
-import {join} from 'path';
 import {getObjectTypedKeys, isEnumValue} from '../../augments/object';
-import {extendedConfigsDir} from '../../file-paths/virmator-repo-paths';
 import {ConfigKey} from './config-key';
 
 const extendableConfigFileMap = {
@@ -18,7 +16,7 @@ export const ExtendableConfig = getObjectTypedKeys(extendableConfigFileMap).redu
     {} as Record<ExtendableConfig, ExtendableConfig>,
 );
 
-export function getRepoExtendableConfigPath(key: ConfigKey): string {
+export function getExtendableBaseConfigName(key: ConfigKey): string {
     if (!isExtendableConfig(key)) {
         throw new Error(`Given config key is not extendable: "${key}"`);
     }
@@ -26,15 +24,11 @@ export function getRepoExtendableConfigPath(key: ConfigKey): string {
     return extendableConfigFileMap[key];
 }
 
-export function getVirmatorExtendableConfigPath(key: ConfigKey): string {
-    return join(extendedConfigsDir, getRepoExtendableConfigPath(key));
-}
-
 export function isExtendableConfig(ConfigKey?: ConfigKey): ConfigKey is ExtendableConfig {
     if (!ConfigKey) {
         return false;
     }
-    return isEnumValue(ConfigKey, extendableConfigFileMap);
+    return isEnumValue(ConfigKey, ExtendableConfig);
 }
 
 export function isConfigExtending(key: ExtendableConfig, contents: string): boolean {

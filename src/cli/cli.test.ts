@@ -17,7 +17,7 @@ import {cliErrorMessages, getResultMessage} from './cli-util/cli-messages';
 import {FormatOperation} from './commands/implementations/format.command';
 import {ConfigKey} from './config/config-key';
 import {getRepoConfigFilePath} from './config/config-paths';
-import {getRepoExtendableConfigPath} from './config/extendable-config';
+import {getExtendableBaseConfigName} from './config/extendable-config';
 
 const cliPath = join(virmatorDistDir, 'cli', 'cli.js');
 
@@ -322,13 +322,13 @@ testGroup({
                     join(testFormatPaths.validRepo, getRepoConfigFilePath(ConfigKey.Prettier)),
                     join(
                         testFormatPaths.validRepo,
-                        getRepoExtendableConfigPath(ConfigKey.Prettier),
+                        getExtendableBaseConfigName(ConfigKey.Prettier),
                     ),
                 ]),
         });
 
         runTest({
-            description: 'verify that extendable format config is created',
+            description: 'verify contents of extendable and extender configs',
             expect: [
                 {
                     name: 'file matches written contents',
@@ -398,7 +398,7 @@ module.exports = {...baseConfig, printWidth: 80};`;
                         [
                             join(
                                 testFormatPaths.validRepo,
-                                getRepoExtendableConfigPath(ConfigKey.Prettier),
+                                getExtendableBaseConfigName(ConfigKey.Prettier),
                             ),
                         ],
                     )),

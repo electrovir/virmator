@@ -6,7 +6,7 @@ import {CliFlagName} from '../cli-util/cli-flags';
 import {ConfigKey} from './config-key';
 import {getRepoConfigFilePath, readVirmatorConfigFile} from './config-paths';
 import {
-    getRepoExtendableConfigPath,
+    getExtendableBaseConfigName,
     isConfigExtending,
     isExtendableConfig,
 } from './extendable-config';
@@ -45,6 +45,11 @@ export async function copyConfig({
         process.chdir(customDir);
     }
 
+    let outputFilePath: string;
+    let shouldWriteConfig: boolean;
+
+    const virmatorConfigContents = (await readVirmatorConfigFile(configKey, false)).toString();
+
     const repoConfigPath = resolve(getRepoConfigFilePath(configKey));
     const repoConfigExists = existsSync(repoConfigPath);
     const shouldExtend =
@@ -68,11 +73,8 @@ export async function copyConfig({
             await writeFileAndDir(repoConfigPath, extenderContents);
         }
 
-        const repoExtendableConfigPath = resolve(getRepoExtendableConfigPath(configKey));
+        const repoExtendableConfigPath = resolve(getExtendableBaseConfigName(configKey));
         const repoExtendableConfigExists = existsSync(repoExtendableConfigPath);
-
-        const virmatorConfigContents = (await readVirmatorConfigFile(configKey, false)).toString();
-        let shouldWriteExtendableConfig: boolean;
 
         if (repoExtendableConfigExists) {
             // if the extendable config already exists, check if we need to update it
@@ -86,9 +88,9 @@ export async function copyConfig({
                     stderr: false,
                     log: `Updating ${repoExtendableConfigPath}\n${ifUndesiredMessage}`,
                 });
-                shouldWriteExtendableConfig = true;
+                shouldWriteConfig = true;
             } else {
-                shouldWriteExtendableConfig = false;
+                shouldWriteConfig = false;
             }
         } else {
             // when the extendable config file is not already found, we always write it
@@ -97,16 +99,11 @@ export async function copyConfig({
                 log: `Extendable config file not found, creating new file: ${repoExtendableConfigPath}\n`,
             });
 
-            shouldWriteExtendableConfig = true;
+            shouldWriteConfig = true;
         }
 
-        if (shouldWriteExtendableConfig) {
-            await writeFileAndDir(repoExtendableConfigPath, virmatorConfigContents);
-        }
+        outputFilePath = repoExtendableConfigPath;
     } else {
-        const virmatorConfigContents = (await readVirmatorConfigFile(configKey)).toString();
-        let shouldWriteConfigFile: boolean;
-
         if (repoConfigExists) {
             const currentConfigPathContents = (await readFile(repoConfigPath)).toString();
             // only update the config file when they differ
@@ -115,17 +112,19 @@ export async function copyConfig({
                     stderr: false,
                     log: `Updating ${repoConfigPath}`,
                 });
-                shouldWriteConfigFile = true;
+                shouldWriteConfig = true;
             } else {
-                shouldWriteConfigFile = false;
+                shouldWriteConfig = false;
             }
         } else {
-            shouldWriteConfigFile = true;
+            shouldWriteConfig = true;
         }
 
-        if (shouldWriteConfigFile) {
-            await writeFileAndDir(repoConfigPath, virmatorConfigContents);
-        }
+        outputFilePath = repoConfigPath;
+    }
+
+    if (shouldWriteConfig) {
+        await writeFileAndDir(outputFilePath, virmatorConfigContents);
     }
 
     if (customDir) {
@@ -134,6 +133,6 @@ export async function copyConfig({
 
     return {
         logs,
-        outputFilePath: repoConfigPath,
+        outputFilePath,
     };
 }

@@ -1,6 +1,6 @@
 {
     "name": "virmator",
-    "version": "1.0.5",
+    "version": "1.0.6",
     "description": "Handle all the stuffs in one package.",
     "keywords": [],
     "homepage": "https://github.com/electrovir/virmator",
@@ -28,7 +28,7 @@
         "sanitize:all": "./bulk-sanitize.sh files/downloads",
         "sanitize:no-compile": "node dist/sanitizer/sanitize-for-test-file-cli.js",
         "sanitize": "npm run compile && node dist/sanitizer/sanitize-for-test-file-cli.js",
-        "spellcheck": "cspell \"{*,.*,**/{.*,*}/**/{.*,*}}\" --exclude \"test-repos/spellcheck/invalid-spellcheck-repo/**/*\" --exclude \"extended-configs\"",
+        "spellcheck": "cspell \"{*,.*,**/{.*,*}/**/{.*,*}}\" --exclude \"test-repos/spellcheck/invalid-spellcheck-repo/**/*\" --exclude \"extender-configs\"",
         "test:file": "ts-node ./scripts/test-specific-file.ts",
         "test:full": "npm run test && npm run spellcheck -- --no-progress && npm run format:check",
         "test:help": "npm run compile && node dist/cli/cli.js --help",
@@ -48,7 +48,7 @@
     },
     "devDependencies": {
         "@types/fs-extra": "^9.0.12",
-        "@types/node": "^16.7.4",
+        "@types/node": "^16.7.5",
         "ts-node": "^10.2.1"
     },
     "engines": {

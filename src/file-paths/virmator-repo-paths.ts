@@ -5,8 +5,8 @@ import {CliCommandName} from '../cli/cli-util/cli-command-name';
 
 export const virmatorRootDir = __dirname.replace(/(?:src|node_modules\/dist|dist).*/, '');
 export const virmatorDistDir = join(virmatorRootDir, 'dist');
-export const extendedConfigsDir = join(virmatorRootDir, 'extended-configs');
-export const separateConfigsDir = join(virmatorRootDir, 'separate-configs');
+export const extenderConfigsDir = join(virmatorRootDir, 'extender-configs');
+export const relativeSeparateConfigsDir = 'separate-configs';
 
 const virmatorNodeBin = join(virmatorRootDir, 'node_modules', '.bin');
 

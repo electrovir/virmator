@@ -4,13 +4,12 @@ import {join} from 'path';
 import {testGroup} from 'test-vir';
 import {
     createNodeModulesSymLinkForTests,
-    extendedConfigsDir,
+    extenderConfigsDir,
     testFormatPaths,
 } from '../../file-paths/virmator-repo-paths';
 import {ConfigKey} from './config-key';
 import {getRepoConfigFilePath} from './config-paths';
 import {copyConfig} from './copy-config';
-import {getVirmatorExtendableConfigPath} from './extendable-config';
 
 testGroup({
     description: copyConfig.name,
@@ -48,32 +47,31 @@ testGroup({
             test: async () => {
                 const results: boolean[] = [existsSync(expectedPrettierConfigPath)];
 
-                const symlinkPath = await createNodeModulesSymLinkForTests(extendedConfigsDir);
-                results.push(existsSync(symlinkPath));
-                const configPath = (
+                const symlinkPath = await createNodeModulesSymLinkForTests(extenderConfigsDir);
+                results[1] = existsSync(symlinkPath);
+                const extendablePath = (
                     await copyConfig({
                         configKey: ConfigKey.Prettier,
                         forceExtendableConfig: true,
                         customDir: testFormatPaths.validRepo,
                     })
                 ).outputFilePath;
-                const extendablePath = join(
+                const extenderPath = join(
                     testFormatPaths.validRepo,
-                    getVirmatorExtendableConfigPath(ConfigKey.Prettier),
+                    getRepoConfigFilePath(ConfigKey.Prettier),
                 );
 
-                await [extendablePath, configPath].reduce(async (accum, path) => {
-                    await accum;
-                    results.push(existsSync(path));
+                await [extendablePath, extenderPath].reduce(async (lastPromise, path, index) => {
+                    await lastPromise;
+                    results[2 + index * 2] = existsSync(path);
                     await remove(path);
-                    results.push(existsSync(path));
+                    results[2 + index * 2 + 1] = existsSync(path);
                     return;
                 }, Promise.resolve());
 
                 await remove(symlinkPath);
-                results.push(existsSync(symlinkPath));
 
-                return [...results, configPath];
+                return [...results, existsSync(symlinkPath), extenderPath];
             },
         });
     },
