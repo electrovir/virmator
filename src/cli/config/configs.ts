@@ -8,6 +8,7 @@ export enum BareConfigKey {
     GitHubActionsTest = 'GitHubActionsTest',
     GitIgnore = 'GitIgnore',
     NpmIgnore = 'NpmIgnore',
+    PrettierIgnore = 'PrettierIgnore',
     VsCodeSettings = 'VsCodeSettings',
 }
 
@@ -28,6 +29,7 @@ export const configFileMap: Readonly<Record<ConfigKey, string>> = {
     [ConfigKey.GitIgnore]: '.gitignore',
     [ConfigKey.NpmIgnore]: '.npmignore',
     [ConfigKey.Prettier]: '.prettierrc.js',
+    [ConfigKey.PrettierIgnore]: '.prettierignore',
     [ConfigKey.TsConfig]: 'tsconfig.json',
     [ConfigKey.VsCodeSettings]: join('.vscode', 'settings.json'),
 } as const;

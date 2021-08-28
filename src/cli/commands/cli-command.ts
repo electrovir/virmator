@@ -8,8 +8,8 @@ export enum CliCommand {
     Help = 'help',
     SpellCheck = 'spellcheck',
     Test = 'test',
-    UpdateBareConfigs = 'update-bare-configs',
     UpdateAllConfigs = 'update-all-configs',
+    UpdateBareConfigs = 'update-bare-configs',
 }
 
 export type CliCommandResult = {

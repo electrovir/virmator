@@ -7,6 +7,7 @@ import {compileImplementation} from './implementations/compile.command';
 import {formatImplementation} from './implementations/format.command';
 import {spellcheckCommandImplementation} from './implementations/spellcheck.command';
 import {testCommandImplementation} from './implementations/test.command';
+import {updateAllConfigsCommandImplementation} from './implementations/update-all-configs.command';
 import {updateBareConfigsCommandImplementation} from './implementations/update-bare-configs.command';
 
 function createUnImplementedCommand(commandName: CliCommand): CliCommandImplementation {
@@ -36,6 +37,10 @@ export function getUnsupportedFlags(
     });
 }
 
+/**
+ * The Help command implementation is in this file because it both depends on allCliCommands and is
+ * depended on by allCliCommands.
+ */
 export const helpImplementation: CliCommandImplementation = {
     commandName: CliCommand.Help,
     description: flagDescriptions[CliFlagName.Help],
@@ -90,6 +95,6 @@ export const allCliCommands: Readonly<Record<CliCommand, CliCommandImplementatio
     [CliCommand.Help]: helpImplementation,
     [CliCommand.SpellCheck]: spellcheckCommandImplementation,
     [CliCommand.Test]: testCommandImplementation,
-    [CliCommand.UpdateAllConfigs]: createUnImplementedCommand(CliCommand.UpdateAllConfigs),
+    [CliCommand.UpdateAllConfigs]: updateAllConfigsCommandImplementation,
     [CliCommand.UpdateBareConfigs]: updateBareConfigsCommandImplementation,
 };

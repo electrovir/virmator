@@ -1,6 +1,6 @@
 {
     "name": "virmator",
-    "version": "0.0.8",
+    "version": "1.0.0",
     "description": "Handle all the stuffs in one package.",
     "keywords": [],
     "homepage": "https://github.com/electrovir/virmator",
@@ -48,7 +48,7 @@
     },
     "devDependencies": {
         "@types/fs-extra": "^9.0.12",
-        "@types/node": "^16.7.2",
+        "@types/node": "^16.7.4",
         "ts-node": "^10.2.1"
     },
     "engines": {
