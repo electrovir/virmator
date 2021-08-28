@@ -1,4 +1,5 @@
 import {isEnumValue} from '../../augments/object';
+import {CliCommandName} from './cli-command-name';
 
 export enum CliFlagName {
     Help = '--help',
@@ -39,13 +40,25 @@ export function fillInCliFlags(
 }
 
 export function extractCliFlags(args: string[]): Required<ExtractedCliFlags> {
+    /**
+     * This allows flags that are not recognized by virmator to be passed to commands. Like --noEmit
+     * to the virmator compile command.
+     */
+    let commandArgHit = false;
+
     const {inputFlags, invalidFlags, otherArgs} = args.reduce(
         (accum, currentArg) => {
+            if (isEnumValue(CliCommandName, currentArg)) {
+                commandArgHit = true;
+            }
+
             if (currentArg.startsWith('--')) {
                 if (isEnumValue(currentArg, CliFlagName)) {
                     accum.inputFlags[currentArg] = true;
-                } else {
+                } else if (!commandArgHit) {
                     accum.invalidFlags.push(currentArg);
+                } else {
+                    accum.otherArgs.push(currentArg);
                 }
             } else {
                 accum.otherArgs.push(currentArg);

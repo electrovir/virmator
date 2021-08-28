@@ -7,9 +7,7 @@ export class CliFlagError extends Error {
         super(
             `Invalid flags given: ${invalidFlags.join(',')}\nValid flags: ${getObjectTypedKeys(
                 defaultCliFlags,
-            )
-                .map((flag) => `--${flag}`)
-                .join(',')}`,
+            ).join(',')}`,
         );
     }
 }
