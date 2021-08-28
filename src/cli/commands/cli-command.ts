@@ -1,4 +1,3 @@
-import {getEnumTypedValues} from '../../augments/object';
 import {CliCommandName} from '../cli-util/cli-command-name';
 import {CliFlagName, CliFlags, fillInCliFlags} from '../cli-util/cli-flags';
 import {CommandConfigKey} from '../config/configs';
@@ -70,7 +69,3 @@ export type CliCommandImplementation = Readonly<{
 export type CommandFunction = (
     input: CommandFunctionInput,
 ) => CliCommandResult | Promise<CliCommandResult>;
-
-export function validateCliCommand(input: any): input is CliCommandName {
-    return getEnumTypedValues(CliCommandName).includes(input);
-}

@@ -27,10 +27,11 @@ export const flagDescriptions: Record<CliFlagName, string> = {
     [CliFlagName.Help]: 'prints a help message',
 };
 
-export type ExtractedCliFlags = {
+export type ExtractedArguments = {
     flags: CliFlags;
     invalidFlags: string[];
     args: string[];
+    command: CliCommandName | undefined;
 };
 
 export function fillInCliFlags(
@@ -39,23 +40,15 @@ export function fillInCliFlags(
     return {...defaultCliFlags, ...(inputFlags || {})};
 }
 
-export function extractCliFlags(args: string[]): Required<ExtractedCliFlags> {
-    /**
-     * This allows flags that are not recognized by virmator to be passed to commands. Like --noEmit
-     * to the virmator compile command.
-     */
-    let commandArgHit = false;
-
-    const {inputFlags, invalidFlags, otherArgs} = args.reduce(
+export function extractArguments(args: string[]): Required<ExtractedArguments> {
+    const {inputFlags, invalidFlags, otherArgs, command} = args.reduce(
         (accum, currentArg) => {
-            if (isEnumValue(CliCommandName, currentArg)) {
-                commandArgHit = true;
-            }
-
-            if (currentArg.startsWith('--')) {
+            if (isEnumValue(currentArg, CliCommandName) && !accum.command) {
+                accum.command = currentArg;
+            } else if (currentArg.startsWith('--')) {
                 if (isEnumValue(currentArg, CliFlagName)) {
                     accum.inputFlags[currentArg] = true;
-                } else if (!commandArgHit) {
+                } else if (!accum.command) {
                     accum.invalidFlags.push(currentArg);
                 } else {
                     accum.otherArgs.push(currentArg);
@@ -63,12 +56,14 @@ export function extractCliFlags(args: string[]): Required<ExtractedCliFlags> {
             } else {
                 accum.otherArgs.push(currentArg);
             }
+
             return accum;
         },
         {
             inputFlags: {} as Record<string, boolean>,
             invalidFlags: [] as string[],
             otherArgs: [] as string[],
+            command: undefined as undefined | CliCommandName,
         },
     );
 
@@ -78,5 +73,6 @@ export function extractCliFlags(args: string[]): Required<ExtractedCliFlags> {
         flags: cliFlags,
         invalidFlags,
         args: otherArgs,
+        command,
     };
 }

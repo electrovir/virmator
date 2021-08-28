@@ -1,37 +1,6 @@
 import {testGroup} from 'test-vir';
-import {getEnumTypedValues} from '../../augments/object';
-import {CliCommandName} from '../cli-util/cli-command-name';
 import {CliFlagName, fillInCliFlags} from '../cli-util/cli-flags';
-import {fillInCommandInput, validateCliCommand} from './cli-command';
-
-testGroup({
-    description: validateCliCommand.name,
-    tests: (runTest) => {
-        runTest({
-            description: 'valid command names pass',
-            expect: true,
-            test: () => {
-                return validateCliCommand(CliCommandName.Format);
-            },
-        });
-        runTest({
-            description: 'all valid command names pass',
-            expect: true,
-            test: () => {
-                return getEnumTypedValues(CliCommandName).every((command) => {
-                    return validateCliCommand(command);
-                });
-            },
-        });
-        runTest({
-            description: 'invalid command names fail',
-            expect: false,
-            test: () => {
-                return validateCliCommand('eat-the-food-now');
-            },
-        });
-    },
-});
+import {fillInCommandInput} from './cli-command';
 
 testGroup({
     description: fillInCommandInput.name,

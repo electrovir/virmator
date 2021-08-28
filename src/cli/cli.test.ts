@@ -97,9 +97,7 @@ testGroup((runTest) => {
         args: [invalidCommand],
         description: 'fails when invalid commands are given',
         expect: {
-            stderr: String(
-                new VirmatorCliCommandError(cliErrorMessages.invalidCliCommand(invalidCommand)),
-            ),
+            stderr: String(new VirmatorCliCommandError(cliErrorMessages.missingCliCommand)),
         },
     });
 
