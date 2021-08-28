@@ -1,16 +1,7 @@
 import {getEnumTypedValues} from '../../augments/object';
+import {CliCommandName} from '../cli-util/cli-command-name';
 import {CliFlagName, CliFlags, fillInCliFlags} from '../cli-util/cli-flags';
 import {CommandConfigKey} from '../config/configs';
-
-export enum CliCommand {
-    Compile = 'compile',
-    Format = 'format',
-    Help = 'help',
-    SpellCheck = 'spellcheck',
-    Test = 'test',
-    UpdateAllConfigs = 'update-all-configs',
-    UpdateBareConfigs = 'update-bare-configs',
-}
 
 export type CliCommandResult = {
     success: boolean;
@@ -64,7 +55,7 @@ export type PartialCommandFunctionInput = Omit<Partial<CommandFunctionInput>, 'c
 };
 
 export type CliCommandImplementation = Readonly<{
-    commandName: CliCommand;
+    commandName: CliCommandName;
     configKeys?: CommandConfigKey[];
     description: string;
     implementation: CommandFunction;
@@ -80,6 +71,6 @@ export type CommandFunction = (
     input: CommandFunctionInput,
 ) => CliCommandResult | Promise<CliCommandResult>;
 
-export function validateCliCommand(input: any): input is CliCommand {
-    return getEnumTypedValues(CliCommand).includes(input);
+export function validateCliCommand(input: any): input is CliCommandName {
+    return getEnumTypedValues(CliCommandName).includes(input);
 }

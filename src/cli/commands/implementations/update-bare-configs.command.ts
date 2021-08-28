@@ -2,20 +2,16 @@ import {existsSync} from 'fs-extra';
 import {getEnumTypedValues} from '../../../augments/object';
 import {joinWithFinalConjunction} from '../../../augments/string';
 import {packageName} from '../../../package-name';
+import {CliCommandName} from '../../cli-util/cli-command-name';
 import {CliFlagName} from '../../cli-util/cli-flags';
 import {BareConfigKey} from '../../config/configs';
 import {copyConfig} from '../../config/copy-config';
-import {
-    CliCommand,
-    CliCommandImplementation,
-    CliCommandResult,
-    CommandFunctionInput,
-} from '../cli-command';
+import {CliCommandImplementation, CliCommandResult, CommandFunctionInput} from '../cli-command';
 
 const exampleFlags: BareConfigKey[] = [BareConfigKey.GitIgnore, BareConfigKey.NpmIgnore];
 
 export const updateBareConfigsCommandImplementation: CliCommandImplementation = {
-    commandName: CliCommand.UpdateBareConfigs,
+    commandName: CliCommandName.UpdateBareConfigs,
     description: `Update config files that aren't used in any ${packageName} commands,
             like GitHub actions tests or VS Code Settings.
             
@@ -27,9 +23,9 @@ export const updateBareConfigsCommandImplementation: CliCommandImplementation = 
             
             examples:
                 update all bare config files:
-                    ${packageName} ${CliCommand.UpdateBareConfigs}
+                    ${packageName} ${CliCommandName.UpdateBareConfigs}
                 update only ${joinWithFinalConjunction(exampleFlags)} files:
-                    ${packageName} ${CliCommand.UpdateBareConfigs} ${exampleFlags.join(' ')}`,
+                    ${packageName} ${CliCommandName.UpdateBareConfigs} ${exampleFlags.join(' ')}`,
     implementation: runUpdateBareConfigsCommand,
     configFlagSupport: {
         [CliFlagName.NoWriteConfig]: false,

@@ -1,11 +1,11 @@
 import {getEnumTypedValues} from '../augments/object';
-import {CliCommand} from '../cli/commands/cli-command';
+import {CliCommandName} from '../cli/cli-util/cli-command-name';
 
 export class VirmatorCliCommandError extends Error {
     public override readonly name = 'VirmatorCliCommandError';
     constructor(message: string) {
         super(
-            `${message}\nExpected one of the following: ${getEnumTypedValues(CliCommand).join(
+            `${message}\nExpected one of the following: ${getEnumTypedValues(CliCommandName).join(
                 ', ',
             )}`,
         );

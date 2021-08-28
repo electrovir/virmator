@@ -1,16 +1,12 @@
 import {interpolationSafeWindowsPath} from '../../../augments/string';
 import {runBashCommand} from '../../../bash-scripting';
 import {getBinPath} from '../../../virmator-repo-paths';
+import {CliCommandName} from '../../cli-util/cli-command-name';
 import {CliFlagName} from '../../cli-util/cli-flags';
-import {
-    CliCommand,
-    CliCommandImplementation,
-    CliCommandResult,
-    CommandFunctionInput,
-} from '../cli-command';
+import {CliCommandImplementation, CliCommandResult, CommandFunctionInput} from '../cli-command';
 
 export const testCommandImplementation: CliCommandImplementation = {
-    commandName: CliCommand.Test,
+    commandName: CliCommandName.Test,
     description: `Test all .test.js files with test-vir. 
             By default this command tests all .test.js files in dist that are not 
             .type.test.js files. To override this behavior, pass in a list of files or a

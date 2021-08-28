@@ -1,16 +1,12 @@
 import {runBashCommand} from '../../../bash-scripting';
 import {getBinPath} from '../../../virmator-repo-paths';
+import {CliCommandName} from '../../cli-util/cli-command-name';
 import {CliFlagName} from '../../cli-util/cli-flags';
 import {ConfigKey} from '../../config/configs';
-import {
-    CliCommand,
-    CliCommandImplementation,
-    CliCommandResult,
-    CommandFunctionInput,
-} from '../cli-command';
+import {CliCommandImplementation, CliCommandResult, CommandFunctionInput} from '../cli-command';
 
 export const spellcheckCommandImplementation: CliCommandImplementation = {
-    commandName: CliCommand.SpellCheck,
+    commandName: CliCommandName.SpellCheck,
     description: `Spellcheck code with cspell. Any extra arguments are passed directly to cspell.`,
     implementation: runSpellcheckCommand,
     configKeys: [ConfigKey.Cspell],

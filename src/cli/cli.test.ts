@@ -11,9 +11,9 @@ import {
     testFormatPaths,
     virmatorDistDir,
 } from '../virmator-repo-paths';
+import {CliCommandName} from './cli-util/cli-command-name';
 import {CliFlagName} from './cli-util/cli-flags';
 import {cliErrorMessages, getResultMessage} from './cli-util/cli-messages';
-import {CliCommand} from './commands/cli-command';
 import {FormatOperation} from './commands/implementations/format.command';
 import {configFileMap, ConfigKey, extendableConfigFileMap} from './config/configs';
 
@@ -104,11 +104,11 @@ testGroup((runTest) => {
     });
 
     testCli({
-        args: [CliFlagName.NoWriteConfig, CliCommand.Format, FormatOperation.Check],
+        args: [CliFlagName.NoWriteConfig, CliCommandName.Format, FormatOperation.Check],
         description: 'runs format',
         expect: {
             stdout: `running format...\nAll matched files use Prettier code style!\n\n${getResultMessage(
-                CliCommand.Format,
+                CliCommandName.Format,
                 true,
             )}`,
         },
@@ -119,7 +119,7 @@ testGroup((runTest) => {
         args: [
             CliFlagName.NoWriteConfig,
             CliFlagName.Silent,
-            CliCommand.Format,
+            CliCommandName.Format,
             FormatOperation.Check,
         ],
         description: 'runs silent format',
@@ -128,10 +128,10 @@ testGroup((runTest) => {
     });
 
     testCli({
-        args: [CliFlagName.NoWriteConfig, CliCommand.Compile],
+        args: [CliFlagName.NoWriteConfig, CliCommandName.Compile],
         description: 'runs compile',
         expect: {
-            stdout: `running compile...\n${getResultMessage(CliCommand.Compile, true)}`,
+            stdout: `running compile...\n${getResultMessage(CliCommandName.Compile, true)}`,
         },
         cwd: testCompilePaths.validRepo,
         cleanup: async () => {
@@ -148,7 +148,7 @@ testGroup((runTest) => {
     });
 
     testCli({
-        args: [CliCommand.Help],
+        args: [CliCommandName.Help],
         description: 'runs help',
         expect: {
             stdout: /\w\s+virmator usage:/,

@@ -2,20 +2,16 @@ import {existsSync} from 'fs-extra';
 import {getEnumTypedValues} from '../../../augments/object';
 import {joinWithFinalConjunction} from '../../../augments/string';
 import {packageName} from '../../../package-name';
+import {CliCommandName} from '../../cli-util/cli-command-name';
 import {CliFlagName} from '../../cli-util/cli-flags';
 import {ConfigKey, isExtendableConfigSupported} from '../../config/configs';
 import {copyConfig} from '../../config/copy-config';
-import {
-    CliCommand,
-    CliCommandImplementation,
-    CliCommandResult,
-    CommandFunctionInput,
-} from '../cli-command';
+import {CliCommandImplementation, CliCommandResult, CommandFunctionInput} from '../cli-command';
 
 const exampleFlags: ConfigKey[] = [ConfigKey.Cspell, ConfigKey.GitIgnore];
 
 export const updateAllConfigsCommandImplementation: CliCommandImplementation = {
-    commandName: CliCommand.UpdateAllConfigs,
+    commandName: CliCommandName.UpdateAllConfigs,
     description: `Update all config files.
             
             This command accepts a list of config file keys as arguments.
@@ -26,9 +22,9 @@ export const updateAllConfigsCommandImplementation: CliCommandImplementation = {
             
             examples:
                 update all config files:
-                    ${packageName} ${CliCommand.UpdateAllConfigs}
+                    ${packageName} ${CliCommandName.UpdateAllConfigs}
                 update only ${joinWithFinalConjunction(exampleFlags)} files:
-                    ${packageName} ${CliCommand.UpdateAllConfigs} ${exampleFlags.join(' ')}`,
+                    ${packageName} ${CliCommandName.UpdateAllConfigs} ${exampleFlags.join(' ')}`,
     implementation: runUpdateAllConfigsCommand,
     configFlagSupport: {
         [CliFlagName.NoWriteConfig]: false,

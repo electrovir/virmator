@@ -1,13 +1,14 @@
 import {VirmatorCliCommandError} from '../../errors/cli-command-error';
+import {CliCommandName} from '../cli-util/cli-command-name';
 import {CliFlagName, fillInCliFlags} from '../cli-util/cli-flags';
 import {cliErrorMessages} from '../cli-util/cli-messages';
 import {isExtendableConfigSupported} from '../config/configs';
 import {copyConfig} from '../config/copy-config';
 import {allCliCommands, getUnsupportedFlags} from './all-cli-commands';
-import {CliCommand, CliCommandResult, PartialCommandFunctionInput} from './cli-command';
+import {CliCommandResult, PartialCommandFunctionInput} from './cli-command';
 
 export async function runCommand(
-    command: CliCommand,
+    command: CliCommandName,
     commandInput: PartialCommandFunctionInput,
 ): Promise<CliCommandResult> {
     const commandImplementation = allCliCommands[command];
@@ -26,7 +27,7 @@ export async function runCommand(
         ...commandImplementation.configFlagSupport,
     });
 
-    if (command !== CliCommand.Help && unsupportedFlagsInUse.length) {
+    if (command !== CliCommandName.Help && unsupportedFlagsInUse.length) {
         throw new VirmatorCliCommandError(
             cliErrorMessages.unsupportedCliFlag(command, unsupportedFlagsInUse),
         );
@@ -57,7 +58,7 @@ export async function runCommand(
         rawArgs: commandInput.rawArgs || [],
     });
 
-    if (!cliFlags[CliFlagName.Silent] || command === CliCommand.Help) {
+    if (!cliFlags[CliFlagName.Silent] || command === CliCommandName.Help) {
         if (commandResult.stdout) {
             console.info(commandResult.stdout);
         }

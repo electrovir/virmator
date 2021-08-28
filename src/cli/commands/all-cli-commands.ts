@@ -1,8 +1,9 @@
 import {getEnumTypedValues, getObjectTypedKeys} from '../../augments/object';
 import {packageName} from '../../package-name';
 import {Color} from '../cli-util/cli-color';
+import {CliCommandName} from '../cli-util/cli-command-name';
 import {CliFlagName, CliFlags, flagDescriptions} from '../cli-util/cli-flags';
-import {CliCommand, CliCommandImplementation, CliCommandResult} from './cli-command';
+import {CliCommandImplementation, CliCommandResult} from './cli-command';
 import {compileImplementation} from './implementations/compile.command';
 import {formatImplementation} from './implementations/format.command';
 import {spellcheckCommandImplementation} from './implementations/spellcheck.command';
@@ -10,7 +11,7 @@ import {testCommandImplementation} from './implementations/test.command';
 import {updateAllConfigsCommandImplementation} from './implementations/update-all-configs.command';
 import {updateBareConfigsCommandImplementation} from './implementations/update-bare-configs.command';
 
-function createUnImplementedCommand(commandName: CliCommand): CliCommandImplementation {
+function createUnImplementedCommand(commandName: CliCommandName): CliCommandImplementation {
     return {
         commandName,
         description: 'not implemented yet',
@@ -42,7 +43,7 @@ export function getUnsupportedFlags(
  * depended on by allCliCommands.
  */
 export const helpImplementation: CliCommandImplementation = {
-    commandName: CliCommand.Help,
+    commandName: CliCommandName.Help,
     description: flagDescriptions[CliFlagName.Help],
     implementation: runHelpCommand,
     configFlagSupport: {
@@ -60,7 +61,7 @@ export function runHelpCommand(): CliCommandResult {
         })
         .join('\n        ');
 
-    const commandsMessage = getEnumTypedValues(CliCommand)
+    const commandsMessage = getEnumTypedValues(CliCommandName)
         .sort()
         .map((commandName) => {
             return `${Color.Bold}${Color.Info} ${commandName}${Color.Reset}: ${allCliCommands[
@@ -89,12 +90,12 @@ export function runHelpCommand(): CliCommandResult {
     };
 }
 
-export const allCliCommands: Readonly<Record<CliCommand, CliCommandImplementation>> = {
-    [CliCommand.Compile]: compileImplementation,
-    [CliCommand.Format]: formatImplementation,
-    [CliCommand.Help]: helpImplementation,
-    [CliCommand.SpellCheck]: spellcheckCommandImplementation,
-    [CliCommand.Test]: testCommandImplementation,
-    [CliCommand.UpdateAllConfigs]: updateAllConfigsCommandImplementation,
-    [CliCommand.UpdateBareConfigs]: updateBareConfigsCommandImplementation,
+export const allCliCommands: Readonly<Record<CliCommandName, CliCommandImplementation>> = {
+    [CliCommandName.Compile]: compileImplementation,
+    [CliCommandName.Format]: formatImplementation,
+    [CliCommandName.Help]: helpImplementation,
+    [CliCommandName.SpellCheck]: spellcheckCommandImplementation,
+    [CliCommandName.Test]: testCommandImplementation,
+    [CliCommandName.UpdateAllConfigs]: updateAllConfigsCommandImplementation,
+    [CliCommandName.UpdateBareConfigs]: updateBareConfigsCommandImplementation,
 };

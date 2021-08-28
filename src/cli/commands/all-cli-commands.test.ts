@@ -1,7 +1,8 @@
 import {testGroup} from 'test-vir';
 import {getEnumTypedValues} from '../../augments/object';
+import {CliCommandName} from '../cli-util/cli-command-name';
 import {CliFlagName, fillInCliFlags} from '../cli-util/cli-flags';
-import {CliCommand, fillInCommandInput, validateCliCommand} from './cli-command';
+import {fillInCommandInput, validateCliCommand} from './cli-command';
 
 testGroup({
     description: validateCliCommand.name,
@@ -10,14 +11,14 @@ testGroup({
             description: 'valid command names pass',
             expect: true,
             test: () => {
-                return validateCliCommand(CliCommand.Format);
+                return validateCliCommand(CliCommandName.Format);
             },
         });
         runTest({
             description: 'all valid command names pass',
             expect: true,
             test: () => {
-                return getEnumTypedValues(CliCommand).every((command) => {
+                return getEnumTypedValues(CliCommandName).every((command) => {
                     return validateCliCommand(command);
                 });
             },

@@ -1,18 +1,9 @@
 import {join, relative} from 'path';
 import {testGroup} from 'test-vir';
+import {printCommandOutput} from '../../../bash-scripting';
 import {spellcheckTestPaths} from '../../../virmator-repo-paths';
 import {fillInCliFlags} from '../../cli-util/cli-flags';
-import {CliCommandResult} from '../cli-command';
 import {runSpellcheckCommand} from './spellcheck.command';
-
-function logFailure(commandResults: CliCommandResult) {
-    console.info('stdout');
-    console.info(commandResults.stdout);
-    console.info('stderr');
-    console.info(commandResults.stderr);
-    console.error('error');
-    console.error(commandResults.error);
-}
 
 testGroup({
     description: runSpellcheckCommand.name,
@@ -28,7 +19,7 @@ testGroup({
                 });
 
                 if (!result.success) {
-                    logFailure(result);
+                    printCommandOutput(result);
                 }
 
                 return result.success;
@@ -46,7 +37,7 @@ testGroup({
                 });
 
                 if (result.success) {
-                    logFailure(result);
+                    printCommandOutput(result);
                 }
 
                 return result.success;
@@ -64,7 +55,7 @@ testGroup({
                 });
 
                 if (!commandResultNoArgs.success) {
-                    logFailure(commandResultNoArgs);
+                    printCommandOutput(commandResultNoArgs);
                 }
 
                 return commandResultNoArgs.stderr?.trim().split('\n').length;
@@ -82,7 +73,7 @@ testGroup({
                 });
 
                 if (!commandResultWithArgs.success) {
-                    logFailure(commandResultWithArgs);
+                    printCommandOutput(commandResultWithArgs);
                 }
 
                 return commandResultWithArgs.stdout?.trim().split('\n').length;
@@ -111,7 +102,7 @@ testGroup({
                 });
 
                 if (!commandResult.success) {
-                    logFailure(commandResult);
+                    printCommandOutput(commandResult);
                 }
 
                 const filtered = commandResult.stderr

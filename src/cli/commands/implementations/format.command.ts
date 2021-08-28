@@ -3,14 +3,10 @@ import {DeepWriteable} from '../../../augments/type';
 import {runBashCommand} from '../../../bash-scripting';
 import {packageName} from '../../../package-name';
 import {getBinPath} from '../../../virmator-repo-paths';
+import {CliCommandName} from '../../cli-util/cli-command-name';
 import {CliFlagName} from '../../cli-util/cli-flags';
 import {ConfigKey} from '../../config/configs';
-import {
-    CliCommand,
-    CliCommandImplementation,
-    CliCommandResult,
-    CommandFunctionInput,
-} from '../cli-command';
+import {CliCommandImplementation, CliCommandResult, CommandFunctionInput} from '../cli-command';
 
 export enum FormatOperation {
     Check = 'check',
@@ -34,7 +30,7 @@ export const defaultFormatArgs: FormatArgs = {
 export const filesMarkerArg = '--format-files' as const;
 
 export const formatImplementation: CliCommandImplementation = {
-    commandName: CliCommand.Format,
+    commandName: CliCommandName.Format,
     description: `formats source files with Prettier
             operation commands:
                 This is optional but if provided it must come first. ${FormatOperation.Write} is the default.
@@ -49,7 +45,7 @@ export const formatImplementation: CliCommandImplementation = {
                 For example, the following command will overwrite files
                 (because ${FormatOperation.Write} is the default operation) only if they have the 
                 extension ".md" or ".json":
-                    ${packageName} ${CliCommand.Format} ${filesMarkerArg} md json
+                    ${packageName} ${CliCommandName.Format} ${filesMarkerArg} md json
                 
             Prettier flags:
                 Any other arguments encountered between the operation command (if provided)
@@ -60,19 +56,19 @@ export const formatImplementation: CliCommandImplementation = {
             
             examples:
                 checks formatting for files:
-                    ${packageName} ${CliCommand.Format} ${FormatOperation.Check}
+                    ${packageName} ${CliCommandName.Format} ${FormatOperation.Check}
                 checks formatting only for .md files:
-                    ${packageName} ${CliCommand.Format} ${FormatOperation.Check} ${filesMarkerArg} md
+                    ${packageName} ${CliCommandName.Format} ${FormatOperation.Check} ${filesMarkerArg} md
                 checks formatting only for .md and .json files:
-                    ${packageName} ${CliCommand.Format} ${FormatOperation.Check} ${filesMarkerArg} md json
+                    ${packageName} ${CliCommandName.Format} ${FormatOperation.Check} ${filesMarkerArg} md json
                 fixes formatting for files:
-                    ${packageName} ${CliCommand.Format}
+                    ${packageName} ${CliCommandName.Format}
                     or
-                    ${packageName} ${CliCommand.Format} ${FormatOperation.Write}
+                    ${packageName} ${CliCommandName.Format} ${FormatOperation.Write}
                 examples with extra Prettier flags:
-                    ${packageName} ${CliCommand.Format} --ignore-path .prettierignore
-                    ${packageName} ${CliCommand.Format} ${FormatOperation.Write}  --ignore-path .prettierignore
-                    ${packageName} ${CliCommand.Format} ${FormatOperation.Write}  --ignore-path .prettierignore ${filesMarkerArg} md json`,
+                    ${packageName} ${CliCommandName.Format} --ignore-path .prettierignore
+                    ${packageName} ${CliCommandName.Format} ${FormatOperation.Write}  --ignore-path .prettierignore
+                    ${packageName} ${CliCommandName.Format} ${FormatOperation.Write}  --ignore-path .prettierignore ${filesMarkerArg} md json`,
     configKeys: [ConfigKey.Prettier],
     implementation: runFormatCommand,
     configFlagSupport: {
