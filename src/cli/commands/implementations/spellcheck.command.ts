@@ -1,4 +1,5 @@
 import {runBashCommand} from '../../../bash-scripting';
+import {getBinPath} from '../../../virmator-repo-paths';
 import {CliFlagName} from '../../cli-util/cli-flags';
 import {
     CliCommand,
@@ -16,11 +17,15 @@ export const spellcheckCommandImplementation: CliCommandImplementation = {
     },
 };
 
+const cSpellPath = getBinPath('cspell');
+
 export async function runSpellcheckCommand({
     rawArgs,
     customDir,
 }: CommandFunctionInput): Promise<CliCommandResult> {
-    const spellcheckCommand = `cspell --color "{*,.*,**/{.*,*}/**/{.*,*}}" ${rawArgs.join(' ')}`;
+    const spellcheckCommand = `${cSpellPath} --color "{*,.*,**/{.*,*}/**/{.*,*}}" ${rawArgs.join(
+        ' ',
+    )}`;
     const results = await runBashCommand(spellcheckCommand, customDir);
 
     return {

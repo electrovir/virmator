@@ -1,5 +1,6 @@
 import {interpolationSafeWindowsPath} from '../../../augments/string';
 import {runBashCommand} from '../../../bash-scripting';
+import {getBinPath} from '../../../virmator-repo-paths';
 import {CliFlagName} from '../../cli-util/cli-flags';
 import {
     CliCommand,
@@ -26,6 +27,8 @@ export const testCommandImplementation: CliCommandImplementation = {
     },
 };
 
+const testVirPath = getBinPath('test-vir');
+
 export async function runTestCommand({
     rawArgs,
     customDir,
@@ -33,7 +36,7 @@ export async function runTestCommand({
     const args: string = rawArgs.length
         ? interpolationSafeWindowsPath(rawArgs.join(' '))
         : `\"./dist/**/!(*.type).test.js\"`;
-    const testCommand = `test-vir ${args}`;
+    const testCommand = `${testVirPath} ${args}`;
     const results = await runBashCommand(testCommand, customDir);
 
     return {

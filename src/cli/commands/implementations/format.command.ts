@@ -2,6 +2,7 @@ import {isEnumValue} from '../../../augments/object';
 import {DeepWriteable} from '../../../augments/type';
 import {runBashCommand} from '../../../bash-scripting';
 import {packageName} from '../../../package-name';
+import {getBinPath} from '../../../virmator-repo-paths';
 import {CliFlagName} from '../../cli-util/cli-flags';
 import {ConfigKey} from '../../config/configs';
 import {
@@ -79,16 +80,17 @@ export const formatImplementation: CliCommandImplementation = {
     },
 };
 
+const prettierPath = getBinPath('prettier');
+
 export async function runFormatCommand({
     rawArgs,
-    cliFlags,
     customDir,
 }: CommandFunctionInput): Promise<CliCommandResult> {
     const args = extractFormatArgs(rawArgs);
 
     const operationFlag = args.operation === FormatOperation.Check ? '--check' : '--write';
 
-    const prettierCommand = `prettier --color ${args.prettierFlags.join(
+    const prettierCommand = `${prettierPath} --color ${args.prettierFlags.join(
         ' ',
     )} \"./**/*.+(${args.fileExtensions.join('|')})\" ${operationFlag}`;
 

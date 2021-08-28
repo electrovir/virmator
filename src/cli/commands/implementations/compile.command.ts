@@ -1,5 +1,6 @@
 import {runBashCommand} from '../../../bash-scripting';
 import {packageName} from '../../../package-name';
+import {getBinPath} from '../../../virmator-repo-paths';
 import {CliFlagName} from '../../cli-util/cli-flags';
 import {ConfigKey} from '../../config/configs';
 import {
@@ -26,12 +27,16 @@ export const compileImplementation: CliCommandImplementation = {
     },
 };
 
+const tscPath = getBinPath('tsc');
+
 export async function runCompileCommand({
     rawArgs,
     customDir,
 }: CommandFunctionInput): Promise<CliCommandResult> {
     const resetCommand = rawArgs.join(' ').includes('--noEmit') ? '' : 'rm -rf dist && ';
-    const compileCommand = `${resetCommand}tsc ${rawArgs.map((arg) => `"${arg}"`).join(' ')}`;
+    const compileCommand = `${resetCommand}${tscPath} ${rawArgs
+        .map((arg) => `"${arg}"`)
+        .join(' ')}`;
     const results = await runBashCommand(compileCommand, customDir);
 
     return {
