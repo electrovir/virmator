@@ -1,6 +1,7 @@
 import {existsSync} from 'fs-extra';
 import {join} from 'path';
 import {createSymLink} from '../augments/file-system';
+import {interpolationSafeWindowsPath} from '../augments/string';
 import {CliCommandName} from '../cli/cli-util/cli-command-name';
 
 export const virmatorRootDir = __dirname.replace(/(?:src|node_modules\/dist|dist).*/, '');
@@ -13,11 +14,11 @@ const virmatorNodeBin = join(virmatorRootDir, 'node_modules', '.bin');
 export function getNpmBinPath(command: string): string {
     const virmatorBinPath = join(virmatorNodeBin, command);
 
-    if (existsSync(virmatorBinPath)) {
-        return virmatorBinPath;
-    } else {
-        return join(virmatorRootDir, '..', '.bin', command);
-    }
+    const actualBinPath = existsSync(virmatorBinPath)
+        ? virmatorBinPath
+        : join(virmatorRootDir, '..', '.bin', command);
+
+    return interpolationSafeWindowsPath(actualBinPath);
 }
 
 //
