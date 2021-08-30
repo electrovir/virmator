@@ -31,6 +31,10 @@ const configFileMap: Readonly<
         virmator: join(relativeSeparateConfigsDir, '.npmignore'),
         repo: '.npmignore',
     },
+    [ConfigKey.PackageJson]: {
+        virmator: join(relativeSeparateConfigsDir, 'package.json'),
+        repo: 'package.json',
+    },
     [ConfigKey.Prettier]: '.prettierrc.js',
     [ConfigKey.PrettierIgnore]: {
         virmator: join(relativeSeparateConfigsDir, '.prettierignore'),

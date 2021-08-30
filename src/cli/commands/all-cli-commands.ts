@@ -6,6 +6,7 @@ import {CliFlagName, CliFlags, flagDescriptions} from '../cli-util/cli-flags';
 import {CliCommandImplementation, CliCommandResult} from './cli-command';
 import {compileImplementation} from './implementations/compile.command';
 import {formatImplementation} from './implementations/format.command';
+import {initCommandImplementation} from './implementations/init.command';
 import {spellcheckCommandImplementation} from './implementations/spellcheck.command';
 import {testCommandImplementation} from './implementations/test.command';
 import {updateAllConfigsCommandImplementation} from './implementations/update-all-configs.command';
@@ -95,6 +96,7 @@ export const allCliCommands: Readonly<Record<CliCommandName, CliCommandImplement
     [CliCommandName.Compile]: compileImplementation,
     [CliCommandName.Format]: formatImplementation,
     [CliCommandName.Help]: helpImplementation,
+    [CliCommandName.Init]: initCommandImplementation,
     [CliCommandName.SpellCheck]: spellcheckCommandImplementation,
     [CliCommandName.Test]: testCommandImplementation,
     [CliCommandName.UpdateAllConfigs]: updateAllConfigsCommandImplementation,

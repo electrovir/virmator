@@ -4,6 +4,7 @@ export enum BareConfigKey {
     GitHubActionsTest = 'GitHubActionsTest',
     GitIgnore = 'GitIgnore',
     NpmIgnore = 'NpmIgnore',
+    PackageJson = 'PackageJson',
     PrettierIgnore = 'PrettierIgnore',
     VsCodeSettings = 'VsCodeSettings',
 }
