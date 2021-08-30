@@ -4,7 +4,6 @@ export enum BareConfigKey {
     GitHubActionsTest = 'GitHubActionsTest',
     GitIgnore = 'GitIgnore',
     NpmIgnore = 'NpmIgnore',
-    PackageJson = 'PackageJson',
     PrettierIgnore = 'PrettierIgnore',
     VsCodeSettings = 'VsCodeSettings',
 }
@@ -14,6 +13,7 @@ export enum CommandConfigKey {
     Cspell = 'Cspell',
     Prettier = 'Prettier',
     TsConfig = 'TsConfig',
+    PackageJson = 'PackageJson',
 }
 
 export const ConfigKey = {...CommandConfigKey, ...BareConfigKey};

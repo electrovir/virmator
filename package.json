@@ -1,6 +1,6 @@
 {
     "name": "virmator",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "description": "Handle all the stuffs in one package.",
     "keywords": [],
     "homepage": "https://github.com/electrovir/virmator",
@@ -16,8 +16,6 @@
         "name": "electrovir",
         "url": "https://github.com/electrovir"
     },
-    "main": "dist/index.js",
-    "typings": "dist/index.d.ts",
     "bin": "dist/cli/cli.js",
     "scripts": {
         "compile": "rm -rf dist && tsc",
