@@ -3,5 +3,3 @@
 src
 test-repos
 scripts
-!.gitignore
-!.npmignore
