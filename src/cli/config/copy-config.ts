@@ -38,7 +38,7 @@ export async function copyConfig({
     configKey: ConfigKey;
     forceExtendableConfig: boolean;
     customDir?: string | undefined;
-}): Promise<{logs: CopyConfigLog[]; outputFilePath: string}> {
+}): Promise<{logs: CopyConfigLog[]; outputFilePath: string; didWrite: boolean}> {
     const logs: CopyConfigLog[] = [];
 
     const currentDir = process.cwd();
@@ -135,5 +135,6 @@ export async function copyConfig({
     return {
         logs,
         outputFilePath,
+        didWrite: shouldWriteConfig,
     };
 }

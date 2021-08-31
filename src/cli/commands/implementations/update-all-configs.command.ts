@@ -49,25 +49,25 @@ export async function runUpdateAllConfigsCommand({
     await Promise.all(
         configFilesToCopy.map(async (configKey) => {
             try {
-                const writtenFile = (
-                    await copyConfig({
-                        configKey,
-                        forceExtendableConfig:
-                            cliFlags[CliFlagName.ExtendableConfig] && isExtendableConfig(configKey),
-                        customDir,
-                    })
-                ).outputFilePath;
+                const {outputFilePath, didWrite} = await copyConfig({
+                    configKey,
+                    forceExtendableConfig:
+                        cliFlags[CliFlagName.ExtendableConfig] && isExtendableConfig(configKey),
+                    customDir,
+                });
 
-                if (!existsSync(writtenFile)) {
+                if (!existsSync(outputFilePath)) {
                     throw new Error(
-                        `Tried to write config file but it didn't actually get written: ${writtenFile}`,
+                        `Tried to write config file but it didn't actually get written: ${outputFilePath}`,
                     );
                 }
 
-                writtenFiles.push({
-                    key: configKey,
-                    path: writtenFile,
-                });
+                if (didWrite) {
+                    writtenFiles.push({
+                        key: configKey,
+                        path: outputFilePath,
+                    });
+                }
             } catch (error) {
                 errors.push(error);
                 failedFiles.push(configKey);
@@ -87,13 +87,15 @@ export async function runUpdateAllConfigsCommand({
             })
             .join('\n'),
         success: !errors.length,
-        error: new Error(
-            `Failed to write config files for the following reasons: ${errors
-                .map((error, index) => {
-                    return `${failedFiles[index]} failed: ${String(error)}`;
-                })
-                .join('\n')}`,
-        ),
+        error: errors.length
+            ? new Error(
+                  `Failed to write config files for the following reasons: ${errors
+                      .map((error, index) => {
+                          return `${failedFiles[index]} failed: ${String(error)}`;
+                      })
+                      .join('\n')}`,
+              )
+            : undefined,
     };
 }
 
