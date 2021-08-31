@@ -8,8 +8,15 @@ export function getEnumTypedValues<T>(input: T): T[keyof T][] {
     return keys.map((key) => input[key]);
 }
 
-export function isEnumValue<T extends object>(input: any, checkEnum: T): input is T[keyof T] {
-    return getEnumTypedValues(checkEnum).includes(input);
+export function isEnumValue<T extends object>(input: unknown, checkEnum: T): input is T[keyof T] {
+    return getEnumTypedValues(checkEnum).includes(input as T[keyof T]);
+}
+
+export function filterToEnumValues<T extends object>(
+    inputs: unknown[],
+    checkEnum: T,
+): T[keyof T][] {
+    return inputs.filter((input): input is T[keyof T] => isEnumValue(input, checkEnum));
 }
 
 export function getObjectTypedKeys<T>(input: T): (keyof T)[] {

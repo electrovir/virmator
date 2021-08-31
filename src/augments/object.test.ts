@@ -1,5 +1,6 @@
 import {testGroup} from 'test-vir';
 import {
+    filterToEnumValues,
     getEnumTypedKeys,
     getEnumTypedValues,
     getObjectTypedKeys,
@@ -101,6 +102,53 @@ testGroup({
             ],
             test: () => {
                 return getObjectTypedValues(greekNames);
+            },
+        });
+    },
+});
+
+testGroup({
+    description: filterToEnumValues.name,
+    tests: (runTest) => {
+        enum TestEnum {
+            A = 'a',
+            B = 'b',
+            C = 'c',
+        }
+
+        runTest({
+            description: 'empty input results in empty output',
+            expect: [],
+            test: () => {
+                return filterToEnumValues([], TestEnum);
+            },
+        });
+
+        runTest({
+            description: 'excludes invalid enum values',
+            expect: [],
+            test: () => {
+                return filterToEnumValues(['derby', 'who', 'done', 'it'], TestEnum);
+            },
+        });
+
+        const validValuesTest = [TestEnum.A, TestEnum.B, TestEnum.C];
+        runTest({
+            description: 'includes valid enum values',
+            expect: validValuesTest,
+            test: () => {
+                return filterToEnumValues(validValuesTest, TestEnum);
+            },
+        });
+
+        runTest({
+            description: 'output order matches input order',
+            expect: [TestEnum.C, TestEnum.B, TestEnum.A],
+            test: () => {
+                return filterToEnumValues(
+                    ['what', TestEnum.C, 'who', 'where', 'why', TestEnum.B, TestEnum.A],
+                    TestEnum,
+                );
             },
         });
     },

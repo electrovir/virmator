@@ -6,10 +6,7 @@ import {updateBareConfigsTestPaths} from '../../../file-paths/virmator-repo-path
 import {fillInCliFlags} from '../../cli-util/cli-flags';
 import {BareConfigKey} from '../../config/config-key';
 import {getRepoConfigFilePath} from '../../config/config-paths';
-import {
-    extractUpdateBareConfigsArgs,
-    runUpdateBareConfigsCommand,
-} from './update-bare-configs.command';
+import {runUpdateBareConfigsCommand} from './update-bare-configs.command';
 
 testGroup({
     description: runUpdateBareConfigsCommand.name,
@@ -124,59 +121,6 @@ testGroup({
                         return false;
                     }),
                 ];
-            },
-        });
-    },
-});
-
-testGroup({
-    description: extractUpdateBareConfigsArgs.name,
-    tests: (runTest) => {
-        runTest({
-            description: 'empty args array results in config files array',
-            expect: [],
-            test: () => {
-                return extractUpdateBareConfigsArgs([]);
-            },
-        });
-
-        runTest({
-            description: 'excludes strings that are not valid config files',
-            expect: [],
-            test: () => {
-                return extractUpdateBareConfigsArgs(['abcdef', 'quick', 'eat the tofu']);
-            },
-        });
-
-        runTest({
-            description: 'includes valid config file strings',
-            expect: [BareConfigKey.GitIgnore, BareConfigKey.NpmIgnore],
-            test: () => {
-                return extractUpdateBareConfigsArgs([
-                    'abcdef',
-                    'quick',
-                    'eat the tofu',
-                    BareConfigKey.GitIgnore,
-                    BareConfigKey.NpmIgnore,
-                ]);
-            },
-        });
-
-        runTest({
-            description: 'output is sorted',
-            expect: [
-                BareConfigKey.GitHubActionsTest,
-                BareConfigKey.GitIgnore,
-                BareConfigKey.NpmIgnore,
-            ],
-            test: () => {
-                return extractUpdateBareConfigsArgs([
-                    'quick',
-                    'eat the tofu',
-                    BareConfigKey.GitIgnore,
-                    BareConfigKey.NpmIgnore,
-                    BareConfigKey.GitHubActionsTest,
-                ]);
             },
         });
     },
