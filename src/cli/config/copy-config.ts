@@ -4,7 +4,8 @@ import {writeFileAndDir} from '../../augments/file-system';
 import {ConfigFileError} from '../../errors/config-file-error';
 import {CliFlagName} from '../cli-util/cli-flags';
 import {ConfigKey} from './config-key';
-import {getRepoConfigFilePath, readVirmatorConfigFile} from './config-paths';
+import {getRepoConfigFilePath} from './config-paths';
+import {readVirmatorConfigFile} from './config-read';
 import {
     getExtendableBaseConfigName,
     isConfigExtending,

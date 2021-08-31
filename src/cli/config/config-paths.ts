@@ -1,4 +1,3 @@
-import {readFile, writeFile} from 'fs-extra';
 import {join} from 'path';
 import {
     extenderConfigsDir,
@@ -71,19 +70,4 @@ export function getVirmatorConfigFilePath(configKey: ConfigKey, extender = false
     const basePath = extender ? extenderConfigsDir : virmatorRootDir;
 
     return join(basePath, relativePath);
-}
-
-export async function writeRepoConfigFile(configKey: ConfigKey, contents: string): Promise<string> {
-    const path = getRepoConfigFilePath(configKey);
-    await writeFile(path, contents);
-    return path;
-}
-
-export async function readVirmatorConfigFile(
-    configKey: ConfigKey,
-    extendable = false,
-): Promise<Buffer> {
-    const filePath = getVirmatorConfigFilePath(configKey, extendable);
-
-    return await readFile(filePath);
 }
