@@ -23,7 +23,7 @@ type FormatArgs = Required<
 
 export const defaultFormatArgs: FormatArgs = {
     operation: FormatOperation.Write,
-    prettierFlags: ['--ignore-path', '.gitignore'],
+    prettierFlags: [],
     fileExtensions: ['ts', 'json', 'html', 'css', 'md', 'js', 'yml', 'yaml'],
 } as const;
 
@@ -51,8 +51,6 @@ export const formatImplementation: CliCommandImplementation = {
                 Any other arguments encountered between the operation command (if provided)
                 and the "${filesMarkerArg}" marker are treated as extra arguments to Prettier and
                 will be passed along.
-                This defaults to just '--ignore-path .gitignore'. (Thus, by default, this command
-                will only format non-git-ignored files.)
             
             examples:
                 checks formatting for files:
