@@ -48,6 +48,10 @@ testGroup({
                     customDir: updateBareConfigsTestPaths.emptyRepo,
                 });
 
+                if (commandOutput.stderr) {
+                    console.error(commandOutput.stderr);
+                }
+
                 if (!commandOutput.success) {
                     console.error(
                         `Update bare configs command failed: ${JSON.stringify(

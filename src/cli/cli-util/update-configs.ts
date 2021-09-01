@@ -1,6 +1,7 @@
 import {existsSync} from 'fs-extra';
 import {filterToEnumValues, getEnumTypedValues} from '../../augments/object';
 import {CliCommandResult} from '../commands/cli-command';
+import {runFormatCommand} from '../commands/implementations/format.command';
 import {ConfigKey} from '../config/config-key';
 import {copyConfig} from '../config/copy-config';
 import {isExtendableConfig} from '../config/extendable-config';
@@ -49,6 +50,8 @@ export async function updateConfigs<T extends ConfigKey>(
             }
         }),
     );
+
+    await runFormatCommand({rawArgs: [], cliFlags, customDir});
 
     return {
         stdout: writtenFiles
