@@ -68,12 +68,11 @@ testGroup({
                     (accum, configKey) => {
                         const stdoutHasKey = commandOutput.stdout?.includes(configKey);
                         const stderrHasKey = commandOutput.stderr?.includes(configKey);
-                        const configWasWritten = existsSync(
-                            join(
-                                updateBareConfigsTestPaths.emptyRepo,
-                                getRepoConfigFilePath(configKey),
-                            ),
+                        const writtenPath = join(
+                            updateBareConfigsTestPaths.emptyRepo,
+                            getRepoConfigFilePath(configKey),
                         );
+                        const configWasWritten = existsSync(writtenPath);
 
                         const writtenSuccessfully =
                             stdoutHasKey && !stderrHasKey && configWasWritten;
@@ -82,6 +81,7 @@ testGroup({
                             accum.writtenConfigs.push(configKey);
                         } else {
                             console.error({
+                                writtenPath,
                                 configKey,
                                 stdoutHasKey,
                                 stderrHasKey,
