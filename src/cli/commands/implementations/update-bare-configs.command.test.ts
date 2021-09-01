@@ -61,6 +61,7 @@ testGroup({
                         )}`,
                     );
                     console.error(commandOutput.error);
+                    throw commandOutput.error;
                 }
 
                 const {writtenConfigs, invalidConfigs} = allBareConfigKeys.reduce(
@@ -108,7 +109,7 @@ testGroup({
                     }),
                 );
 
-                return [
+                const failures = [
                     ...invalidConfigs,
                     ...writtenConfigs.filter((writtenConfig, index) => {
                         if (alreadyExistingByKey.includes(writtenConfig)) {
@@ -125,6 +126,12 @@ testGroup({
                         return false;
                     }),
                 ];
+
+                if (failures.length) {
+                    console.log(JSON.stringify(commandOutput, null, 4));
+                }
+
+                return failures;
             },
         });
     },
