@@ -5,7 +5,7 @@ import {ConfigFileError} from '../../errors/config-file-error';
 import {CliFlagName} from '../cli-util/cli-flags';
 import {ConfigKey} from './config-key';
 import {getRepoConfigFilePath} from './config-paths';
-import {readVirmatorConfigFile} from './config-read';
+import {readUpdatedVirmatorConfigFile} from './config-read';
 import {
     getExtendableBaseConfigName,
     isConfigExtending,
@@ -49,7 +49,9 @@ export async function copyConfig({
     let outputFilePath: string;
     let shouldWriteConfig: boolean;
 
-    const virmatorConfigContents = (await readVirmatorConfigFile(configKey, false)).toString();
+    const virmatorConfigContents = (
+        await readUpdatedVirmatorConfigFile(configKey, false)
+    ).toString();
 
     const repoConfigPath = resolve(getRepoConfigFilePath(configKey));
     const repoConfigExists = existsSync(repoConfigPath);
@@ -70,7 +72,7 @@ export async function copyConfig({
 
         if (!repoConfigExists) {
             // if extender config file does not exist, create it
-            const extenderContents = await readVirmatorConfigFile(configKey, true);
+            const extenderContents = await readUpdatedVirmatorConfigFile(configKey, true);
             await writeFileAndDir(repoConfigPath, extenderContents);
         }
 
