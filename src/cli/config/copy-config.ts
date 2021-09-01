@@ -1,5 +1,5 @@
 import {existsSync, readFile} from 'fs-extra';
-import {resolve} from 'path';
+import {join} from 'path';
 import {writeFileAndDir} from '../../augments/file-system';
 import {ConfigFileError} from '../../errors/config-file-error';
 import {CliFlagName} from '../cli-util/cli-flags';
@@ -33,18 +33,13 @@ const ifUndesiredMessage = `If this is undesired, use the ${CliFlagName.NoWriteC
 export async function copyConfig({
     configKey,
     forceExtendableConfig,
-    customDir,
+    customDir = process.cwd(),
 }: {
     configKey: ConfigKey;
     forceExtendableConfig: boolean;
     customDir?: string | undefined;
 }): Promise<{logs: CopyConfigLog[]; outputFilePath: string; didWrite: boolean}> {
     const logs: CopyConfigLog[] = [];
-
-    const currentDir = process.cwd();
-    if (customDir) {
-        process.chdir(customDir);
-    }
 
     let outputFilePath: string;
     let shouldWriteConfig: boolean;
@@ -53,7 +48,7 @@ export async function copyConfig({
         await readUpdatedVirmatorConfigFile(configKey, false)
     ).toString();
 
-    const repoConfigPath = resolve(getRepoConfigFilePath(configKey));
+    const repoConfigPath = join(customDir, getRepoConfigFilePath(configKey));
     const repoConfigExists = existsSync(repoConfigPath);
     const shouldExtend =
         (repoConfigExists && (await isConfigFileExtending(configKey))) || forceExtendableConfig;
@@ -76,7 +71,7 @@ export async function copyConfig({
             await writeFileAndDir(repoConfigPath, extenderContents);
         }
 
-        const repoExtendableConfigPath = resolve(getExtendableBaseConfigName(configKey));
+        const repoExtendableConfigPath = join(customDir, getExtendableBaseConfigName(configKey));
         const repoExtendableConfigExists = existsSync(repoExtendableConfigPath);
 
         if (repoExtendableConfigExists) {
@@ -128,10 +123,6 @@ export async function copyConfig({
 
     if (shouldWriteConfig) {
         await writeFileAndDir(outputFilePath, virmatorConfigContents);
-    }
-
-    if (customDir) {
-        process.chdir(currentDir);
     }
 
     return {
