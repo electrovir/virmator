@@ -1,7 +1,28 @@
 import {existsSync, readFile} from 'fs-extra';
+import {join} from 'path';
 import {ConfigKey} from './config-key';
 import {getRepoConfigFilePath, getVirmatorConfigFilePath} from './config-paths';
 import {createDefaultPackageJson} from './create-default-package-json';
+import {getExtendableBaseConfigName} from './extendable-config';
+
+export async function readRepoConfigFile(
+    configKey: ConfigKey,
+    extendable = false,
+    customDir: string = process.cwd(),
+): Promise<string> {
+    const configPath = join(
+        customDir,
+        extendable ? getExtendableBaseConfigName(configKey) : getRepoConfigFilePath(configKey),
+    );
+    const fileContents = (await readFile(configPath)).toString();
+
+    if (configKey === ConfigKey.PackageJson) {
+        // condense package.json down to raw pre-formatted json output
+        return JSON.stringify(JSON.parse(fileContents));
+    } else {
+        return fileContents;
+    }
+}
 
 /**
  * Read the virmator copy of a config file and, in special cases where the configs cannot be

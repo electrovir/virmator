@@ -31,7 +31,7 @@ export async function cli(rawArgs: string[]) {
         const exitCode = commandResult.exitCode ?? (commandResult.success ? 0 : 1);
 
         if (cliCommand !== CliCommandName.Help && !flags[CliFlagName.Silent]) {
-            console.log(getResultMessage(cliCommand, commandResult.success));
+            console.info(getResultMessage(cliCommand, commandResult.success));
         }
 
         process.exit(exitCode);

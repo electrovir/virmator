@@ -54,11 +54,13 @@ export async function updateConfigs<T extends ConfigKey>(
     await runFormatCommand({rawArgs: [], cliFlags, customDir});
 
     return {
-        stdout: writtenFiles
-            .map((writtenFile) => {
-                return `Wrote ${writtenFile.key} to ${writtenFile.path}`;
-            })
-            .join('\n'),
+        stdout: writtenFiles.length
+            ? writtenFiles
+                  .map((writtenFile) => {
+                      return `Wrote ${writtenFile.key} to ${writtenFile.path}`;
+                  })
+                  .join('\n')
+            : 'All configs up to date.',
         stderr: failedFiles
             .map((failedFile) => {
                 return `Failed to write config file for ${failedFile}`;

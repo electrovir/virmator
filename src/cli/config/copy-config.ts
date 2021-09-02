@@ -1,11 +1,11 @@
-import {existsSync, readFile} from 'fs-extra';
+import {existsSync} from 'fs-extra';
 import {join} from 'path';
 import {writeFileAndDir} from '../../augments/file-system';
 import {ConfigFileError} from '../../errors/config-file-error';
 import {CliFlagName} from '../cli-util/cli-flags';
 import {ConfigKey} from './config-key';
 import {getRepoConfigFilePath} from './config-paths';
-import {readUpdatedVirmatorConfigFile} from './config-read';
+import {readRepoConfigFile, readUpdatedVirmatorConfigFile} from './config-read';
 import {
     getExtendableBaseConfigName,
     isConfigExtending,
@@ -17,13 +17,12 @@ export type CopyConfigLog = {
     log: string;
 };
 
-async function isConfigFileExtending(configKey: ConfigKey): Promise<boolean> {
+async function isConfigFileExtending(configKey: ConfigKey, customDir: string): Promise<boolean> {
     if (!isExtendableConfig(configKey)) {
         return false;
     }
 
-    const repoConfigPath = getRepoConfigFilePath(configKey);
-    const fileContents = (await readFile(repoConfigPath)).toString();
+    const fileContents = await readRepoConfigFile(configKey, false, customDir);
 
     return isConfigExtending(configKey, fileContents);
 }
@@ -51,7 +50,8 @@ export async function copyConfig({
     const repoConfigPath = join(customDir, getRepoConfigFilePath(configKey));
     const repoConfigExists = existsSync(repoConfigPath);
     const shouldExtend =
-        (repoConfigExists && (await isConfigFileExtending(configKey))) || forceExtendableConfig;
+        (repoConfigExists && (await isConfigFileExtending(configKey, customDir))) ||
+        forceExtendableConfig;
 
     if (!repoConfigExists) {
         logs.push({
@@ -76,9 +76,11 @@ export async function copyConfig({
 
         if (repoExtendableConfigExists) {
             // if the extendable config already exists, check if we need to update it
-            const repoExtendableConfigContents = (
-                await readFile(repoExtendableConfigPath)
-            ).toString();
+            const repoExtendableConfigContents = await readRepoConfigFile(
+                configKey,
+                true,
+                customDir,
+            );
 
             if (repoExtendableConfigContents !== virmatorConfigContents) {
                 // only write when we need to update the file
@@ -103,7 +105,7 @@ export async function copyConfig({
         outputFilePath = repoExtendableConfigPath;
     } else {
         if (repoConfigExists) {
-            const currentConfigPathContents = (await readFile(repoConfigPath)).toString();
+            const currentConfigPathContents = await readRepoConfigFile(configKey, false, customDir);
             // only update the config file when they differ
             if (currentConfigPathContents !== virmatorConfigContents) {
                 logs.push({
