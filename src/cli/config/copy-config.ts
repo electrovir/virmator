@@ -43,9 +43,7 @@ export async function copyConfig({
     let outputFilePath: string;
     let shouldWriteConfig: boolean;
 
-    const virmatorConfigContents = (
-        await readUpdatedVirmatorConfigFile(configKey, false)
-    ).toString();
+    const virmatorConfigContents = await readUpdatedVirmatorConfigFile(configKey, false);
 
     const repoConfigPath = join(customDir, getRepoConfigFilePath(configKey));
     const repoConfigExists = existsSync(repoConfigPath);

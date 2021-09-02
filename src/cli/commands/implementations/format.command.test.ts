@@ -1,7 +1,7 @@
 import {readFile, writeFile} from 'fs-extra';
 import {testGroup} from 'test-vir';
 import {printCommandOutput} from '../../../augments/bash';
-import {testFormatPaths} from '../../../file-paths/virmator-repo-paths';
+import {testFormatPaths} from '../../../file-paths/virmator-test-repos-paths';
 import {CliFlagName, fillInCliFlags} from '../../cli-util/cli-flags';
 import {
     defaultFormatArgs,

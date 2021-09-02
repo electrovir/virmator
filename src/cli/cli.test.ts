@@ -5,12 +5,12 @@ import {runBashCommand} from '../augments/bash';
 import {getObjectTypedKeys} from '../augments/object';
 import {interpolationSafeWindowsPath} from '../augments/string';
 import {VirmatorCliCommandError} from '../errors/cli-command-error';
+import {virmatorDistDir} from '../file-paths/virmator-repo-paths';
 import {
     createNodeModulesSymLinkForTests,
     testCompilePaths,
     testFormatPaths,
-    virmatorDistDir,
-} from '../file-paths/virmator-repo-paths';
+} from '../file-paths/virmator-test-repos-paths';
 import {CliCommandName} from './cli-util/cli-command-name';
 import {CliFlagName} from './cli-util/cli-flags';
 import {cliErrorMessages, getResultMessage} from './cli-util/cli-messages';

@@ -1,7 +1,7 @@
 import {join, relative} from 'path';
 import {testGroup} from 'test-vir';
 import {printCommandOutput} from '../../../augments/bash';
-import {spellcheckTestPaths} from '../../../file-paths/virmator-repo-paths';
+import {spellcheckTestPaths} from '../../../file-paths/virmator-test-repos-paths';
 import {fillInCliFlags} from '../../cli-util/cli-flags';
 import {runSpellcheckCommand} from './spellcheck.command';
 

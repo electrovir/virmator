@@ -4,7 +4,7 @@ import {testGroup} from 'test-vir';
 import {
     createNodeModulesSymLinkForTests,
     testTestPaths,
-} from '../../../file-paths/virmator-repo-paths';
+} from '../../../file-paths/virmator-test-repos-paths';
 import {fillInCliFlags} from '../../cli-util/cli-flags';
 import {runCompileCommand} from './compile.command';
 import {runTestCommand} from './test.command';

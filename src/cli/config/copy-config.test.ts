@@ -2,11 +2,11 @@ import {existsSync} from 'fs';
 import {remove} from 'fs-extra';
 import {join} from 'path';
 import {testGroup} from 'test-vir';
+import {extenderConfigsDir} from '../../file-paths/virmator-repo-paths';
 import {
     createNodeModulesSymLinkForTests,
-    extenderConfigsDir,
     testFormatPaths,
-} from '../../file-paths/virmator-repo-paths';
+} from '../../file-paths/virmator-test-repos-paths';
 import {ConfigKey} from './config-key';
 import {getRepoConfigFilePath} from './config-paths';
 import {copyConfig} from './copy-config';
