@@ -15,8 +15,23 @@ export function isEnumValue<T extends object>(input: unknown, checkEnum: T): inp
 export function filterToEnumValues<T extends object>(
     inputs: unknown[],
     checkEnum: T,
+    caseInsensitive = false,
 ): T[keyof T][] {
-    return inputs.filter((input): input is T[keyof T] => isEnumValue(input, checkEnum));
+    if (caseInsensitive) {
+        return inputs.reduce((accum: T[keyof T][], currentInput) => {
+            const matchedEnumValue = getEnumTypedValues(checkEnum).find((actualEnumValue) => {
+                return String(actualEnumValue).toUpperCase() === String(currentInput).toUpperCase();
+            });
+
+            if (matchedEnumValue) {
+                return accum.concat(matchedEnumValue);
+            } else {
+                return accum;
+            }
+        }, []);
+    } else {
+        return inputs.filter((input): input is T[keyof T] => isEnumValue(input, checkEnum));
+    }
 }
 
 export function getObjectTypedKeys<T>(input: T): (keyof T)[] {

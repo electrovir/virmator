@@ -142,6 +142,29 @@ testGroup({
         });
 
         runTest({
+            description: 'works with case insensitivity',
+            expect: [Planet.Mercury, Planet.Venus, Planet.Earth],
+            test: () => {
+                return filterToEnumValues(
+                    ['MeRcUrY', 'vEnUs', 'EARth', 'MOON', 'luNA', 'not A planET'],
+                    Planet,
+                    true,
+                );
+            },
+        });
+
+        runTest({
+            description: "does not do case insensitivity when it's not explicitly turned on",
+            expect: [Planet.Venus],
+            test: () => {
+                return filterToEnumValues(
+                    ['MeRcUrY', Planet.Venus, 'EARth', 'MOON', 'luNA', 'not A planET'],
+                    Planet,
+                );
+            },
+        });
+
+        runTest({
             description: 'output order matches input order',
             expect: [TestEnum.C, TestEnum.B, TestEnum.A],
             test: () => {
