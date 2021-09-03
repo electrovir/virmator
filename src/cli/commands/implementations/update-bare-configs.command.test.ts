@@ -45,7 +45,7 @@ testGroup({
                 const commandOutput = await runUpdateBareConfigsCommand({
                     rawArgs: [],
                     cliFlags: fillInCliFlags(),
-                    customDir: updateBareConfigsTestPaths.emptyRepo,
+                    repoDir: updateBareConfigsTestPaths.emptyRepo,
                 });
 
                 if (commandOutput.stderr) {

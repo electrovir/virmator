@@ -1,3 +1,4 @@
+import {repoRootDir} from '../../file-paths/repo-paths';
 import {CliCommandName} from '../cli-util/cli-command-name';
 import {CliFlagName, CliFlags, fillInCliFlags} from '../cli-util/cli-flags';
 import {CommandConfigKey} from '../config/config-key';
@@ -24,29 +25,32 @@ function extractRawFlags(
     }
 }
 
+const defaultCommandFunctionInput: Readonly<CommandFunctionInput> = {
+    rawArgs: [],
+    cliFlags: fillInCliFlags(),
+    repoDir: repoRootDir,
+};
+
 export function fillInCommandInput(
     commandInput?: PartialCommandFunctionInput | Partial<CommandFunctionInput>,
 ): CommandFunctionInput {
     if (!commandInput) {
-        return {
-            rawArgs: [],
-            cliFlags: fillInCliFlags(),
-        };
+        return defaultCommandFunctionInput;
     }
 
     const rawCliFlags = extractRawFlags(commandInput);
 
     return {
-        rawArgs: commandInput?.rawArgs || [],
+        rawArgs: commandInput?.rawArgs || defaultCommandFunctionInput.rawArgs,
         cliFlags: fillInCliFlags(rawCliFlags),
-        customDir: commandInput.customDir,
+        repoDir: commandInput.repoDir || defaultCommandFunctionInput.repoDir,
     };
 }
 
 export type CommandFunctionInput = Readonly<{
     rawArgs: string[];
     cliFlags: Required<Readonly<CliFlags>>;
-    customDir?: string | undefined;
+    repoDir: string;
 }>;
 
 export type PartialCommandFunctionInput = Omit<Partial<CommandFunctionInput>, 'cliFlags'> & {

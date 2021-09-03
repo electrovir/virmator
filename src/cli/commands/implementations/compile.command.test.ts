@@ -16,7 +16,7 @@ testGroup({
                 results.push(existsSync(testCompilePaths.compiledValidSourceFile));
                 const commandResult = await runCompileCommand(
                     fillInCommandInput({
-                        customDir: testCompilePaths.validRepo,
+                        repoDir: testCompilePaths.validRepo,
                     }),
                 );
                 results.push(commandResult.success);
@@ -37,7 +37,7 @@ testGroup({
                 const commandResult = await runCompileCommand(
                     fillInCommandInput({
                         cliFlags: fillInCliFlags({[CliFlagName.Silent]: true}),
-                        customDir: testCompilePaths.invalidRepo,
+                        repoDir: testCompilePaths.invalidRepo,
                     }),
                 );
                 results.push(commandResult.success);
@@ -58,7 +58,7 @@ testGroup({
                 const commandResult = await runCompileCommand(
                     fillInCommandInput({
                         rawArgs: ['--noEmit'],
-                        customDir: testCompilePaths.validRepo,
+                        repoDir: testCompilePaths.validRepo,
                     }),
                 );
                 results.push(commandResult.success);

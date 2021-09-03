@@ -27,13 +27,13 @@ const tscPath = getNpmBinPath('tsc');
 
 export async function runCompileCommand({
     rawArgs,
-    customDir,
+    repoDir,
 }: CommandFunctionInput): Promise<CliCommandResult> {
     const resetCommand = rawArgs.join(' ').includes('--noEmit') ? '' : 'rm -rf dist && ';
     const compileCommand = `${resetCommand}${tscPath} --pretty ${rawArgs
         .map((arg) => `"${arg}"`)
         .join(' ')}`;
-    const results = await runBashCommand(compileCommand, customDir);
+    const results = await runBashCommand(compileCommand, repoDir);
 
     return {
         success: !results.error,

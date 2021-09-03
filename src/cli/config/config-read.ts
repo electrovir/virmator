@@ -1,5 +1,6 @@
 import {existsSync, readFile} from 'fs-extra';
 import {join} from 'path';
+import {format, getFileInfo, resolveConfig} from 'prettier';
 import {ConfigKey} from './config-key';
 import {getRepoConfigFilePath, getVirmatorConfigFilePath} from './config-paths';
 import {createDefaultPackageJson} from './create-default-package-json';
@@ -8,20 +9,15 @@ import {getExtendableBaseConfigName} from './extendable-config';
 export async function readRepoConfigFile(
     configKey: ConfigKey,
     extendable = false,
-    customDir: string = process.cwd(),
+    repoDir: string,
 ): Promise<string> {
     const configPath = join(
-        customDir,
+        repoDir,
         extendable ? getExtendableBaseConfigName(configKey) : getRepoConfigFilePath(configKey),
     );
     const fileContents = (await readFile(configPath)).toString();
 
-    if (configKey === ConfigKey.PackageJson) {
-        // condense package.json down to raw pre-formatted json output
-        return JSON.stringify(JSON.parse(fileContents));
-    } else {
-        return fileContents;
-    }
+    return fileContents;
 }
 
 /**
@@ -30,17 +26,45 @@ export async function readRepoConfigFile(
  */
 export async function readUpdatedVirmatorConfigFile(
     configKey: ConfigKey,
+    repoDir: string,
+    extendable: boolean,
+): Promise<string> {
+    const updatedVirmatorConfigContents = await updateVirmatorConfig(
+        configKey,
+        extendable,
+        repoDir,
+    );
+    const filePath = getVirmatorConfigFilePath(configKey, extendable);
+
+    const prettierInfo = await getFileInfo(filePath);
+    if (prettierInfo.inferredParser) {
+        const prettierConfig = await resolveConfig(
+            getRepoConfigFilePath(ConfigKey.Prettier, false),
+        );
+        const formatted = format(updatedVirmatorConfigContents, {
+            ...prettierConfig,
+            filepath: filePath,
+        });
+
+        return formatted;
+    } else {
+        return updatedVirmatorConfigContents;
+    }
+}
+
+async function updateVirmatorConfig(
+    configKey: ConfigKey,
     extendable = false,
+    repoDir: string,
 ): Promise<string> {
     const virmatorConfigContents = await readVirmatorConfigFile(configKey, extendable);
-
     switch (configKey) {
         // in these special cases we want to merge the config files with what's already in the repo
         case ConfigKey.NpmIgnore:
         case ConfigKey.GitIgnore:
         case ConfigKey.PrettierIgnore:
             if (!extendable) {
-                const repoPath = getRepoConfigFilePath(configKey, extendable);
+                const repoPath = join(repoDir, getRepoConfigFilePath(configKey, extendable));
 
                 if (existsSync(repoPath)) {
                     const repoConfigContents = (await readFile(repoPath)).toString();
@@ -56,14 +80,14 @@ export async function readUpdatedVirmatorConfigFile(
             }
         case ConfigKey.PackageJson:
             if (!extendable) {
-                const repoPath = getRepoConfigFilePath(ConfigKey.PackageJson);
+                const repoPath = join(repoDir, getRepoConfigFilePath(ConfigKey.PackageJson));
                 const repoPackageJson: Partial<{scripts: object; name: string}> = existsSync(
                     repoPath,
                 )
                     ? JSON.parse((await readFile(repoPath)).toString())
                     : {};
 
-                const defaultPackageJson = await createDefaultPackageJson();
+                const defaultPackageJson = await createDefaultPackageJson(repoDir);
 
                 return JSON.stringify({
                     ...defaultPackageJson,

@@ -15,7 +15,7 @@ testGroup({
                 const result = await runSpellcheckCommand({
                     rawArgs: [],
                     cliFlags: fillInCliFlags(),
-                    customDir: spellcheckTestPaths.validRepo,
+                    repoDir: spellcheckTestPaths.validRepo,
                 });
 
                 if (!result.success) {
@@ -33,7 +33,7 @@ testGroup({
                 const result = await runSpellcheckCommand({
                     rawArgs: [],
                     cliFlags: fillInCliFlags(),
-                    customDir: spellcheckTestPaths.invalidRepo,
+                    repoDir: spellcheckTestPaths.invalidRepo,
                 });
 
                 if (result.success) {
@@ -51,7 +51,7 @@ testGroup({
                 const commandResultNoArgs = await runSpellcheckCommand({
                     rawArgs: [],
                     cliFlags: fillInCliFlags(),
-                    customDir: spellcheckTestPaths.validRepo,
+                    repoDir: spellcheckTestPaths.validRepo,
                 });
 
                 if (!commandResultNoArgs.success) {
@@ -69,7 +69,7 @@ testGroup({
                 const commandResultWithArgs = await runSpellcheckCommand({
                     rawArgs: ['--no-progress'],
                     cliFlags: fillInCliFlags(),
-                    customDir: spellcheckTestPaths.validRepo,
+                    repoDir: spellcheckTestPaths.validRepo,
                 });
 
                 if (!commandResultWithArgs.success) {
@@ -98,7 +98,7 @@ testGroup({
                 const commandResult = await runSpellcheckCommand({
                     rawArgs: ['--no-color'],
                     cliFlags: fillInCliFlags(),
-                    customDir: spellcheckTestPaths.hiddenStuffRepo,
+                    repoDir: spellcheckTestPaths.hiddenStuffRepo,
                 });
 
                 if (!commandResult.success) {

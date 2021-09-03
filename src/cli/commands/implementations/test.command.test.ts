@@ -13,16 +13,16 @@ testGroup({
     description: runTestCommand.name,
     tests: (runTest) => {
         async function testTestCommand(
-            customDir: string,
+            repoDir: string,
             successCondition: boolean,
             args: string[] = [],
         ) {
-            const symlinkPath = await createNodeModulesSymLinkForTests(customDir);
+            const symlinkPath = await createNodeModulesSymLinkForTests(repoDir);
 
             const compileResults = await runCompileCommand({
                 rawArgs: [],
                 cliFlags: fillInCliFlags(),
-                customDir,
+                repoDir,
             });
 
             if (compileResults.error || compileResults.stderr) {
@@ -35,15 +35,15 @@ testGroup({
             const results = await runTestCommand({
                 rawArgs: args,
                 cliFlags: fillInCliFlags(),
-                customDir,
+                repoDir,
             });
 
             await remove(symlinkPath);
-            await remove(join(customDir, 'dist'));
+            await remove(join(repoDir, 'dist'));
 
             if (results.success !== successCondition) {
                 console.info(
-                    `Test command output for ${JSON.stringify({customDir, successCondition})}`,
+                    `Test command output for ${JSON.stringify({repoDir, successCondition})}`,
                 );
                 console.info(results.stdout);
                 console.error(results.stderr);

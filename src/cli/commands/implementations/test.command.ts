@@ -27,13 +27,13 @@ const testVirPath = getNpmBinPath('test-vir');
 
 export async function runTestCommand({
     rawArgs,
-    customDir,
+    repoDir,
 }: CommandFunctionInput): Promise<CliCommandResult> {
     const args: string = rawArgs.length
         ? interpolationSafeWindowsPath(rawArgs.join(' '))
         : `\"./dist/**/!(*.type).test.js\"`;
     const testCommand = `${testVirPath} ${args}`;
-    const results = await runBashCommand(testCommand, customDir);
+    const results = await runBashCommand(testCommand, repoDir);
 
     return {
         stdout: results.stdout,

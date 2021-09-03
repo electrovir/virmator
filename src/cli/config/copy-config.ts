@@ -17,12 +17,12 @@ export type CopyConfigLog = {
     log: string;
 };
 
-async function isConfigFileExtending(configKey: ConfigKey, customDir: string): Promise<boolean> {
+async function isConfigFileExtending(configKey: ConfigKey, repoDir: string): Promise<boolean> {
     if (!isExtendableConfig(configKey)) {
         return false;
     }
 
-    const fileContents = await readRepoConfigFile(configKey, false, customDir);
+    const fileContents = await readRepoConfigFile(configKey, false, repoDir);
 
     return isConfigExtending(configKey, fileContents);
 }
@@ -32,23 +32,23 @@ const ifUndesiredMessage = `If this is undesired, use the ${CliFlagName.NoWriteC
 export async function copyConfig({
     configKey,
     forceExtendableConfig,
-    customDir = process.cwd(),
+    repoDir,
 }: {
     configKey: ConfigKey;
     forceExtendableConfig: boolean;
-    customDir?: string | undefined;
+    repoDir: string;
 }): Promise<{logs: CopyConfigLog[]; outputFilePath: string; didWrite: boolean}> {
     const logs: CopyConfigLog[] = [];
 
     let outputFilePath: string;
     let shouldWriteConfig: boolean;
 
-    const virmatorConfigContents = await readUpdatedVirmatorConfigFile(configKey, false);
+    const virmatorConfigContents = await readUpdatedVirmatorConfigFile(configKey, repoDir, false);
 
-    const repoConfigPath = join(customDir, getRepoConfigFilePath(configKey));
+    const repoConfigPath = join(repoDir, getRepoConfigFilePath(configKey));
     const repoConfigExists = existsSync(repoConfigPath);
     const shouldExtend =
-        (repoConfigExists && (await isConfigFileExtending(configKey, customDir))) ||
+        (repoConfigExists && (await isConfigFileExtending(configKey, repoDir))) ||
         forceExtendableConfig;
 
     if (!repoConfigExists) {
@@ -65,20 +65,16 @@ export async function copyConfig({
 
         if (!repoConfigExists) {
             // if extender config file does not exist, create it
-            const extenderContents = await readUpdatedVirmatorConfigFile(configKey, true);
+            const extenderContents = await readUpdatedVirmatorConfigFile(configKey, repoDir, true);
             await writeFileAndDir(repoConfigPath, extenderContents);
         }
 
-        const repoExtendableConfigPath = join(customDir, getExtendableBaseConfigName(configKey));
+        const repoExtendableConfigPath = join(repoDir, getExtendableBaseConfigName(configKey));
         const repoExtendableConfigExists = existsSync(repoExtendableConfigPath);
 
         if (repoExtendableConfigExists) {
             // if the extendable config already exists, check if we need to update it
-            const repoExtendableConfigContents = await readRepoConfigFile(
-                configKey,
-                true,
-                customDir,
-            );
+            const repoExtendableConfigContents = await readRepoConfigFile(configKey, true, repoDir);
 
             if (repoExtendableConfigContents !== virmatorConfigContents) {
                 // only write when we need to update the file
@@ -103,7 +99,7 @@ export async function copyConfig({
         outputFilePath = repoExtendableConfigPath;
     } else {
         if (repoConfigExists) {
-            const currentConfigPathContents = await readRepoConfigFile(configKey, false, customDir);
+            const currentConfigPathContents = await readRepoConfigFile(configKey, false, repoDir);
             // only update the config file when they differ
             if (currentConfigPathContents !== virmatorConfigContents) {
                 logs.push({

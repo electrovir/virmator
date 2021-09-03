@@ -11,7 +11,7 @@ export async function updateConfigs<T extends ConfigKey>(
     rawArgs: string[],
     cliFlags: Required<Readonly<CliFlags>>,
     configKeysEnum: Record<string, T>,
-    customDir?: string,
+    repoDir: string,
 ): Promise<CliCommandResult> {
     const inputConfigFiles = filterToEnumValues(rawArgs, configKeysEnum);
     const configFilesToCopy: T[] = inputConfigFiles.length
@@ -29,7 +29,7 @@ export async function updateConfigs<T extends ConfigKey>(
                     configKey,
                     forceExtendableConfig:
                         cliFlags[CliFlagName.ExtendableConfig] && isExtendableConfig(configKey),
-                    customDir,
+                    repoDir,
                 });
 
                 if (!existsSync(outputFilePath)) {
@@ -51,7 +51,7 @@ export async function updateConfigs<T extends ConfigKey>(
         }),
     );
 
-    await runFormatCommand({rawArgs: [], cliFlags, customDir});
+    await runFormatCommand({rawArgs: [], cliFlags, repoDir});
 
     return {
         stdout: writtenFiles.length

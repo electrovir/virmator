@@ -19,12 +19,12 @@ const cSpellPath = getNpmBinPath('cspell');
 
 export async function runSpellcheckCommand({
     rawArgs,
-    customDir,
+    repoDir,
 }: CommandFunctionInput): Promise<CliCommandResult> {
     const spellcheckCommand = `${cSpellPath} --color "{*,.*,**/{.*,*}/**/{.*,*}}" ${rawArgs.join(
         ' ',
     )}`;
-    const results = await runBashCommand(spellcheckCommand, customDir);
+    const results = await runBashCommand(spellcheckCommand, repoDir);
 
     return {
         /** Stdout for cspell is always an explanation of the unknown words, when they exist. */

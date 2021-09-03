@@ -1,4 +1,5 @@
 import {testGroup} from 'test-vir';
+import {repoRootDir} from '../../file-paths/repo-paths';
 import {CliFlagName, fillInCliFlags} from '../cli-util/cli-flags';
 import {fillInCommandInput} from './cli-command';
 
@@ -7,7 +8,7 @@ testGroup({
     tests: (runTest) => {
         runTest({
             description: 'fills in empty command input',
-            expect: {cliFlags: fillInCliFlags(), rawArgs: []},
+            expect: {cliFlags: fillInCliFlags(), rawArgs: [], repoDir: repoRootDir},
             test: () => {
                 return fillInCommandInput();
             },
@@ -15,7 +16,7 @@ testGroup({
 
         runTest({
             description: 'preserves rawArgs of command input',
-            expect: {cliFlags: fillInCliFlags(), rawArgs: ['hello'], customDir: undefined},
+            expect: {cliFlags: fillInCliFlags(), rawArgs: ['hello'], repoDir: repoRootDir},
             test: () => {
                 return fillInCommandInput({rawArgs: ['hello']});
             },
@@ -26,21 +27,21 @@ testGroup({
             expect: {
                 cliFlags: fillInCliFlags({[CliFlagName.Help]: true}),
                 rawArgs: [],
-                customDir: undefined,
+                repoDir: repoRootDir,
             },
             test: () => {
                 return fillInCommandInput({rawCliFlags: {[CliFlagName.Help]: true}});
             },
         });
         runTest({
-            description: 'preserves customDir of command input',
+            description: 'preserves repoDir of command input',
             expect: {
                 cliFlags: fillInCliFlags(),
                 rawArgs: [],
-                customDir: './neither/here/nor/there',
+                repoDir: './neither/here/nor/there',
             },
             test: () => {
-                return fillInCommandInput({customDir: './neither/here/nor/there'});
+                return fillInCommandInput({repoDir: './neither/here/nor/there'});
             },
         });
         runTest({
@@ -51,13 +52,13 @@ testGroup({
                     [CliFlagName.NoWriteConfig]: true,
                 }),
                 rawArgs: ['hello'],
-                customDir: './neither/here/nor/there',
+                repoDir: './neither/here/nor/there',
             },
             test: () => {
                 return fillInCommandInput({
                     rawCliFlags: {[CliFlagName.Help]: true, [CliFlagName.NoWriteConfig]: true},
                     rawArgs: ['hello'],
-                    customDir: './neither/here/nor/there',
+                    repoDir: './neither/here/nor/there',
                 });
             },
         });

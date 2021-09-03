@@ -29,7 +29,7 @@ testGroup({
                     await copyConfig({
                         configKey: ConfigKey.Prettier,
                         forceExtendableConfig: false,
-                        customDir: testFormatPaths.validRepo,
+                        repoDir: testFormatPaths.validRepo,
                     })
                 ).outputFilePath;
 
@@ -53,7 +53,7 @@ testGroup({
                     await copyConfig({
                         configKey: ConfigKey.Prettier,
                         forceExtendableConfig: true,
-                        customDir: testFormatPaths.validRepo,
+                        repoDir: testFormatPaths.validRepo,
                     })
                 ).outputFilePath;
                 const extenderPath = join(

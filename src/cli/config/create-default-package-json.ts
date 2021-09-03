@@ -1,26 +1,27 @@
 import {readFile} from 'fs-extra';
 import {basename} from 'path';
 import simpleGit, {SimpleGit} from 'simple-git';
-import {repoRootDir} from '../../file-paths/repo-paths';
 import {ConfigKey} from './config-key';
 import {getVirmatorConfigFilePath} from './config-paths';
 
-export async function createDefaultPackageJson() {
+export async function createDefaultPackageJson(repoDir: string) {
     const virmatorPackageJson: {scripts: object} = JSON.parse(
         (await readFile(getVirmatorConfigFilePath(ConfigKey.PackageJson))).toString(),
     );
 
-    const gitProperties = await getGitProperties();
+    const gitProperties = await getGitProperties(repoDir);
 
     return {
         ...virmatorPackageJson,
         ...gitProperties,
-        name: basename(repoRootDir),
+        name: basename(repoDir),
     };
 }
 
-async function getGitProperties(): Promise<Partial<ReturnType<typeof createGitHubUrls>>> {
-    const git: SimpleGit = simpleGit(repoRootDir);
+async function getGitProperties(
+    repoDir: string,
+): Promise<Partial<ReturnType<typeof createGitHubUrls>>> {
+    const git: SimpleGit = simpleGit(repoDir);
     const remotes = await git.getRemotes(true);
     const originRemote = remotes.find((remote) => remote.name === 'origin') || remotes[0];
     if (originRemote && originRemote.refs.fetch.includes('github.com')) {

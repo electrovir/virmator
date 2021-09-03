@@ -78,7 +78,7 @@ const prettierPath = getNpmBinPath('prettier');
 
 export async function runFormatCommand({
     rawArgs,
-    customDir,
+    repoDir,
 }: CommandFunctionInput): Promise<CliCommandResult> {
     const args = extractFormatArgs(rawArgs);
 
@@ -88,7 +88,7 @@ export async function runFormatCommand({
         ' ',
     )} \"./**/*.+(${args.fileExtensions.join('|')})\" ${operationFlag}`;
 
-    const results = await runBashCommand(prettierCommand, customDir);
+    const results = await runBashCommand(prettierCommand, repoDir);
 
     return {
         success: !results.error,

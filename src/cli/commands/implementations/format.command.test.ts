@@ -24,7 +24,7 @@ testGroup({
                         [CliFlagName.Silent]: true,
                         [CliFlagName.NoWriteConfig]: true,
                     }),
-                    customDir: testFormatPaths.validRepo,
+                    repoDir: testFormatPaths.validRepo,
                 });
 
                 if (!result.success) {
@@ -46,7 +46,7 @@ testGroup({
                             [CliFlagName.Silent]: true,
                             [CliFlagName.NoWriteConfig]: true,
                         }),
-                        customDir: testFormatPaths.invalidRepo,
+                        repoDir: testFormatPaths.invalidRepo,
                     })
                 ).success;
             },
@@ -70,7 +70,7 @@ testGroup({
                                 [CliFlagName.Silent]: true,
                                 [CliFlagName.NoWriteConfig]: true,
                             }),
-                            customDir: testFormatPaths.invalidRepo,
+                            repoDir: testFormatPaths.invalidRepo,
                         })
                     ).success,
                 );
@@ -82,7 +82,7 @@ testGroup({
                                 [CliFlagName.Silent]: true,
                                 [CliFlagName.NoWriteConfig]: true,
                             }),
-                            customDir: testFormatPaths.invalidRepo,
+                            repoDir: testFormatPaths.invalidRepo,
                         })
                     ).success,
                 );
@@ -94,7 +94,7 @@ testGroup({
                                 [CliFlagName.Silent]: true,
                                 [CliFlagName.NoWriteConfig]: true,
                             }),
-                            customDir: testFormatPaths.invalidRepo,
+                            repoDir: testFormatPaths.invalidRepo,
                         })
                     ).success,
                 );
@@ -107,7 +107,7 @@ testGroup({
                                 [CliFlagName.Silent]: true,
                                 [CliFlagName.NoWriteConfig]: true,
                             }),
-                            customDir: testFormatPaths.invalidRepo,
+                            repoDir: testFormatPaths.invalidRepo,
                         })
                     ).success,
                 );

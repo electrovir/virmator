@@ -21,16 +21,16 @@ export const initCommandImplementation: CliCommandImplementation = {
 
 export async function runInitCommand({
     cliFlags,
-    customDir,
+    repoDir,
 }: CommandFunctionInput): Promise<CliCommandResult> {
     let error;
     try {
         if (!cliFlags[CliFlagName.NoWriteConfig]) {
-            await updatePackageJson();
-            await runUpdateAllConfigsCommand({rawArgs: [], cliFlags, customDir});
+            await updatePackageJson(repoDir);
+            await runUpdateAllConfigsCommand({rawArgs: [], cliFlags, repoDir});
         }
 
-        await runFormatCommand({rawArgs: [], cliFlags, customDir});
+        await runFormatCommand({rawArgs: [], cliFlags, repoDir});
     } catch (catchError) {
         error = catchError;
     }
@@ -41,9 +41,13 @@ export async function runInitCommand({
     };
 }
 
-async function updatePackageJson() {
+async function updatePackageJson(repoDir: string) {
     const repoPackageJsonPath = getRepoConfigFilePath(ConfigKey.PackageJson);
-    const finalPackageJsonContents = readUpdatedVirmatorConfigFile(ConfigKey.PackageJson);
+    const finalPackageJsonContents = readUpdatedVirmatorConfigFile(
+        ConfigKey.PackageJson,
+        repoDir,
+        false,
+    );
 
     await writeFile(repoPackageJsonPath, finalPackageJsonContents);
 }
