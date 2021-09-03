@@ -55,3 +55,8 @@ const updateBareConfigsTestRepos = getCommandTestRepoDir(CliCommandName.UpdateBa
 export const updateBareConfigsTestPaths = {
     emptyRepo: join(updateBareConfigsTestRepos, 'empty-update-bare-configs-repo'),
 };
+
+const updateAllConfigsTestRepos = getCommandTestRepoDir(CliCommandName.UpdateAllConfigs);
+export const updateAllConfigsTestPaths = {
+    fullPackageJsonRepo: join(updateAllConfigsTestRepos, 'full-package-json-repo'),
+};
