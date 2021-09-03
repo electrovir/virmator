@@ -16,7 +16,7 @@ testGroup({
     tests: (runTest) => {
         const expectedPrettierConfigPath = join(
             testFormatPaths.validRepo,
-            getRepoConfigFilePath(ConfigKey.Prettier),
+            getRepoConfigFilePath(ConfigKey.Prettier, false),
         );
 
         runTest({
@@ -58,7 +58,7 @@ testGroup({
                 ).outputFilePath;
                 const extenderPath = join(
                     testFormatPaths.validRepo,
-                    getRepoConfigFilePath(ConfigKey.Prettier),
+                    getRepoConfigFilePath(ConfigKey.Prettier, false),
                 );
 
                 await [extendablePath, extenderPath].reduce(async (lastPromise, path, index) => {

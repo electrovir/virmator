@@ -53,13 +53,13 @@ function getConfigPath(configKey: ConfigKey, key: DifferentConfigPathTypes): str
     return path;
 }
 
-export function getRepoConfigFilePath(configKey: ConfigKey, extendable = false): string {
+export function getRepoConfigFilePath(configKey: ConfigKey, extendable: boolean): string {
     return extendable
         ? getExtendableBaseConfigName(configKey)
         : getConfigPath(configKey, DifferentConfigPathTypes.Repo);
 }
 
-export function getVirmatorConfigFilePath(configKey: ConfigKey, extender = false): string {
+export function getVirmatorConfigFilePath(configKey: ConfigKey, extender: boolean): string {
     if (extender && !isExtendableConfig(configKey)) {
         throw new Error(
             `Cannot get path for extendable config "${configKey}", this config is not extendable.`,

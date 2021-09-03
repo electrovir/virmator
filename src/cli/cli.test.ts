@@ -1,7 +1,7 @@
 import {existsSync, readFile, remove, writeFile} from 'fs-extra';
 import {join} from 'path';
 import {testGroup, TestInputObject} from 'test-vir';
-import {runBashCommand} from '../augments/bash';
+import {printCommandOutput, runBashCommand} from '../augments/bash';
 import {getObjectTypedKeys} from '../augments/object';
 import {interpolationSafeWindowsPath} from '../augments/string';
 import {VirmatorCliCommandError} from '../errors/cli-command-error';
@@ -54,10 +54,7 @@ testGroup((runTest) => {
                 );
 
                 if (inputs.debug) {
-                    console.log('stdout:');
-                    console.log(results.stdout);
-                    console.log('stderr:');
-                    console.error(results.stderr);
+                    printCommandOutput(results);
                 }
 
                 const rawOutput = {
@@ -210,7 +207,7 @@ testGroup({
             /** The second format should not have stderr. Thus, if it does, print the output. */
             if (secondFormatOutput.stderr) {
                 console.error('second format output');
-                console.error(secondFormatOutput);
+                printCommandOutput(secondFormatOutput);
             }
 
             await configPaths.reduce(async (lastPromise, configPath) => {
@@ -269,7 +266,10 @@ testGroup({
             ],
             test: async () =>
                 await checkConfigs(`node ${cliPath} format`, [
-                    join(testFormatPaths.validRepo, getRepoConfigFilePath(ConfigKey.Prettier)),
+                    join(
+                        testFormatPaths.validRepo,
+                        getRepoConfigFilePath(ConfigKey.Prettier, false),
+                    ),
                 ]),
         });
 
@@ -319,7 +319,10 @@ testGroup({
             ],
             test: async () =>
                 await checkConfigs(`node ${cliPath} format ${CliFlagName.ExtendableConfig}`, [
-                    join(testFormatPaths.validRepo, getRepoConfigFilePath(ConfigKey.Prettier)),
+                    join(
+                        testFormatPaths.validRepo,
+                        getRepoConfigFilePath(ConfigKey.Prettier, false),
+                    ),
                     join(
                         testFormatPaths.validRepo,
                         getExtendableBaseConfigName(ConfigKey.Prettier),
@@ -378,7 +381,7 @@ testGroup({
             test: async () => {
                 const normalPrettierPath = join(
                     testFormatPaths.validRepo,
-                    getRepoConfigFilePath(ConfigKey.Prettier),
+                    getRepoConfigFilePath(ConfigKey.Prettier, false),
                 );
                 const originalFileContents = `const baseConfig = require('./.prettierrc-base');
 

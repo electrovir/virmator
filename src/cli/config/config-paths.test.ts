@@ -10,7 +10,7 @@ testGroup((runTest) => {
         expect: [],
         test: () => {
             return getEnumTypedValues(ConfigKey).filter((configKey) => {
-                return !existsSync(getVirmatorConfigFilePath(configKey));
+                return !existsSync(getVirmatorConfigFilePath(configKey, false));
             });
         },
     });

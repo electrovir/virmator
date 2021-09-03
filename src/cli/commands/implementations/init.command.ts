@@ -42,7 +42,7 @@ export async function runInitCommand({
 }
 
 async function updatePackageJson(repoDir: string) {
-    const repoPackageJsonPath = getRepoConfigFilePath(ConfigKey.PackageJson);
+    const repoPackageJsonPath = getRepoConfigFilePath(ConfigKey.PackageJson, false);
     const finalPackageJsonContents = readUpdatedVirmatorConfigFile(
         ConfigKey.PackageJson,
         repoDir,

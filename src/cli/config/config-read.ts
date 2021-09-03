@@ -1,23 +1,35 @@
 import {existsSync, readFile} from 'fs-extra';
 import {join} from 'path';
-import {format, getFileInfo, resolveConfig} from 'prettier';
+import {
+    format as prettierFormat,
+    getFileInfo as getPrettierInfoForFile,
+    Options as PrettierOptions,
+    resolveConfig as resolvePrettierConfig,
+} from 'prettier';
 import {ConfigKey} from './config-key';
 import {getRepoConfigFilePath, getVirmatorConfigFilePath} from './config-paths';
 import {createDefaultPackageJson} from './create-default-package-json';
-import {getExtendableBaseConfigName} from './extendable-config';
 
 export async function readRepoConfigFile(
     configKey: ConfigKey,
-    extendable = false,
     repoDir: string,
+    extendable: boolean,
 ): Promise<string> {
-    const configPath = join(
-        repoDir,
-        extendable ? getExtendableBaseConfigName(configKey) : getRepoConfigFilePath(configKey),
-    );
+    const configPath = join(repoDir, getRepoConfigFilePath(configKey, extendable));
     const fileContents = (await readFile(configPath)).toString();
 
     return fileContents;
+}
+
+async function getPrettierConfig(): Promise<PrettierOptions | undefined> {
+    try {
+        return (
+            (await resolvePrettierConfig(getRepoConfigFilePath(ConfigKey.Prettier, false))) ||
+            undefined
+        );
+    } catch (error) {
+        return undefined;
+    }
 }
 
 /**
@@ -31,17 +43,16 @@ export async function readUpdatedVirmatorConfigFile(
 ): Promise<string> {
     const updatedVirmatorConfigContents = await updateVirmatorConfig(
         configKey,
-        extendable,
         repoDir,
+        extendable,
     );
     const filePath = getVirmatorConfigFilePath(configKey, extendable);
 
-    const prettierInfo = await getFileInfo(filePath);
-    if (prettierInfo.inferredParser) {
-        const prettierConfig = await resolveConfig(
-            getRepoConfigFilePath(ConfigKey.Prettier, false),
-        );
-        const formatted = format(updatedVirmatorConfigContents, {
+    const prettierInfo = await getPrettierInfoForFile(filePath);
+
+    const prettierConfig = await getPrettierConfig();
+    if (prettierInfo.inferredParser && prettierConfig) {
+        const formatted = prettierFormat(updatedVirmatorConfigContents, {
             ...prettierConfig,
             filepath: filePath,
         });
@@ -54,8 +65,8 @@ export async function readUpdatedVirmatorConfigFile(
 
 async function updateVirmatorConfig(
     configKey: ConfigKey,
-    extendable = false,
     repoDir: string,
+    extendable: boolean,
 ): Promise<string> {
     const virmatorConfigContents = await readVirmatorConfigFile(configKey, extendable);
     switch (configKey) {
@@ -80,7 +91,7 @@ async function updateVirmatorConfig(
             }
         case ConfigKey.PackageJson:
             if (!extendable) {
-                const repoPath = join(repoDir, getRepoConfigFilePath(ConfigKey.PackageJson));
+                const repoPath = join(repoDir, getRepoConfigFilePath(ConfigKey.PackageJson, false));
                 const repoPackageJson: Partial<{scripts: object; name: string}> = existsSync(
                     repoPath,
                 )
@@ -103,7 +114,7 @@ async function updateVirmatorConfig(
     }
 }
 
-async function readVirmatorConfigFile(configKey: ConfigKey, extendable = false): Promise<string> {
+async function readVirmatorConfigFile(configKey: ConfigKey, extendable: boolean): Promise<string> {
     const filePath = getVirmatorConfigFilePath(configKey, extendable);
     const virmatorConfigContents = (await readFile(filePath)).toString();
     return virmatorConfigContents;

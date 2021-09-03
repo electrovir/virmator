@@ -14,7 +14,7 @@ testGroup((runTest) => {
                 return (
                     isExtendableConfig(configKey) &&
                     !existsSync(getVirmatorConfigFilePath(configKey, true)) &&
-                    !existsSync(getVirmatorConfigFilePath(configKey))
+                    !existsSync(getVirmatorConfigFilePath(configKey, false))
                 );
             });
         },

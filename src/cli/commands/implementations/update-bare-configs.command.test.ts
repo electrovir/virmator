@@ -27,7 +27,7 @@ testGroup({
                     return existsSync(
                         join(
                             updateBareConfigsTestPaths.emptyRepo,
-                            getRepoConfigFilePath(currentKey),
+                            getRepoConfigFilePath(currentKey, false),
                         ),
                     );
                 });
@@ -70,7 +70,7 @@ testGroup({
                         const stderrHasKey = commandOutput.stderr?.includes(configKey);
                         const writtenPath = join(
                             updateBareConfigsTestPaths.emptyRepo,
-                            getRepoConfigFilePath(configKey),
+                            getRepoConfigFilePath(configKey, false),
                         );
                         const configWasWritten = existsSync(writtenPath);
 
@@ -103,7 +103,7 @@ testGroup({
                         return !existsSync(
                             join(
                                 updateBareConfigsTestPaths.emptyRepo,
-                                getRepoConfigFilePath(configKey),
+                                getRepoConfigFilePath(configKey, false),
                             ),
                         );
                     }),

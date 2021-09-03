@@ -6,7 +6,7 @@ import {getVirmatorConfigFilePath} from './config-paths';
 
 export async function createDefaultPackageJson(repoDir: string) {
     const virmatorPackageJson: {scripts: object} = JSON.parse(
-        (await readFile(getVirmatorConfigFilePath(ConfigKey.PackageJson))).toString(),
+        (await readFile(getVirmatorConfigFilePath(ConfigKey.PackageJson, false))).toString(),
     );
 
     const gitProperties = await getGitProperties(repoDir);

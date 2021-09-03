@@ -22,8 +22,8 @@ testGroup({
                 const beforeFiles = await readdir(updateAllConfigsTestPaths.fullPackageJsonRepo);
                 const packageJsonBefore = await readRepoConfigFile(
                     ConfigKey.PackageJson,
-                    false,
                     updateAllConfigsTestPaths.fullPackageJsonRepo,
+                    false,
                 );
 
                 const commandOutput = await runUpdateAllConfigsCommand({
@@ -41,8 +41,8 @@ testGroup({
                 const afterFiles = await readdir(updateAllConfigsTestPaths.fullPackageJsonRepo);
                 const packageJsonAfter = await readRepoConfigFile(
                     ConfigKey.PackageJson,
-                    false,
                     updateAllConfigsTestPaths.fullPackageJsonRepo,
+                    false,
                 );
 
                 return {
