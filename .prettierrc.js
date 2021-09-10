@@ -21,7 +21,7 @@ module.exports = {
     endOfLine: 'lf',
     htmlWhitespaceSensitivity: 'ignore',
     jsonRecursiveSort: true,
-    jsxBracketSameLine: false,
+    bracketSameLine: false,
     plugins,
     printWidth: 100,
     singleQuote: true,
