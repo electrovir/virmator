@@ -90,11 +90,14 @@ export async function runFormatCommand({
 
     const results = await runBashCommand(prettierCommand, repoDir);
 
+    const keepError: boolean = !results.error?.message.includes('Forgot to run Prettier?');
+
     return {
         success: !results.error,
         stdout: results.stdout.replace('Checking formatting...\n', ''),
         stderr: results.stderr,
-        error: results.error,
+        error: keepError ? results.error : undefined,
+        printCommandResult: true,
     };
 }
 

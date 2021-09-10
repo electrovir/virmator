@@ -38,6 +38,7 @@ export async function runInitCommand({
     return {
         success: !error,
         error: error,
+        printCommandResult: true,
     };
 }
 

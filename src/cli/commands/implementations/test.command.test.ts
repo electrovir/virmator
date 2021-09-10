@@ -73,6 +73,16 @@ testGroup({
         });
 
         runTest({
+            description:
+                'when the test fails in an expected way, no error is returned from the command',
+            expect: undefined,
+            test: async () => {
+                const results = await testTestCommand(testTestPaths.invalidRepo, false);
+                return results.error;
+            },
+        });
+
+        runTest({
             description: 'when an arg is passed, only test that file',
             expect: 1,
             test: async () => {

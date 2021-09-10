@@ -9,6 +9,7 @@ export type CliCommandResult = {
     stderr?: string | undefined;
     error?: unknown | undefined;
     exitCode?: number;
+    printCommandResult: boolean;
 };
 
 function extractRawFlags(

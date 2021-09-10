@@ -2,7 +2,7 @@
     "scripts": {
         "prepublishOnly": "npm run test:full",
         "spellcheck": "virmator spellcheck --extendable-config",
-        "test": "virmator compile && virmator test",
+        "test": "virmator test",
         "test:full": "npm test && npm run spellcheck && virmator format check",
         "format": "virmator format write"
     }

@@ -35,10 +35,16 @@ export async function runCompileCommand({
         .join(' ')}`;
     const results = await runBashCommand(compileCommand, repoDir);
 
+    const keepError: boolean = !(
+        results.error?.message.trim().startsWith('Command failed:') &&
+        results.error?.message.trim().split('\n').length <= 1
+    );
+
     return {
         success: !results.error,
         stdout: results.stdout,
         stderr: results.stderr,
-        error: results.error,
+        error: keepError ? results.error : undefined,
+        printCommandResult: true,
     };
 }

@@ -26,6 +26,8 @@ export async function runSpellcheckCommand({
     )}`;
     const results = await runBashCommand(spellcheckCommand, repoDir);
 
+    const keepError: boolean = !results.error?.message.includes('CSpell: Files checked');
+
     return {
         /** Stdout for cspell is always an explanation of the unknown words, when they exist. */
         stdout: results.stdout,
@@ -35,6 +37,7 @@ export async function runSpellcheckCommand({
          */
         stderr: results.error ? undefined : results.stderr,
         success: !results.error,
-        error: results.error,
+        error: keepError ? results.error : undefined,
+        printCommandResult: true,
     };
 }

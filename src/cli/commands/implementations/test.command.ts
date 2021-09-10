@@ -2,8 +2,9 @@ import {runBashCommand} from '../../../augments/bash';
 import {interpolationSafeWindowsPath} from '../../../augments/string';
 import {getNpmBinPath} from '../../../file-paths/virmator-repo-paths';
 import {CliCommandName} from '../../cli-util/cli-command-name';
-import {CliFlagName} from '../../cli-util/cli-flags';
+import {CliFlagName, fillInCliFlags} from '../../cli-util/cli-flags';
 import {CliCommandImplementation, CliCommandResult, CommandFunctionInput} from '../cli-command';
+import {runCompileCommand} from './compile.command';
 
 export const testCommandImplementation: CliCommandImplementation = {
     commandName: CliCommandName.Test,
@@ -29,16 +30,24 @@ export async function runTestCommand({
     rawArgs,
     repoDir,
 }: CommandFunctionInput): Promise<CliCommandResult> {
+    await runCompileCommand({rawArgs, repoDir, cliFlags: fillInCliFlags()});
+
     const args: string = rawArgs.length
         ? interpolationSafeWindowsPath(rawArgs.join(' '))
         : `\"./dist/**/!(*.type).test.js\"`;
     const testCommand = `${testVirPath} ${args}`;
     const results = await runBashCommand(testCommand, repoDir);
 
+    const keepError: boolean = !(
+        results.error?.message.match(/\d+\s+tests?\s+failed/) &&
+        results.error?.message.trim().split('\n').length <= 2
+    );
+
     return {
-        stdout: results.stdout,
-        stderr: results.stderr,
+        stdout: results.stdout.trim(),
+        stderr: results.stderr.trim(),
         success: !results.error,
-        error: results.error,
+        error: keepError ? results.error : undefined,
+        printCommandResult: keepError,
     };
 }

@@ -89,6 +89,7 @@ async function updateVirmatorConfig(
                     return [...virmatorFileLines, ...filteredRepoFileLines].join('\n');
                 }
             }
+            break;
         case ConfigKey.PackageJson:
             if (!extendable) {
                 const repoPath = join(repoDir, getRepoConfigFilePath(ConfigKey.PackageJson, false));
@@ -109,9 +110,10 @@ async function updateVirmatorConfig(
                     },
                 });
             }
-        default:
-            return virmatorConfigContents;
+            break;
     }
+
+    return virmatorConfigContents;
 }
 
 async function readVirmatorConfigFile(configKey: ConfigKey, extendable: boolean): Promise<string> {

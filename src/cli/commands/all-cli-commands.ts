@@ -88,6 +88,7 @@ export function runHelpCommand(): CliCommandResult {
         success: true,
         stdout: helpMessage,
         stderr: '',
+        printCommandResult: true,
     };
 }
 

@@ -39,16 +39,18 @@ testGroup({
             description: 'check fails on invalid files',
             expect: false,
             test: async () => {
-                return (
-                    await runFormatCommand({
-                        rawArgs: [FormatOperation.Check],
-                        cliFlags: fillInCliFlags({
-                            [CliFlagName.Silent]: true,
-                            [CliFlagName.NoWriteConfig]: true,
-                        }),
-                        repoDir: testFormatPaths.invalidRepo,
-                    })
-                ).success;
+                const commandOutput = await runFormatCommand({
+                    rawArgs: [FormatOperation.Check],
+                    cliFlags: fillInCliFlags({
+                        [CliFlagName.Silent]: true,
+                        [CliFlagName.NoWriteConfig]: true,
+                    }),
+                    repoDir: testFormatPaths.invalidRepo,
+                });
+
+                printCommandOutput(commandOutput);
+
+                return commandOutput.success;
             },
         });
 
