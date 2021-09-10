@@ -1,0 +1,6 @@
+{
+    "name": "manual-test",
+    "dependencies": {
+        "virmator": "file:../.."
+    }
+}

@@ -48,8 +48,6 @@ testGroup({
                     repoDir: testFormatPaths.invalidRepo,
                 });
 
-                printCommandOutput(commandOutput);
-
                 return commandOutput.success;
             },
         });
