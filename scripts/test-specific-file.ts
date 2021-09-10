@@ -1,6 +1,6 @@
 import {existsSync} from 'fs-extra';
 import {extname, join} from 'path';
-import {printBashOutput, runBashCommand} from '../src/bash-scripting';
+import {runBashCommand} from '../src/augments/bash';
 
 async function main() {
     const testFileInput =
@@ -30,10 +30,6 @@ async function main() {
             throw new Error(`Could not find test file "${testFileInput}"`);
         }
     }
-
-    console.info('Compiling...');
-    const compileOutput = await runBashCommand('npm run compile');
-    printBashOutput(compileOutput);
 
     const testOutput = await runBashCommand(`node dist/cli/cli.js test ${fileToTest}`);
     console.info(testOutput.stdout);

@@ -6,7 +6,6 @@ import {
     testTestPaths,
 } from '../../../file-paths/virmator-test-repos-paths';
 import {fillInCliFlags} from '../../cli-util/cli-flags';
-import {runCompileCommand} from './compile.command';
 import {runTestCommand} from './test.command';
 
 testGroup({
@@ -18,19 +17,6 @@ testGroup({
             args: string[] = [],
         ) {
             const symlinkPath = await createNodeModulesSymLinkForTests(repoDir);
-
-            const compileResults = await runCompileCommand({
-                rawArgs: [],
-                cliFlags: fillInCliFlags(),
-                repoDir,
-            });
-
-            if (compileResults.error || compileResults.stderr) {
-                console.info(`Compile command failed output:`);
-                console.info(compileResults.stdout);
-                console.error(compileResults.stderr);
-                console.error(compileResults.error);
-            }
 
             const results = await runTestCommand({
                 rawArgs: args,

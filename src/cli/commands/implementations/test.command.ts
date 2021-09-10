@@ -2,7 +2,7 @@ import {runBashCommand} from '../../../augments/bash';
 import {interpolationSafeWindowsPath} from '../../../augments/string';
 import {getNpmBinPath} from '../../../file-paths/virmator-repo-paths';
 import {CliCommandName} from '../../cli-util/cli-command-name';
-import {CliFlagName, fillInCliFlags} from '../../cli-util/cli-flags';
+import {CliFlagName} from '../../cli-util/cli-flags';
 import {CliCommandImplementation, CliCommandResult, CommandFunctionInput} from '../cli-command';
 import {runCompileCommand} from './compile.command';
 
@@ -29,8 +29,9 @@ const testVirPath = getNpmBinPath('test-vir');
 export async function runTestCommand({
     rawArgs,
     repoDir,
+    cliFlags,
 }: CommandFunctionInput): Promise<CliCommandResult> {
-    await runCompileCommand({rawArgs, repoDir, cliFlags: fillInCliFlags()});
+    await runCompileCommand({rawArgs: [], repoDir, cliFlags});
 
     const args: string = rawArgs.length
         ? interpolationSafeWindowsPath(rawArgs.join(' '))
