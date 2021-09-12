@@ -42,7 +42,7 @@ export function isConfigExtending(key: ExtendableConfig, contents: string): bool
             return contents.includes(importLine);
         }
         case ConfigKey.TsConfig: {
-            const extendsLine = `"extends": "${extendableConfigFileMap[ConfigKey.TsConfig]}"`;
+            const extendsLine = `"extends": "`;
             return contents.includes(extendsLine);
         }
     }
