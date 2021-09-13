@@ -31,7 +31,11 @@ export async function runTestCommand({
     repoDir,
     cliFlags,
 }: CommandFunctionInput): Promise<CliCommandResult> {
-    await runCompileCommand({rawArgs: [], repoDir, cliFlags});
+    const compileResult = await runCompileCommand({rawArgs: [], repoDir, cliFlags});
+
+    if (!compileResult.success) {
+        return compileResult;
+    }
 
     const args: string = rawArgs.length
         ? interpolationSafeWindowsPath(rawArgs.join(' '))
@@ -49,6 +53,6 @@ export async function runTestCommand({
         stderr: results.stderr.trim(),
         success: !results.error,
         error: keepError ? results.error : undefined,
-        printCommandResult: keepError,
+        printCommandResult: false,
     };
 }
