@@ -13,6 +13,7 @@ testGroup({
                 error: undefined,
                 stderr: '',
                 stdout: 'hello there\n',
+                exitCode: 0,
             },
             test: async () => {
                 return await runBashCommand('echo "hello there"');
@@ -25,6 +26,7 @@ testGroup({
                 error: undefined,
                 stderr: '',
                 stdout: `${toPosixPath(__dirname)}\n`,
+                exitCode: 0,
             },
             test: async () => {
                 return await runBashCommand('pwd', __dirname);
