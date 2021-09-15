@@ -1,4 +1,4 @@
-import {exec} from 'child_process';
+import {ChildProcess, ExecException, spawn} from 'child_process';
 import {EventEmitter} from 'stream';
 import {combineErrors} from './error';
 
@@ -7,42 +7,56 @@ export type BashOutput = {
     stderr: string;
     stdout: string;
     exitCode: number | undefined;
+    exitSignal: NodeJS.Signals | undefined;
+};
+
+export const BashEmitterEvent = {
+    stdout: 'stdout',
+    stderr: 'stderr',
+    done: 'done',
+    error: 'error',
+} as const;
+export type BashEmitterEventKey = typeof BashEmitterEvent[keyof typeof BashEmitterEvent];
+
+export type BashEmitterListenerMap = {
+    [BashEmitterEvent.stdout]: [string];
+    [BashEmitterEvent.stderr]: [string];
+    /**
+     * Exit code and exit signal. Based on the Node.js documentation, either one or the other is
+     * defined, never both at the same time.
+     */
+    [BashEmitterEvent.done]: [exitCode: number | undefined, exitSignal: NodeJS.Signals | undefined];
+    [BashEmitterEvent.error]: [Error];
 };
 
 export interface BashEmitter extends EventEmitter {
-    emit(type: 'stdout', chunk: string): boolean;
-    emit(type: 'stderr', chunk: string): boolean;
-    emit(type: 'close', exitCode: number | undefined): boolean;
-    emit(type: 'error', error: Error): boolean;
+    emit<T extends BashEmitterEventKey>(type: T, ...args: BashEmitterListenerMap[T]): boolean;
+    on<T extends BashEmitterEventKey>(
+        type: T,
+        listener: (...args: BashEmitterListenerMap[T]) => void,
+    ): this;
+    addListener<T extends BashEmitterEventKey>(
+        type: T,
+        listener: (...args: BashEmitterListenerMap[T]) => void,
+    ): this;
+    once<T extends BashEmitterEventKey>(
+        type: T,
+        listener: (...args: BashEmitterListenerMap[T]) => void,
+    ): this;
+    removeListener<T extends BashEmitterEventKey>(
+        type: T,
+        listener: (...args: BashEmitterListenerMap[T]) => void,
+    ): this;
+    off<T extends BashEmitterEventKey>(
+        type: T,
+        listener: (...args: BashEmitterListenerMap[T]) => void,
+    ): this;
 
-    on(type: 'stdout', listener: (chunk: string) => void): this;
-    on(type: 'stderr', listener: (chunk: string) => void): this;
-    on(type: 'close', listener: (exitCode: number | undefined) => void): this;
-    on(type: 'error', listener: (error: Error) => void): this;
-
-    addListener(type: 'stdout', listener: (chunk: string) => void): this;
-    addListener(type: 'stderr', listener: (chunk: string) => void): this;
-    addListener(type: 'close', listener: (exitCode: number | undefined) => void): this;
-    addListener(type: 'error', listener: (error: Error) => void): this;
-
-    once(type: 'stdout', listener: (chunk: string) => void): this;
-    once(type: 'stderr', listener: (chunk: string) => void): this;
-    once(type: 'close', listener: (exitCode: number | undefined) => void): this;
-    once(type: 'error', listener: (error: Error) => void): this;
-
-    removeListener(type: 'stdout', listener: (chunk: string) => void): this;
-    removeListener(type: 'stderr', listener: (chunk: string) => void): this;
-    removeListener(type: 'close', listener: (exitCode: number | undefined) => void): this;
-    removeListener(type: 'error', listener: (error: Error) => void): this;
-
-    off(type: 'stdout', listener: (chunk: string) => void): this;
-    off(type: 'stderr', listener: (chunk: string) => void): this;
-    off(type: 'close', listener: (exitCode: number | undefined) => void): this;
-    off(type: 'error', listener: (error: Error) => void): this;
+    childProcess: ChildProcess;
 }
 
 export function streamBashCommand(command: string, cwd?: string): BashEmitter {
-    const bashEmitter: BashEmitter = new EventEmitter();
+    const bashEmitter: BashEmitter = new EventEmitter() as BashEmitter;
 
     /**
      * Using exec because I don't want to split up the command into an arguments array, which would
@@ -51,8 +65,13 @@ export function streamBashCommand(command: string, cwd?: string): BashEmitter {
      *
      * Interestingly, most of the example code writers online seem to think that you NEED to use
      * spawn to access these event emitters, but that is simply not the case.
+     *
+     * Adding a callback here makes exec vulnerable to buffer overflows. However, not adding one
+     * prevents errors being thrown when a command fails. Also however, failed command errors are
+     * simply thrown whenever the command's exit code is not 0. Thus, this is easily accounted for elsewhere.
      */
-    const childProcess = exec(command, {shell: 'bash', cwd});
+    const childProcess = spawn(command, {shell: 'bash', cwd});
+    bashEmitter.childProcess = childProcess;
 
     if (!childProcess.stdout) {
         throw new Error(`stdout emitter was not created by exec for some reason.`);
@@ -62,25 +81,57 @@ export function streamBashCommand(command: string, cwd?: string): BashEmitter {
     }
 
     childProcess.stdout.on('data', (chunk) => {
-        bashEmitter.emit('stdout', chunk);
+        bashEmitter.emit(BashEmitterEvent.stdout, chunk);
     });
     childProcess.stderr.on('data', (chunk) => {
-        bashEmitter.emit('stderr', chunk);
+        bashEmitter.emit(BashEmitterEvent.stderr, chunk);
     });
 
     childProcess.on('error', (processError) => {
-        bashEmitter.emit('error', processError);
+        bashEmitter.emit(BashEmitterEvent.error, processError);
     });
-    childProcess.on('close', (code) => {
-        bashEmitter.emit('close', code ?? undefined);
+    /**
+     * Based on the Node.js documentation, we should listen to "close" instead of "exit" because the
+     * io streams will be finished when "close" emits. Also "close" always emits after "exit" anyway.
+     */
+    childProcess.on('close', (inputExitCode, inputExitSignal) => {
+        const exitCode: number | undefined = inputExitCode ?? undefined;
+        const exitSignal: NodeJS.Signals | undefined = inputExitSignal ?? undefined;
+
+        if ((exitCode !== undefined && exitCode !== 0) || exitSignal !== undefined) {
+            const execException: ExecException & {cwd?: string | undefined} = new Error(
+                `Command failed: ${command}`,
+            );
+            execException.code = exitCode;
+            execException.signal = exitSignal;
+            execException.cmd = command;
+            execException.killed = childProcess.killed;
+            execException.cwd = cwd;
+            bashEmitter.emit(BashEmitterEvent.error, execException);
+        }
+        bashEmitter.emit(BashEmitterEvent.done, exitCode, exitSignal);
     });
+    // Might need to add a "disconnect" listener here as well. I'm not sure what it should do yet.
+    // Like, should it emit "done"? idk.
 
     return bashEmitter;
 }
 
+type BashListener<T extends BashEmitterEventKey = BashEmitterEventKey> = {
+    eventType: T;
+    eventListener: (...args: BashEmitterListenerMap[T]) => void;
+};
+/** Helper function just to help with generics. */
+function processListener<T extends BashEmitterEventKey>(
+    eventType: BashListener<T>['eventType'],
+    eventListener: BashListener<T>['eventListener'],
+): Readonly<BashListener<T>> {
+    return {eventType, eventListener};
+}
+
 export async function runBashCommand(
     command: string,
-    cwd?: string,
+    cwd: string = process.cwd(),
     rejectError = false,
 ): Promise<BashOutput> {
     return new Promise<BashOutput>((resolve, reject) => {
@@ -90,29 +141,47 @@ export async function runBashCommand(
 
         const bashStream = streamBashCommand(command, cwd);
 
-        bashStream.on('stdout', (chunk) => {
-            stdout += chunk;
-        });
-        bashStream.on('stderr', (chunk) => {
-            stderr += chunk;
-        });
+        const listeners: Readonly<Readonly<BashListener>[]> = [
+            processListener(BashEmitterEvent.stdout, (chunk) => {
+                stdout += chunk;
+            }),
+            processListener(BashEmitterEvent.stderr, (chunk) => {
+                stderr += chunk;
+            }),
+            processListener(BashEmitterEvent.error, (executionError) => {
+                errors.push(executionError);
+                if (rejectError) {
+                    listeners.forEach((listener) =>
+                        bashStream.removeListener(listener.eventType, listener.eventListener),
+                    );
 
-        bashStream.on('error', (bashError) => {
-            if (rejectError) {
-                reject(bashError);
-                bashStream.removeAllListeners();
-            } else {
-                // carry on with execution
-                errors.push(bashError);
-            }
-        });
-        bashStream.on('close', (exitCode) => {
-            resolve({
-                error: combineErrors(errors),
-                stdout,
-                stderr,
-                exitCode,
-            });
+                    if (bashStream.childProcess.connected) {
+                        bashStream.childProcess.disconnect();
+                    }
+                    if (
+                        bashStream.childProcess.exitCode == null &&
+                        bashStream.childProcess.signalCode == null &&
+                        !bashStream.childProcess.killed
+                    ) {
+                        bashStream.childProcess.kill();
+                    }
+                    // reject now cause the "done" listener won't get fired after killing the process
+                    reject(combineErrors(errors));
+                }
+            }),
+            processListener(BashEmitterEvent.done, (exitCode, exitSignal) => {
+                resolve({
+                    error: combineErrors(errors),
+                    stdout,
+                    stderr,
+                    exitCode,
+                    exitSignal,
+                });
+            }),
+        ] as Readonly<Readonly<BashListener>[]>;
+
+        listeners.forEach((listener) => {
+            bashStream.addListener(listener.eventType, listener.eventListener);
         });
     });
 }
