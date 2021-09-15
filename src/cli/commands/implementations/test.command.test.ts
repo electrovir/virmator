@@ -41,11 +41,11 @@ testGroup({
 
         runTest({
             description: 'passes valid repo tests',
-            expect: true,
+            expect: {success: true, error: undefined},
             test: async () => {
                 const results = await testTestCommand(testTestPaths.validRepo, true);
 
-                return results.success;
+                return {success: results.success, error: results.error};
             },
         });
 
@@ -55,16 +55,6 @@ testGroup({
             test: async () => {
                 const results = await testTestCommand(testTestPaths.invalidRepo, false);
                 return results.success;
-            },
-        });
-
-        runTest({
-            description:
-                'when the test fails in an expected way, no error is returned from the command',
-            expect: undefined,
-            test: async () => {
-                const results = await testTestCommand(testTestPaths.invalidRepo, false);
-                return results.error;
             },
         });
 
