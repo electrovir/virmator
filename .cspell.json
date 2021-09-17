@@ -1,5 +1,13 @@
 {
-    "ignorePaths": [".DS_Store", ".git/", "dist/", "node_modules/", "package-lock.json"],
+    "ignorePaths": [
+        ".DS_Store",
+        ".git/",
+        "dist/",
+        "node_modules/",
+        "package-lock.json",
+        ".cspell-base.json",
+        ".cspell.json"
+    ],
     "version": "0.2",
     "words": [
         "accum",
@@ -17,7 +25,6 @@
         "electrovir",
         "esbenp",
         "gitattributes",
-        "globstar",
         "globstar",
         "npmignore",
         "packagejson",
