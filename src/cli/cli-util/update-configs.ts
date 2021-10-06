@@ -1,5 +1,5 @@
+import {filterToEnumValues, getEnumTypedValues} from 'augment-vir/dist/node';
 import {existsSync} from 'fs-extra';
-import {filterToEnumValues, getEnumTypedValues} from '../../augments/object';
 import {CliCommandResult} from '../commands/cli-command';
 import {runFormatCommand} from '../commands/implementations/format.command';
 import {ConfigKey} from '../config/config-key';

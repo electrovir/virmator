@@ -1,5 +1,5 @@
+import {createSymLink} from 'augment-vir/dist/node';
 import {join} from 'path';
-import {createSymLink} from '../augments/file-system';
 import {CliCommandName} from '../cli/cli-util/cli-command-name';
 import {virmatorRootDir} from './virmator-repo-paths';
 

@@ -1,4 +1,4 @@
-import {isEnumValue} from '../../augments/object';
+import {isEnumValue} from 'augment-vir/dist/node';
 import {CliCommandName} from './cli-command-name';
 
 export enum CliFlagName {

@@ -1,5 +1,4 @@
-import {getEnumTypedValues} from '../../../augments/object';
-import {joinWithFinalConjunction} from '../../../augments/string';
+import {getEnumTypedValues, joinWithFinalConjunction} from 'augment-vir/dist/node';
 import {packageName} from '../../../package-name';
 import {CliCommandName} from '../../cli-util/cli-command-name';
 import {CliFlagName} from '../../cli-util/cli-flags';

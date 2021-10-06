@@ -1,6 +1,6 @@
+import {writeFileAndDir} from 'augment-vir/dist/node';
 import {existsSync} from 'fs-extra';
 import {join} from 'path';
-import {writeFileAndDir} from '../../augments/file-system';
 import {ConfigFileError} from '../../errors/config-file-error';
 import {CliFlagName} from '../cli-util/cli-flags';
 import {ConfigKey} from './config-key';

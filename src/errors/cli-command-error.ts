@@ -1,4 +1,4 @@
-import {getEnumTypedValues} from '../augments/object';
+import {getEnumTypedValues} from 'augment-vir/dist/node';
 import {CliCommandName} from '../cli/cli-util/cli-command-name';
 
 export class VirmatorCliCommandError extends Error {

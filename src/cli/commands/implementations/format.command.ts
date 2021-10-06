@@ -1,6 +1,4 @@
-import {runBashCommand} from '../../../augments/bash';
-import {isEnumValue} from '../../../augments/object';
-import {DeepWriteable} from '../../../augments/type';
+import {DeepWriteable, isEnumValue, runBashCommand} from 'augment-vir/dist/node';
 import {getNpmBinPath} from '../../../file-paths/virmator-repo-paths';
 import {packageName} from '../../../package-name';
 import {CliCommandName} from '../../cli-util/cli-command-name';

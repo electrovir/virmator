@@ -1,9 +1,12 @@
+import {
+    getObjectTypedKeys,
+    interpolationSafeWindowsPath,
+    printCommandOutput,
+    runBashCommand,
+} from 'augment-vir/dist/node';
 import {existsSync, readFile, remove, writeFile} from 'fs-extra';
 import {join} from 'path';
 import {testGroup, TestInputObject} from 'test-vir';
-import {printCommandOutput, runBashCommand} from '../augments/bash';
-import {getObjectTypedKeys} from '../augments/object';
-import {interpolationSafeWindowsPath} from '../augments/string';
 import {VirmatorCliCommandError} from '../errors/cli-command-error';
 import {virmatorDistDir} from '../file-paths/virmator-repo-paths';
 import {

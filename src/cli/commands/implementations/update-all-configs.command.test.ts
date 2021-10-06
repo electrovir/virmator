@@ -1,6 +1,6 @@
+import {printCommandOutput} from 'augment-vir/dist/node';
 import {readdir} from 'fs-extra';
 import {testGroup} from 'test-vir';
-import {printCommandOutput} from '../../../augments/bash';
 import {updateAllConfigsTestPaths} from '../../../file-paths/virmator-test-repos-paths';
 import {fillInCliFlags} from '../../cli-util/cli-flags';
 import {ConfigKey} from '../../config/config-key';

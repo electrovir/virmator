@@ -1,6 +1,6 @@
+import {runBashCommand} from 'augment-vir/dist/node';
 import {existsSync} from 'fs-extra';
 import {extname, join} from 'path';
-import {runBashCommand} from '../src/augments/bash';
 
 async function main() {
     const testFileInput =

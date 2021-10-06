@@ -1,4 +1,4 @@
-import {runBashCommand} from '../../../augments/bash';
+import {runBashCommand} from 'augment-vir/dist/node';
 import {getNpmBinPath} from '../../../file-paths/virmator-repo-paths';
 import {CliCommandName} from '../../cli-util/cli-command-name';
 import {CliFlagName} from '../../cli-util/cli-flags';
