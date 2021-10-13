@@ -25,6 +25,11 @@ const configFileMap: Readonly<
     [ConfigKey.Cspell]: '.cspell.json',
     [ConfigKey.GitAttributes]: '.gitattributes',
     [ConfigKey.GitHubActionsTest]: join('.github', 'workflows', 'virmator-tests.yml'),
+    [ConfigKey.GitHubActionsTaggedRelease]: join(
+        '.github',
+        'workflows',
+        'virmator-tagged-release.yml',
+    ),
     [ConfigKey.GitIgnore]: {
         virmator: join(relativeSeparateConfigsDir, 'gitignore.txt'),
         repo: '.gitignore',
