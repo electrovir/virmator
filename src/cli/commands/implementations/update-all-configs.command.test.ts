@@ -11,6 +11,11 @@ testGroup({
     description: runUpdateAllConfigsCommand.name,
     tests: (runTest) => {
         runTest({
+            /**
+             * This test fails sometimes with an error of "undefined". idk why. That's what all the
+             * console.logs are for, hopefully we can figure out where the error is coming from. For
+             * now, just rerun the tests and then it passes...
+             */
             description: 'should not write to files when there will be no output change',
             expect: {
                 beforeCount: 1,
@@ -19,32 +24,40 @@ testGroup({
                 noConfigsWritten: true,
             },
             test: async () => {
+                console.log('beforeFiles');
                 const beforeFiles = await readdir(updateAllConfigsTestPaths.fullPackageJsonRepo);
+                console.log('packageJsonBefore');
                 const packageJsonBefore = await readRepoConfigFile(
                     ConfigKey.PackageJson,
                     updateAllConfigsTestPaths.fullPackageJsonRepo,
                     false,
                 );
 
+                console.log('commandOutput');
                 const commandOutput = await runUpdateAllConfigsCommand({
                     rawArgs: [ConfigKey.PackageJson],
                     cliFlags: fillInCliFlags(),
                     repoDir: updateAllConfigsTestPaths.fullPackageJsonRepo,
                 });
 
+                console.log('noConfigsWritten');
                 const noConfigsWritten = !!commandOutput.stdout?.includes('All configs up to date');
 
                 if (!commandOutput.success || !noConfigsWritten) {
+                    console.log('printCommandOutput');
                     printCommandOutput(commandOutput);
                 }
 
+                console.log('afterFiles');
                 const afterFiles = await readdir(updateAllConfigsTestPaths.fullPackageJsonRepo);
+                console.log('packageJsonAfter');
                 const packageJsonAfter = await readRepoConfigFile(
                     ConfigKey.PackageJson,
                     updateAllConfigsTestPaths.fullPackageJsonRepo,
                     false,
                 );
 
+                console.log('return');
                 return {
                     beforeCount: beforeFiles.length,
                     afterCount: afterFiles.length,
