@@ -3,6 +3,7 @@ export enum BareConfigKey {
     GitAttributes = 'GitAttributes',
     GitHubActionsTest = 'GitHubActionsTest',
     GitHubActionsTaggedRelease = 'GitHubActionsTaggedRelease',
+    GitHubActionsPrerelease = 'GitHubActionsPrerelease',
     GitIgnore = 'GitIgnore',
     NpmIgnore = 'NpmIgnore',
     PrettierIgnore = 'PrettierIgnore',
