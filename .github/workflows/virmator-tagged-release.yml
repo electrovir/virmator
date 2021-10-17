@@ -4,8 +4,6 @@ on:
     workflow_run:
         workflows: ['tests']
         branches: ['main', 'master']
-        tags:
-            - 'v*'
         types:
             - 'completed'
 
@@ -13,19 +11,22 @@ jobs:
     tagged-release:
         name: 'Tagged Release'
         runs-on: 'ubuntu-latest'
-
+        if: ${{ github.event.workflow_run.conclusion == 'success' }}
         steps:
             - uses: actions/checkout@v1
             - name: Use Node.js 14.x
               uses: actions/setup-node@v1
               with:
                   node-version: 14.x
-            - name: run test
+            - name: set vars
+              id: vars
               run: |
-                  npm ci
-                  npm run test:full
-
-            - uses: 'marvinpinto/action-automatic-releases@latest'
+                  tagName="$(git describe --tags --abbrev=0 --exact-match $GITHUB_SHA 2>/dev/null || echo "")"
+                  echo ::set-output name=tag_name::"$tagName"
+            - name: deploy to tag
+              if: startsWith(steps.vars.outputs.tag_name, 'v')
+              uses: 'marvinpinto/action-automatic-releases@latest'
               with:
                   repo_token: '${{ secrets.GITHUB_TOKEN }}'
+                  automatic_release_tag: '${{ steps.vars.outputs.tag_name }}'
                   prerelease: false
