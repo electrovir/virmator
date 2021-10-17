@@ -1,9 +1,13 @@
 name: tagged-release
 
 on:
-    push:
+    workflow_run:
+        workflows: ['tests']
+        branches: ['main', 'master']
         tags:
             - 'v*'
+        types:
+            - 'completed'
 
 jobs:
     tagged-release:
