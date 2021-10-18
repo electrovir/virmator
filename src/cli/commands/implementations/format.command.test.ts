@@ -3,6 +3,7 @@ import {readFile, writeFile} from 'fs-extra';
 import {testGroup} from 'test-vir';
 import {testFormatPaths} from '../../../file-paths/virmator-test-repos-paths';
 import {CliFlagName, fillInCliFlags} from '../../cli-util/cli-flags';
+import {EmptyOutputCallbacks} from '../cli-command';
 import {
     defaultFormatArgs,
     extractFormatArgs,
@@ -25,6 +26,7 @@ testGroup({
                         [CliFlagName.NoWriteConfig]: true,
                     }),
                     repoDir: testFormatPaths.validRepo,
+                    ...EmptyOutputCallbacks,
                 });
 
                 if (!result.success) {
@@ -46,6 +48,7 @@ testGroup({
                         [CliFlagName.NoWriteConfig]: true,
                     }),
                     repoDir: testFormatPaths.invalidRepo,
+                    ...EmptyOutputCallbacks,
                 });
 
                 return commandOutput.success;
@@ -71,6 +74,7 @@ testGroup({
                                 [CliFlagName.NoWriteConfig]: true,
                             }),
                             repoDir: testFormatPaths.invalidRepo,
+                            ...EmptyOutputCallbacks,
                         })
                     ).success,
                 );
@@ -83,6 +87,7 @@ testGroup({
                                 [CliFlagName.NoWriteConfig]: true,
                             }),
                             repoDir: testFormatPaths.invalidRepo,
+                            ...EmptyOutputCallbacks,
                         })
                     ).success,
                 );
@@ -95,6 +100,7 @@ testGroup({
                                 [CliFlagName.NoWriteConfig]: true,
                             }),
                             repoDir: testFormatPaths.invalidRepo,
+                            ...EmptyOutputCallbacks,
                         })
                     ).success,
                 );
@@ -108,6 +114,7 @@ testGroup({
                                 [CliFlagName.NoWriteConfig]: true,
                             }),
                             repoDir: testFormatPaths.invalidRepo,
+                            ...EmptyOutputCallbacks,
                         })
                     ).success,
                 );

@@ -2,7 +2,7 @@ import {existsSync, remove} from 'fs-extra';
 import {testGroup} from 'test-vir';
 import {testCompilePaths} from '../../../file-paths/virmator-test-repos-paths';
 import {CliFlagName, fillInCliFlags} from '../../cli-util/cli-flags';
-import {fillInCommandInput} from '../cli-command';
+import {EmptyOutputCallbacks, fillInCommandInput} from '../cli-command';
 import {runCompileCommand} from './compile.command';
 
 testGroup({
@@ -14,11 +14,12 @@ testGroup({
             test: async () => {
                 const results = [];
                 results.push(existsSync(testCompilePaths.compiledValidSourceFile));
-                const commandResult = await runCompileCommand(
-                    fillInCommandInput({
+                const commandResult = await runCompileCommand({
+                    ...fillInCommandInput({
                         repoDir: testCompilePaths.validRepo,
                     }),
-                );
+                    ...EmptyOutputCallbacks,
+                });
                 results.push(commandResult.success);
                 results.push(existsSync(testCompilePaths.compiledValidSourceFile));
                 await remove(testCompilePaths.compiledValidSourceFile);
@@ -34,12 +35,13 @@ testGroup({
             test: async () => {
                 const results = [];
                 results.push(existsSync(testCompilePaths.compiledInvalidSourceFile));
-                const commandResult = await runCompileCommand(
-                    fillInCommandInput({
+                const commandResult = await runCompileCommand({
+                    ...fillInCommandInput({
                         cliFlags: fillInCliFlags({[CliFlagName.Silent]: true}),
                         repoDir: testCompilePaths.invalidRepo,
                     }),
-                );
+                    ...EmptyOutputCallbacks,
+                });
                 results.push(commandResult.success);
                 results.push(existsSync(testCompilePaths.compiledInvalidSourceFile));
                 await remove(testCompilePaths.compiledInvalidSourceFile);
@@ -55,12 +57,13 @@ testGroup({
             test: async () => {
                 const results = [];
                 results.push(existsSync(testCompilePaths.compiledValidSourceFile));
-                const commandResult = await runCompileCommand(
-                    fillInCommandInput({
+                const commandResult = await runCompileCommand({
+                    ...fillInCommandInput({
                         rawArgs: ['--noEmit'],
                         repoDir: testCompilePaths.validRepo,
                     }),
-                );
+                    ...EmptyOutputCallbacks,
+                });
                 results.push(commandResult.success);
                 results.push(existsSync(testCompilePaths.compiledValidSourceFile));
 

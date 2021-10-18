@@ -26,7 +26,9 @@ function extractRawFlags(
     }
 }
 
-const defaultCommandFunctionInput: Readonly<CommandFunctionInput> = {
+const defaultCommandFunctionInput: Readonly<
+    Omit<CommandFunctionInput, 'stdoutCallback' | 'stderrCallback'>
+> = {
     rawArgs: [],
     cliFlags: fillInCliFlags(),
     repoDir: repoRootDir,
@@ -34,7 +36,7 @@ const defaultCommandFunctionInput: Readonly<CommandFunctionInput> = {
 
 export function fillInCommandInput(
     commandInput?: PartialCommandFunctionInput | Partial<CommandFunctionInput>,
-): CommandFunctionInput {
+): Omit<CommandFunctionInput, 'stdoutCallback' | 'stderrCallback'> {
     if (!commandInput) {
         return defaultCommandFunctionInput;
     }
@@ -52,7 +54,15 @@ export type CommandFunctionInput = Readonly<{
     rawArgs: string[];
     cliFlags: Required<Readonly<CliFlags>>;
     repoDir: string;
+    stdoutCallback: (stdout: string) => void;
+    stderrCallback: (stderr: string) => void;
 }>;
+
+export const EmptyOutputCallbacks: Pick<CommandFunctionInput, 'stdoutCallback' | 'stderrCallback'> =
+    {
+        stdoutCallback: () => {},
+        stderrCallback: () => {},
+    };
 
 export type PartialCommandFunctionInput = Omit<Partial<CommandFunctionInput>, 'cliFlags'> & {
     rawCliFlags?: Partial<Readonly<CliFlags>>;

@@ -6,6 +6,7 @@ import {
     testTestPaths,
 } from '../../../file-paths/virmator-test-repos-paths';
 import {fillInCliFlags} from '../../cli-util/cli-flags';
+import {EmptyOutputCallbacks} from '../cli-command';
 import {runTestCommand} from './test.command';
 
 testGroup({
@@ -22,6 +23,7 @@ testGroup({
                 rawArgs: args,
                 cliFlags: fillInCliFlags(),
                 repoDir,
+                ...EmptyOutputCallbacks,
             });
 
             await remove(symlinkPath);

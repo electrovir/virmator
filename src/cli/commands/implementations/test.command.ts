@@ -25,22 +25,18 @@ export const testCommandImplementation: CliCommandImplementation = {
 
 const testVirPath = getNpmBinPath('test-vir');
 
-export async function runTestCommand({
-    rawArgs,
-    repoDir,
-    cliFlags,
-}: CommandFunctionInput): Promise<CliCommandResult> {
-    const compileResult = await runCompileCommand({rawArgs: [], repoDir, cliFlags});
+export async function runTestCommand(inputs: CommandFunctionInput): Promise<CliCommandResult> {
+    const compileResult = await runCompileCommand({...inputs, rawArgs: []});
 
     if (!compileResult.success) {
         return compileResult;
     }
 
-    const args: string = rawArgs.length
-        ? interpolationSafeWindowsPath(rawArgs.join(' '))
+    const args: string = inputs.rawArgs.length
+        ? interpolationSafeWindowsPath(inputs.rawArgs.join(' '))
         : `\"./dist/**/!(*.type).test.js\"`;
     const testCommand = `${testVirPath} ${args}`;
-    const results = await runShellCommand(testCommand, {cwd: repoDir});
+    const results = await runShellCommand(testCommand, {cwd: inputs.repoDir});
 
     const keepError: boolean = !(
         results.error?.message.match(/\d+\s+tests?\s+failed/) &&

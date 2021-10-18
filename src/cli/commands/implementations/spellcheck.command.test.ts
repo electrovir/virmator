@@ -3,6 +3,7 @@ import {join, relative} from 'path';
 import {testGroup} from 'test-vir';
 import {spellcheckTestPaths} from '../../../file-paths/virmator-test-repos-paths';
 import {fillInCliFlags} from '../../cli-util/cli-flags';
+import {EmptyOutputCallbacks} from '../cli-command';
 import {runSpellcheckCommand} from './spellcheck.command';
 
 testGroup({
@@ -16,6 +17,7 @@ testGroup({
                     rawArgs: [],
                     cliFlags: fillInCliFlags(),
                     repoDir: spellcheckTestPaths.validRepo,
+                    ...EmptyOutputCallbacks,
                 });
 
                 if (!result.success) {
@@ -34,6 +36,7 @@ testGroup({
                     rawArgs: [],
                     cliFlags: fillInCliFlags(),
                     repoDir: spellcheckTestPaths.invalidRepo,
+                    ...EmptyOutputCallbacks,
                 });
 
                 if (result.success) {
@@ -52,6 +55,7 @@ testGroup({
                     rawArgs: [],
                     cliFlags: fillInCliFlags(),
                     repoDir: spellcheckTestPaths.validRepo,
+                    ...EmptyOutputCallbacks,
                 });
 
                 if (!commandResultNoArgs.success) {
@@ -70,6 +74,7 @@ testGroup({
                     rawArgs: ['--no-progress'],
                     cliFlags: fillInCliFlags(),
                     repoDir: spellcheckTestPaths.validRepo,
+                    ...EmptyOutputCallbacks,
                 });
 
                 if (!commandResultWithArgs.success) {
@@ -99,6 +104,7 @@ testGroup({
                     rawArgs: ['--no-color'],
                     cliFlags: fillInCliFlags(),
                     repoDir: spellcheckTestPaths.hiddenStuffRepo,
+                    ...EmptyOutputCallbacks,
                 });
 
                 if (!commandResult.success) {

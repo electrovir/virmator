@@ -6,7 +6,12 @@ import {cliErrorMessages} from '../cli-util/cli-messages';
 import {copyConfig} from '../config/copy-config';
 import {isExtendableConfig} from '../config/extendable-config';
 import {allCliCommands, getUnsupportedFlags} from './all-cli-commands';
-import {CliCommandResult, fillInCommandInput, PartialCommandFunctionInput} from './cli-command';
+import {
+    CliCommandResult,
+    EmptyOutputCallbacks,
+    fillInCommandInput,
+    PartialCommandFunctionInput,
+} from './cli-command';
 
 export async function runCommand(
     command: CliCommandName,
@@ -54,22 +59,22 @@ export async function runCommand(
         );
     }
 
-    const commandResult = await commandImplementation.implementation(
-        fillInCommandInput({
+    const loggers: typeof EmptyOutputCallbacks =
+        cliFlags[CliFlagName.Silent] && command !== CliCommandName.Help
+            ? EmptyOutputCallbacks
+            : {
+                  stdoutCallback: console.info,
+                  stderrCallback: console.error,
+              };
+
+    const commandResult = await commandImplementation.implementation({
+        ...fillInCommandInput({
             ...commandInput,
             cliFlags,
             rawArgs: commandInput.rawArgs || [],
         }),
-    );
-
-    if (!cliFlags[CliFlagName.Silent] || command === CliCommandName.Help) {
-        if (commandResult.stdout) {
-            console.info(commandResult.stdout);
-        }
-        if (commandResult.stderr) {
-            console.error(commandResult.stderr);
-        }
-    }
+        ...loggers,
+    });
 
     if (commandResult.error) {
         throw commandResult.error;

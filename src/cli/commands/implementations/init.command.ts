@@ -19,18 +19,18 @@ export const initCommandImplementation: CliCommandImplementation = {
     },
 };
 
-export async function runInitCommand({
-    cliFlags,
-    repoDir,
-}: CommandFunctionInput): Promise<CliCommandResult> {
+export async function runInitCommand(inputs: CommandFunctionInput): Promise<CliCommandResult> {
     let error;
     try {
-        if (!cliFlags[CliFlagName.NoWriteConfig]) {
-            await updatePackageJson(repoDir);
-            await runUpdateAllConfigsCommand({rawArgs: [], cliFlags, repoDir});
+        if (!inputs.cliFlags[CliFlagName.NoWriteConfig]) {
+            await updatePackageJson(inputs.repoDir);
+            await runUpdateAllConfigsCommand({
+                ...inputs,
+                rawArgs: [],
+            });
         }
 
-        await runFormatCommand({rawArgs: [], cliFlags, repoDir});
+        await runFormatCommand({...inputs, rawArgs: []});
     } catch (catchError) {
         error = catchError;
     }

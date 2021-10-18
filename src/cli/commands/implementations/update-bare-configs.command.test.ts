@@ -6,6 +6,7 @@ import {updateBareConfigsTestPaths} from '../../../file-paths/virmator-test-repo
 import {fillInCliFlags} from '../../cli-util/cli-flags';
 import {BareConfigKey} from '../../config/config-key';
 import {getRepoConfigFilePath} from '../../config/config-paths';
+import {EmptyOutputCallbacks} from '../cli-command';
 import {runUpdateBareConfigsCommand} from './update-bare-configs.command';
 
 testGroup({
@@ -46,6 +47,7 @@ testGroup({
                     rawArgs: [],
                     cliFlags: fillInCliFlags(),
                     repoDir: updateBareConfigsTestPaths.emptyRepo,
+                    ...EmptyOutputCallbacks,
                 });
 
                 if (commandOutput.stderr) {

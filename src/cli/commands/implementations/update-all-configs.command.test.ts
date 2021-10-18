@@ -5,6 +5,7 @@ import {updateAllConfigsTestPaths} from '../../../file-paths/virmator-test-repos
 import {fillInCliFlags} from '../../cli-util/cli-flags';
 import {ConfigKey} from '../../config/config-key';
 import {readRepoConfigFile} from '../../config/config-read';
+import {EmptyOutputCallbacks} from '../cli-command';
 import {runUpdateAllConfigsCommand} from './update-all-configs.command';
 
 testGroup({
@@ -38,6 +39,7 @@ testGroup({
                     rawArgs: [ConfigKey.PackageJson],
                     cliFlags: fillInCliFlags(),
                     repoDir: updateAllConfigsTestPaths.fullPackageJsonRepo,
+                    ...EmptyOutputCallbacks,
                 });
 
                 console.log('noConfigsWritten');
