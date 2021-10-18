@@ -5,6 +5,7 @@ export enum CliCommandName {
     Init = 'init',
     SpellCheck = 'spellcheck',
     Test = 'test',
+    CodeInMarkdown = 'code-in-markdown',
     UpdateAllConfigs = 'update-all-configs',
     UpdateBareConfigs = 'update-bare-configs',
 }

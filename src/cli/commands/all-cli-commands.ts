@@ -4,6 +4,7 @@ import {Color} from '../cli-util/cli-color';
 import {CliCommandName} from '../cli-util/cli-command-name';
 import {CliFlagName, CliFlags, flagDescriptions} from '../cli-util/cli-flags';
 import {CliCommandImplementation, CliCommandResult} from './cli-command';
+import {codeInMarkdownCommandImplementation} from './implementations/code-in-markdown.command';
 import {compileImplementation} from './implementations/compile.command';
 import {formatImplementation} from './implementations/format.command';
 import {initCommandImplementation} from './implementations/init.command';
@@ -102,4 +103,5 @@ export const allCliCommands: Readonly<Record<CliCommandName, CliCommandImplement
     [CliCommandName.Test]: testCommandImplementation,
     [CliCommandName.UpdateAllConfigs]: updateAllConfigsCommandImplementation,
     [CliCommandName.UpdateBareConfigs]: updateBareConfigsCommandImplementation,
+    [CliCommandName.CodeInMarkdown]: codeInMarkdownCommandImplementation,
 };
