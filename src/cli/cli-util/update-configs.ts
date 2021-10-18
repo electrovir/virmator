@@ -20,6 +20,7 @@ export async function updateConfigs<T extends ConfigKey>(
         ? inputConfigFiles
         : getEnumTypedValues(configKeysEnum);
 
+    let writtenFileCount = 0;
     const errors: unknown[] = [];
 
     await Promise.all(
@@ -46,6 +47,7 @@ export async function updateConfigs<T extends ConfigKey>(
                         repoDir: commandInputs.repoDir,
                         ...EmptyOutputCallbacks,
                     });
+                    writtenFileCount++;
                     commandInputs.stdoutCallback(`Wrote ${configKey} to ${outputFilePath}`);
                 }
             } catch (error) {
@@ -56,6 +58,10 @@ export async function updateConfigs<T extends ConfigKey>(
             }
         }),
     );
+
+    if (!errors.length && !writtenFileCount) {
+        commandInputs.stdoutCallback('All configs up to date.');
+    }
 
     return {
         success: !errors.length,

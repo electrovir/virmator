@@ -100,6 +100,7 @@ export async function copyConfig({
     } else {
         if (repoConfigExists) {
             const currentConfigPathContents = await readRepoConfigFile(configKey, repoDir, false);
+
             // only update the config file when they differ
             if (currentConfigPathContents !== virmatorConfigContents) {
                 logs.push({

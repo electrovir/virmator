@@ -28,17 +28,11 @@ export async function cli(rawArgs: string[]) {
             rawCliFlags: flags,
         });
 
-        const exitCode = commandResult.exitCode ?? (commandResult.success ? 0 : 1);
-
-        if (
-            cliCommand !== CliCommandName.Help &&
-            !flags[CliFlagName.Silent] &&
-            commandResult.printCommandResult
-        ) {
+        if (cliCommand !== CliCommandName.Help && !flags[CliFlagName.Silent]) {
             console.info(getResultMessage(cliCommand, commandResult.success));
         }
 
-        process.exit(exitCode);
+        process.exit(commandResult.success ? 0 : 1);
     } catch (error) {
         console.error(String(error));
         process.exit(1);

@@ -3,6 +3,7 @@ import {readFile, writeFile} from 'fs-extra';
 import {testGroup} from 'test-vir';
 import {testFormatPaths} from '../../../file-paths/virmator-test-repos-paths';
 import {CliFlagName, fillInCliFlags} from '../../cli-util/cli-flags';
+import {getAllCommandOutput} from '../../cli-util/get-all-command-output';
 import {EmptyOutputCallbacks} from '../cli-command';
 import {
     defaultFormatArgs,
@@ -19,7 +20,7 @@ testGroup({
             description: 'check passes on valid files',
             expect: true,
             test: async () => {
-                const result = await runFormatCommand({
+                const result = await getAllCommandOutput(runFormatCommand, {
                     rawArgs: [FormatOperation.Check],
                     cliFlags: fillInCliFlags({
                         [CliFlagName.Silent]: true,

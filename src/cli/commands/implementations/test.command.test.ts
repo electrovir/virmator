@@ -6,6 +6,7 @@ import {
     testTestPaths,
 } from '../../../file-paths/virmator-test-repos-paths';
 import {fillInCliFlags} from '../../cli-util/cli-flags';
+import {getAllCommandOutput} from '../../cli-util/get-all-command-output';
 import {EmptyOutputCallbacks} from '../cli-command';
 import {runTestCommand} from './test.command';
 
@@ -19,7 +20,7 @@ testGroup({
         ) {
             const symlinkPath = await createNodeModulesSymLinkForTests(repoDir);
 
-            const results = await runTestCommand({
+            const results = await getAllCommandOutput(runTestCommand, {
                 rawArgs: args,
                 cliFlags: fillInCliFlags(),
                 repoDir,
@@ -35,7 +36,6 @@ testGroup({
                 );
                 console.info(results.stdout);
                 console.error(results.stderr);
-                console.error(results.error);
             }
 
             return results;
@@ -43,11 +43,11 @@ testGroup({
 
         runTest({
             description: 'passes valid repo tests',
-            expect: {success: true, error: undefined},
+            expect: {success: true},
             test: async () => {
                 const results = await testTestCommand(testTestPaths.validRepo, true);
 
-                return {success: results.success, error: results.error};
+                return {success: results.success};
             },
         });
 

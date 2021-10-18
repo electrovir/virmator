@@ -3,6 +3,7 @@ import {readdir} from 'fs-extra';
 import {testGroup} from 'test-vir';
 import {updateAllConfigsTestPaths} from '../../../file-paths/virmator-test-repos-paths';
 import {fillInCliFlags} from '../../cli-util/cli-flags';
+import {getAllCommandOutput} from '../../cli-util/get-all-command-output';
 import {ConfigKey} from '../../config/config-key';
 import {readRepoConfigFile} from '../../config/config-read';
 import {EmptyOutputCallbacks} from '../cli-command';
@@ -35,7 +36,7 @@ testGroup({
                 );
 
                 console.log('commandOutput');
-                const commandOutput = await runUpdateAllConfigsCommand({
+                const commandOutput = await getAllCommandOutput(runUpdateAllConfigsCommand, {
                     rawArgs: [ConfigKey.PackageJson],
                     cliFlags: fillInCliFlags(),
                     repoDir: updateAllConfigsTestPaths.fullPackageJsonRepo,

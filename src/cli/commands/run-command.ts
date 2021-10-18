@@ -76,8 +76,5 @@ export async function runCommand(
         ...loggers,
     });
 
-    if (commandResult.error) {
-        throw commandResult.error;
-    }
     return commandResult;
 }

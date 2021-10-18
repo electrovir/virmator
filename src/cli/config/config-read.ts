@@ -16,13 +16,7 @@ export async function readRepoConfigFile(
     extendable: boolean,
 ): Promise<string> {
     const configPath = join(repoDir, getRepoConfigFilePath(configKey, extendable));
-    let fileContents: string;
-    if (configKey === ConfigKey.PackageJson) {
-        // in order to make sure that package.json are equivalent, read it not formatted
-        fileContents = JSON.stringify(JSON.parse((await readFile(configPath)).toString()));
-    } else {
-        fileContents = (await readFile(configPath)).toString();
-    }
+    const fileContents = (await readFile(configPath)).toString();
 
     return fileContents;
 }

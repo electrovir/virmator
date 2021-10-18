@@ -3,6 +3,7 @@ import {join, relative} from 'path';
 import {testGroup} from 'test-vir';
 import {spellcheckTestPaths} from '../../../file-paths/virmator-test-repos-paths';
 import {fillInCliFlags} from '../../cli-util/cli-flags';
+import {getAllCommandOutput} from '../../cli-util/get-all-command-output';
 import {EmptyOutputCallbacks} from '../cli-command';
 import {runSpellcheckCommand} from './spellcheck.command';
 
@@ -13,7 +14,7 @@ testGroup({
             description: 'spellcheck passes on valid repo',
             expect: true,
             test: async () => {
-                const result = await runSpellcheckCommand({
+                const result = await getAllCommandOutput(runSpellcheckCommand, {
                     rawArgs: [],
                     cliFlags: fillInCliFlags(),
                     repoDir: spellcheckTestPaths.validRepo,
@@ -32,7 +33,7 @@ testGroup({
             description: 'spellcheck fails on invalid repo',
             expect: false,
             test: async () => {
-                const result = await runSpellcheckCommand({
+                const result = await getAllCommandOutput(runSpellcheckCommand, {
                     rawArgs: [],
                     cliFlags: fillInCliFlags(),
                     repoDir: spellcheckTestPaths.invalidRepo,
@@ -51,7 +52,7 @@ testGroup({
             description: 'cspell has stdout when no args are passed',
             expect: 2,
             test: async () => {
-                const commandResultNoArgs = await runSpellcheckCommand({
+                const commandResultNoArgs = await getAllCommandOutput(runSpellcheckCommand, {
                     rawArgs: [],
                     cliFlags: fillInCliFlags(),
                     repoDir: spellcheckTestPaths.validRepo,
@@ -70,7 +71,7 @@ testGroup({
             description: 'spellcheck uses cspell args',
             expect: 1,
             test: async () => {
-                const commandResultWithArgs = await runSpellcheckCommand({
+                const commandResultWithArgs = await getAllCommandOutput(runSpellcheckCommand, {
                     rawArgs: ['--no-progress'],
                     cliFlags: fillInCliFlags(),
                     repoDir: spellcheckTestPaths.validRepo,
@@ -100,7 +101,7 @@ testGroup({
                 join('stuff'),
             ],
             test: async () => {
-                const commandResult = await runSpellcheckCommand({
+                const commandResult = await getAllCommandOutput(runSpellcheckCommand, {
                     rawArgs: ['--no-color'],
                     cliFlags: fillInCliFlags(),
                     repoDir: spellcheckTestPaths.hiddenStuffRepo,
