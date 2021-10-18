@@ -37,8 +37,6 @@ export async function runInitCommand(inputs: CommandFunctionInput): Promise<CliC
 
     return {
         success: !error,
-        error: error,
-        printCommandResult: true,
     };
 }
 

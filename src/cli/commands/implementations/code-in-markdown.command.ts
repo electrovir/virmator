@@ -1,20 +1,31 @@
-import {interpolationSafeWindowsPath, runShellCommand} from 'augment-vir/dist/node';
+import {interpolationSafeWindowsPath} from 'augment-vir/dist/node';
 import {getNpmBinPath} from '../../../file-paths/virmator-repo-paths';
 import {CliCommandName} from '../../cli-util/cli-command-name';
 import {CliFlagName} from '../../cli-util/cli-flags';
+import {runVirmatorShellCommand} from '../../cli-util/shell-command-wrapper';
 import {CliCommandImplementation, CliCommandResult, CommandFunctionInput} from '../cli-command';
 
 export const codeInMarkdownCommandImplementation: CliCommandImplementation = {
     commandName: CliCommandName.CodeInMarkdown,
-    description: `Insert code snippets into markdown files. 
-            By default this command tests all .test.js files in dist that are not 
-            .type.test.js files. To override this behavior, pass in a list of files or a
-            quoted glob which will be expanded by the package test-vir itself.
+    description: `Insert code snippets into markdown files.
+            This uses the markdown-code-example-inserter package to expand code link comments
+            inside of markdown files to actual markdown code blocks. See that package's
+            README for more details but the basics are that you need a comment that looks
+            like the following in your markdown file for this to do anything:
+            
+            <!-- example-link: path/to/file.ts -->
+            
+            By default this command parses all markdown files in the repo (ignoring
+            node_modules). Specific markdown files can be parsed by giving virmator
+            extra parameters.
             
             examples:
-                virmator test ./path/to/single/file.js
-                virmator test "./**/single-file.js"
-                virmator test "./dist/**/!(*.type).test.js"
+                # default experience (usually all you need)
+                virmator ${CliCommandName.CodeInMarkdown}
+                # override files to check to a single file
+                virmator ${CliCommandName.CodeInMarkdown} only/this/one/file.md
+                # override files to check to a group of files
+                virmator ${CliCommandName.CodeInMarkdown} "only/this/dir/*.md"
             `,
     implementation: runCodeInMarkdownCommand,
     configFlagSupport: {
@@ -24,26 +35,16 @@ export const codeInMarkdownCommandImplementation: CliCommandImplementation = {
 
 const mdCodePath = getNpmBinPath('md-code');
 
-export async function runCodeInMarkdownCommand({
-    rawArgs,
-    repoDir,
-}: CommandFunctionInput): Promise<CliCommandResult> {
-    const args: string = rawArgs.length
-        ? interpolationSafeWindowsPath(rawArgs.join(' '))
+export async function runCodeInMarkdownCommand(
+    inputs: CommandFunctionInput,
+): Promise<CliCommandResult> {
+    const args: string = inputs.rawArgs.length
+        ? interpolationSafeWindowsPath(inputs.rawArgs.join(' '))
         : `\"./**/*.md\"`;
     const mdCodeCommand = `${mdCodePath} ${args}`;
-    const results = await runShellCommand(mdCodeCommand, {cwd: repoDir});
-
-    const keepError: boolean = !(
-        results.error?.message.match(/\d+\s+tests?\s+failed/) &&
-        results.error?.message.trim().split('\n').length <= 2
-    );
+    const results = await runVirmatorShellCommand(mdCodeCommand, inputs);
 
     return {
-        stdout: results.stdout.trim(),
-        stderr: results.stderr.trim(),
         success: !results.error,
-        error: keepError ? results.error : undefined,
-        printCommandResult: false,
     };
 }

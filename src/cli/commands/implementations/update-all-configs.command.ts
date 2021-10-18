@@ -29,10 +29,8 @@ export const updateAllConfigsCommandImplementation: CliCommandImplementation = {
     },
 };
 
-export async function runUpdateAllConfigsCommand({
-    rawArgs,
-    cliFlags,
-    repoDir,
-}: CommandFunctionInput): Promise<CliCommandResult> {
-    return await updateConfigs(rawArgs, cliFlags, ConfigKey, repoDir);
+export async function runUpdateAllConfigsCommand(
+    inputs: CommandFunctionInput,
+): Promise<CliCommandResult> {
+    return await updateConfigs(ConfigKey, inputs);
 }

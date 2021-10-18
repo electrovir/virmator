@@ -1,7 +1,7 @@
-import {runShellCommand} from 'augment-vir/dist/node';
 import {getNpmBinPath} from '../../../file-paths/virmator-repo-paths';
 import {CliCommandName} from '../../cli-util/cli-command-name';
 import {CliFlagName} from '../../cli-util/cli-flags';
+import {runVirmatorShellCommand} from '../../cli-util/shell-command-wrapper';
 import {ConfigKey} from '../../config/config-key';
 import {CliCommandImplementation, CliCommandResult, CommandFunctionInput} from '../cli-command';
 
@@ -17,27 +17,15 @@ export const spellcheckCommandImplementation: CliCommandImplementation = {
 
 const cSpellPath = getNpmBinPath('cspell');
 
-export async function runSpellcheckCommand({
-    rawArgs,
-    repoDir,
-}: CommandFunctionInput): Promise<CliCommandResult> {
-    const spellcheckCommand = `${cSpellPath} --color "{*,.*,**/{.*,*}/**/{.*,*}}" ${rawArgs.join(
+export async function runSpellcheckCommand(
+    inputs: CommandFunctionInput,
+): Promise<CliCommandResult> {
+    const spellcheckCommand = `${cSpellPath} --color "{*,.*,**/{.*,*}/**/{.*,*}}" ${inputs.rawArgs.join(
         ' ',
     )}`;
-    const results = await runShellCommand(spellcheckCommand, {cwd: repoDir});
-
-    const keepError: boolean = !results.error?.message.includes('CSpell: Files checked');
+    const results = await runVirmatorShellCommand(spellcheckCommand, inputs);
 
     return {
-        /** Stdout for cspell is always an explanation of the unknown words, when they exist. */
-        stdout: results.stdout,
-        /**
-         * When there's an error, stderr duplicates the error message, so it can be ignored.
-         * Otherwise, stderr is the list of checked files.
-         */
-        stderr: results.error ? undefined : results.stderr,
         success: !results.error,
-        error: keepError ? results.error : undefined,
-        printCommandResult: true,
     };
 }

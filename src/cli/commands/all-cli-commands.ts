@@ -3,7 +3,7 @@ import {packageName} from '../../package-name';
 import {Color} from '../cli-util/cli-color';
 import {CliCommandName} from '../cli-util/cli-command-name';
 import {CliFlagName, CliFlags, flagDescriptions} from '../cli-util/cli-flags';
-import {CliCommandImplementation, CliCommandResult} from './cli-command';
+import {CliCommandImplementation, CliCommandResult, CommandFunctionInput} from './cli-command';
 import {codeInMarkdownCommandImplementation} from './implementations/code-in-markdown.command';
 import {compileImplementation} from './implementations/compile.command';
 import {formatImplementation} from './implementations/format.command';
@@ -53,7 +53,7 @@ export const helpImplementation: CliCommandImplementation = {
     },
 };
 
-export function runHelpCommand(): CliCommandResult {
+export function runHelpCommand({stdoutCallback}: CommandFunctionInput): CliCommandResult {
     const flagsMessage = getEnumTypedValues(CliFlagName)
         .sort()
         .map((flagName) => {
@@ -85,11 +85,10 @@ export function runHelpCommand(): CliCommandResult {
     ${Color.Info} available commands:${Color.Reset}
         ${commandsMessage}`;
 
+    stdoutCallback(helpMessage);
+
     return {
         success: true,
-        stdout: helpMessage,
-        stderr: '',
-        printCommandResult: true,
     };
 }
 

@@ -1,8 +1,8 @@
-import {runShellCommand} from 'augment-vir/dist/node';
 import {getNpmBinPath} from '../../../file-paths/virmator-repo-paths';
 import {packageName} from '../../../package-name';
 import {CliCommandName} from '../../cli-util/cli-command-name';
 import {CliFlagName} from '../../cli-util/cli-flags';
+import {runVirmatorShellCommand} from '../../cli-util/shell-command-wrapper';
 import {ConfigKey} from '../../config/config-key';
 import {CliCommandImplementation, CliCommandResult, CommandFunctionInput} from '../cli-command';
 
@@ -25,26 +25,14 @@ export const compileImplementation: CliCommandImplementation = {
 
 const tscPath = getNpmBinPath('tsc');
 
-export async function runCompileCommand({
-    rawArgs,
-    repoDir,
-}: CommandFunctionInput): Promise<CliCommandResult> {
-    const resetCommand = rawArgs.join(' ').includes('--noEmit') ? '' : 'rm -rf dist && ';
-    const compileCommand = `${resetCommand}${tscPath} --pretty ${rawArgs
+export async function runCompileCommand(inputs: CommandFunctionInput): Promise<CliCommandResult> {
+    const resetCommand = inputs.rawArgs.join(' ').includes('--noEmit') ? '' : 'rm -rf dist && ';
+    const compileCommand = `${resetCommand}${tscPath} --pretty ${inputs.rawArgs
         .map((arg) => `"${arg}"`)
         .join(' ')}`;
-    const results = await runShellCommand(compileCommand, {cwd: repoDir});
-
-    const keepError: boolean = !(
-        results.error?.message.trim().startsWith('Command failed:') &&
-        results.error?.message.trim().split('\n').length <= 1
-    );
+    const results = await runVirmatorShellCommand(compileCommand, inputs);
 
     return {
         success: !results.error,
-        stdout: results.stdout,
-        stderr: results.stderr,
-        error: keepError ? results.error : undefined,
-        printCommandResult: true,
     };
 }

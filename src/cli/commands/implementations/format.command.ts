@@ -1,8 +1,9 @@
-import {DeepWriteable, isEnumValue, runShellCommand} from 'augment-vir/dist/node';
+import {DeepWriteable, isEnumValue} from 'augment-vir/dist/node';
 import {getNpmBinPath} from '../../../file-paths/virmator-repo-paths';
 import {packageName} from '../../../package-name';
 import {CliCommandName} from '../../cli-util/cli-command-name';
 import {CliFlagName} from '../../cli-util/cli-flags';
+import {runVirmatorShellCommand} from '../../cli-util/shell-command-wrapper';
 import {ConfigKey} from '../../config/config-key';
 import {CliCommandImplementation, CliCommandResult, CommandFunctionInput} from '../cli-command';
 
@@ -74,11 +75,8 @@ export const formatImplementation: CliCommandImplementation = {
 
 const prettierPath = getNpmBinPath('prettier');
 
-export async function runFormatCommand({
-    rawArgs,
-    repoDir,
-}: CommandFunctionInput): Promise<CliCommandResult> {
-    const args = extractFormatArgs(rawArgs);
+export async function runFormatCommand(inputs: CommandFunctionInput): Promise<CliCommandResult> {
+    const args = extractFormatArgs(inputs.rawArgs);
 
     const operationFlag = args.operation === FormatOperation.Check ? '--check' : '--write';
 
@@ -86,16 +84,12 @@ export async function runFormatCommand({
         ' ',
     )} \"./**/*.+(${args.fileExtensions.join('|')})\" ${operationFlag}`;
 
-    const results = await runShellCommand(prettierCommand, {cwd: repoDir});
-
-    const keepError: boolean = !results.error?.message.includes('Forgot to run Prettier?');
+    const results = await runVirmatorShellCommand(prettierCommand, inputs, {
+        stdoutFilter: (stdout) => stdout.replace('Checking formatting...\n', ''),
+    });
 
     return {
         success: !results.error,
-        stdout: results.stdout.replace('Checking formatting...\n', ''),
-        stderr: results.stderr,
-        error: keepError ? results.error : undefined,
-        printCommandResult: true,
     };
 }
 

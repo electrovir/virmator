@@ -5,11 +5,6 @@ import {CommandConfigKey} from '../config/config-key';
 
 export type CliCommandResult = {
     success: boolean;
-    stdout?: string | undefined;
-    stderr?: string | undefined;
-    error?: unknown | undefined;
-    exitCode?: number;
-    printCommandResult: boolean;
 };
 
 function extractRawFlags(

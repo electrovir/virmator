@@ -30,10 +30,8 @@ export const updateBareConfigsCommandImplementation: CliCommandImplementation = 
     },
 };
 
-export async function runUpdateBareConfigsCommand({
-    rawArgs,
-    cliFlags,
-    repoDir,
-}: CommandFunctionInput): Promise<CliCommandResult> {
-    return await updateConfigs(rawArgs, cliFlags, BareConfigKey, repoDir);
+export async function runUpdateBareConfigsCommand(
+    inputs: CommandFunctionInput,
+): Promise<CliCommandResult> {
+    return await updateConfigs(BareConfigKey, inputs);
 }

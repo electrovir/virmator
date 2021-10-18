@@ -1,26 +1,26 @@
 import {filterToEnumValues, getEnumTypedValues} from 'augment-vir/dist/node';
 import {existsSync} from 'fs-extra';
-import {CliCommandResult} from '../commands/cli-command';
+import {
+    CliCommandResult,
+    CommandFunctionInput,
+    EmptyOutputCallbacks,
+} from '../commands/cli-command';
 import {runFormatCommand} from '../commands/implementations/format.command';
 import {ConfigKey} from '../config/config-key';
 import {copyConfig} from '../config/copy-config';
 import {isExtendableConfig} from '../config/extendable-config';
-import {CliFlagName, CliFlags} from './cli-flags';
+import {CliFlagName} from './cli-flags';
 
 export async function updateConfigs<T extends ConfigKey>(
-    rawArgs: string[],
-    cliFlags: Required<Readonly<CliFlags>>,
     configKeysEnum: Record<string, T>,
-    repoDir: string,
+    commandInputs: CommandFunctionInput,
 ): Promise<CliCommandResult> {
-    const inputConfigFiles = filterToEnumValues(rawArgs, configKeysEnum);
+    const inputConfigFiles = filterToEnumValues(commandInputs.rawArgs, configKeysEnum);
     const configFilesToCopy: T[] = inputConfigFiles.length
         ? inputConfigFiles
         : getEnumTypedValues(configKeysEnum);
 
     const errors: unknown[] = [];
-    const writtenFiles: {key: T; path: string}[] = [];
-    const failedFiles: T[] = [];
 
     await Promise.all(
         configFilesToCopy.map(async (configKey) => {
@@ -28,8 +28,9 @@ export async function updateConfigs<T extends ConfigKey>(
                 const {outputFilePath, didWrite} = await copyConfig({
                     configKey,
                     forceExtendableConfig:
-                        cliFlags[CliFlagName.ExtendableConfig] && isExtendableConfig(configKey),
-                    repoDir,
+                        commandInputs.cliFlags[CliFlagName.ExtendableConfig] &&
+                        isExtendableConfig(configKey),
+                    repoDir: commandInputs.repoDir,
                 });
 
                 if (!existsSync(outputFilePath)) {
@@ -39,46 +40,24 @@ export async function updateConfigs<T extends ConfigKey>(
                 }
 
                 if (didWrite) {
-                    writtenFiles.push({
-                        key: configKey,
-                        path: outputFilePath,
+                    await runFormatCommand({
+                        rawArgs: [outputFilePath],
+                        cliFlags: commandInputs.cliFlags,
+                        repoDir: commandInputs.repoDir,
+                        ...EmptyOutputCallbacks,
                     });
+                    commandInputs.stdoutCallback(`Wrote ${configKey} to ${outputFilePath}`);
                 }
             } catch (error) {
                 errors.push(error);
-                failedFiles.push(configKey);
+
+                commandInputs.stderrCallback(`Failed to write config file for ${configKey}`);
+                commandInputs.stderrCallback(String(error));
             }
         }),
     );
 
-    // only format the newly updated config files
-    const filePaths = writtenFiles.map((writtenFile) => writtenFile.path);
-
-    await runFormatCommand({rawArgs: filePaths, cliFlags, repoDir});
-
     return {
-        stdout: writtenFiles.length
-            ? writtenFiles
-                  .map((writtenFile) => {
-                      return `Wrote ${writtenFile.key} to ${writtenFile.path}`;
-                  })
-                  .join('\n')
-            : 'All configs up to date.',
-        stderr: failedFiles
-            .map((failedFile) => {
-                return `Failed to write config file for ${failedFile}`;
-            })
-            .join('\n'),
         success: !errors.length,
-        error: errors.length
-            ? new Error(
-                  `Failed to write config files for the following reasons: ${errors
-                      .map((error, index) => {
-                          return `${failedFiles[index]} failed: ${String(error)}`;
-                      })
-                      .join('\n')}`,
-              )
-            : undefined,
-        printCommandResult: true,
     };
 }
