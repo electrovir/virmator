@@ -1,4 +1,4 @@
-import {printCommandOutput} from 'augment-vir/dist/node';
+import {printShellCommandOutput} from 'augment-vir/dist/node';
 import {readFile, writeFile} from 'fs-extra';
 import {testGroup} from 'test-vir';
 import {testFormatPaths} from '../../../file-paths/virmator-test-repos-paths';
@@ -28,7 +28,7 @@ testGroup({
                 });
 
                 if (!result.success) {
-                    printCommandOutput(result);
+                    printShellCommandOutput(result);
                 }
 
                 return result.success;

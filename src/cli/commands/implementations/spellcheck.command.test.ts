@@ -1,4 +1,4 @@
-import {printCommandOutput} from 'augment-vir/dist/node';
+import {printShellCommandOutput} from 'augment-vir/dist/node';
 import {join, relative} from 'path';
 import {testGroup} from 'test-vir';
 import {spellcheckTestPaths} from '../../../file-paths/virmator-test-repos-paths';
@@ -19,7 +19,7 @@ testGroup({
                 });
 
                 if (!result.success) {
-                    printCommandOutput(result);
+                    printShellCommandOutput(result);
                 }
 
                 return result.success;
@@ -37,7 +37,7 @@ testGroup({
                 });
 
                 if (result.success) {
-                    printCommandOutput(result);
+                    printShellCommandOutput(result);
                 }
 
                 return result.success;
@@ -55,7 +55,7 @@ testGroup({
                 });
 
                 if (!commandResultNoArgs.success) {
-                    printCommandOutput(commandResultNoArgs);
+                    printShellCommandOutput(commandResultNoArgs);
                 }
 
                 return commandResultNoArgs.stderr?.trim().split('\n').length;
@@ -73,7 +73,7 @@ testGroup({
                 });
 
                 if (!commandResultWithArgs.success) {
-                    printCommandOutput(commandResultWithArgs);
+                    printShellCommandOutput(commandResultWithArgs);
                 }
 
                 return commandResultWithArgs.stdout?.trim().split('\n').length;
@@ -102,7 +102,7 @@ testGroup({
                 });
 
                 if (!commandResult.success) {
-                    printCommandOutput(commandResult);
+                    printShellCommandOutput(commandResult);
                 }
 
                 const filtered = commandResult.stderr

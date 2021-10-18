@@ -1,8 +1,8 @@
 import {
     getObjectTypedKeys,
     interpolationSafeWindowsPath,
-    printCommandOutput,
-    runBashCommand,
+    printShellCommandOutput,
+    runShellCommand,
 } from 'augment-vir/dist/node';
 import {existsSync, readFile, remove, writeFile} from 'fs-extra';
 import {join} from 'path';
@@ -51,13 +51,13 @@ testGroup((runTest) => {
             expect: {output: expectedOutput, cleanupResult: undefined},
             forceOnly: inputs.forceOnly || false,
             test: async () => {
-                const results = await runBashCommand(
+                const results = await runShellCommand(
                     `node ${interpolationSafeWindowsPath(cliPath)} ${inputs.args.join(' ')}`,
-                    inputs.cwd,
+                    {cwd: inputs.cwd},
                 );
 
                 if (inputs.debug) {
-                    printCommandOutput(results);
+                    printShellCommandOutput(results);
                 }
 
                 const rawOutput = {
@@ -176,10 +176,9 @@ testGroup({
             testResults.push({name: 'symlink was created', result: existsSync(symlinkPath)});
 
             /** Run format for the first time which will create the config file */
-            const firstFormatOutput = await runBashCommand(
-                interpolationSafeWindowsPath(command),
-                testFormatPaths.validRepo,
-            );
+            const firstFormatOutput = await runShellCommand(interpolationSafeWindowsPath(command), {
+                cwd: testFormatPaths.validRepo,
+            });
 
             testResults.push({
                 name: 'first format has stderr',
@@ -197,9 +196,9 @@ testGroup({
                 testResults.push({name: 'config was created', result: existsSync(configPath)});
             }, Promise.resolve());
 
-            const secondFormatOutput = await runBashCommand(
+            const secondFormatOutput = await runShellCommand(
                 interpolationSafeWindowsPath(command),
-                testFormatPaths.validRepo,
+                {cwd: testFormatPaths.validRepo},
             );
 
             testResults.push({
@@ -210,7 +209,7 @@ testGroup({
             /** The second format should not have stderr. Thus, if it does, print the output. */
             if (secondFormatOutput.stderr) {
                 console.error('second format output');
-                printCommandOutput(secondFormatOutput);
+                printShellCommandOutput(secondFormatOutput);
             }
 
             await configPaths.reduce(async (lastPromise, configPath) => {

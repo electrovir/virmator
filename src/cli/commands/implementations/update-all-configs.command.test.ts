@@ -1,4 +1,4 @@
-import {printCommandOutput} from 'augment-vir/dist/node';
+import {printShellCommandOutput} from 'augment-vir/dist/node';
 import {readdir} from 'fs-extra';
 import {testGroup} from 'test-vir';
 import {updateAllConfigsTestPaths} from '../../../file-paths/virmator-test-repos-paths';
@@ -44,8 +44,8 @@ testGroup({
                 const noConfigsWritten = !!commandOutput.stdout?.includes('All configs up to date');
 
                 if (!commandOutput.success || !noConfigsWritten) {
-                    console.log('printCommandOutput');
-                    printCommandOutput(commandOutput);
+                    console.log('printShellCommandOutput');
+                    printShellCommandOutput(commandOutput);
                 }
 
                 console.log('afterFiles');

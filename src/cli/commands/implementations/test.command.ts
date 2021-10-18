@@ -1,4 +1,4 @@
-import {interpolationSafeWindowsPath, runBashCommand} from 'augment-vir/dist/node';
+import {interpolationSafeWindowsPath, runShellCommand} from 'augment-vir/dist/node';
 import {getNpmBinPath} from '../../../file-paths/virmator-repo-paths';
 import {CliCommandName} from '../../cli-util/cli-command-name';
 import {CliFlagName} from '../../cli-util/cli-flags';
@@ -40,7 +40,7 @@ export async function runTestCommand({
         ? interpolationSafeWindowsPath(rawArgs.join(' '))
         : `\"./dist/**/!(*.type).test.js\"`;
     const testCommand = `${testVirPath} ${args}`;
-    const results = await runBashCommand(testCommand, repoDir);
+    const results = await runShellCommand(testCommand, {cwd: repoDir});
 
     const keepError: boolean = !(
         results.error?.message.match(/\d+\s+tests?\s+failed/) &&

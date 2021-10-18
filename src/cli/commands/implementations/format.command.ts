@@ -1,4 +1,4 @@
-import {DeepWriteable, isEnumValue, runBashCommand} from 'augment-vir/dist/node';
+import {DeepWriteable, isEnumValue, runShellCommand} from 'augment-vir/dist/node';
 import {getNpmBinPath} from '../../../file-paths/virmator-repo-paths';
 import {packageName} from '../../../package-name';
 import {CliCommandName} from '../../cli-util/cli-command-name';
@@ -86,7 +86,7 @@ export async function runFormatCommand({
         ' ',
     )} \"./**/*.+(${args.fileExtensions.join('|')})\" ${operationFlag}`;
 
-    const results = await runBashCommand(prettierCommand, repoDir);
+    const results = await runShellCommand(prettierCommand, {cwd: repoDir});
 
     const keepError: boolean = !results.error?.message.includes('Forgot to run Prettier?');
 

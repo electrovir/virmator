@@ -1,4 +1,4 @@
-import {runBashCommand} from 'augment-vir/dist/node';
+import {runShellCommand} from 'augment-vir/dist/node';
 import {getNpmBinPath} from '../../../file-paths/virmator-repo-paths';
 import {packageName} from '../../../package-name';
 import {CliCommandName} from '../../cli-util/cli-command-name';
@@ -33,7 +33,7 @@ export async function runCompileCommand({
     const compileCommand = `${resetCommand}${tscPath} --pretty ${rawArgs
         .map((arg) => `"${arg}"`)
         .join(' ')}`;
-    const results = await runBashCommand(compileCommand, repoDir);
+    const results = await runShellCommand(compileCommand, {cwd: repoDir});
 
     const keepError: boolean = !(
         results.error?.message.trim().startsWith('Command failed:') &&

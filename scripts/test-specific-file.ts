@@ -1,4 +1,4 @@
-import {runBashCommand} from 'augment-vir/dist/node';
+import {runShellCommand} from 'augment-vir/dist/node';
 import {existsSync} from 'fs-extra';
 import {extname, join} from 'path';
 
@@ -31,7 +31,7 @@ async function main() {
         }
     }
 
-    const testOutput = await runBashCommand(`node dist/cli/cli.js test ${fileToTest}`);
+    const testOutput = await runShellCommand(`node dist/cli/cli.js test ${fileToTest}`);
     console.info(testOutput.stdout);
     console.error(testOutput.stderr);
 
