@@ -58,7 +58,7 @@ export async function copyConfig({
         });
     }
 
-    if (shouldExtend) {
+    if (shouldExtend && isExtendableConfig(configKey)) {
         if (!isExtendableConfig(configKey)) {
             throw new ConfigFileError(`Extendable config files are not supported for ${configKey}`);
         }

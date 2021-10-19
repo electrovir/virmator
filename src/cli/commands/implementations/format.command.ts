@@ -66,7 +66,7 @@ export const formatImplementation: CliCommandImplementation = {
                     ${packageName} ${CliCommandName.Format} --ignore-path .prettierignore
                     ${packageName} ${CliCommandName.Format} ${FormatOperation.Write}  --ignore-path .prettierignore
                     ${packageName} ${CliCommandName.Format} ${FormatOperation.Write}  --ignore-path .prettierignore ${filesMarkerArg} md json`,
-    configKeys: [ConfigKey.Prettier],
+    configKeys: [ConfigKey.Prettier, ConfigKey.PrettierIgnore],
     implementation: runFormatCommand,
     configFlagSupport: {
         [CliFlagName.NoWriteConfig]: true,

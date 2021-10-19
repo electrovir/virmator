@@ -239,6 +239,10 @@ testGroup({
                     result: false,
                 },
                 {
+                    name: 'previous config exists',
+                    result: false,
+                },
+                {
                     name: 'symlink was created',
                     result: true,
                 },
@@ -251,7 +255,15 @@ testGroup({
                     result: true,
                 },
                 {
+                    name: 'config was created',
+                    result: true,
+                },
+                {
                     name: 'second format has stderr',
+                    result: false,
+                },
+                {
+                    name: 'config exists after cleanup',
                     result: false,
                 },
                 {
@@ -269,12 +281,20 @@ testGroup({
                         testFormatPaths.validRepo,
                         getRepoConfigFilePath(ConfigKey.Prettier, false),
                     ),
+                    join(
+                        testFormatPaths.validRepo,
+                        getRepoConfigFilePath(ConfigKey.PrettierIgnore, false),
+                    ),
                 ]),
         });
 
         runTest({
             description: 'verify that extendable format config is created',
             expect: [
+                {
+                    name: 'previous config exists',
+                    result: false,
+                },
                 {
                     name: 'previous config exists',
                     result: false,
@@ -300,7 +320,15 @@ testGroup({
                     result: true,
                 },
                 {
+                    name: 'config was created',
+                    result: true,
+                },
+                {
                     name: 'second format has stderr',
+                    result: false,
+                },
+                {
+                    name: 'config exists after cleanup',
                     result: false,
                 },
                 {
@@ -326,6 +354,10 @@ testGroup({
                         testFormatPaths.validRepo,
                         getExtendableBaseConfigName(ConfigKey.Prettier),
                     ),
+                    join(
+                        testFormatPaths.validRepo,
+                        getRepoConfigFilePath(ConfigKey.PrettierIgnore, false),
+                    ),
                 ]),
         });
 
@@ -335,6 +367,10 @@ testGroup({
                 {
                     name: 'file matches written contents',
                     result: true,
+                },
+                {
+                    name: 'previous config exists',
+                    result: false,
                 },
                 {
                     name: 'previous config exists',
@@ -353,7 +389,15 @@ testGroup({
                     result: true,
                 },
                 {
+                    name: 'config was created',
+                    result: true,
+                },
+                {
                     name: 'second format has stderr',
+                    result: false,
+                },
+                {
+                    name: 'config exists after cleanup',
                     result: false,
                 },
                 {
@@ -401,6 +445,10 @@ module.exports = {...baseConfig, printWidth: 80};`;
                             join(
                                 testFormatPaths.validRepo,
                                 getExtendableBaseConfigName(ConfigKey.Prettier),
+                            ),
+                            join(
+                                testFormatPaths.validRepo,
+                                getRepoConfigFilePath(ConfigKey.PrettierIgnore, false),
                             ),
                         ],
                     )),

@@ -23,7 +23,7 @@ export async function runCommand(
     const defaultFlagSupport = {
         [CliFlagName.Silent]: true,
         [CliFlagName.Help]: true,
-        [CliFlagName.ExtendableConfig]: !!commandImplementation.configKeys?.every((configKey) =>
+        [CliFlagName.ExtendableConfig]: !!commandImplementation.configKeys?.some((configKey) =>
             isExtendableConfig(configKey),
         ),
     };
