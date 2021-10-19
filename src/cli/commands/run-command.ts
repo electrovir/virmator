@@ -63,8 +63,12 @@ export async function runCommand(
         cliFlags[CliFlagName.Silent] && command !== CliCommandName.Help
             ? EmptyOutputCallbacks
             : {
-                  stdoutCallback: console.info,
-                  stderrCallback: console.error,
+                  stdoutCallback: (input: string) => {
+                      console.info(input.replace(/\n\n$/, '\n'));
+                  },
+                  stderrCallback: (input: string) => {
+                      console.error(input.replace(/\n\n$/, '\n'));
+                  },
               };
 
     const commandResult = await commandImplementation.implementation({
