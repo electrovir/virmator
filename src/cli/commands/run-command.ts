@@ -64,10 +64,10 @@ export async function runCommand(
             ? EmptyOutputCallbacks
             : {
                   stdoutCallback: (input: string) => {
-                      console.info(input.replace(/\n\n$/, '\n'));
+                      console.info(input.replace(/\n$/, ''));
                   },
                   stderrCallback: (input: string) => {
-                      console.error(input.replace(/\n\n$/, '\n'));
+                      console.error(input.replace(/\n$/, ''));
                   },
               };
 

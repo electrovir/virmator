@@ -37,7 +37,11 @@ export async function runTestCommand(inputs: CommandFunctionInput): Promise<CliC
         ? interpolationSafeWindowsPath(inputs.rawArgs.join(' '))
         : `\"./dist/**/!(*.type).test.js\"`;
     const testCommand = `${testVirPath} ${args}`;
-    const results = await runVirmatorShellCommand(testCommand, inputs);
+    const results = await runVirmatorShellCommand(testCommand, inputs, {
+        stdoutFilter: (logString) =>
+            // weird looking hex codes here are for color codes from test-vir
+            logString.replace('\x1B[1m\x1B[32mAll tests passed.\x1B[0m\n', ''),
+    });
 
     return {
         success: !results.error,

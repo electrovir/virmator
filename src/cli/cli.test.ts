@@ -107,10 +107,7 @@ testGroup((runTest) => {
         args: [CliFlagName.NoWriteConfig, CliCommandName.Format, FormatOperation.Check],
         description: 'runs format',
         expect: {
-            stdout: `running format...\nAll matched files use Prettier code style!\n\n${getResultMessage(
-                CliCommandName.Format,
-                true,
-            )}`,
+            stdout: `running format...\n${getResultMessage(CliCommandName.Format, true)}`,
         },
         cwd: testFormatPaths.validRepo,
     });

@@ -13,9 +13,9 @@ function outputWrapper(
     filter: OutputFilter,
 ): (input: string | Buffer) => void {
     return (input) => {
-        const stringInput = input.toString();
-        if (filter(stringInput)) {
-            callback(stringInput);
+        const callbackString = filter(input.toString());
+        if (callbackString) {
+            callback(callbackString);
         }
     };
 }

@@ -23,7 +23,7 @@ type FormatArgs = Required<
 export const defaultFormatArgs: FormatArgs = {
     operation: FormatOperation.Write,
     prettierFlags: [],
-    fileExtensions: ['ts', 'json', 'html', 'css', 'md', 'js', 'yml', 'yaml'],
+    fileExtensions: ['ts', 'tsx', 'json', 'html', 'css', 'md', 'js', 'yml', 'yaml'],
 } as const;
 
 export const filesMarkerArg = '--format-files' as const;
@@ -85,7 +85,12 @@ export async function runFormatCommand(inputs: CommandFunctionInput): Promise<Cl
     )} \"./**/*.+(${args.fileExtensions.join('|')})\" ${operationFlag}`;
 
     const results = await runVirmatorShellCommand(prettierCommand, inputs, {
-        stdoutFilter: (stdout) => stdout.replace('Checking formatting...\n', ''),
+        stdoutFilter: (stdout) =>
+            stdout
+                // only relevant when running the check command
+                .replace('Checking formatting...\n', '')
+                // only relevant when running the check command
+                .replace('All matched files use Prettier code style!\n', ''),
     });
 
     return {
