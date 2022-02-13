@@ -73,7 +73,7 @@ export function runHelpCommand({stdoutCallback}: CommandFunctionInput): CliComma
         .join('\n        ');
 
     const helpMessage = `${Color.Info} ${packageName} usage:${Color.Reset}
-    [npx] ${packageName} [--flags] command subcommand
+    [npx] ${packageName} [--flags] command subCommand
     
     npx is needed when the command is run directly from the terminal
     (not scoped within an npm script) unless the package has been globally installed
