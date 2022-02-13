@@ -1,5 +1,6 @@
 *.test.d.ts
 *.test.js
 src
+src/tests
 test-repos
 scripts

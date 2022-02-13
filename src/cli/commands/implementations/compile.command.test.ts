@@ -52,7 +52,7 @@ testGroup({
         });
 
         runTest({
-            description: 'extra args are passed to tsc',
+            description: 'extra args are passed to tsc (THIS TEST IS FLAKEY)',
             expect: [false, true, false],
             test: async () => {
                 const results = [];

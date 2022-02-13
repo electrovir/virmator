@@ -39,7 +39,7 @@
     "dependencies": {
         "ansi-styles": "5.2.0",
         "augment-vir": "^1.4.3",
-        "cspell": "^5.17.0",
+        "cspell": "^5.18.4",
         "fs-extra": "^10.0.0",
         "markdown-code-example-inserter": "^0.1.5",
         "prettier": "^2.5.1",
@@ -53,8 +53,9 @@
     },
     "devDependencies": {
         "@types/fs-extra": "^9.0.13",
-        "@types/node": "^17.0.12",
-        "ts-node": "^10.4.0"
+        "@types/node": "^17.0.17",
+        "prettier-plugin-multiline-arrays": "^0.0.1",
+        "ts-node": "^10.5.0"
     },
     "engines": {
         "node": ">=12",
