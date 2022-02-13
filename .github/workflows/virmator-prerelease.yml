@@ -26,18 +26,17 @@ jobs:
               id: vars
               run: |
                   branchName="${GITHUB_REF#refs/*/}"
-                  echo ::set-output name=short_ref::"$branchName"
+                  echo ::set-output name=tagName::"$branchName-$GITHUB_SHA"
 
                   originalTarName="$(npm pack)"
                   packageName="$(npm -s run env echo '$npm_package_name')"
-                  timeStamp="$(date +%s)"
-                  newTarName="$packageName-$timeStamp.tgz"
+                  newTarName="$packageName-$GITHUB_SHA.tgz"
                   mv "$originalTarName" "$newTarName"
                   echo ::set-output name=tar_name::"$newTarName"
             - uses: 'marvinpinto/action-automatic-releases@latest'
               with:
                   repo_token: '${{ secrets.GITHUB_TOKEN }}'
-                  automatic_release_tag: 'prerelease-${{ steps.vars.outputs.short_ref }}'
+                  automatic_release_tag: 'prerelease-${{ steps.vars.outputs.tagName }}'
                   prerelease: true
                   files: |
                       ${{ steps.vars.outputs.tar_name }}
