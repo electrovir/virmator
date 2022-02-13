@@ -10,7 +10,12 @@ testGroup({
     tests: (runTest) => {
         runTest({
             description: 'compiling succeeds in repo with no errors',
-            expect: [false, true, true, false],
+            expect: [
+                false,
+                true,
+                true,
+                false,
+            ],
             test: async () => {
                 const results = [];
                 results.push(existsSync(testCompilePaths.compiledValidSourceFile));
@@ -31,7 +36,12 @@ testGroup({
 
         runTest({
             description: 'compiling fails in repo with errors',
-            expect: [false, false, true, false],
+            expect: [
+                false,
+                false,
+                true,
+                false,
+            ],
             test: async () => {
                 const results = [];
                 results.push(existsSync(testCompilePaths.compiledInvalidSourceFile));
@@ -53,7 +63,11 @@ testGroup({
 
         runTest({
             description: 'extra args are passed to tsc (THIS TEST IS FLAKEY)',
-            expect: [false, true, false],
+            expect: [
+                false,
+                true,
+                false,
+            ],
             test: async () => {
                 const results = [];
                 results.push(existsSync(testCompilePaths.compiledValidSourceFile));

@@ -23,7 +23,17 @@ type FormatArgs = Required<
 export const defaultFormatArgs: FormatArgs = {
     operation: FormatOperation.Write,
     prettierFlags: [],
-    fileExtensions: ['ts', 'tsx', 'json', 'html', 'css', 'md', 'js', 'yml', 'yaml'],
+    fileExtensions: [
+        'ts',
+        'tsx',
+        'json',
+        'html',
+        'css',
+        'md',
+        'js',
+        'yml',
+        'yaml',
+    ],
 } as const;
 
 export const filesMarkerArg = '--format-files' as const;
@@ -66,7 +76,10 @@ export const formatImplementation: CliCommandImplementation = {
                     ${packageName} ${CliCommandName.Format} --ignore-path .prettierignore
                     ${packageName} ${CliCommandName.Format} ${FormatOperation.Write}  --ignore-path .prettierignore
                     ${packageName} ${CliCommandName.Format} ${FormatOperation.Write}  --ignore-path .prettierignore ${filesMarkerArg} md json`,
-    configKeys: [ConfigKey.Prettier, ConfigKey.PrettierIgnore],
+    configKeys: [
+        ConfigKey.Prettier,
+        ConfigKey.PrettierIgnore,
+    ],
     implementation: runFormatCommand,
     configFlagSupport: {
         [CliFlagName.NoWriteConfig]: true,

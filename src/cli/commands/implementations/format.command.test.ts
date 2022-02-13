@@ -58,7 +58,13 @@ testGroup({
 
         runTest({
             description: 'format write fixes invalid files',
-            expect: [false, true, true, false, true],
+            expect: [
+                false,
+                true,
+                true,
+                false,
+                true,
+            ],
             test: async () => {
                 const originalSource = (
                     await readFile(testFormatPaths.invalidSourceFile)
@@ -157,13 +163,21 @@ testGroup({
             },
         });
 
-        const derpyExtensions = ['herp', 'derp', 'ts', 'js'];
+        const derpyExtensions = [
+            'herp',
+            'derp',
+            'ts',
+            'js',
+        ];
 
         runTest({
             description: 'accepts file extension arguments',
             expect: {...defaultFormatArgs, fileExtensions: derpyExtensions},
             test: () => {
-                return extractFormatArgs([filesMarkerArg, ...derpyExtensions]);
+                return extractFormatArgs([
+                    filesMarkerArg,
+                    ...derpyExtensions,
+                ]);
             },
         });
 
@@ -172,7 +186,10 @@ testGroup({
             expect: {
                 operation: FormatOperation.Check,
                 fileExtensions: derpyExtensions,
-                prettierFlags: [...defaultFormatArgs.prettierFlags, '--derp'],
+                prettierFlags: [
+                    ...defaultFormatArgs.prettierFlags,
+                    '--derp',
+                ],
             },
             test: () => {
                 return extractFormatArgs([

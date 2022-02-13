@@ -6,7 +6,10 @@ import {updateConfigs} from '../../cli-util/update-configs';
 import {BareConfigKey} from '../../config/config-key';
 import {CliCommandImplementation, CliCommandResult, CommandFunctionInput} from '../cli-command';
 
-const exampleFlags: BareConfigKey[] = [BareConfigKey.GitIgnore, BareConfigKey.NpmIgnore];
+const exampleFlags: BareConfigKey[] = [
+    BareConfigKey.GitIgnore,
+    BareConfigKey.NpmIgnore,
+];
 
 export const updateBareConfigsCommandImplementation: CliCommandImplementation = {
     commandName: CliCommandName.UpdateBareConfigs,

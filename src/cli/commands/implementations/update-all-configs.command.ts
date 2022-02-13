@@ -6,7 +6,10 @@ import {updateConfigs} from '../../cli-util/update-configs';
 import {ConfigKey} from '../../config/config-key';
 import {CliCommandImplementation, CliCommandResult, CommandFunctionInput} from '../cli-command';
 
-const exampleFlags: ConfigKey[] = [ConfigKey.Cspell, ConfigKey.GitIgnore];
+const exampleFlags: ConfigKey[] = [
+    ConfigKey.Cspell,
+    ConfigKey.GitIgnore,
+];
 
 export const updateAllConfigsCommandImplementation: CliCommandImplementation = {
     commandName: CliCommandName.UpdateAllConfigs,

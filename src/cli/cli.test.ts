@@ -104,7 +104,11 @@ testGroup((runTest) => {
     });
 
     testCli({
-        args: [CliFlagName.NoWriteConfig, CliCommandName.Format, FormatOperation.Check],
+        args: [
+            CliFlagName.NoWriteConfig,
+            CliCommandName.Format,
+            FormatOperation.Check,
+        ],
         description: 'runs format',
         expect: {
             stdout: `running format...\n${getResultMessage(CliCommandName.Format, true)}`,
@@ -125,7 +129,10 @@ testGroup((runTest) => {
     });
 
     testCli({
-        args: [CliFlagName.NoWriteConfig, CliCommandName.Compile],
+        args: [
+            CliFlagName.NoWriteConfig,
+            CliCommandName.Compile,
+        ],
         description: 'runs compile',
         expect: {
             stdout: `running compile...\n${getResultMessage(CliCommandName.Compile, true)}`,

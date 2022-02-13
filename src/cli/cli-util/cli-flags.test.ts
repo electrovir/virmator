@@ -79,12 +79,22 @@ testGroup({
 testGroup({
     description: extractArguments.name,
     tests: (runTest) => {
-        const invalidFlags = ['--doo-dah', '--were-we-there', '--when-is-it'];
+        const invalidFlags = [
+            '--doo-dah',
+            '--were-we-there',
+            '--when-is-it',
+        ];
         const validFlags = {
             [CliFlagName.Help]: true,
             [CliFlagName.ExtendableConfig]: true,
         };
-        const otherArgs = ['what', 'who', 'when', 'where', 'why'];
+        const otherArgs = [
+            'what',
+            'who',
+            'when',
+            'where',
+            'why',
+        ];
 
         runTest({
             description: 'filters out invalid flags',
@@ -142,7 +152,10 @@ testGroup({
             expect: {
                 flags: fillInCliFlags(validFlags),
                 invalidFlags: [],
-                args: [...otherArgs, ...invalidFlags],
+                args: [
+                    ...otherArgs,
+                    ...invalidFlags,
+                ],
                 command: CliCommandName.Help,
             },
             test: () => {

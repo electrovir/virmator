@@ -21,7 +21,12 @@ testGroup({
 
         runTest({
             description: 'copies the config file into the correct spot',
-            expect: [false, true, false, expectedPrettierConfigPath],
+            expect: [
+                false,
+                true,
+                false,
+                expectedPrettierConfigPath,
+            ],
             test: async () => {
                 const results: boolean[] = [existsSync(expectedPrettierConfigPath)];
 
@@ -37,13 +42,25 @@ testGroup({
                 await remove(configPath);
                 results.push(existsSync(configPath));
 
-                return [...results, configPath];
+                return [
+                    ...results,
+                    configPath,
+                ];
             },
         });
 
         runTest({
             description: 'copies extendable config files',
-            expect: [false, true, true, false, true, false, false, expectedPrettierConfigPath],
+            expect: [
+                false,
+                true,
+                true,
+                false,
+                true,
+                false,
+                false,
+                expectedPrettierConfigPath,
+            ],
             test: async () => {
                 const results: boolean[] = [existsSync(expectedPrettierConfigPath)];
 
@@ -61,7 +78,10 @@ testGroup({
                     getRepoConfigFilePath(ConfigKey.Prettier, false),
                 );
 
-                await [extendablePath, extenderPath].reduce(async (lastPromise, path, index) => {
+                await [
+                    extendablePath,
+                    extenderPath,
+                ].reduce(async (lastPromise, path, index) => {
                     await lastPromise;
                     results[2 + index * 2] = existsSync(path);
                     await remove(path);
@@ -71,7 +91,11 @@ testGroup({
 
                 await remove(symlinkPath);
 
-                return [...results, existsSync(symlinkPath), extenderPath];
+                return [
+                    ...results,
+                    existsSync(symlinkPath),
+                    extenderPath,
+                ];
             },
         });
     },

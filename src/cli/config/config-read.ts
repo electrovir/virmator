@@ -86,7 +86,10 @@ async function updateVirmatorConfig(
                         (repoLine) => !virmatorFileLines.includes(repoLine),
                     );
 
-                    return [...virmatorFileLines, ...filteredRepoFileLines].join('\n');
+                    return [
+                        ...virmatorFileLines,
+                        ...filteredRepoFileLines,
+                    ].join('\n');
                 }
             }
             break;
