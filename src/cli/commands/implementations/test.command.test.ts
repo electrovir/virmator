@@ -1,4 +1,4 @@
-import {join} from 'path';
+import {join, relative} from 'path';
 import {testTestPaths} from '../../../file-paths/virmator-test-repos-paths';
 import {fillInCliFlags} from '../../cli-util/cli-flags';
 import {getAllCommandOutput} from '../../cli-util/get-all-command-output';
@@ -34,13 +34,15 @@ describe(runTestCommand.name, () => {
     });
 
     it('should fail on invalid repo tests', async () => {
-        const results = await testTestCommand(false, [testTestPaths.invalidRepo]);
+        const results = await testTestCommand(false, [
+            relative(process.cwd(), testTestPaths.invalidRepo),
+        ]);
         expect(results.success).toBe(false);
     });
 
     it('should only test a given arg file', async () => {
         const results = await testTestCommand(true, [
-            join(testTestPaths.multiRepo, 'src', 'valid.test.ts'),
+            relative(process.cwd(), join(testTestPaths.multiRepo, 'src', 'valid.test.ts')),
         ]);
 
         if (!results.success) {
@@ -58,7 +60,9 @@ describe(runTestCommand.name, () => {
             'invalid.test.ts',
         ];
 
-        const files = fileNames.map((fileName) => join(testTestPaths.multiRepo, 'src', fileName));
+        const files = fileNames.map((fileName) =>
+            relative(process.cwd(), join(testTestPaths.multiRepo, 'src', fileName)),
+        );
 
         const results = await testTestCommand(false, files);
 
