@@ -4,6 +4,10 @@ import {CliFlagName, fillInCliFlags} from '../../cli-util/cli-flags';
 import {EmptyOutputCallbacks, fillInCommandInput} from '../cli-command';
 import {runCompileCommand} from './compile.command';
 
+// my computer is so much faster than Github Actions' that we need more time here...
+// these tests are slow because of the compile commands
+jest.setTimeout(10000);
+
 describe(runCompileCommand.name, () => {
     it('should compiling succeeds in repo with no errors', async () => {
         expect(existsSync(testCompilePaths.compiledValidSourceFile)).toBe(false);
