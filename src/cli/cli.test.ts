@@ -13,6 +13,7 @@ import {
     testCompilePaths,
     testFormatPaths,
 } from '../file-paths/virmator-test-repos-paths';
+import {setLongJestTimeout} from '../jest/long-timeout';
 import {CliCommandName} from './cli-util/cli-command-name';
 import {CliFlagName} from './cli-util/cli-flags';
 import {cliErrorMessages, getResultMessage} from './cli-util/cli-messages';
@@ -21,9 +22,7 @@ import {ConfigKey} from './config/config-key';
 import {getRepoConfigFilePath} from './config/config-paths';
 import {getExtendableBaseConfigName} from './config/extendable-config';
 
-// my computer is so much faster than Github Actions' that we need more time here...
-// these tests are slow because of the compile commands
-jest.setTimeout(10000);
+setLongJestTimeout();
 
 const cliPath = join(virmatorDistDir, 'cli', 'cli.js');
 
