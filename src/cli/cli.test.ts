@@ -6,7 +6,6 @@ import {
 } from 'augment-vir/dist/node';
 import {existsSync, readFile, remove, writeFile} from 'fs-extra';
 import {join} from 'path';
-import {testGroup, TestInputObject} from 'test-vir';
 import {VirmatorCliCommandError} from '../errors/cli-command-error';
 import {virmatorDistDir} from '../file-paths/virmator-repo-paths';
 import {
@@ -24,7 +23,7 @@ import {getExtendableBaseConfigName} from './config/extendable-config';
 
 const cliPath = join(virmatorDistDir, 'cli', 'cli.js');
 
-testGroup((runTest) => {
+describe(__filename, () => {
     type TestCliInput = {
         args: string[];
         description: string;
@@ -44,47 +43,41 @@ testGroup((runTest) => {
             stdout: inputs.expect.stdout instanceof RegExp ? true : inputs.expect.stdout,
         };
 
-        type TestResult = {output: typeof expectedOutput; cleanupResult: string | void | undefined};
+        const testFunction = inputs.forceOnly ? fit : it;
 
-        const testInput: TestInputObject<TestResult, undefined> = {
-            description: inputs.description,
-            expect: {output: expectedOutput, cleanupResult: undefined},
-            forceOnly: inputs.forceOnly || false,
-            test: async () => {
-                const results = await runShellCommand(
-                    `node ${interpolationSafeWindowsPath(cliPath)} ${inputs.args.join(' ')}`,
-                    {cwd: inputs.cwd},
-                );
+        testFunction(inputs.description, async () => {
+            const results = await runShellCommand(
+                `node ${interpolationSafeWindowsPath(cliPath)} ${inputs.args.join(' ')}`,
+                {cwd: inputs.cwd},
+            );
 
-                if (inputs.debug) {
-                    printShellCommandOutput(results);
+            if (inputs.debug) {
+                printShellCommandOutput(results);
+            }
+
+            const rawOutput = {
+                stdout: results.stdout.trim() || undefined,
+                stderr: results.stderr.trim() || undefined,
+            };
+
+            const output = getObjectTypedKeys(rawOutput).reduce((accum, key) => {
+                const value = rawOutput[key];
+                const expectValue = inputs.expect[key];
+
+                accum[key] = value;
+                if (expectValue instanceof RegExp) {
+                    accum[key] = !!expectValue.exec(String(value));
                 }
+                return accum;
+            }, {} as {stdout: string | boolean | undefined; stderr: string | boolean | undefined});
 
-                const rawOutput = {
-                    stdout: results.stdout.trim() || undefined,
-                    stderr: results.stderr.trim() || undefined,
-                };
+            const cleanupResult = inputs.cleanup && (await inputs.cleanup());
 
-                const output = getObjectTypedKeys(rawOutput).reduce((accum, key) => {
-                    const value = rawOutput[key];
-                    const expectValue = inputs.expect[key];
-
-                    accum[key] = value;
-                    if (expectValue instanceof RegExp) {
-                        accum[key] = !!expectValue.exec(String(value));
-                    }
-                    return accum;
-                }, {} as {stdout: string | boolean | undefined; stderr: string | boolean | undefined});
-
-                const cleanupResult = inputs.cleanup && (await inputs.cleanup());
-
-                const testResult: TestResult = {output, cleanupResult};
-
-                return testResult;
-            },
-        };
-
-        runTest(testInput);
+            expect({output, cleanupResult}).toEqual({
+                output: expectedOutput,
+                cleanupResult: undefined,
+            });
+        });
     }
 
     testCli({
@@ -160,330 +153,299 @@ testGroup((runTest) => {
     });
 });
 
-testGroup({
-    description: 'config file creation',
-    tests: (runTest) => {
-        async function checkConfigs(
-            command: string,
-            configPaths: string[],
-            persistConfig?: boolean,
-        ) {
-            const testResults: {name: string; result: boolean}[] = [];
+describe('config file creation', () => {
+    async function checkConfigs(command: string, configPaths: string[], persistConfig?: boolean) {
+        const testResults: {name: string; result: boolean}[] = [];
 
-            await configPaths.reduce(async (lastPromise, configPath) => {
-                await lastPromise;
-                testResults.push({name: 'previous config exists', result: existsSync(configPath)});
-            }, Promise.resolve());
+        await configPaths.reduce(async (lastPromise, configPath) => {
+            await lastPromise;
+            testResults.push({name: 'previous config exists', result: existsSync(configPath)});
+        }, Promise.resolve());
 
-            const symlinkPath = await createNodeModulesSymLinkForTests(testFormatPaths.validRepo);
+        const symlinkPath = await createNodeModulesSymLinkForTests(testFormatPaths.validRepo);
 
-            testResults.push({name: 'symlink was created', result: existsSync(symlinkPath)});
+        testResults.push({name: 'symlink was created', result: existsSync(symlinkPath)});
 
-            /** Run format for the first time which will create the config file */
-            const firstFormatOutput = await runShellCommand(interpolationSafeWindowsPath(command), {
-                cwd: testFormatPaths.validRepo,
-            });
+        /** Run format for the first time which will create the config file */
+        const firstFormatOutput = await runShellCommand(interpolationSafeWindowsPath(command), {
+            cwd: testFormatPaths.validRepo,
+        });
 
-            testResults.push({
-                name: 'first format has stderr',
-                result: !!firstFormatOutput.stderr,
-            });
+        testResults.push({
+            name: 'first format has stderr',
+            result: !!firstFormatOutput.stderr,
+        });
 
-            /** The first format should have stderr. Thus, if it doesn't, print the output. */
-            if (!firstFormatOutput.stderr) {
-                console.error('first format output');
-                console.error(firstFormatOutput);
-            }
-
-            await configPaths.reduce(async (lastPromise, configPath) => {
-                await lastPromise;
-                testResults.push({name: 'config was created', result: existsSync(configPath)});
-            }, Promise.resolve());
-
-            const secondFormatOutput = await runShellCommand(
-                interpolationSafeWindowsPath(command),
-                {cwd: testFormatPaths.validRepo},
-            );
-
-            testResults.push({
-                name: 'second format has stderr',
-                result: !!secondFormatOutput.stderr,
-            });
-
-            /** The second format should not have stderr. Thus, if it does, print the output. */
-            if (secondFormatOutput.stderr) {
-                console.error('second format output');
-                printShellCommandOutput(secondFormatOutput);
-            }
-
-            await configPaths.reduce(async (lastPromise, configPath) => {
-                if (!persistConfig) {
-                    await lastPromise;
-                    await remove(configPath);
-                }
-
-                testResults.push({
-                    name: persistConfig ? 'config still exists' : 'config exists after cleanup',
-                    result: existsSync(configPath),
-                });
-            }, Promise.resolve());
-
-            await remove(symlinkPath);
-
-            testResults.push({
-                name: 'symlink exists after cleanup',
-                result: existsSync(symlinkPath),
-            });
-
-            return testResults;
+        /** The first format should have stderr. Thus, if it doesn't, print the output. */
+        if (!firstFormatOutput.stderr) {
+            console.error('first format output');
+            console.error(firstFormatOutput);
         }
 
-        runTest({
-            description: 'verify that format config is created',
-            expect: [
-                {
-                    name: 'previous config exists',
-                    result: false,
-                },
-                {
-                    name: 'previous config exists',
-                    result: false,
-                },
-                {
-                    name: 'symlink was created',
-                    result: true,
-                },
-                {
-                    name: 'first format has stderr',
-                    result: true,
-                },
-                {
-                    name: 'config was created',
-                    result: true,
-                },
-                {
-                    name: 'config was created',
-                    result: true,
-                },
-                {
-                    name: 'second format has stderr',
-                    result: false,
-                },
-                {
-                    name: 'config exists after cleanup',
-                    result: false,
-                },
-                {
-                    name: 'config exists after cleanup',
-                    result: false,
-                },
-                {
-                    name: 'symlink exists after cleanup',
-                    result: false,
-                },
-            ],
-            test: async () =>
-                await checkConfigs(`node ${cliPath} format`, [
-                    join(
-                        testFormatPaths.validRepo,
-                        getRepoConfigFilePath(ConfigKey.Prettier, false),
-                    ),
-                    join(
-                        testFormatPaths.validRepo,
-                        getRepoConfigFilePath(ConfigKey.PrettierIgnore, false),
-                    ),
-                ]),
+        await configPaths.reduce(async (lastPromise, configPath) => {
+            await lastPromise;
+            testResults.push({name: 'config was created', result: existsSync(configPath)});
+        }, Promise.resolve());
+
+        const secondFormatOutput = await runShellCommand(interpolationSafeWindowsPath(command), {
+            cwd: testFormatPaths.validRepo,
         });
 
-        runTest({
-            description: 'verify that extendable format config is created',
-            expect: [
-                {
-                    name: 'previous config exists',
-                    result: false,
-                },
-                {
-                    name: 'previous config exists',
-                    result: false,
-                },
-                {
-                    name: 'previous config exists',
-                    result: false,
-                },
-                {
-                    name: 'symlink was created',
-                    result: true,
-                },
-                {
-                    name: 'first format has stderr',
-                    result: true,
-                },
-                {
-                    name: 'config was created',
-                    result: true,
-                },
-                {
-                    name: 'config was created',
-                    result: true,
-                },
-                {
-                    name: 'config was created',
-                    result: true,
-                },
-                {
-                    name: 'second format has stderr',
-                    result: false,
-                },
-                {
-                    name: 'config exists after cleanup',
-                    result: false,
-                },
-                {
-                    name: 'config exists after cleanup',
-                    result: false,
-                },
-                {
-                    name: 'config exists after cleanup',
-                    result: false,
-                },
-                {
-                    name: 'symlink exists after cleanup',
-                    result: false,
-                },
-            ],
-            test: async () =>
-                await checkConfigs(`node ${cliPath} format ${CliFlagName.ExtendableConfig}`, [
-                    join(
-                        testFormatPaths.validRepo,
-                        getRepoConfigFilePath(ConfigKey.Prettier, false),
-                    ),
-                    join(
-                        testFormatPaths.validRepo,
-                        getExtendableBaseConfigName(ConfigKey.Prettier),
-                    ),
-                    join(
-                        testFormatPaths.validRepo,
-                        getRepoConfigFilePath(ConfigKey.PrettierIgnore, false),
-                    ),
-                ]),
+        testResults.push({
+            name: 'second format has stderr',
+            result: !!secondFormatOutput.stderr,
         });
 
-        runTest({
-            description: 'verify contents of extendable and extender configs',
-            expect: [
-                {
-                    name: 'file matches written contents',
-                    result: true,
-                },
-                {
-                    name: 'previous config exists',
-                    result: false,
-                },
-                {
-                    name: 'previous config exists',
-                    result: false,
-                },
-                {
-                    name: 'symlink was created',
-                    result: true,
-                },
-                {
-                    name: 'first format has stderr',
-                    result: true,
-                },
-                {
-                    name: 'config was created',
-                    result: true,
-                },
-                {
-                    name: 'config was created',
-                    result: true,
-                },
-                {
-                    name: 'second format has stderr',
-                    result: false,
-                },
-                {
-                    name: 'config exists after cleanup',
-                    result: false,
-                },
-                {
-                    name: 'config exists after cleanup',
-                    result: false,
-                },
-                {
-                    name: 'symlink exists after cleanup',
-                    result: false,
-                },
-                {
-                    name: 'file still matches original contents',
-                    result: true,
-                },
-                {
-                    name: 'prettier config exists still after test',
-                    result: true,
-                },
-                {
-                    name: 'prettier config still exists',
-                    result: false,
-                },
-            ],
-            test: async () => {
-                const normalPrettierPath = join(
+        /** The second format should not have stderr. Thus, if it does, print the output. */
+        if (secondFormatOutput.stderr) {
+            console.error('second format output');
+            printShellCommandOutput(secondFormatOutput);
+        }
+
+        await configPaths.reduce(async (lastPromise, configPath) => {
+            if (!persistConfig) {
+                await lastPromise;
+                await remove(configPath);
+            }
+
+            testResults.push({
+                name: persistConfig ? 'config still exists' : 'config exists after cleanup',
+                result: existsSync(configPath),
+            });
+        }, Promise.resolve());
+
+        await remove(symlinkPath);
+
+        testResults.push({
+            name: 'symlink exists after cleanup',
+            result: existsSync(symlinkPath),
+        });
+
+        return testResults;
+    }
+
+    it('should verify that format config is created', async () => {
+        expect(
+            await checkConfigs(`node ${cliPath} format`, [
+                join(testFormatPaths.validRepo, getRepoConfigFilePath(ConfigKey.Prettier, false)),
+                join(
                     testFormatPaths.validRepo,
-                    getRepoConfigFilePath(ConfigKey.Prettier, false),
-                );
-                const originalFileContents = `const baseConfig = require('./.prettierrc-base');
+                    getRepoConfigFilePath(ConfigKey.PrettierIgnore, false),
+                ),
+            ]),
+        ).toEqual([
+            {
+                name: 'previous config exists',
+                result: false,
+            },
+            {
+                name: 'previous config exists',
+                result: false,
+            },
+            {
+                name: 'symlink was created',
+                result: true,
+            },
+            {
+                name: 'first format has stderr',
+                result: true,
+            },
+            {
+                name: 'config was created',
+                result: true,
+            },
+            {
+                name: 'config was created',
+                result: true,
+            },
+            {
+                name: 'second format has stderr',
+                result: false,
+            },
+            {
+                name: 'config exists after cleanup',
+                result: false,
+            },
+            {
+                name: 'config exists after cleanup',
+                result: false,
+            },
+            {
+                name: 'symlink exists after cleanup',
+                result: false,
+            },
+        ]);
+    });
+
+    it('should verify that extendable format config is created', async () => {
+        expect(
+            await checkConfigs(`node ${cliPath} format ${CliFlagName.ExtendableConfig}`, [
+                join(testFormatPaths.validRepo, getRepoConfigFilePath(ConfigKey.Prettier, false)),
+                join(testFormatPaths.validRepo, getExtendableBaseConfigName(ConfigKey.Prettier)),
+                join(
+                    testFormatPaths.validRepo,
+                    getRepoConfigFilePath(ConfigKey.PrettierIgnore, false),
+                ),
+            ]),
+        ).toEqual([
+            {
+                name: 'previous config exists',
+                result: false,
+            },
+            {
+                name: 'previous config exists',
+                result: false,
+            },
+            {
+                name: 'previous config exists',
+                result: false,
+            },
+            {
+                name: 'symlink was created',
+                result: true,
+            },
+            {
+                name: 'first format has stderr',
+                result: true,
+            },
+            {
+                name: 'config was created',
+                result: true,
+            },
+            {
+                name: 'config was created',
+                result: true,
+            },
+            {
+                name: 'config was created',
+                result: true,
+            },
+            {
+                name: 'second format has stderr',
+                result: false,
+            },
+            {
+                name: 'config exists after cleanup',
+                result: false,
+            },
+            {
+                name: 'config exists after cleanup',
+                result: false,
+            },
+            {
+                name: 'config exists after cleanup',
+                result: false,
+            },
+            {
+                name: 'symlink exists after cleanup',
+                result: false,
+            },
+        ]);
+    });
+
+    it('should verify contents of extendable and extender configs', async () => {
+        const normalPrettierPath = join(
+            testFormatPaths.validRepo,
+            getRepoConfigFilePath(ConfigKey.Prettier, false),
+        );
+        const originalFileContents = `const baseConfig = require('./.prettierrc-base');
 
 module.exports = {...baseConfig, printWidth: 80};`;
-                const results: {name: string; result: boolean}[] = [];
+        const results: {name: string; result: boolean}[] = [];
 
-                await writeFile(normalPrettierPath, originalFileContents);
-                results.push({
-                    name: 'file matches written contents',
-                    result:
-                        (await readFile(normalPrettierPath)).toString() === originalFileContents,
-                });
-
-                results.push(
-                    ...(await checkConfigs(
-                        `node ${cliPath} format ${CliFlagName.ExtendableConfig}`,
-                        [
-                            join(
-                                testFormatPaths.validRepo,
-                                getExtendableBaseConfigName(ConfigKey.Prettier),
-                            ),
-                            join(
-                                testFormatPaths.validRepo,
-                                getRepoConfigFilePath(ConfigKey.PrettierIgnore, false),
-                            ),
-                        ],
-                    )),
-                );
-
-                const newNormalPrettierContents = (await readFile(normalPrettierPath)).toString();
-                const contentsStillEqual =
-                    newNormalPrettierContents.trim() === originalFileContents.trim();
-                if (!contentsStillEqual) {
-                    console.error(`"${originalFileContents.trim()}"`);
-                    console.error(`"${newNormalPrettierContents.trim()}"`);
-                }
-                results.push({
-                    name: 'file still matches original contents',
-                    result: contentsStillEqual,
-                });
-                results.push({
-                    name: 'prettier config exists still after test',
-                    result: existsSync(normalPrettierPath),
-                });
-                await remove(normalPrettierPath);
-                results.push({
-                    name: 'prettier config still exists',
-                    result: existsSync(normalPrettierPath),
-                });
-
-                return results;
-            },
+        await writeFile(normalPrettierPath, originalFileContents);
+        results.push({
+            name: 'file matches written contents',
+            result: (await readFile(normalPrettierPath)).toString() === originalFileContents,
         });
-    },
+
+        results.push(
+            ...(await checkConfigs(`node ${cliPath} format ${CliFlagName.ExtendableConfig}`, [
+                join(testFormatPaths.validRepo, getExtendableBaseConfigName(ConfigKey.Prettier)),
+                join(
+                    testFormatPaths.validRepo,
+                    getRepoConfigFilePath(ConfigKey.PrettierIgnore, false),
+                ),
+            ])),
+        );
+
+        const newNormalPrettierContents = (await readFile(normalPrettierPath)).toString();
+        const contentsStillEqual = newNormalPrettierContents.trim() === originalFileContents.trim();
+        if (!contentsStillEqual) {
+            console.error(`"${originalFileContents.trim()}"`);
+            console.error(`"${newNormalPrettierContents.trim()}"`);
+        }
+        results.push({
+            name: 'file still matches original contents',
+            result: contentsStillEqual,
+        });
+        results.push({
+            name: 'prettier config exists still after test',
+            result: existsSync(normalPrettierPath),
+        });
+        await remove(normalPrettierPath);
+        results.push({
+            name: 'prettier config still exists',
+            result: existsSync(normalPrettierPath),
+        });
+
+        expect(results).toEqual([
+            {
+                name: 'file matches written contents',
+                result: true,
+            },
+            {
+                name: 'previous config exists',
+                result: false,
+            },
+            {
+                name: 'previous config exists',
+                result: false,
+            },
+            {
+                name: 'symlink was created',
+                result: true,
+            },
+            {
+                name: 'first format has stderr',
+                result: true,
+            },
+            {
+                name: 'config was created',
+                result: true,
+            },
+            {
+                name: 'config was created',
+                result: true,
+            },
+            {
+                name: 'second format has stderr',
+                result: false,
+            },
+            {
+                name: 'config exists after cleanup',
+                result: false,
+            },
+            {
+                name: 'config exists after cleanup',
+                result: false,
+            },
+            {
+                name: 'symlink exists after cleanup',
+                result: false,
+            },
+            {
+                name: 'file still matches original contents',
+                result: true,
+            },
+            {
+                name: 'prettier config exists still after test',
+                result: true,
+            },
+            {
+                name: 'prettier config still exists',
+                result: false,
+            },
+        ]);
+    });
 });

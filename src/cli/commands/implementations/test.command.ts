@@ -4,14 +4,13 @@ import {CliCommandName} from '../../cli-util/cli-command-name';
 import {CliFlagName} from '../../cli-util/cli-flags';
 import {runVirmatorShellCommand} from '../../cli-util/shell-command-wrapper';
 import {CliCommandImplementation, CliCommandResult, CommandFunctionInput} from '../cli-command';
-import {runCompileCommand} from './compile.command';
 
 export const testCommandImplementation: CliCommandImplementation = {
     commandName: CliCommandName.Test,
-    description: `Test all .test.js files with test-vir. 
-            By default this command tests all .test.js files in dist that are not 
-            .type.test.js files. To override this behavior, pass in a list of files or a
-            quoted glob which will be expanded by the package test-vir itself.
+    description: `Test all .test.ts files with jest. 
+            By default this command tests all .test.ts files in the current directory 
+            that are not .type.test.ts files. To override this behavior, pass in a
+            custom config file with Jest's --config. All other Jest inputs are also valid.
             
             examples:
                 virmator test ./path/to/single/file.js
@@ -24,19 +23,13 @@ export const testCommandImplementation: CliCommandImplementation = {
     },
 };
 
-const testVirPath = getNpmBinPath('test-vir');
+const jestPath = getNpmBinPath('jest');
 
 export async function runTestCommand(inputs: CommandFunctionInput): Promise<CliCommandResult> {
-    const compileResult = await runCompileCommand({...inputs, rawArgs: []});
-
-    if (!compileResult.success) {
-        return compileResult;
-    }
-
     const args: string = inputs.rawArgs.length
         ? interpolationSafeWindowsPath(inputs.rawArgs.join(' '))
-        : `\"./dist/**/!(*.type).test.js\"`;
-    const testCommand = `${testVirPath} ${args}`;
+        : '';
+    const testCommand = `${jestPath} ${inputs.repoDir} ${args}`;
     const results = await runVirmatorShellCommand(testCommand, inputs, {
         stdoutFilter: (logString) =>
             // weird looking hex codes here are for color codes from test-vir

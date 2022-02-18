@@ -8,12 +8,13 @@
 .vscode/
 *.test.d.ts
 *.test.js
+dist/readme-examples/
 dist/test/
+dist/vite/
+index.html
+public/
 scripts/
-snowpack.config.js
-snowpack.config.mjs
 src/
-static/
 test-repos/
 tsconfig-base.json
 tsconfig.json

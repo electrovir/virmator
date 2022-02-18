@@ -1,6 +1,7 @@
 *.test.d.ts
 *.test.js
-src
-src/tests
-test-repos
-scripts
+src/
+src/tests/
+test-repos/
+scripts/
+public/

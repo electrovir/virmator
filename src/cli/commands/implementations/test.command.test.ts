@@ -1,96 +1,63 @@
-import {remove} from 'fs-extra';
 import {join} from 'path';
-import {testGroup} from 'test-vir';
-import {
-    createNodeModulesSymLinkForTests,
-    testTestPaths,
-} from '../../../file-paths/virmator-test-repos-paths';
+import {testTestPaths} from '../../../file-paths/virmator-test-repos-paths';
 import {fillInCliFlags} from '../../cli-util/cli-flags';
 import {getAllCommandOutput} from '../../cli-util/get-all-command-output';
 import {EmptyOutputCallbacks} from '../cli-command';
 import {runTestCommand} from './test.command';
 
-testGroup({
-    description: runTestCommand.name,
-    tests: (runTest) => {
-        async function testTestCommand(
-            repoDir: string,
-            successCondition: boolean,
-            args: string[] = [],
-        ) {
-            const symlinkPath = await createNodeModulesSymLinkForTests(repoDir);
+describe(runTestCommand.name, () => {
+    async function testTestCommand(successCondition: boolean, args: string[] = []) {
+        const results = await getAllCommandOutput(runTestCommand, {
+            rawArgs: args,
+            cliFlags: fillInCliFlags(),
+            repoDir: '',
+            ...EmptyOutputCallbacks,
+        });
 
-            const results = await getAllCommandOutput(runTestCommand, {
-                rawArgs: args,
-                cliFlags: fillInCliFlags(),
-                repoDir,
-                ...EmptyOutputCallbacks,
-            });
-
-            await remove(symlinkPath);
-            await remove(join(repoDir, 'dist'));
-
-            if (results.success !== successCondition) {
-                console.info(
-                    `Test command output for ${JSON.stringify({repoDir, successCondition})}`,
-                );
-                console.info(results.stdout);
-                console.error(results.stderr);
-            }
-
-            return results;
+        if (results.success !== successCondition) {
+            console.info(`Test command output for ${JSON.stringify({args, successCondition})}`);
+            console.info(results.stdout);
+            console.error(results.stderr);
         }
 
-        runTest({
-            description: 'passes valid repo tests',
-            expect: {success: true},
-            test: async () => {
-                const results = await testTestCommand(testTestPaths.validRepo, true);
+        return results;
+    }
 
-                return {success: results.success};
-            },
-        });
+    it('should pass on valid repo tests', async () => {
+        const results = await testTestCommand(true, [testTestPaths.validRepo]);
 
-        runTest({
-            description: 'fails invalid repo tests',
-            expect: false,
-            test: async () => {
-                const results = await testTestCommand(testTestPaths.invalidRepo, false);
-                return results.success;
-            },
-        });
+        expect({success: results.success}).toEqual({success: true});
+    });
 
-        runTest({
-            description: 'when an arg is passed, only test that file',
-            expect: 1,
-            test: async () => {
-                const results = await testTestCommand(testTestPaths.multiRepo, true, [
-                    'dist/valid.test.js',
-                ]);
+    it('should fail on invalid repo tests', async () => {
+        const results = await testTestCommand(false, [testTestPaths.invalidRepo]);
+        expect(results.success).toBe(false);
+    });
 
-                const linesWith1Test = results.stdout
-                    ?.split('\n')
-                    .filter((line) => line.includes('(1 test)'));
+    it('should only test a given arg file', async () => {
+        const results = await testTestCommand(true, [
+            join(testTestPaths.multiRepo, 'src', 'valid.test.ts'),
+        ]);
 
-                return linesWith1Test?.length;
-            },
-        });
+        const linesWith1Test = results.stderr.match(/tests:\s+1 passed, 1 total\n/i);
 
-        runTest({
-            description: 'when multiple args are passed, no files are missing from the output',
-            expect: [],
-            test: async () => {
-                const files = [
-                    join('dist', 'valid.test.js'),
-                    join('dist', 'invalid.test.js'),
-                ];
+        expect(linesWith1Test).toBeTruthy();
+    });
 
-                const results = await testTestCommand(testTestPaths.multiRepo, false, files);
+    it('should not be missing any files from output', async () => {
+        const fileNames = [
+            'valid.test.ts',
+            'invalid.test.ts',
+        ];
 
-                const missingFiles = files.filter((file) => !results.stdout?.includes(file));
+        const files = fileNames.map((fileName) => join(testTestPaths.multiRepo, 'src', fileName));
 
-                return missingFiles;
-            },
-        });
-    },
+        const results = await testTestCommand(false, files);
+
+        const missingFiles = fileNames.filter((fileName) => !results.stderr.includes(fileName));
+
+        expect(missingFiles).toEqual([]);
+
+        expect(results.stderr.match(/tests:\s+1 failed, 1 passed, 2 total/i)).toBeTruthy();
+    });
 });
