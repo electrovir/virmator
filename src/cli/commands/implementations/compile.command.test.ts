@@ -1,11 +1,8 @@
 import {existsSync, remove} from 'fs-extra';
 import {testCompilePaths} from '../../../file-paths/virmator-test-repos-paths';
-import {setLongJestTimeout} from '../../../jest/long-timeout';
 import {CliFlagName, fillInCliFlags} from '../../cli-util/cli-flags';
 import {EmptyOutputCallbacks, fillInCommandInput} from '../cli-command';
 import {runCompileCommand} from './compile.command';
-
-setLongJestTimeout();
 
 describe(runCompileCommand.name, () => {
     it('should compiling succeeds in repo with no errors', async () => {
