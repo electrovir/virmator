@@ -1,4 +1,3 @@
-import {printShellCommandOutput} from 'augment-vir/dist/node';
 import {join} from 'path';
 import {testTestPaths} from '../../../file-paths/virmator-test-repos-paths';
 import {fillInCliFlags} from '../../cli-util/cli-flags';
@@ -28,7 +27,7 @@ describe(runTestCommand.name, () => {
         const results = await testTestCommand(true, [testTestPaths.validRepo]);
 
         if (!results.success) {
-            printShellCommandOutput(results);
+            console.log({results});
         }
 
         expect(results.success).toEqual(true);
@@ -45,7 +44,7 @@ describe(runTestCommand.name, () => {
         ]);
 
         if (!results.success) {
-            printShellCommandOutput(results);
+            console.log({results});
         }
 
         const linesWith1Test = results.stderr.match(/tests:\s+1 passed, 1 total\n/i);
@@ -68,7 +67,7 @@ describe(runTestCommand.name, () => {
         expect(missingFiles).toEqual([]);
 
         if (missingFiles.length) {
-            printShellCommandOutput(results);
+            console.log({results});
         }
 
         expect(results.stderr.match(/tests:\s+1 failed, 1 passed, 2 total/i)).toBeTruthy();
