@@ -95,7 +95,7 @@ describe(runSpellcheckCommand.name, () => {
         const filtered = parseCspellOutput(commandResult)
             .filter((line) => line.includes('stuff.js'))
             .map((line) => {
-                return line.replace(/^\s*\d+\/\d+\s*\.\//, '').replace(/\s+[\.\dms]+$/, '');
+                return line.replace(/^\s*\d+\/\d+\s*\.[\/\\]/, '').replace(/\s+[\.\dms]+$/, '');
             });
 
         expect(filtered).toEqual([
