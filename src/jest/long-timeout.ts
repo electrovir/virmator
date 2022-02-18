@@ -1,4 +1,4 @@
 export function setLongJestTimeout() {
     // Github Actions is really slow so we need more time
-    jest.setTimeout(10000);
+    jest.setTimeout(30000);
 }
