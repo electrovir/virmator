@@ -10,7 +10,10 @@ const config: InitialOptionsTsJest = {
     /** Can't import from the common package to use repoDir so we have to redefine the path manually here */
     rootDir: process.cwd(),
     silent: false,
-    modulePathIgnorePatterns: ['.*.type.test.ts$'],
+    modulePathIgnorePatterns: [
+        '.*.type.test.ts$',
+        'test-repos',
+    ],
     roots: [join(process.cwd(), 'src')],
     setupFilesAfterEnv: [join(__dirname, 'jest.setup.ts')],
     globals: {
