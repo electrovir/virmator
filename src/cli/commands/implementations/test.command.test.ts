@@ -1,3 +1,4 @@
+import {printShellCommandOutput} from 'augment-vir/dist/node';
 import {join} from 'path';
 import {testTestPaths} from '../../../file-paths/virmator-test-repos-paths';
 import {fillInCliFlags} from '../../cli-util/cli-flags';
@@ -26,7 +27,11 @@ describe(runTestCommand.name, () => {
     it('should pass on valid repo tests', async () => {
         const results = await testTestCommand(true, [testTestPaths.validRepo]);
 
-        expect({success: results.success}).toEqual({success: true});
+        if (!results.success) {
+            printShellCommandOutput(results);
+        }
+
+        expect(results.success).toEqual(true);
     });
 
     it('should fail on invalid repo tests', async () => {
@@ -38,6 +43,10 @@ describe(runTestCommand.name, () => {
         const results = await testTestCommand(true, [
             join(testTestPaths.multiRepo, 'src', 'valid.test.ts'),
         ]);
+
+        if (!results.success) {
+            printShellCommandOutput(results);
+        }
 
         const linesWith1Test = results.stderr.match(/tests:\s+1 passed, 1 total\n/i);
 
@@ -57,6 +66,10 @@ describe(runTestCommand.name, () => {
         const missingFiles = fileNames.filter((fileName) => !results.stderr.includes(fileName));
 
         expect(missingFiles).toEqual([]);
+
+        if (missingFiles.length) {
+            printShellCommandOutput(results);
+        }
 
         expect(results.stderr.match(/tests:\s+1 failed, 1 passed, 2 total/i)).toBeTruthy();
     });
