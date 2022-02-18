@@ -1,7 +1,6 @@
 import {existsSync} from 'fs';
 import {remove} from 'fs-extra';
 import {join} from 'path';
-import {testGroup} from 'test-vir';
 import {extenderConfigsDir} from '../../file-paths/virmator-repo-paths';
 import {
     createNodeModulesSymLinkForTests,
@@ -11,92 +10,61 @@ import {ConfigKey} from './config-key';
 import {getRepoConfigFilePath} from './config-paths';
 import {copyConfig} from './copy-config';
 
-testGroup({
-    description: copyConfig.name,
-    tests: (runTest) => {
-        const expectedPrettierConfigPath = join(
+describe(copyConfig.name, () => {
+    const expectedPrettierConfigPath = join(
+        testFormatPaths.validRepo,
+        getRepoConfigFilePath(ConfigKey.Prettier, false),
+    );
+
+    it('should copy the config file into the correct spot', async () => {
+        expect(existsSync(expectedPrettierConfigPath)).toBe(false);
+
+        const configPath = (
+            await copyConfig({
+                configKey: ConfigKey.Prettier,
+                forceExtendableConfig: false,
+                repoDir: testFormatPaths.validRepo,
+            })
+        ).outputFilePath;
+
+        expect(existsSync(configPath)).toBe(true);
+        await remove(configPath);
+        expect(existsSync(configPath)).toBe(false);
+
+        expect(configPath).toBe(expectedPrettierConfigPath);
+    });
+
+    it('should copy extendable config files', async () => {
+        expect(existsSync(expectedPrettierConfigPath)).toBe(false);
+
+        const symlinkPath = await createNodeModulesSymLinkForTests(extenderConfigsDir);
+        expect(existsSync(symlinkPath)).toBe(true);
+        const extendablePath = (
+            await copyConfig({
+                configKey: ConfigKey.Prettier,
+                forceExtendableConfig: true,
+                repoDir: testFormatPaths.validRepo,
+            })
+        ).outputFilePath;
+        const extenderPath = join(
             testFormatPaths.validRepo,
             getRepoConfigFilePath(ConfigKey.Prettier, false),
         );
 
-        runTest({
-            description: 'copies the config file into the correct spot',
-            expect: [
-                false,
-                true,
-                false,
-                expectedPrettierConfigPath,
-            ],
-            test: async () => {
-                const results: boolean[] = [existsSync(expectedPrettierConfigPath)];
+        await [
+            extendablePath,
+            extenderPath,
+        ].reduce(async (lastPromise, path, index) => {
+            await lastPromise;
+            expect(existsSync(path)).toBe(true);
+            await remove(path);
+            expect(existsSync(path)).toBe(false);
+            return;
+        }, Promise.resolve());
 
-                const configPath = (
-                    await copyConfig({
-                        configKey: ConfigKey.Prettier,
-                        forceExtendableConfig: false,
-                        repoDir: testFormatPaths.validRepo,
-                    })
-                ).outputFilePath;
+        await remove(symlinkPath);
 
-                results.push(existsSync(configPath));
-                await remove(configPath);
-                results.push(existsSync(configPath));
-
-                return [
-                    ...results,
-                    configPath,
-                ];
-            },
-        });
-
-        runTest({
-            description: 'copies extendable config files',
-            expect: [
-                false,
-                true,
-                true,
-                false,
-                true,
-                false,
-                false,
-                expectedPrettierConfigPath,
-            ],
-            test: async () => {
-                const results: boolean[] = [existsSync(expectedPrettierConfigPath)];
-
-                const symlinkPath = await createNodeModulesSymLinkForTests(extenderConfigsDir);
-                results[1] = existsSync(symlinkPath);
-                const extendablePath = (
-                    await copyConfig({
-                        configKey: ConfigKey.Prettier,
-                        forceExtendableConfig: true,
-                        repoDir: testFormatPaths.validRepo,
-                    })
-                ).outputFilePath;
-                const extenderPath = join(
-                    testFormatPaths.validRepo,
-                    getRepoConfigFilePath(ConfigKey.Prettier, false),
-                );
-
-                await [
-                    extendablePath,
-                    extenderPath,
-                ].reduce(async (lastPromise, path, index) => {
-                    await lastPromise;
-                    results[2 + index * 2] = existsSync(path);
-                    await remove(path);
-                    results[2 + index * 2 + 1] = existsSync(path);
-                    return;
-                }, Promise.resolve());
-
-                await remove(symlinkPath);
-
-                return [
-                    ...results,
-                    existsSync(symlinkPath),
-                    extenderPath,
-                ];
-            },
-        });
-    },
+        expect(existsSync(symlinkPath)).toBe(false);
+        expect(extenderPath).toBe(expectedPrettierConfigPath);
+    });
 });

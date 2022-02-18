@@ -1,9 +1,5 @@
-import {testGroup} from 'test-vir';
-
-testGroup((runTest) => {
-    runTest({
-        description: 'invalid test',
-        expect: true,
-        test: () => false,
+describe(__filename, () => {
+    it('should have a failing test', () => {
+        expect(false).toBeTruthy();
     });
 });

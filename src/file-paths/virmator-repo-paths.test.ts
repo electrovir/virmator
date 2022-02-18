@@ -1,11 +1,7 @@
 import {join} from 'path';
-import {testGroup} from 'test-vir';
 
-testGroup((runTest) => {
-    runTest({
-        expect: join('dir1', 'dir2', 'dir4'),
-        test: () => {
-            return join('dir1', 'dir2', 'dir3', '..', 'dir4');
-        },
+describe('virmator repo paths', () => {
+    it('should have valid path', () => {
+        expect(join('dir1', 'dir2', 'dir3', '..', 'dir4')).toEqual(join('dir1', 'dir2', 'dir4'));
     });
 });
