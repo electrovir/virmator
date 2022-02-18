@@ -2,15 +2,12 @@ import {getEnumTypedValues} from 'augment-vir/dist/node';
 import {emptyDir, ensureDir, existsSync} from 'fs-extra';
 import {join} from 'path';
 import {updateBareConfigsTestPaths} from '../../../file-paths/virmator-test-repos-paths';
-import {setLongJestTimeout} from '../../../jest/long-timeout';
 import {fillInCliFlags} from '../../cli-util/cli-flags';
 import {getAllCommandOutput} from '../../cli-util/get-all-command-output';
 import {BareConfigKey} from '../../config/config-key';
 import {getRepoConfigFilePath} from '../../config/config-paths';
 import {EmptyOutputCallbacks} from '../cli-command';
 import {runUpdateBareConfigsCommand} from './update-bare-configs.command';
-
-setLongJestTimeout();
 
 describe(runUpdateBareConfigsCommand.name, () => {
     const allBareConfigKeys = getEnumTypedValues(BareConfigKey);

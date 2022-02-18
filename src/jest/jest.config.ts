@@ -5,7 +5,8 @@ const config: InitialOptionsTsJest = {
     preset: 'ts-jest',
     testEnvironment: 'node',
     verbose: false,
-
+    // 30 seconds
+    testTimeout: 30000,
     /** Can't import from the common package to use repoDir so we have to redefine the path manually here */
     rootDir: process.cwd(),
     silent: false,

@@ -13,7 +13,6 @@ import {
     testCompilePaths,
     testFormatPaths,
 } from '../file-paths/virmator-test-repos-paths';
-import {setLongJestTimeout} from '../jest/long-timeout';
 import {CliCommandName} from './cli-util/cli-command-name';
 import {CliFlagName} from './cli-util/cli-flags';
 import {cliErrorMessages, getResultMessage} from './cli-util/cli-messages';
@@ -21,8 +20,6 @@ import {FormatOperation} from './commands/implementations/format.command';
 import {ConfigKey} from './config/config-key';
 import {getRepoConfigFilePath} from './config/config-paths';
 import {getExtendableBaseConfigName} from './config/extendable-config';
-
-setLongJestTimeout();
 
 const cliPath = join(virmatorDistDir, 'cli', 'cli.js');
 
