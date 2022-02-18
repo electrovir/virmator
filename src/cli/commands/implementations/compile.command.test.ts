@@ -1,12 +1,11 @@
 import {existsSync, remove} from 'fs-extra';
 import {testCompilePaths} from '../../../file-paths/virmator-test-repos-paths';
+import {setLongJestTimeout} from '../../../jest/long-timeout';
 import {CliFlagName, fillInCliFlags} from '../../cli-util/cli-flags';
 import {EmptyOutputCallbacks, fillInCommandInput} from '../cli-command';
 import {runCompileCommand} from './compile.command';
 
-// my computer is so much faster than Github Actions' that we need more time here...
-// these tests are slow because of the compile commands
-jest.setTimeout(10000);
+setLongJestTimeout();
 
 describe(runCompileCommand.name, () => {
     it('should compiling succeeds in repo with no errors', async () => {
