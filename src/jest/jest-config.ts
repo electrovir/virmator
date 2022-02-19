@@ -7,7 +7,6 @@ const config: InitialOptionsTsJest = {
     verbose: false,
     // 30 seconds
     testTimeout: 30000,
-    /** Can't import from the common package to use repoDir so we have to redefine the path manually here */
     rootDir: process.cwd(),
     silent: false,
     modulePathIgnorePatterns: [
@@ -15,7 +14,7 @@ const config: InitialOptionsTsJest = {
         'test-repos',
     ],
     roots: [join(process.cwd(), 'src')],
-    setupFilesAfterEnv: [join(__dirname, 'jest.setup.ts')],
+    setupFilesAfterEnv: [join(__dirname, 'jest-setup.ts')],
     globals: {
         'ts-jest': {
             tsconfig: join(process.cwd(), 'tsconfig.json'),
