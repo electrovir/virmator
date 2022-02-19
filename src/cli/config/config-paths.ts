@@ -24,16 +24,24 @@ const configFileMap: Readonly<
 > = {
     [ConfigKey.Cspell]: '.cspell.json',
     [ConfigKey.GitAttributes]: '.gitattributes',
-    [ConfigKey.GitHubActionsTest]: join('.github', 'workflows', 'virmator-tests.yml'),
     [ConfigKey.GitHubActionsPrerelease]: join('.github', 'workflows', 'virmator-prerelease.yml'),
     [ConfigKey.GitHubActionsTaggedRelease]: join(
         '.github',
         'workflows',
         'virmator-tagged-release.yml',
     ),
+    [ConfigKey.GitHubActionsTest]: join('.github', 'workflows', 'virmator-tests.yml'),
     [ConfigKey.GitIgnore]: {
         virmator: join(relativeSeparateConfigsDir, 'gitignore.txt'),
         repo: '.gitignore',
+    },
+    [ConfigKey.JestConfig]: {
+        virmator: join(relativeSeparateConfigsDir, 'jest', 'jest-config.ts'),
+        repo: join('jest', 'jest-config.ts'),
+    },
+    [ConfigKey.JestSetup]: {
+        virmator: join(relativeSeparateConfigsDir, 'jest', 'jest-config.ts'),
+        repo: join('jest', 'jest-config.ts'),
     },
     [ConfigKey.NpmIgnore]: {
         virmator: join(relativeSeparateConfigsDir, 'npmignore.txt'),

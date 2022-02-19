@@ -1,9 +1,9 @@
 /** These config files are not used by any virmator commands but they are still helpful. */
 export enum BareConfigKey {
     GitAttributes = 'GitAttributes',
-    GitHubActionsTest = 'GitHubActionsTest',
-    GitHubActionsTaggedRelease = 'GitHubActionsTaggedRelease',
     GitHubActionsPrerelease = 'GitHubActionsPrerelease',
+    GitHubActionsTaggedRelease = 'GitHubActionsTaggedRelease',
+    GitHubActionsTest = 'GitHubActionsTest',
     GitIgnore = 'GitIgnore',
     NpmIgnore = 'NpmIgnore',
     VsCodeSettings = 'VsCodeSettings',
@@ -12,10 +12,12 @@ export enum BareConfigKey {
 /** These are config files used by virmator commands. */
 export enum CommandConfigKey {
     Cspell = 'Cspell',
-    Prettier = 'Prettier',
-    TsConfig = 'TsConfig',
+    JestConfig = 'JestConfig',
+    JestSetup = 'JestSetup',
     PackageJson = 'PackageJson',
+    Prettier = 'Prettier',
     PrettierIgnore = 'PrettierIgnore',
+    TsConfig = 'TsConfig',
 }
 
 export const ConfigKey = {...CommandConfigKey, ...BareConfigKey};
