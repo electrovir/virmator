@@ -107,6 +107,7 @@ export async function runFormatCommand(inputs: CommandFunctionInput): Promise<Cl
     });
 
     return {
+        command: prettierCommand,
         success: !results.error,
     };
 }

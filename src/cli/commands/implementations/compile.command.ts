@@ -33,6 +33,7 @@ export async function runCompileCommand(inputs: CommandFunctionInput): Promise<C
     const results = await runVirmatorShellCommand(compileCommand, inputs);
 
     return {
+        command: compileCommand,
         success: !results.error,
     };
 }
