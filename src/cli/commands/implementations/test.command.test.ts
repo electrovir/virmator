@@ -1,4 +1,4 @@
-import {join, relative} from 'path';
+import {join} from 'path';
 import {testTestPaths} from '../../../file-paths/virmator-test-file-paths';
 import {fillInCliFlags} from '../../cli-util/cli-flags';
 import {getAllCommandOutput} from '../../cli-util/get-all-command-output';
@@ -6,48 +6,40 @@ import {EmptyOutputCallbacks} from '../cli-command';
 import {runTestCommand} from './test.command';
 
 describe(runTestCommand.name, () => {
-    async function testTestCommand(successCondition: boolean, args: string[] = []) {
+    async function testTestCommand(
+        repoDir: string,
+        successCondition: boolean,
+        args: string[] = [],
+    ) {
         const results = await getAllCommandOutput(runTestCommand, {
             rawArgs: args,
             cliFlags: fillInCliFlags(),
-            repoDir: '',
+            repoDir,
             ...EmptyOutputCallbacks,
         });
 
         if (results.success !== successCondition) {
             console.info(`Test command output for ${JSON.stringify({args, successCondition})}`);
-            console.info(results.stdout);
-            console.error(results.stderr);
+            console.error({results});
         }
+
+        expect(results.success).toBe(successCondition);
 
         return results;
     }
 
     it('should pass on valid repo tests', async () => {
-        const results = await testTestCommand(true, [testTestPaths.validRepo]);
-
-        if (!results.success) {
-            console.log({results});
-        }
-
-        expect(results.success).toEqual(true);
+        await testTestCommand(testTestPaths.validRepo, true, []);
     });
 
     it('should fail on invalid repo tests', async () => {
-        const results = await testTestCommand(false, [
-            relative(process.cwd(), testTestPaths.invalidRepo),
-        ]);
-        expect(results.success).toBe(false);
+        await testTestCommand(testTestPaths.invalidRepo, false, []);
     });
 
     it('should only test a given arg file', async () => {
-        const results = await testTestCommand(true, [
-            relative(process.cwd(), join(testTestPaths.multiRepo, 'src', 'valid.test.ts')),
+        const results = await testTestCommand(testTestPaths.multiRepo, true, [
+            join('src', 'valid.test.ts'),
         ]);
-
-        if (!results.success) {
-            console.log({results});
-        }
 
         const linesWith1Test = results.stderr.match(/tests:\s+1 passed, 1 total\n/i);
 
@@ -60,19 +52,13 @@ describe(runTestCommand.name, () => {
             'invalid.test.ts',
         ];
 
-        const files = fileNames.map((fileName) =>
-            relative(process.cwd(), join(testTestPaths.multiRepo, 'src', fileName)),
-        );
+        const files = fileNames.map((fileName) => join('src', fileName));
 
-        const results = await testTestCommand(false, files);
+        const results = await testTestCommand(testTestPaths.multiRepo, false, files);
 
         const missingFiles = fileNames.filter((fileName) => !results.stderr.includes(fileName));
 
         expect(missingFiles).toEqual([]);
-
-        if (missingFiles.length) {
-            console.log({results});
-        }
 
         expect(results.stderr.match(/tests:\s+1 failed, 1 passed, 2 total/i)).toBeTruthy();
     });
