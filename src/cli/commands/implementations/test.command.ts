@@ -38,7 +38,9 @@ export async function runTestCommand(inputs: CommandFunctionInput): Promise<CliC
     const configPath =
         args.includes('--config ') || args.includes('-c ')
             ? ''
-            : `--config ${getRepoConfigFilePath(ConfigKey.JestConfig, false)}`;
+            : `--config ${interpolationSafeWindowsPath(
+                  getRepoConfigFilePath(ConfigKey.JestConfig, false),
+              )}`;
 
     const testCommand = `${jestPath} ${configPath} ${args}`;
     const results = await runVirmatorShellCommand(testCommand, inputs);
