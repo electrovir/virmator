@@ -125,18 +125,6 @@ describe(__filename, () => {
             stderr: /Tests:\s+1 passed, 1 total\n/,
         },
         cwd: testTestPaths.validRepo,
-        cleanup: async () => {
-            const jestPath = join(testTestPaths.validRepo, 'jest');
-            if (!existsSync(jestPath)) {
-                return `compile command didn't actually compile`;
-            }
-            await remove(jestPath);
-            if (existsSync(jestPath)) {
-                return `compile command test cleanup didn't remove compiled file`;
-            }
-
-            return;
-        },
     });
 
     testCli({
