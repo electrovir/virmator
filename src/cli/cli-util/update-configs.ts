@@ -64,6 +64,7 @@ export async function updateConfigs<T extends ConfigKey>(
     }
 
     return {
+        command: undefined,
         success: !errors.length,
     };
 }

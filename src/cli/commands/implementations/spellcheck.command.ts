@@ -26,6 +26,7 @@ export async function runSpellcheckCommand(
     const results = await runVirmatorShellCommand(spellcheckCommand, inputs);
 
     return {
+        command: spellcheckCommand,
         success: !results.error,
     };
 }

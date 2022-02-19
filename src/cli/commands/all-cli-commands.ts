@@ -88,6 +88,7 @@ export function runHelpCommand({stdoutCallback}: CommandFunctionInput): CliComma
     stdoutCallback(helpMessage);
 
     return {
+        command: undefined,
         success: true,
     };
 }

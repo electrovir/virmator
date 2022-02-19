@@ -4,6 +4,7 @@ import {CliFlagName, CliFlags, fillInCliFlags} from '../cli-util/cli-flags';
 import {CommandConfigKey} from '../config/config-key';
 
 export type CliCommandResult = {
+    command: string | undefined;
     success: boolean;
 };
 

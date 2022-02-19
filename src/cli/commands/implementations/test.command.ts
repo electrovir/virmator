@@ -42,6 +42,7 @@ export async function runTestCommand(inputs: CommandFunctionInput): Promise<CliC
     });
 
     return {
+        command: testCommand,
         success: !results.error,
     };
 }

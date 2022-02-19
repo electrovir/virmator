@@ -45,6 +45,7 @@ export async function runCodeInMarkdownCommand(
     const results = await runVirmatorShellCommand(mdCodeCommand, inputs);
 
     return {
+        command: mdCodeCommand,
         success: !results.error,
     };
 }
