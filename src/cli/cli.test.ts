@@ -14,6 +14,7 @@ import {
     createNodeModulesSymLinkForTests,
     testCompilePaths,
     testFormatPaths,
+    testTestPaths,
 } from '../file-paths/virmator-test-file-paths';
 import {CliCommandName} from './cli-util/cli-command-name';
 import {CliFlagName} from './cli-util/cli-flags';
@@ -75,10 +76,14 @@ describe(__filename, () => {
 
             const cleanupResult = inputs.cleanup && (await inputs.cleanup());
 
-            expect({output, cleanupResult}).toEqual({
-                output: expectedOutput,
-                cleanupResult: undefined,
-            });
+            expect(cleanupResult).toBeUndefined();
+
+            try {
+                expect(output).toEqual(expectedOutput);
+            } catch (error) {
+                console.error({rawOutput});
+                throw error;
+            }
         });
     }
 
@@ -109,6 +114,29 @@ describe(__filename, () => {
             stdout: `running format...\n${getResultMessage(CliCommandName.Format, true)}`,
         },
         cwd: testFormatPaths.validRepo,
+    });
+
+    testCli({
+        args: [CliCommandName.Test],
+        forceOnly: true,
+        description: 'runs test',
+        expect: {
+            stdout: /test succeeded\./,
+            stderr: /Tests:\s+1 passed, 1 total\n/,
+        },
+        cwd: testTestPaths.validRepo,
+        cleanup: async () => {
+            const jestPath = join(testTestPaths.validRepo, 'jest');
+            if (!existsSync(jestPath)) {
+                return `compile command didn't actually compile`;
+            }
+            await remove(jestPath);
+            if (existsSync(jestPath)) {
+                return `compile command test cleanup didn't remove compiled file`;
+            }
+
+            return;
+        },
     });
 
     testCli({

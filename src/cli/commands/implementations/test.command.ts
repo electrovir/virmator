@@ -4,6 +4,7 @@ import {CliCommandName} from '../../cli-util/cli-command-name';
 import {CliFlagName} from '../../cli-util/cli-flags';
 import {runVirmatorShellCommand} from '../../cli-util/shell-command-wrapper';
 import {ConfigKey} from '../../config/config-key';
+import {getRepoConfigFilePath} from '../../config/config-paths';
 import {CliCommandImplementation, CliCommandResult, CommandFunctionInput} from '../cli-command';
 
 export const testCommandImplementation: CliCommandImplementation = {
@@ -34,12 +35,13 @@ export async function runTestCommand(inputs: CommandFunctionInput): Promise<CliC
     const args: string = inputs.rawArgs.length
         ? interpolationSafeWindowsPath(inputs.rawArgs.join(' '))
         : '';
-    const testCommand = `${jestPath} ${inputs.repoDir} ${args}`;
-    const results = await runVirmatorShellCommand(testCommand, inputs, {
-        stdoutFilter: (logString) =>
-            // weird looking hex codes here are for color codes from test-vir
-            logString.replace('\x1B[1m\x1B[32mAll tests passed.\x1B[0m\n', ''),
-    });
+    const configPath =
+        args.includes('--config ') || args.includes('-c ')
+            ? ''
+            : `--config ${getRepoConfigFilePath(ConfigKey.JestConfig, false)}`;
+
+    const testCommand = `${jestPath} ${configPath} ${args}`;
+    const results = await runVirmatorShellCommand(testCommand, inputs);
 
     return {
         command: testCommand,

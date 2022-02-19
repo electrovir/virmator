@@ -23,6 +23,7 @@
     "exclude": [
         "dist",
         "node_modules",
+        "separate-configs",
         "test-files"
     ],
     "ts-node": {
