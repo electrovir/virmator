@@ -1,5 +1,6 @@
 import {getEnumTypedValues} from 'augment-vir/dist/node';
-import {existsSync, readFile} from 'fs-extra';
+import {existsSync} from 'fs';
+import {readFile} from 'fs/promises';
 import {ConfigKey} from './config-key';
 import {getVirmatorConfigFilePath} from './config-paths';
 import {ExtendableConfig, isConfigExtending, isExtendableConfig} from './extendable-config';

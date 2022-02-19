@@ -1,5 +1,5 @@
 import {interpolationSafeWindowsPath} from 'augment-vir/dist/node';
-import {existsSync} from 'fs-extra';
+import {existsSync} from 'fs';
 import {join} from 'path';
 
 export const virmatorRootDir = __dirname.replace(/(?:src|node_modules\/dist|dist).*/, '');

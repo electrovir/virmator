@@ -4,7 +4,9 @@ import {
     printShellCommandOutput,
     runShellCommand,
 } from 'augment-vir/dist/node';
-import {existsSync, readFile, remove, writeFile} from 'fs-extra';
+import {existsSync} from 'fs';
+import {remove} from 'fs-extra';
+import {readFile, writeFile} from 'fs/promises';
 import {join} from 'path';
 import {VirmatorCliCommandError} from '../errors/cli-command-error';
 import {virmatorDistDir} from '../file-paths/virmator-repo-paths';

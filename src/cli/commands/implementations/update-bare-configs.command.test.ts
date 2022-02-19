@@ -1,5 +1,6 @@
 import {getEnumTypedValues} from 'augment-vir/dist/node';
-import {emptyDir, ensureDir, existsSync} from 'fs-extra';
+import {existsSync} from 'fs';
+import {emptyDir, ensureDir} from 'fs-extra';
 import {join} from 'path';
 import {updateBareConfigsTestPaths} from '../../../file-paths/virmator-test-repos-paths';
 import {fillInCliFlags} from '../../cli-util/cli-flags';

@@ -1,4 +1,4 @@
-import {writeFile} from 'fs-extra';
+import {writeFile} from 'fs/promises';
 import {CliCommandName} from '../../cli-util/cli-command-name';
 import {CliFlagName} from '../../cli-util/cli-flags';
 import {ConfigKey} from '../../config/config-key';
@@ -42,7 +42,7 @@ export async function runInitCommand(inputs: CommandFunctionInput): Promise<CliC
 
 async function updatePackageJson(repoDir: string) {
     const repoPackageJsonPath = getRepoConfigFilePath(ConfigKey.PackageJson, false);
-    const finalPackageJsonContents = readUpdatedVirmatorConfigFile(
+    const finalPackageJsonContents = await readUpdatedVirmatorConfigFile(
         ConfigKey.PackageJson,
         repoDir,
         false,

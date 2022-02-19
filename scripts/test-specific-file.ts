@@ -1,5 +1,5 @@
 import {runShellCommand} from 'augment-vir/dist/node';
-import {existsSync} from 'fs-extra';
+import {existsSync} from 'fs';
 import {extname, join} from 'path';
 
 async function main() {
