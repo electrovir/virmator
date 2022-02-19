@@ -3,6 +3,7 @@ import {getNpmBinPath} from '../../../file-paths/virmator-repo-paths';
 import {CliCommandName} from '../../cli-util/cli-command-name';
 import {CliFlagName} from '../../cli-util/cli-flags';
 import {runVirmatorShellCommand} from '../../cli-util/shell-command-wrapper';
+import {ConfigKey} from '../../config/config-key';
 import {CliCommandImplementation, CliCommandResult, CommandFunctionInput} from '../cli-command';
 
 export const testCommandImplementation: CliCommandImplementation = {
@@ -18,8 +19,12 @@ export const testCommandImplementation: CliCommandImplementation = {
                 virmator test "./dist/**/!(*.type).test.js"
             `,
     implementation: runTestCommand,
+    configKeys: [
+        ConfigKey.JestConfig,
+        ConfigKey.JestSetup,
+    ],
     configFlagSupport: {
-        [CliFlagName.NoWriteConfig]: false,
+        [CliFlagName.NoWriteConfig]: true,
     },
 };
 
