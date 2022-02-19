@@ -40,7 +40,7 @@
         "@types/jest": "^27.4.0",
         "ansi-styles": "5.2.0",
         "augment-vir": "^1.4.3",
-        "cspell": "^5.18.4",
+        "cspell": "^5.18.5",
         "fs-extra": "^10.0.0",
         "jest": "^27.5.1",
         "markdown-code-example-inserter": "^0.1.5",
@@ -50,14 +50,14 @@
         "prettier-plugin-organize-imports": "^2.3.4",
         "prettier-plugin-packagejson": "^2.2.15",
         "prettier-plugin-sort-json": "^0.0.2",
-        "simple-git": "^3.2.4",
+        "simple-git": "^3.2.6",
         "ts-jest": "^27.1.3",
+        "ts-node": "^10.5.0",
         "typescript": "^4.5.5"
     },
     "devDependencies": {
         "@types/fs-extra": "^9.0.13",
-        "@types/node": "^17.0.17",
-        "ts-node": "^10.5.0"
+        "@types/node": "^17.0.18"
     },
     "engines": {
         "node": ">=12",
