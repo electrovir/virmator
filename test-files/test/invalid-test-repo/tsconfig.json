@@ -2,12 +2,20 @@
     "compilerOptions": {
         "esModuleInterop": true,
         "forceConsistentCasingInFileNames": true,
+        "module": "commonjs",
         "noImplicitAny": true,
         "noImplicitReturns": true,
         "noImplicitThis": true,
         "noUncheckedIndexedAccess": true,
+        "outDir": "dist",
+        "rootDir": "src",
         "skipDefaultLibCheck": true,
         "strict": true,
         "target": "es6"
-    }
+    },
+    "exclude": [
+        "node_modules",
+        "dist",
+        "test-files"
+    ]
 }

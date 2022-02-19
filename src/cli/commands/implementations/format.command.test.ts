@@ -1,6 +1,6 @@
 import {printShellCommandOutput} from 'augment-vir/dist/node';
 import {readFile, writeFile} from 'fs/promises';
-import {testFormatPaths} from '../../../file-paths/virmator-test-repos-paths';
+import {testFormatPaths} from '../../../file-paths/virmator-test-file-paths';
 import {CliFlagName, fillInCliFlags} from '../../cli-util/cli-flags';
 import {getAllCommandOutput} from '../../cli-util/get-all-command-output';
 import {EmptyOutputCallbacks} from '../cli-command';

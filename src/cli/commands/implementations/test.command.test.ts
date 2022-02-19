@@ -1,5 +1,5 @@
 import {join, relative} from 'path';
-import {testTestPaths} from '../../../file-paths/virmator-test-repos-paths';
+import {testTestPaths} from '../../../file-paths/virmator-test-file-paths';
 import {fillInCliFlags} from '../../cli-util/cli-flags';
 import {getAllCommandOutput} from '../../cli-util/get-all-command-output';
 import {EmptyOutputCallbacks} from '../cli-command';

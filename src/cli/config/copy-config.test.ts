@@ -5,7 +5,7 @@ import {extenderConfigsDir} from '../../file-paths/virmator-repo-paths';
 import {
     createNodeModulesSymLinkForTests,
     testFormatPaths,
-} from '../../file-paths/virmator-test-repos-paths';
+} from '../../file-paths/virmator-test-file-paths';
 import {ConfigKey} from './config-key';
 import {getRepoConfigFilePath} from './config-paths';
 import {copyConfig} from './copy-config';

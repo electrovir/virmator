@@ -14,7 +14,7 @@ import {
     createNodeModulesSymLinkForTests,
     testCompilePaths,
     testFormatPaths,
-} from '../file-paths/virmator-test-repos-paths';
+} from '../file-paths/virmator-test-file-paths';
 import {CliCommandName} from './cli-util/cli-command-name';
 import {CliFlagName} from './cli-util/cli-flags';
 import {cliErrorMessages, getResultMessage} from './cli-util/cli-messages';

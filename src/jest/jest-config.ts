@@ -11,7 +11,7 @@ const config: InitialOptionsTsJest = {
     silent: false,
     modulePathIgnorePatterns: [
         '.*.type.test.ts$',
-        'test-repos',
+        'test-files',
     ],
     roots: [join(process.cwd(), 'src')],
     setupFilesAfterEnv: [join(__dirname, 'jest-setup.ts')],

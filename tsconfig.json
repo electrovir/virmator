@@ -21,10 +21,9 @@
         "useUnknownInCatchVariables": true
     },
     "exclude": [
-        "node_modules",
         "dist",
-        "test-repos",
-        "scripts"
+        "node_modules",
+        "test-files"
     ],
     "ts-node": {
         "compilerOptions": {

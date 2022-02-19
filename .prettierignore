@@ -1,6 +1,6 @@
 dist/
 node_modules/
 package-lock.json
-test-repos/format/
+test-files/format/
 extender-configs/
 dist/vite/
