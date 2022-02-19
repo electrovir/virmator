@@ -10,7 +10,7 @@ export async function createNodeModulesSymLinkForTests(dir: string): Promise<str
     return symlinkPath;
 }
 
-const testRepos = join(virmatorRootDir, 'test-repos');
+const testRepos = join(virmatorRootDir, 'test-files');
 
 export function getCommandTestRepoDir(command: CliCommandName) {
     return join(testRepos, command);

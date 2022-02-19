@@ -2,7 +2,7 @@ import {getEnumTypedValues} from 'augment-vir/dist/node';
 import {existsSync} from 'fs';
 import {emptyDir, ensureDir} from 'fs-extra';
 import {join} from 'path';
-import {updateBareConfigsTestPaths} from '../../../file-paths/virmator-test-repos-paths';
+import {updateBareConfigsTestPaths} from '../../../file-paths/virmator-test-file-paths';
 import {fillInCliFlags} from '../../cli-util/cli-flags';
 import {getAllCommandOutput} from '../../cli-util/get-all-command-output';
 import {BareConfigKey} from '../../config/config-key';

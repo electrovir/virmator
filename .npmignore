@@ -2,6 +2,6 @@
 *.test.js
 src/
 src/tests/
-test-repos/
-scripts/
+test-files/
+src/scripts/
 public/
