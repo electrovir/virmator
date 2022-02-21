@@ -1,6 +1,6 @@
 {
     "name": "virmator",
-    "version": "1.4.2",
+    "version": "1.4.3",
     "description": "Handle all the stuffs in one package.",
     "keywords": [
         "automation",
@@ -38,7 +38,7 @@
     },
     "dependencies": {
         "ansi-styles": "5.2.0",
-        "augment-vir": "^1.4.3",
+        "augment-vir": "^1.5.1",
         "cspell": "^5.18.5",
         "fs-extra": "^10.0.0",
         "markdown-code-example-inserter": "^0.1.5",
