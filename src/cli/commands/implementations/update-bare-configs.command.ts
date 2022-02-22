@@ -13,20 +13,31 @@ const exampleFlags: BareConfigKey[] = [
 
 export const updateBareConfigsCommandImplementation: CliCommandImplementation = {
     commandName: CliCommandName.UpdateBareConfigs,
-    description: `Update config files that aren't used in any ${packageName} commands,
-            like GitHub actions tests or VS Code Settings.
-            
-            This command accepts a list of bare config file keys as arguments.
-            If no arguments are given, this command copies all the bare config files.
-            
-            list of possible arguments:
-                ${getEnumTypedValues(BareConfigKey).join('\n                ')}
-            
-            examples:
-                update all bare config files:
-                    ${packageName} ${CliCommandName.UpdateBareConfigs}
-                update only ${joinWithFinalConjunction(exampleFlags)} files:
-                    ${packageName} ${CliCommandName.UpdateBareConfigs} ${exampleFlags.join(' ')}`,
+    description: {
+        sections: [
+            {
+                title: '',
+                content: `Update config files that aren't used in any ${packageName} commands, like GitHub actions tests or VS Code Settings. This command accepts a list of bare config file keys as arguments. If no arguments are given, this command copies all the bare config files.`,
+            },
+            {
+                title: 'list of possible arguments',
+                content: getEnumTypedValues(BareConfigKey).join('\n'),
+            },
+        ],
+
+        examples: [
+            {
+                title: `update all bare config files`,
+                content: `${packageName} ${CliCommandName.UpdateBareConfigs}`,
+            },
+            {
+                title: `update only ${joinWithFinalConjunction(exampleFlags)} files`,
+                content: `${packageName} ${CliCommandName.UpdateBareConfigs} ${exampleFlags.join(
+                    ' ',
+                )},`,
+            },
+        ],
+    },
     implementation: runUpdateBareConfigsCommand,
     configFlagSupport: {
         [CliFlagName.NoWriteConfig]: false,

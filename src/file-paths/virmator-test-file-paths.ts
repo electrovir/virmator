@@ -60,3 +60,5 @@ const updateAllConfigsTestRepos = getCommandTestRepoDir(CliCommandName.UpdateAll
 export const updateAllConfigsTestPaths = {
     fullPackageJsonRepo: join(updateAllConfigsTestRepos, 'full-package-json-repo'),
 };
+
+export const virmatorReadme = join(virmatorRootDir, 'README.md');

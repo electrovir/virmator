@@ -30,11 +30,12 @@
         "format:base": "prettier \"./**/*.+(ts|json|html|css|md|js)\"",
         "format:check": "npm run format:base -- --check",
         "prepublishOnly": "npm install && npm run test:full",
+        "readme:check": "npm run compile && ts-node -r tsconfig-paths/register src/scripts/save-help-message.ts check && md-code --check README.md",
+        "readme:update": "npm run compile && ts-node -r tsconfig-paths/register src/scripts/save-help-message.ts && md-code README.md",
         "spellcheck": "cspell \"{*,.*,**/{.*,*}/**/{.*,*}}\" --exclude \"test-files/spellcheck/invalid-spellcheck-repo/**/*\" --exclude \"extender-configs\"",
         "test": "npm install && npm run compile && jest --runInBand --config ./src/jest/jest-config.ts",
-        "test:file": "ts-node ./src/scripts/test-specific-file.ts",
-        "test:full": "npm run test && npm run spellcheck -- --no-progress && npm run format:check && md-code --check README.md",
-        "test:help": "npm run compile && node dist/cli/cli.js --help"
+        "test:full": "npm run test && npm run spellcheck -- --no-progress && npm run format:check && npm run readme:check",
+        "test:help": "ts-node -r tsconfig-paths/register src/cli/cli.ts --help"
     },
     "dependencies": {
         "@types/jest": "^27.4.0",
@@ -53,6 +54,7 @@
         "simple-git": "^3.2.6",
         "ts-jest": "^27.1.3",
         "ts-node": "^10.5.0",
+        "tsconfig-paths": "^3.12.0",
         "typescript": "^4.5.5"
     },
     "devDependencies": {

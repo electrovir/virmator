@@ -9,16 +9,20 @@ import {CliCommandImplementation, CliCommandResult, CommandFunctionInput} from '
 
 export const testCommandImplementation: CliCommandImplementation = {
     commandName: CliCommandName.Test,
-    description: `Test all .test.ts files with jest. 
-            By default this command tests all .test.ts files in the current directory 
-            that are not .type.test.ts files. To override this behavior, pass in a
-            custom config file with Jest's --config. All other Jest inputs are also valid.
-            
-            examples:
-                virmator test ./path/to/single/file.js
-                virmator test "./**/single-file.js"
-                virmator test "./dist/**/!(*.type).test.js"
-            `,
+    description: {
+        sections: [
+            {
+                title: '',
+                content: `Test all .test.ts files with jest.  By default this command tests all .test.ts files in the current directory that are not .type.test.ts files. To override this behavior, pass in a custom config file with Jest's --config. All other Jest inputs are also valid.`,
+            },
+        ],
+
+        examples: [
+            {title: '', content: `virmator test ./path/to/single/file.js`},
+            {title: '', content: `virmator test "./**/single-file.js"`},
+            {title: '', content: `virmator test "./dist/**/!(*.type).test.js"`},
+        ],
+    },
     implementation: runTestCommand,
     configKeys: [
         ConfigKey.JestConfig,
