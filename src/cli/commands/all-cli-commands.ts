@@ -1,9 +1,14 @@
 import {getEnumTypedValues, getObjectTypedKeys} from 'augment-vir/dist/node';
-import {packageName} from '../../package-name';
-import {Color} from '../cli-util/cli-color';
 import {CliCommandName} from '../cli-util/cli-command-name';
 import {CliFlagName, CliFlags, flagDescriptions} from '../cli-util/cli-flags';
 import {CliCommandImplementation, CliCommandResult, CommandFunctionInput} from './cli-command';
+import {
+    combineHelpMessage,
+    commandToHelpString,
+    flagToHelpString,
+    MessageSyntax,
+    wrapLines,
+} from './description-printing';
 import {codeInMarkdownCommandImplementation} from './implementations/code-in-markdown.command';
 import {compileImplementation} from './implementations/compile.command';
 import {formatImplementation} from './implementations/format.command';
@@ -16,7 +21,15 @@ import {updateBareConfigsCommandImplementation} from './implementations/update-b
 function createUnImplementedCommand(commandName: CliCommandName): CliCommandImplementation {
     return {
         commandName,
-        description: 'not implemented yet',
+        description: {
+            sections: [
+                {
+                    title: '',
+                    content: 'not implemented yet',
+                },
+            ],
+            examples: [],
+        },
         implementation: () => {
             throw new Error('This command has not been implemented yet.');
         },
@@ -46,46 +59,38 @@ export function getUnsupportedFlags(
  */
 export const helpImplementation: CliCommandImplementation = {
     commandName: CliCommandName.Help,
-    description: flagDescriptions[CliFlagName.Help],
+    description: {
+        sections: [{title: '', content: flagDescriptions[CliFlagName.Help]}],
+        examples: [],
+    },
     implementation: runHelpCommand,
     configFlagSupport: {
         [CliFlagName.NoWriteConfig]: false,
     },
 };
 
-export function runHelpCommand({stdoutCallback}: CommandFunctionInput): CliCommandResult {
+export function generateHelpMessage(syntax: MessageSyntax) {
     const flagsMessage = getEnumTypedValues(CliFlagName)
         .sort()
         .map((flagName) => {
-            return `${Color.Bold}${Color.Info} ${flagName}${Color.Reset}: ${flagDescriptions[
-                flagName
-            ].trim()}`;
+            return flagToHelpString(flagName, flagDescriptions[flagName], syntax);
         })
-        .join('\n        ');
+        .join('\n');
 
     const commandsMessage = getEnumTypedValues(CliCommandName)
         .sort()
         .map((commandName) => {
-            return `${Color.Bold}${Color.Info} ${commandName}${Color.Reset}: ${allCliCommands[
-                commandName
-            ].description.trim()}`;
+            return commandToHelpString(allCliCommands[commandName], syntax);
         })
-        .join('\n        ');
+        .join('\n');
 
-    const helpMessage = `${Color.Info} ${packageName} usage:${Color.Reset}
-    [npx] ${packageName} [--flags] command subCommand
-    
-    npx is needed when the command is run directly from the terminal
-    (not scoped within an npm script) unless the package has been globally installed
-    (which is not recommended).
-    
-    ${Color.Info} available flags:${Color.Reset}
-        ${flagsMessage}
-    
-    ${Color.Info} available commands:${Color.Reset}
-        ${commandsMessage}`;
+    const helpMessage = combineHelpMessage(flagsMessage, commandsMessage, syntax);
 
-    stdoutCallback(helpMessage);
+    return helpMessage;
+}
+
+export function runHelpCommand({stdoutCallback}: CommandFunctionInput): CliCommandResult {
+    stdoutCallback(wrapLines(generateHelpMessage(MessageSyntax.Bash), 100));
 
     return {
         command: undefined,

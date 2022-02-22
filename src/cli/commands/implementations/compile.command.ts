@@ -8,14 +8,25 @@ import {CliCommandImplementation, CliCommandResult, CommandFunctionInput} from '
 
 export const compileImplementation: CliCommandImplementation = {
     commandName: CliCommandName.Compile,
-    description: `compile typescript files
-            Pass any extra tsc flags to this command.
-            
-            examples:
-                no extra flags:
-                    ${packageName} ${CliCommandName.Compile}
-                one extra flag:
-                    ${packageName} ${CliCommandName.Compile} --noEmit`,
+    description: {
+        sections: [
+            {
+                title: '',
+                content: `compile typescript files
+            Pass any extra tsc flags to this command.`,
+            },
+        ],
+        examples: [
+            {
+                title: `no extra flags`,
+                content: `${packageName} ${CliCommandName.Compile}`,
+            },
+            {
+                title: `one extra flag`,
+                content: `${packageName} ${CliCommandName.Compile} --noEmit`,
+            },
+        ],
+    },
     implementation: runCompileCommand,
     configKeys: [ConfigKey.TsConfig],
     configFlagSupport: {

@@ -13,19 +13,32 @@ const exampleFlags: ConfigKey[] = [
 
 export const updateAllConfigsCommandImplementation: CliCommandImplementation = {
     commandName: CliCommandName.UpdateAllConfigs,
-    description: `Update all config files.
-            
-            This command accepts a list of config file keys as arguments.
-            If no arguments are given, this command copies all config files.
-            
-            list of possible arguments:
-                ${getEnumTypedValues(ConfigKey).join('\n                ')}
-            
-            examples:
-                update all config files:
-                    ${packageName} ${CliCommandName.UpdateAllConfigs}
-                update only ${joinWithFinalConjunction(exampleFlags)} files:
-                    ${packageName} ${CliCommandName.UpdateAllConfigs} ${exampleFlags.join(' ')}`,
+    description: {
+        sections: [
+            {
+                title: '',
+                content: `Update all config files. This command accepts a list of config file keys as arguments. If no arguments are given, this command copies all config files.`,
+            },
+
+            {
+                title: 'list of possible arguments',
+                content: getEnumTypedValues(ConfigKey).join('\n'),
+            },
+        ],
+
+        examples: [
+            {
+                title: `update all config files`,
+                content: `${packageName} ${CliCommandName.UpdateAllConfigs}`,
+            },
+            {
+                title: `update only ${joinWithFinalConjunction(exampleFlags)} files`,
+                content: `${packageName} ${CliCommandName.UpdateAllConfigs} ${exampleFlags.join(
+                    ' ',
+                )}`,
+            },
+        ],
+    },
     implementation: runUpdateAllConfigsCommand,
     configFlagSupport: {
         [CliFlagName.NoWriteConfig]: false,

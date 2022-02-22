@@ -1,6 +1,7 @@
 {
     "compilerOptions": {
         "alwaysStrict": true,
+        "baseUrl": ".",
         "declaration": true,
         "esModuleInterop": true,
         "exactOptionalPropertyTypes": true,
@@ -17,7 +18,7 @@
         "skipDefaultLibCheck": true,
         "skipLibCheck": true,
         "strict": true,
-        "target": "ES2018",
+        "target": "ESNext",
         "useUnknownInCatchVariables": true
     },
     "exclude": [

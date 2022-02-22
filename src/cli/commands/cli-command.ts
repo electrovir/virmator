@@ -64,10 +64,19 @@ export type PartialCommandFunctionInput = Omit<Partial<CommandFunctionInput>, 'c
     rawCliFlags?: Partial<Readonly<CliFlags>>;
 };
 
+export type CliHelpSection = {
+    title: string;
+    content: string;
+};
+export type CliHelpDescription = {
+    sections: CliHelpSection[];
+    examples: CliHelpSection[];
+};
+
 export type CliCommandImplementation = Readonly<{
     commandName: CliCommandName;
     configKeys?: CommandConfigKey[];
-    description: string;
+    description: CliHelpDescription;
     implementation: CommandFunction;
     configFlagSupport: Readonly<
         Omit<
