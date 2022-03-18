@@ -1,6 +1,6 @@
 {
     "name": "virmator",
-    "version": "1.4.4",
+    "version": "1.4.5",
     "description": "Handle all the stuffs in one package.",
     "keywords": [
         "automation",
@@ -39,23 +39,23 @@
     "dependencies": {
         "ansi-styles": "5.2.0",
         "augment-vir": "^1.5.1",
-        "cspell": "^5.18.5",
-        "fs-extra": "^10.0.0",
+        "cspell": "^5.19.2",
+        "fs-extra": "^10.0.1",
         "markdown-code-example-inserter": "^0.1.5",
         "prettier": "^2.5.1",
-        "prettier-plugin-jsdoc": "^0.3.30",
+        "prettier-plugin-jsdoc": "^0.3.31",
         "prettier-plugin-multiline-arrays": "^0.0.3",
         "prettier-plugin-organize-imports": "^2.3.4",
-        "prettier-plugin-packagejson": "^2.2.15",
+        "prettier-plugin-packagejson": "^2.2.16",
         "prettier-plugin-sort-json": "^0.0.2",
-        "simple-git": "^3.2.6",
+        "simple-git": "^3.4.0",
         "test-vir": "^0.2.3",
-        "typescript": "^4.5.5"
+        "typescript": "^4.6.2"
     },
     "devDependencies": {
         "@types/fs-extra": "^9.0.13",
-        "@types/node": "^17.0.19",
-        "ts-node": "^10.5.0"
+        "@types/node": "^17.0.21",
+        "ts-node": "^10.7.0"
     },
     "engines": {
         "node": ">=12",
