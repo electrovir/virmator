@@ -1,3 +1,4 @@
+import {runShellCommand} from 'augment-vir/dist/node';
 import {join} from 'path';
 import {testTestPaths} from '../../../file-paths/virmator-test-file-paths';
 import {fillInCliFlags} from '../../cli-util/cli-flags';
@@ -5,29 +6,28 @@ import {getAllCommandOutput} from '../../cli-util/get-all-command-output';
 import {EmptyOutputCallbacks} from '../cli-command';
 import {runTestCommand} from './test.command';
 
-describe(runTestCommand.name, () => {
-    async function testTestCommand(
-        repoDir: string,
-        successCondition: boolean,
-        args: string[] = [],
-    ) {
-        const results = await getAllCommandOutput(runTestCommand, {
-            rawArgs: args,
-            cliFlags: fillInCliFlags(),
-            repoDir,
-            ...EmptyOutputCallbacks,
-        });
+async function testTestCommand(repoDir: string, successCondition: boolean, args: string[] = []) {
+    const results = await getAllCommandOutput(runTestCommand, {
+        rawArgs: args,
+        cliFlags: fillInCliFlags(),
+        repoDir,
+        ...EmptyOutputCallbacks,
+    });
 
-        if (results.success !== successCondition) {
-            console.info(`Test command output for ${JSON.stringify({args, successCondition})}`);
-            console.error({results});
-        }
+    const lsResults = await runShellCommand(`ls -la *`, {cwd: repoDir});
+    console.log({lsResults, repoDir});
 
-        expect(results.success).toBe(successCondition);
-
-        return results;
+    if (results.success !== successCondition) {
+        console.info(`Test command output for ${JSON.stringify({args, successCondition})}`);
+        console.error({results});
     }
 
+    expect(results.success).toBe(successCondition);
+
+    return results;
+}
+
+describe(runTestCommand.name, () => {
     it('should pass on valid repo tests', async () => {
         await testTestCommand(testTestPaths.validRepo, true, []);
     });
