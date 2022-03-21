@@ -1,4 +1,3 @@
-import {interpolationSafeWindowsPath} from 'augment-vir/dist/node';
 import {getNpmBinPath} from '../../../file-paths/virmator-repo-paths';
 import {CliCommandName} from '../../cli-util/cli-command-name';
 import {CliFlagName} from '../../cli-util/cli-flags';
@@ -36,16 +35,12 @@ export const testCommandImplementation: CliCommandImplementation = {
 const jestPath = getNpmBinPath('jest');
 
 export async function runTestCommand(inputs: CommandFunctionInput): Promise<CliCommandResult> {
-    const args: string = inputs.rawArgs.length
-        ? interpolationSafeWindowsPath(inputs.rawArgs.join(' '))
-        : '';
+    const args: string = inputs.rawArgs.length ? inputs.rawArgs.join(' ') : '';
 
     const configPath =
         args.includes('--config ') || args.includes('-c ')
             ? ''
-            : `--config ${interpolationSafeWindowsPath(
-                  getVirmatorConfigFilePath(ConfigKey.JestConfig, false),
-              )}`;
+            : `--config ${getVirmatorConfigFilePath(ConfigKey.JestConfig, false)}`;
 
     const testCommand = `${jestPath} ${configPath} ${args}`;
     const results = await runVirmatorShellCommand(testCommand, inputs);
