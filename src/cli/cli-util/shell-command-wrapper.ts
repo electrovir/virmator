@@ -1,4 +1,4 @@
-import {runShellCommand, ShellOutput} from 'augment-vir/dist/node-index';
+import {runShellCommand, ShellOutput} from 'augment-vir/dist/node-only';
 import {CommandFunctionInput} from '../commands/cli-command';
 
 export type OutputFilter = (toPrint: string) => string;

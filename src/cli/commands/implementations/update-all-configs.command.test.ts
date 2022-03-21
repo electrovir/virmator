@@ -1,4 +1,4 @@
-import {printShellCommandOutput} from 'augment-vir/dist/node-index';
+import {printShellCommandOutput} from 'augment-vir/dist/node-only';
 import {readdir} from 'fs/promises';
 import {updateAllConfigsTestPaths} from '../../../file-paths/virmator-test-file-paths';
 import {fillInCliFlags} from '../../cli-util/cli-flags';

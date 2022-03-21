@@ -3,7 +3,7 @@ import {
     interpolationSafeWindowsPath,
     printShellCommandOutput,
     runShellCommand,
-} from 'augment-vir/dist/node-index';
+} from 'augment-vir/dist/node-only';
 import {existsSync} from 'fs';
 import {remove} from 'fs-extra';
 import {readFile, writeFile} from 'fs/promises';

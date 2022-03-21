@@ -1,4 +1,4 @@
-import {DeepWriteable, isEnumValue} from 'augment-vir/dist/node-index';
+import {DeepWriteable, isEnumValue} from 'augment-vir';
 import {getNpmBinPath} from '../../../file-paths/virmator-repo-paths';
 import {packageName} from '../../../package-name';
 import {CliCommandName} from '../../cli-util/cli-command-name';
