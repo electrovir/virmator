@@ -35,14 +35,6 @@ const configFileMap: Readonly<
         virmator: join(relativeSeparateConfigsDir, 'gitignore.txt'),
         repo: '.gitignore',
     },
-    [ConfigKey.JestConfig]: {
-        virmator: join(relativeSeparateConfigsDir, 'jest', 'jest-config.ts'),
-        repo: join('jest', 'jest-config.ts'),
-    },
-    [ConfigKey.JestSetup]: {
-        virmator: join(relativeSeparateConfigsDir, 'jest', 'jest-config.ts'),
-        repo: join('jest', 'jest-config.ts'),
-    },
     [ConfigKey.NpmIgnore]: {
         virmator: join(relativeSeparateConfigsDir, 'npmignore.txt'),
         repo: '.npmignore',

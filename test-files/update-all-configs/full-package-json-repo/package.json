@@ -22,7 +22,7 @@
         "sanitize:all": "./bulk-sanitize.sh files/downloads",
         "sanitize:no-compile": "node dist/sanitizer/sanitize-for-test-file-cli.js",
         "spellcheck": "cspell \"{*,.*,**/{.*,*}/**/{.*,*}}\" --exclude \"test-files/spellcheck/invalid-spellcheck-repo/**/*\" --exclude \"extender-configs\"",
-        "test": "npm run compile && test-vir \"./dist/**/!(*.type).test.js\"",
+        "test": "virmator test",
         "test:file": "ts-node ./src/scripts/test-specific-file.ts",
         "test:full": "npm run test && npm run spellcheck -- --no-progress && npm run format:check",
         "test:help": "npm run compile && node dist/cli/cli.js --help"

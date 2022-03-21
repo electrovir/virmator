@@ -1,4 +1,3 @@
-import {runShellCommand} from 'augment-vir/dist/node';
 import * as path from 'path';
 import {testTestPaths} from '../../../file-paths/virmator-test-file-paths';
 import {fillInCliFlags} from '../../cli-util/cli-flags';
@@ -13,9 +12,6 @@ async function testTestCommand(repoDir: string, successCondition: boolean, args:
         repoDir,
         ...EmptyOutputCallbacks,
     });
-
-    const lsResults = await runShellCommand(`ls -la *`, {cwd: repoDir});
-    console.log({lsResults, repoDir});
 
     if (results.success !== successCondition) {
         console.info(`Test command output for ${JSON.stringify({args, successCondition})}`);
@@ -34,6 +30,30 @@ describe(runTestCommand.name, () => {
 
     it('should fail on invalid repo tests', async () => {
         await testTestCommand(testTestPaths.invalidRepo, false, []);
+    });
+
+    it('should work with --runInBand argument', async () => {
+        // test that it takes long with --runInBand
+        const beforeLong: number = Date.now();
+        await testTestCommand(testTestPaths.runInBandTestRepo, true, [
+            '--runInBand',
+            '--testTimeout',
+            '20000',
+        ]);
+        const afterLong: number = Date.now();
+        const longDuration = afterLong - beforeLong;
+        expect(longDuration).toBeGreaterThan(10000);
+
+        // test that it does not take long without --runInBand
+        const beforeShort: number = Date.now();
+        await testTestCommand(testTestPaths.runInBandTestRepo, true, [
+            '--testTimeout',
+            '20000',
+        ]);
+        const afterShort: number = Date.now();
+        const shortDuration = afterShort - beforeShort;
+        console.log({longDuration, shortDuration});
+        expect(shortDuration).toBeLessThan(9000);
     });
 
     it('should only test a given arg file', async () => {

@@ -3,7 +3,7 @@ import {InitialOptionsTsJest} from 'ts-jest';
 
 const cwd = process.cwd();
 
-export const virmatorJestConfig: InitialOptionsTsJest = {
+const config: InitialOptionsTsJest = {
     preset: 'ts-jest',
     testEnvironment: 'node',
     verbose: false,
@@ -23,4 +23,4 @@ export const virmatorJestConfig: InitialOptionsTsJest = {
     },
 };
 
-export default virmatorJestConfig;
+export default config;

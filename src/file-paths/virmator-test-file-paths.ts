@@ -42,6 +42,7 @@ export const testTestPaths = {
     validRepo: join(testTestRepos, 'valid-test-repo'),
     invalidRepo: join(testTestRepos, 'invalid-test-repo'),
     multiRepo: join(testTestRepos, 'multi-test-repo'),
+    runInBandTestRepo: join(testTestRepos, 'run-in-band-test-repo'),
 };
 
 const spellcheckTestRepos = getCommandTestRepoDir(CliCommandName.SpellCheck);
