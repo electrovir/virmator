@@ -123,7 +123,7 @@ Spellcheck code with cspell. Any extra arguments are passed directly to cspell.
 
 ### test
 
-Test all .test.ts files with jest. By default this command tests all .test.ts files in the current directory that are not .type.test.ts files. To override this behavior, pass in a custom config file with Jest's --config. All other Jest inputs are also valid.
+Test all .test.ts files with jest. By default this command tests all .test.ts files in the current directory that are not .type.test.ts files. To override this behavior, pass in a custom config file with Jest's --config argument. The default Jest config file can be extended by importing it with "import {virmatorJestConfig} from 'virmator'". All other Jest inputs are also valid.
 
 #### Examples
 
