@@ -33,8 +33,6 @@ describe(runTestCommand.name, () => {
     });
 
     it('should work with --runInBand argument', async () => {
-        console.log({github: process.env.GITHUB_ENV});
-
         // this doesn't work in github actions cause they are slow as heck
         if (!process.env.GITHUB_ENV) {
             // test that it takes long with --runInBand
