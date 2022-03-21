@@ -1,4 +1,4 @@
-import {interpolationSafeWindowsPath} from 'augment-vir/dist/node';
+import {interpolationSafeWindowsPath} from 'augment-vir/dist/node-index';
 import {virmatorJestConfigFilePath} from '../../../exportable-jest-config/jest-config-path';
 import {getNpmBinPath} from '../../../file-paths/virmator-repo-paths';
 import {CliCommandName} from '../../cli-util/cli-command-name';

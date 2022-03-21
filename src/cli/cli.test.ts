@@ -1,9 +1,9 @@
+import {getObjectTypedKeys} from 'augment-vir';
 import {
-    getObjectTypedKeys,
     interpolationSafeWindowsPath,
     printShellCommandOutput,
     runShellCommand,
-} from 'augment-vir/dist/node';
+} from 'augment-vir/dist/node-index';
 import {existsSync} from 'fs';
 import {remove} from 'fs-extra';
 import {readFile, writeFile} from 'fs/promises';

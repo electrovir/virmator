@@ -1,4 +1,4 @@
-import {getEnumTypedValues, getObjectTypedKeys} from 'augment-vir/dist/node';
+import {getEnumTypedValues, getObjectTypedKeys} from 'augment-vir/dist/node-index';
 import {CliCommandName} from '../cli-util/cli-command-name';
 import {CliFlagName, CliFlags, flagDescriptions} from '../cli-util/cli-flags';
 import {CliCommandImplementation, CliCommandResult, CommandFunctionInput} from './cli-command';

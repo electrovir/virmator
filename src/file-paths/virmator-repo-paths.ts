@@ -1,4 +1,4 @@
-import {interpolationSafeWindowsPath} from 'augment-vir/dist/node';
+import {interpolationSafeWindowsPath} from 'augment-vir/dist/node-index';
 import {existsSync} from 'fs';
 import {join} from 'path';
 

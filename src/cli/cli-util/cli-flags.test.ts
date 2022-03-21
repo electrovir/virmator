@@ -1,4 +1,4 @@
-import {getEnumTypedValues} from 'augment-vir/dist/node';
+import {getEnumTypedValues} from 'augment-vir/dist/node-index';
 import {CliCommandName} from './cli-command-name';
 import {CliFlagName, extractArguments, fillInCliFlags} from './cli-flags';
 

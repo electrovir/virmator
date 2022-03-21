@@ -1,4 +1,4 @@
-import {printShellCommandOutput, runShellCommand} from 'augment-vir/dist/node';
+import {printShellCommandOutput, runShellCommand} from 'augment-vir/dist/node-index';
 import {readFile, writeFile} from 'fs/promises';
 import {Color} from 'src/cli/cli-util/cli-color';
 import {MessageSyntax} from 'src/cli/commands/description-printing';

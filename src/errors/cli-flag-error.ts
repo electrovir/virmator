@@ -1,4 +1,4 @@
-import {getObjectTypedKeys} from 'augment-vir/dist/node';
+import {getObjectTypedKeys} from 'augment-vir/dist/node-index';
 import {defaultCliFlags} from '../cli/cli-util/cli-flags';
 
 export class CliFlagError extends Error {

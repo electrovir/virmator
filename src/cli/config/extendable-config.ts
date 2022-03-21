@@ -1,4 +1,4 @@
-import {getObjectTypedKeys, isEnumValue} from 'augment-vir/dist/node';
+import {getObjectTypedKeys, isEnumValue} from 'augment-vir/dist/node-index';
 import {ConfigKey} from './config-key';
 
 const extendableConfigFileMap = {

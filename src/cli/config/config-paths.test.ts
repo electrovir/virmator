@@ -1,4 +1,4 @@
-import {getEnumTypedValues} from 'augment-vir/dist/node';
+import {getEnumTypedValues} from 'augment-vir/dist/node-index';
 import {existsSync} from 'fs';
 import {ConfigKey} from './config-key';
 import {getVirmatorConfigFilePath} from './config-paths';
