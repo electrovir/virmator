@@ -1,5 +1,5 @@
 import {runShellCommand} from 'augment-vir/dist/node';
-import {join} from 'path/posix';
+import * as path from 'path';
 import {testTestPaths} from '../../../file-paths/virmator-test-file-paths';
 import {fillInCliFlags} from '../../cli-util/cli-flags';
 import {getAllCommandOutput} from '../../cli-util/get-all-command-output';
@@ -38,7 +38,7 @@ describe(runTestCommand.name, () => {
 
     it('should only test a given arg file', async () => {
         const results = await testTestCommand(testTestPaths.multiRepo, true, [
-            join('src', 'valid.test.ts'),
+            path.posix.join('src', 'valid.test.ts'),
         ]);
 
         const linesWith1Test = results.stderr.match(/tests:\s+1 passed, 1 total\n/i);
@@ -52,7 +52,7 @@ describe(runTestCommand.name, () => {
             'invalid.test.ts',
         ];
 
-        const files = fileNames.map((fileName) => join('src', fileName));
+        const files = fileNames.map((fileName) => path.posix.join('src', fileName));
 
         const results = await testTestCommand(testTestPaths.multiRepo, false, files);
 
