@@ -46,7 +46,7 @@
         "cspell": "5.19.2",
         "fs-extra": "10.0.1",
         "jest": "27.5.1",
-        "markdown-code-example-inserter": "0.1.6",
+        "markdown-code-example-inserter": "0.1.7",
         "prettier": "2.6.0",
         "prettier-plugin-jsdoc": "0.3.31",
         "prettier-plugin-multiline-arrays": "0.0.4",
