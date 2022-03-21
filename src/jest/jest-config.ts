@@ -5,8 +5,7 @@ const config: InitialOptionsTsJest = {
     preset: 'ts-jest',
     testEnvironment: 'node',
     verbose: false,
-    // 30 seconds
-    testTimeout: 30000,
+    testTimeout: 60000,
     rootDir: process.cwd(),
     silent: false,
     modulePathIgnorePatterns: [
