@@ -4,7 +4,7 @@ import {CliCommandName} from '../../cli-util/cli-command-name';
 import {CliFlagName} from '../../cli-util/cli-flags';
 import {runVirmatorShellCommand} from '../../cli-util/shell-command-wrapper';
 import {ConfigKey} from '../../config/config-key';
-import {getRepoConfigFilePath} from '../../config/config-paths';
+import {getVirmatorConfigFilePath} from '../../config/config-paths';
 import {CliCommandImplementation, CliCommandResult, CommandFunctionInput} from '../cli-command';
 
 export const testCommandImplementation: CliCommandImplementation = {
@@ -39,11 +39,12 @@ export async function runTestCommand(inputs: CommandFunctionInput): Promise<CliC
     const args: string = inputs.rawArgs.length
         ? interpolationSafeWindowsPath(inputs.rawArgs.join(' '))
         : '';
+
     const configPath =
         args.includes('--config ') || args.includes('-c ')
             ? ''
             : `--config ${interpolationSafeWindowsPath(
-                  getRepoConfigFilePath(ConfigKey.JestConfig, false),
+                  getVirmatorConfigFilePath(ConfigKey.JestConfig, false),
               )}`;
 
     const testCommand = `${jestPath} ${configPath} ${args}`;
