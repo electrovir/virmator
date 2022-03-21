@@ -1,13 +1,20 @@
 import * as path from 'path';
+import {stripColor} from '../../../augments/string';
 import {testTestPaths} from '../../../file-paths/virmator-test-file-paths';
 import {fillInCliFlags} from '../../cli-util/cli-flags';
 import {getAllCommandOutput} from '../../cli-util/get-all-command-output';
+import {CommandConfigKey} from '../../config/config-key';
+import {getVirmatorConfigFilePath} from '../../config/config-paths';
 import {EmptyOutputCallbacks} from '../cli-command';
 import {runTestCommand} from './test.command';
 
 async function testTestCommand(repoDir: string, successCondition: boolean, args: string[] = []) {
     const results = await getAllCommandOutput(runTestCommand, {
-        rawArgs: args,
+        rawArgs: [
+            ...args,
+            '--config',
+            getVirmatorConfigFilePath(CommandConfigKey.JestConfig, false),
+        ],
         cliFlags: fillInCliFlags(),
         repoDir,
         ...EmptyOutputCallbacks,
@@ -54,7 +61,7 @@ describe(runTestCommand.name, () => {
             ]);
             const afterShort: number = Date.now();
             const shortDuration = afterShort - beforeShort;
-            console.log({longDuration, shortDuration});
+            console.info({longDuration, shortDuration});
             expect(shortDuration).toBeLessThan(9000);
         }
     });
@@ -64,7 +71,7 @@ describe(runTestCommand.name, () => {
             path.posix.join('src', 'valid.test.ts'),
         ]);
 
-        const linesWith1Test = results.stderr.match(/tests:\s+1 passed, 1 total\n/i);
+        const linesWith1Test = stripColor(results.stderr).match(/tests:\s+1 passed, 1 total\n/i);
 
         expect(linesWith1Test).toBeTruthy();
     });
@@ -79,10 +86,14 @@ describe(runTestCommand.name, () => {
 
         const results = await testTestCommand(testTestPaths.multiRepo, false, files);
 
-        const missingFiles = fileNames.filter((fileName) => !results.stderr.includes(fileName));
+        const missingFiles = fileNames.filter(
+            (fileName) => !stripColor(results.stderr).includes(fileName),
+        );
 
         expect(missingFiles).toEqual([]);
 
-        expect(results.stderr.match(/tests:\s+1 failed, 1 passed, 2 total/i)).toBeTruthy();
+        expect(
+            stripColor(results.stderr).match(/tests:\s+1 failed, 1 passed, 2 total/i),
+        ).toBeTruthy();
     });
 });

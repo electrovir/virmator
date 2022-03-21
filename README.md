@@ -138,6 +138,8 @@ Update all config files. This command accepts a list of config file keys as argu
 #### list of possible arguments:
 
 Cspell
+JestConfig
+JestSetup
 PackageJson
 Prettier
 PrettierIgnore

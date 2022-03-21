@@ -7,7 +7,8 @@ import {
 import {existsSync} from 'fs';
 import {remove} from 'fs-extra';
 import {readFile, writeFile} from 'fs/promises';
-import {join} from 'path';
+import {dirname, join} from 'path';
+import {stripColor} from '../augments/string';
 import {VirmatorCliCommandError} from '../errors/cli-command-error';
 import {virmatorDistDir} from '../file-paths/virmator-repo-paths';
 import {
@@ -20,7 +21,7 @@ import {CliCommandName} from './cli-util/cli-command-name';
 import {CliFlagName} from './cli-util/cli-flags';
 import {cliErrorMessages, getResultMessage} from './cli-util/cli-messages';
 import {FormatOperation} from './commands/implementations/format.command';
-import {ConfigKey} from './config/config-key';
+import {CommandConfigKey, ConfigKey} from './config/config-key';
 import {getRepoConfigFilePath} from './config/config-paths';
 import {getExtendableBaseConfigName} from './config/extendable-config';
 
@@ -30,6 +31,7 @@ describe(__filename, () => {
     type TestCliInput = {
         args: string[];
         description: string;
+        stripColor?: boolean;
         debug?: boolean;
         cwd?: string;
         forceOnly?: boolean;
@@ -58,9 +60,13 @@ describe(__filename, () => {
                 printShellCommandOutput(results);
             }
 
+            const cleanText: (input: string) => string = inputs.stripColor
+                ? stripColor
+                : (input: string) => input;
+
             const rawOutput = {
-                stdout: results.stdout.trim() || undefined,
-                stderr: results.stderr.trim() || undefined,
+                stdout: cleanText(results.stdout.trim()) || undefined,
+                stderr: cleanText(results.stderr.trim()) || undefined,
             };
 
             const output = getObjectTypedKeys(rawOutput).reduce((accum, key) => {
@@ -118,13 +124,44 @@ describe(__filename, () => {
 
     testCli({
         args: [CliCommandName.Test],
-        forceOnly: true,
         description: 'runs test',
+        stripColor: true,
         expect: {
             stdout: /test succeeded\./,
             stderr: /Tests:\s+1 passed, 1 total\n/,
         },
         cwd: testTestPaths.validRepo,
+        cleanup: async () => {
+            const setupFile = join(
+                testTestPaths.validRepo,
+                getRepoConfigFilePath(CommandConfigKey.JestSetup, false),
+            );
+            const configFile = join(
+                testTestPaths.validRepo,
+                getRepoConfigFilePath(CommandConfigKey.JestConfig, false),
+            );
+            const files = [
+                configFile,
+                setupFile,
+            ];
+            files.forEach((file) => {
+                expect(existsSync(file)).toBe(true);
+            });
+
+            await Promise.all(
+                files.map(async (file) => {
+                    return remove(file);
+                }),
+            );
+
+            await remove(dirname(configFile));
+
+            files.forEach((file) => {
+                expect(existsSync(file)).toBe(false);
+            });
+
+            expect(existsSync(dirname(configFile))).toBe(false);
+        },
     });
 
     testCli({
@@ -165,14 +202,20 @@ describe(__filename, () => {
     testCli({
         args: [CliCommandName.Help],
         description: 'runs help',
+        stripColor: true,
         expect: {
-            stdout: /\w\s+virmator usage:/,
+            stdout: /^virmator usage:/,
         },
     });
 });
 
 describe('config file creation', () => {
-    async function checkConfigs(command: string, configPaths: string[], persistConfig?: boolean) {
+    async function checkConfigs(
+        command: string,
+        repoPath: string,
+        configPaths: string[],
+        persistConfig?: boolean,
+    ) {
         const testResults: {name: string; result: boolean}[] = [];
 
         await configPaths.reduce(async (lastPromise, configPath) => {
@@ -180,23 +223,23 @@ describe('config file creation', () => {
             testResults.push({name: 'previous config exists', result: existsSync(configPath)});
         }, Promise.resolve());
 
-        const symlinkPath = await createNodeModulesSymLinkForTests(testFormatPaths.validRepo);
+        const symlinkPath = await createNodeModulesSymLinkForTests(repoPath);
 
         testResults.push({name: 'symlink was created', result: existsSync(symlinkPath)});
 
         /** Run format for the first time which will create the config file */
         const firstFormatOutput = await runShellCommand(interpolationSafeWindowsPath(command), {
-            cwd: testFormatPaths.validRepo,
+            cwd: repoPath,
         });
 
         testResults.push({
-            name: 'first format has stderr',
+            name: 'first command has stderr',
             result: !!firstFormatOutput.stderr,
         });
 
         /** The first format should have stderr. Thus, if it doesn't, print the output. */
         if (!firstFormatOutput.stderr) {
-            console.error('first format output');
+            console.error('first command output');
             console.error(firstFormatOutput);
         }
 
@@ -206,19 +249,13 @@ describe('config file creation', () => {
         }, Promise.resolve());
 
         const secondFormatOutput = await runShellCommand(interpolationSafeWindowsPath(command), {
-            cwd: testFormatPaths.validRepo,
+            cwd: repoPath,
         });
 
         testResults.push({
-            name: 'second format has stderr',
+            name: 'second command has stderr',
             result: !!secondFormatOutput.stderr,
         });
-
-        /** The second format should not have stderr. Thus, if it does, print the output. */
-        if (secondFormatOutput.stderr) {
-            console.error('second format output');
-            printShellCommandOutput(secondFormatOutput);
-        }
 
         await configPaths.reduce(async (lastPromise, configPath) => {
             if (!persistConfig) {
@@ -244,7 +281,7 @@ describe('config file creation', () => {
 
     it('should verify that format config is created', async () => {
         expect(
-            await checkConfigs(`node ${cliPath} format`, [
+            await checkConfigs(`node ${cliPath} format`, testFormatPaths.validRepo, [
                 join(testFormatPaths.validRepo, getRepoConfigFilePath(ConfigKey.Prettier, false)),
                 join(
                     testFormatPaths.validRepo,
@@ -265,7 +302,7 @@ describe('config file creation', () => {
                 result: true,
             },
             {
-                name: 'first format has stderr',
+                name: 'first command has stderr',
                 result: true,
             },
             {
@@ -277,8 +314,58 @@ describe('config file creation', () => {
                 result: true,
             },
             {
-                name: 'second format has stderr',
+                name: 'second command has stderr',
                 result: false,
+            },
+            {
+                name: 'config exists after cleanup',
+                result: false,
+            },
+            {
+                name: 'config exists after cleanup',
+                result: false,
+            },
+            {
+                name: 'symlink exists after cleanup',
+                result: false,
+            },
+        ]);
+    });
+
+    it('should verify that jest configs are created', async () => {
+        expect(
+            await checkConfigs(`node ${cliPath} ${CliCommandName.Test}`, testTestPaths.validRepo, [
+                join(testTestPaths.validRepo, getRepoConfigFilePath(ConfigKey.JestConfig, false)),
+                join(testTestPaths.validRepo, getRepoConfigFilePath(ConfigKey.JestSetup, false)),
+            ]),
+        ).toEqual([
+            {
+                name: 'previous config exists',
+                result: false,
+            },
+            {
+                name: 'previous config exists',
+                result: false,
+            },
+            {
+                name: 'symlink was created',
+                result: true,
+            },
+            {
+                name: 'first command has stderr',
+                result: true,
+            },
+            {
+                name: 'config was created',
+                result: true,
+            },
+            {
+                name: 'config was created',
+                result: true,
+            },
+            {
+                name: 'second command has stderr',
+                result: true,
             },
             {
                 name: 'config exists after cleanup',
@@ -297,14 +384,24 @@ describe('config file creation', () => {
 
     it('should verify that extendable format config is created', async () => {
         expect(
-            await checkConfigs(`node ${cliPath} format ${CliFlagName.ExtendableConfig}`, [
-                join(testFormatPaths.validRepo, getRepoConfigFilePath(ConfigKey.Prettier, false)),
-                join(testFormatPaths.validRepo, getExtendableBaseConfigName(ConfigKey.Prettier)),
-                join(
-                    testFormatPaths.validRepo,
-                    getRepoConfigFilePath(ConfigKey.PrettierIgnore, false),
-                ),
-            ]),
+            await checkConfigs(
+                `node ${cliPath} ${CliCommandName.Format} ${CliFlagName.ExtendableConfig}`,
+                testFormatPaths.validRepo,
+                [
+                    join(
+                        testFormatPaths.validRepo,
+                        getRepoConfigFilePath(ConfigKey.Prettier, false),
+                    ),
+                    join(
+                        testFormatPaths.validRepo,
+                        getExtendableBaseConfigName(ConfigKey.Prettier),
+                    ),
+                    join(
+                        testFormatPaths.validRepo,
+                        getRepoConfigFilePath(ConfigKey.PrettierIgnore, false),
+                    ),
+                ],
+            ),
         ).toEqual([
             {
                 name: 'previous config exists',
@@ -323,7 +420,7 @@ describe('config file creation', () => {
                 result: true,
             },
             {
-                name: 'first format has stderr',
+                name: 'first command has stderr',
                 result: true,
             },
             {
@@ -339,7 +436,7 @@ describe('config file creation', () => {
                 result: true,
             },
             {
-                name: 'second format has stderr',
+                name: 'second command has stderr',
                 result: false,
             },
             {
@@ -378,13 +475,20 @@ module.exports = {...baseConfig, printWidth: 80};`;
         });
 
         results.push(
-            ...(await checkConfigs(`node ${cliPath} format ${CliFlagName.ExtendableConfig}`, [
-                join(testFormatPaths.validRepo, getExtendableBaseConfigName(ConfigKey.Prettier)),
-                join(
-                    testFormatPaths.validRepo,
-                    getRepoConfigFilePath(ConfigKey.PrettierIgnore, false),
-                ),
-            ])),
+            ...(await checkConfigs(
+                `node ${cliPath} ${CliCommandName.Format} ${CliFlagName.ExtendableConfig}`,
+                testFormatPaths.validRepo,
+                [
+                    join(
+                        testFormatPaths.validRepo,
+                        getExtendableBaseConfigName(ConfigKey.Prettier),
+                    ),
+                    join(
+                        testFormatPaths.validRepo,
+                        getRepoConfigFilePath(ConfigKey.PrettierIgnore, false),
+                    ),
+                ],
+            )),
         );
 
         const newNormalPrettierContents = (await readFile(normalPrettierPath)).toString();
@@ -425,7 +529,7 @@ module.exports = {...baseConfig, printWidth: 80};`;
                 result: true,
             },
             {
-                name: 'first format has stderr',
+                name: 'first command has stderr',
                 result: true,
             },
             {
@@ -437,7 +541,7 @@ module.exports = {...baseConfig, printWidth: 80};`;
                 result: true,
             },
             {
-                name: 'second format has stderr',
+                name: 'second command has stderr',
                 result: false,
             },
             {

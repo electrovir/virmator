@@ -12,6 +12,8 @@ export enum BareConfigKey {
 /** These are config files used by virmator commands. */
 export enum CommandConfigKey {
     Cspell = 'Cspell',
+    JestConfig = 'JestConfig',
+    JestSetup = 'JestSetup',
     PackageJson = 'PackageJson',
     Prettier = 'Prettier',
     PrettierIgnore = 'PrettierIgnore',

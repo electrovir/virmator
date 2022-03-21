@@ -1,5 +1,5 @@
 import {InitialOptionsTsJest} from 'ts-jest';
-import {virmatorJestConfig} from '../exportable-jest-config/separate-jest-configs/jest-config';
+import {virmatorJestConfig} from '../exportable-jest-config/jest-config';
 
 const virmatorInternalTestingConfig: InitialOptionsTsJest = {
     ...virmatorJestConfig,

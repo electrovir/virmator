@@ -1,8 +1,8 @@
 import {printShellCommandOutput, runShellCommand} from 'augment-vir/dist/node-only';
 import {readFile, writeFile} from 'fs/promises';
-import {Color} from 'src/cli/cli-util/cli-color';
-import {MessageSyntax} from 'src/cli/commands/description-printing';
+import {Color} from '../cli/cli-util/cli-color';
 import {generateHelpMessage} from '../cli/commands/all-cli-commands';
+import {MessageSyntax} from '../cli/commands/description-printing';
 import {virmatorReadme} from '../file-paths/virmator-test-file-paths';
 
 const usageTrigger = '<!-- usage below -->';
