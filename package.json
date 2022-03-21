@@ -1,6 +1,6 @@
 {
     "name": "virmator",
-    "version": "1.4.2",
+    "version": "2.0.0",
     "description": "Handle all the stuffs in one package.",
     "keywords": [
         "automation",
@@ -23,6 +23,8 @@
         "name": "electrovir",
         "url": "https://github.com/electrovir"
     },
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
     "bin": "dist/cli/cli.js",
     "scripts": {
         "compile": "rm -rf dist && tsc && chmod +x dist/cli/cli.js",

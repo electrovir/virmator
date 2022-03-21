@@ -1,10 +1,9 @@
 import {interpolationSafeWindowsPath} from 'augment-vir/dist/node';
+import {virmatorJestConfigFilePath} from '../../../exportable-jest-config/jest-config-path';
 import {getNpmBinPath} from '../../../file-paths/virmator-repo-paths';
 import {CliCommandName} from '../../cli-util/cli-command-name';
 import {CliFlagName} from '../../cli-util/cli-flags';
 import {runVirmatorShellCommand} from '../../cli-util/shell-command-wrapper';
-import {ConfigKey} from '../../config/config-key';
-import {getVirmatorConfigFilePath} from '../../config/config-paths';
 import {CliCommandImplementation, CliCommandResult, CommandFunctionInput} from '../cli-command';
 
 export const testCommandImplementation: CliCommandImplementation = {
@@ -24,12 +23,8 @@ export const testCommandImplementation: CliCommandImplementation = {
         ],
     },
     implementation: runTestCommand,
-    configKeys: [
-        ConfigKey.JestConfig,
-        ConfigKey.JestSetup,
-    ],
     configFlagSupport: {
-        [CliFlagName.NoWriteConfig]: true,
+        [CliFlagName.NoWriteConfig]: false,
     },
 };
 
@@ -41,9 +36,7 @@ export async function runTestCommand(inputs: CommandFunctionInput): Promise<CliC
     const configPath =
         args.includes('--config ') || args.includes('-c ')
             ? ''
-            : `--config ${interpolationSafeWindowsPath(
-                  getVirmatorConfigFilePath(ConfigKey.JestConfig, false),
-              )}`;
+            : `--config ${interpolationSafeWindowsPath(virmatorJestConfigFilePath)}`;
 
     const testCommand = `${jestPath} ${configPath} ${args}`;
     const results = await runVirmatorShellCommand(testCommand, inputs);
