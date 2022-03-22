@@ -18,7 +18,7 @@ jobs:
         steps:
             - uses: actions/checkout@v1
               with:
-                  ref: ${{ github.event.workflow_run.head_branch }}
+                  ref: 'update-commands'
             - name: Use Node.js 16.x
               uses: actions/setup-node@v1
               with:
