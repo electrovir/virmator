@@ -1,3 +1,4 @@
+import {interpolationSafeWindowsPath} from 'augment-vir/dist/node-only';
 import * as path from 'path';
 import {stripColor} from '../../../augments/string';
 import {testTestPaths} from '../../../file-paths/virmator-test-file-paths';
@@ -13,7 +14,9 @@ async function testTestCommand(repoDir: string, successCondition: boolean, args:
         rawArgs: [
             ...args,
             '--config',
-            getVirmatorConfigFilePath(CommandConfigKey.JestConfig, false),
+            interpolationSafeWindowsPath(
+                getVirmatorConfigFilePath(CommandConfigKey.JestConfig, false),
+            ),
         ],
         cliFlags: fillInCliFlags(),
         repoDir,
