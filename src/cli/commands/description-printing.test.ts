@@ -36,7 +36,7 @@ describe(wrapLines.name, () => {
         line.`);
     });
 
-    fit('should wrap around a perfectly cut sentence properly', () => {
+    it('should wrap around a perfectly cut sentence properly', () => {
         expect(
             wrapLines(
                 `        Insert code snippets into markdown files. This uses the markdown-code-example-inserter package to expand code link comments inside of markdown files to actual markdown code blocks. See that package's README for more details but the basics are that you need a comment that looks like the following in your markdown file for this to do anything: \`<!-- example-link: path/to/file.ts -->\``,

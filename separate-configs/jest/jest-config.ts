@@ -6,9 +6,7 @@ const cwd = process.cwd();
 export const virmatorJestConfig: InitialOptionsTsJest = {
     preset: 'ts-jest',
     testEnvironment: 'node',
-    verbose: false,
     rootDir: cwd,
-    silent: false,
     modulePathIgnorePatterns: ['.*.type.test.ts$'],
     roots: [join(cwd, 'src')],
     setupFilesAfterEnv: [join(__dirname, 'jest-setup.ts')],
