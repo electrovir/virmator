@@ -1,17 +1,14 @@
-import {getEnumTypedValues} from 'augment-vir/dist/node';
+import {getEnumTypedValues} from 'augment-vir';
 import {existsSync} from 'fs';
-import {testGroup} from 'test-vir';
 import {ConfigKey} from './config-key';
 import {getVirmatorConfigFilePath} from './config-paths';
 
-testGroup((runTest) => {
-    runTest({
-        description: 'no config files are missing',
-        expect: [],
-        test: () => {
-            return getEnumTypedValues(ConfigKey).filter((configKey) => {
+describe('config paths', () => {
+    it('should not have any config files missing', () => {
+        expect(
+            getEnumTypedValues(ConfigKey).filter((configKey) => {
                 return !existsSync(getVirmatorConfigFilePath(configKey, false));
-            });
-        },
+            }),
+        ).toEqual([]);
     });
 });

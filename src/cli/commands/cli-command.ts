@@ -4,6 +4,7 @@ import {CliFlagName, CliFlags, fillInCliFlags} from '../cli-util/cli-flags';
 import {CommandConfigKey} from '../config/config-key';
 
 export type CliCommandResult = {
+    command: string | undefined;
     success: boolean;
 };
 
@@ -63,10 +64,19 @@ export type PartialCommandFunctionInput = Omit<Partial<CommandFunctionInput>, 'c
     rawCliFlags?: Partial<Readonly<CliFlags>>;
 };
 
+export type CliHelpSection = {
+    title: string;
+    content: string;
+};
+export type CliHelpDescription = {
+    sections: CliHelpSection[];
+    examples: CliHelpSection[];
+};
+
 export type CliCommandImplementation = Readonly<{
     commandName: CliCommandName;
     configKeys?: CommandConfigKey[];
-    description: string;
+    description: CliHelpDescription;
     implementation: CommandFunction;
     configFlagSupport: Readonly<
         Omit<

@@ -1,6 +1,10 @@
 *.test.d.ts
 *.test.js
-src
-src/tests
-test-repos
-scripts
+
+dist/file-paths/virmator-test-file-paths.js
+
+public/
+src/
+dist/scripts/
+dist/tests/
+test-files/

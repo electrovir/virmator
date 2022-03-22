@@ -4,6 +4,7 @@ import {
     relativeSeparateConfigsDir,
     virmatorRootDir,
 } from '../../file-paths/virmator-repo-paths';
+import {packageName} from '../../package-name';
 import {ConfigKey} from './config-key';
 import {getExtendableBaseConfigName, isExtendableConfig} from './extendable-config';
 
@@ -13,6 +14,8 @@ enum DifferentConfigPathTypes {
     /** The path that the config file should be written to when virmator is being used. */
     Repo = 'repo',
 }
+
+const hiddenVirmatorDirectory = `.${packageName}`;
 
 const configFileMap: Readonly<
     Record<
@@ -24,16 +27,24 @@ const configFileMap: Readonly<
 > = {
     [ConfigKey.Cspell]: '.cspell.json',
     [ConfigKey.GitAttributes]: '.gitattributes',
-    [ConfigKey.GitHubActionsTest]: join('.github', 'workflows', 'virmator-tests.yml'),
     [ConfigKey.GitHubActionsPrerelease]: join('.github', 'workflows', 'virmator-prerelease.yml'),
     [ConfigKey.GitHubActionsTaggedRelease]: join(
         '.github',
         'workflows',
         'virmator-tagged-release.yml',
     ),
+    [ConfigKey.GitHubActionsTest]: join('.github', 'workflows', 'virmator-tests.yml'),
     [ConfigKey.GitIgnore]: {
         virmator: join(relativeSeparateConfigsDir, 'gitignore.txt'),
         repo: '.gitignore',
+    },
+    [ConfigKey.JestConfig]: {
+        virmator: join(relativeSeparateConfigsDir, 'jest', 'jest-config.ts'),
+        repo: join(hiddenVirmatorDirectory, 'jest', 'jest-config.ts'),
+    },
+    [ConfigKey.JestSetup]: {
+        virmator: join(relativeSeparateConfigsDir, 'jest', 'jest-setup.ts'),
+        repo: join(hiddenVirmatorDirectory, 'jest', 'jest-setup.ts'),
     },
     [ConfigKey.NpmIgnore]: {
         virmator: join(relativeSeparateConfigsDir, 'npmignore.txt'),

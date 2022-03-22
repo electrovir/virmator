@@ -1,89 +1,63 @@
-import {getEnumTypedValues} from 'augment-vir/dist/node';
-import {existsSync, readFile} from 'fs-extra';
-import {testGroup} from 'test-vir';
+import {getEnumTypedValues} from 'augment-vir';
+import {existsSync} from 'fs';
+import {readFile} from 'fs/promises';
 import {ConfigKey} from './config-key';
 import {getVirmatorConfigFilePath} from './config-paths';
 import {ExtendableConfig, isConfigExtending, isExtendableConfig} from './extendable-config';
 
-testGroup((runTest) => {
-    runTest({
-        description: 'no extendable config files are missing',
-        expect: [],
-        test: () => {
-            return getEnumTypedValues(ConfigKey).filter((configKey) => {
+describe('extendable config files', () => {
+    it('should no extendable config files are missing', () => {
+        expect(
+            getEnumTypedValues(ConfigKey).filter((configKey) => {
                 return (
                     isExtendableConfig(configKey) &&
                     !existsSync(getVirmatorConfigFilePath(configKey, true)) &&
                     !existsSync(getVirmatorConfigFilePath(configKey, false))
                 );
-            });
-        },
+            }),
+        ).toEqual([]);
     });
 });
 
-testGroup({
-    description: 'ExtendableConfig',
-    tests: (runTest) => {
-        runTest({
-            description: "ExtendableConfig's keys are valid extendable configs",
-            expect: [],
-            test: () => {
-                const invalidExtendableConfigKeys = getEnumTypedValues(ExtendableConfig).filter(
-                    (key) => {
-                        return !isExtendableConfig(key);
-                    },
-                );
+describe('ExtendableConfig', () => {
+    it('should no invalid keys', () => {
+        expect(
+            getEnumTypedValues(ExtendableConfig).filter((key) => {
+                return !isExtendableConfig(key);
+            }),
+        ).toEqual([]);
+    });
 
-                return invalidExtendableConfigKeys;
-            },
-        });
-
-        runTest({
-            description: 'valid extendable ConfigKey values are extendable configs',
-            expect: [],
-            test: () => {
-                const invalidExtendableConfigKeys = [
-                    ConfigKey.Prettier,
-                    ConfigKey.Cspell,
-                    ConfigKey.TsConfig,
-                ].filter((key) => {
-                    return !isExtendableConfig(key);
-                });
-
-                return invalidExtendableConfigKeys;
-            },
-        });
-    },
+    it('should have no invalid values', () => {
+        expect(
+            [
+                ConfigKey.Prettier,
+                ConfigKey.Cspell,
+                ConfigKey.TsConfig,
+            ].filter((key) => {
+                return !isExtendableConfig(key);
+            }),
+        ).toEqual([]);
+    });
 });
 
-testGroup({
-    description: isConfigExtending.name,
-    tests: (runTest) => {
-        runTest({
-            description: 'no configs are extending with an empty string',
-            expect: [],
-            test: () => {
-                return getEnumTypedValues(ExtendableConfig).filter((key) =>
-                    isConfigExtending(key, ''),
-                );
-            },
-        });
+describe(isConfigExtending.name, () => {
+    it('should have no configs extending with an empty string', () => {
+        expect(
+            getEnumTypedValues(ExtendableConfig).filter((key) => isConfigExtending(key, '')),
+        ).toEqual([]);
+    });
 
-        runTest({
-            description: 'no extender configs are missing extending detection',
-            expect: [],
-            test: async () => {
-                const configs = getEnumTypedValues(ExtendableConfig);
-                const success = await Promise.all(
-                    configs.map(async (key) => {
-                        const extenderConfigPath = getVirmatorConfigFilePath(key, true);
-                        const contents = (await readFile(extenderConfigPath)).toString();
-                        return !isConfigExtending(key, contents);
-                    }),
-                );
+    it('should not be missing any extending detection', async () => {
+        const configs = getEnumTypedValues(ExtendableConfig);
+        const success = await Promise.all(
+            configs.map(async (key) => {
+                const extenderConfigPath = getVirmatorConfigFilePath(key, true);
+                const contents = (await readFile(extenderConfigPath)).toString();
+                return !isConfigExtending(key, contents);
+            }),
+        );
 
-                return configs.filter((config, index) => success[index]);
-            },
-        });
-    },
+        expect(configs.filter((config, index) => success[index])).toEqual([]);
+    });
 });

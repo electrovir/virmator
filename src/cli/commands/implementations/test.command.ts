@@ -1,49 +1,55 @@
-import {interpolationSafeWindowsPath} from 'augment-vir/dist/node';
+import {interpolationSafeWindowsPath} from 'augment-vir/dist/node-only';
+import {CommandConfigKey} from '../../../cli/config/config-key';
+import {getRepoConfigFilePath} from '../../../cli/config/config-paths';
 import {getNpmBinPath} from '../../../file-paths/virmator-repo-paths';
 import {CliCommandName} from '../../cli-util/cli-command-name';
 import {CliFlagName} from '../../cli-util/cli-flags';
 import {runVirmatorShellCommand} from '../../cli-util/shell-command-wrapper';
 import {CliCommandImplementation, CliCommandResult, CommandFunctionInput} from '../cli-command';
-import {runCompileCommand} from './compile.command';
 
 export const testCommandImplementation: CliCommandImplementation = {
     commandName: CliCommandName.Test,
-    description: `Test all .test.js files with test-vir. 
-            By default this command tests all .test.js files in dist that are not 
-            .type.test.js files. To override this behavior, pass in a list of files or a
-            quoted glob which will be expanded by the package test-vir itself.
-            
-            examples:
-                virmator test ./path/to/single/file.js
-                virmator test "./**/single-file.js"
-                virmator test "./dist/**/!(*.type).test.js"
-            `,
+    description: {
+        sections: [
+            {
+                title: '',
+                content: `Test all .test.ts files with jest.  By default this command tests all .test.ts files in the current directory that are not .type.test.ts files. To override this behavior, pass in a custom config file with Jest's --config argument. The default Jest config file can be extended by importing it with "import {virmatorJestConfig} from 'virmator'". All other Jest inputs are also valid.`,
+            },
+        ],
+
+        examples: [
+            {title: '', content: `virmator test ./path/to/single/file.js`},
+            {title: '', content: `virmator test "./**/single-file.js"`},
+            {title: '', content: `virmator test "./dist/**/!(*.type).test.js"`},
+        ],
+    },
     implementation: runTestCommand,
+    configKeys: [
+        CommandConfigKey.JestSetup,
+        CommandConfigKey.JestConfig,
+    ],
     configFlagSupport: {
-        [CliFlagName.NoWriteConfig]: false,
+        [CliFlagName.NoWriteConfig]: true,
     },
 };
 
-const testVirPath = getNpmBinPath('test-vir');
+const jestPath = getNpmBinPath('jest');
 
 export async function runTestCommand(inputs: CommandFunctionInput): Promise<CliCommandResult> {
-    const compileResult = await runCompileCommand({...inputs, rawArgs: []});
+    const args: string = inputs.rawArgs.length ? inputs.rawArgs.join(' ') : '';
 
-    if (!compileResult.success) {
-        return compileResult;
-    }
+    const defaultConfigPath = getRepoConfigFilePath(CommandConfigKey.JestConfig, false);
 
-    const args: string = inputs.rawArgs.length
-        ? interpolationSafeWindowsPath(inputs.rawArgs.join(' '))
-        : `\"./dist/**/!(*.type).test.js\"`;
-    const testCommand = `${testVirPath} ${args}`;
-    const results = await runVirmatorShellCommand(testCommand, inputs, {
-        stdoutFilter: (logString) =>
-            // weird looking hex codes here are for color codes from test-vir
-            logString.replace('\x1B[1m\x1B[32mAll tests passed.\x1B[0m\n', ''),
-    });
+    const configPath =
+        args.includes('--config ') || args.includes('-c ')
+            ? ''
+            : `--config ${interpolationSafeWindowsPath(defaultConfigPath)}`;
+
+    const testCommand = `${jestPath} --colors ${configPath} ${args}`;
+    const results = await runVirmatorShellCommand(testCommand, inputs);
 
     return {
+        command: testCommand,
         success: !results.error,
     };
 }

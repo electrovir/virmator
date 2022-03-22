@@ -1,4 +1,4 @@
-import {isEnumValue} from 'augment-vir/dist/node';
+import {isEnumValue} from 'augment-vir';
 import {CliCommandName} from './cli-command-name';
 
 export enum CliFlagName {
@@ -18,13 +18,10 @@ export const defaultCliFlags: Readonly<Required<Record<CliFlagName, false>>> = {
 } as const;
 
 export const flagDescriptions: Record<CliFlagName, string> = {
-    [CliFlagName.Silent]: 'turns off most logging',
-    [CliFlagName.NoWriteConfig]: `prevents a command from overwriting its relevant config file
-            (if one exists, which they usually do)`,
-    [CliFlagName.ExtendableConfig]: `not supported by all commands. Rather than updating the
-            the current command's relevant config file directly, commands will write an extendable
-            config file so that the user can extend and override config values.`,
-    [CliFlagName.Help]: 'prints a help message',
+    [CliFlagName.Silent]: 'Turns off most logging.',
+    [CliFlagName.NoWriteConfig]: `Prevents a command from overwriting its relevant config file (if one exists, which they usually do).`,
+    [CliFlagName.ExtendableConfig]: `Not supported by all commands. Rather than updating the current command's relevant config file directly, commands will write an extendable config file so that the user can extend and override config values.`,
+    [CliFlagName.Help]: 'Prints this help message.',
 };
 
 export type ExtractedArguments = {

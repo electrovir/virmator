@@ -1,4 +1,4 @@
-import {writeFile} from 'fs-extra';
+import {writeFile} from 'fs/promises';
 import {CliCommandName} from '../../cli-util/cli-command-name';
 import {CliFlagName} from '../../cli-util/cli-flags';
 import {ConfigKey} from '../../config/config-key';
@@ -10,9 +10,17 @@ import {runUpdateAllConfigsCommand} from './update-all-configs.command';
 
 export const initCommandImplementation: CliCommandImplementation = {
     commandName: CliCommandName.Test,
-    description: `Init everything, including package.json scripts.
+    description: {
+        sections: [
+            {
+                title: '',
+                content: `Init everything, including package.json scripts.
             If no package.json file is found, one is created and initialized.
             Pass --force to this command to overwrite current package.json scripts.`,
+            },
+        ],
+        examples: [],
+    },
     implementation: runInitCommand,
     configFlagSupport: {
         [CliFlagName.NoWriteConfig]: true,
@@ -36,13 +44,14 @@ export async function runInitCommand(inputs: CommandFunctionInput): Promise<CliC
     }
 
     return {
+        command: undefined,
         success: !error,
     };
 }
 
 async function updatePackageJson(repoDir: string) {
     const repoPackageJsonPath = getRepoConfigFilePath(ConfigKey.PackageJson, false);
-    const finalPackageJsonContents = readUpdatedVirmatorConfigFile(
+    const finalPackageJsonContents = await readUpdatedVirmatorConfigFile(
         ConfigKey.PackageJson,
         repoDir,
         false,

@@ -7,7 +7,15 @@ import {CliCommandImplementation, CliCommandResult, CommandFunctionInput} from '
 
 export const spellcheckCommandImplementation: CliCommandImplementation = {
     commandName: CliCommandName.SpellCheck,
-    description: `Spellcheck code with cspell. Any extra arguments are passed directly to cspell.`,
+    description: {
+        sections: [
+            {
+                title: '',
+                content: `Spellcheck code with cspell. Any extra arguments are passed directly to cspell.`,
+            },
+        ],
+        examples: [],
+    },
     implementation: runSpellcheckCommand,
     configKeys: [ConfigKey.Cspell],
     configFlagSupport: {
@@ -26,6 +34,7 @@ export async function runSpellcheckCommand(
     const results = await runVirmatorShellCommand(spellcheckCommand, inputs);
 
     return {
+        command: spellcheckCommand,
         success: !results.error,
     };
 }

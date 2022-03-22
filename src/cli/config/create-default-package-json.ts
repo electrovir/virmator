@@ -1,4 +1,4 @@
-import {readFile} from 'fs-extra';
+import {readFile} from 'fs/promises';
 import {basename} from 'path';
 import simpleGit, {SimpleGit} from 'simple-git';
 import {ConfigKey} from './config-key';

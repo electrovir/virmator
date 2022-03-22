@@ -1,5 +1,5 @@
-import {filterToEnumValues, getEnumTypedValues} from 'augment-vir/dist/node';
-import {existsSync} from 'fs-extra';
+import {filterToEnumValues, getEnumTypedValues} from 'augment-vir';
+import {existsSync} from 'fs';
 import {
     CliCommandResult,
     CommandFunctionInput,
@@ -64,6 +64,7 @@ export async function updateConfigs<T extends ConfigKey>(
     }
 
     return {
+        command: undefined,
         success: !errors.length,
     };
 }

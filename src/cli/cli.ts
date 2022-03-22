@@ -45,5 +45,7 @@ export async function cli(rawArgs: string[]) {
 if (require.main === module) {
     cli(process.argv.slice(2));
 } else {
-    throw new Error(`${__filename} should not be imported directly.`);
+    throw new Error(
+        `${__filename} should not be imported directly. To run the cli from within the Virmator repo itself, use the following bash command: node dist/cli/cli.js`,
+    );
 }

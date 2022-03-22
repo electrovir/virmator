@@ -1,4 +1,4 @@
-import {DeepWriteable, isEnumValue} from 'augment-vir/dist/node';
+import {DeepWriteable, isEnumValue} from 'augment-vir';
 import {getNpmBinPath} from '../../../file-paths/virmator-repo-paths';
 import {packageName} from '../../../package-name';
 import {CliCommandName} from '../../cli-util/cli-command-name';
@@ -40,42 +40,53 @@ export const filesMarkerArg = '--format-files' as const;
 
 export const formatImplementation: CliCommandImplementation = {
     commandName: CliCommandName.Format,
-    description: `formats source files with Prettier
-            operation commands:
-                This is optional but if provided it must come first. ${FormatOperation.Write} is the default.
-                
-                ${FormatOperation.Write}: overwrites files to fix formatting.
-                ${FormatOperation.Check}: checks the formatting, does not write to files
-            
-            file extensions:
-                If only specific file extensions should be formatted, add the "${filesMarkerArg}"
-                argument to this command. All following arguments will be treated
-                as file extensions to be formatted.
-                For example, the following command will overwrite files
-                (because ${FormatOperation.Write} is the default operation) only if they have the 
-                extension ".md" or ".json":
-                    ${packageName} ${CliCommandName.Format} ${filesMarkerArg} md json
-                
-            Prettier flags:
-                Any other arguments encountered between the operation command (if provided)
-                and the "${filesMarkerArg}" marker are treated as extra arguments to Prettier and
-                will be passed along.
-            
-            examples:
-                checks formatting for files:
-                    ${packageName} ${CliCommandName.Format} ${FormatOperation.Check}
-                checks formatting only for .md files:
-                    ${packageName} ${CliCommandName.Format} ${FormatOperation.Check} ${filesMarkerArg} md
-                checks formatting only for .md and .json files:
-                    ${packageName} ${CliCommandName.Format} ${FormatOperation.Check} ${filesMarkerArg} md json
-                fixes formatting for files:
-                    ${packageName} ${CliCommandName.Format}
-                    or
-                    ${packageName} ${CliCommandName.Format} ${FormatOperation.Write}
-                examples with extra Prettier flags:
-                    ${packageName} ${CliCommandName.Format} --ignore-path .prettierignore
-                    ${packageName} ${CliCommandName.Format} ${FormatOperation.Write}  --ignore-path .prettierignore
-                    ${packageName} ${CliCommandName.Format} ${FormatOperation.Write}  --ignore-path .prettierignore ${filesMarkerArg} md json`,
+    description: {
+        sections: [
+            {
+                title: '',
+                content: 'Formats source files with Prettier.',
+            },
+            {
+                title: 'operation commands',
+                content: `This is optional but if provided it must come first. ${FormatOperation.Write} is the default.
+    ${FormatOperation.Write}: overwrites files to fix formatting.
+    ${FormatOperation.Check}: checks the formatting, does not write to files`,
+            },
+            {
+                title: 'file extensions',
+                content: `If only specific file extensions should be formatted, add the "${filesMarkerArg}" argument to this command. All following arguments will be treated as file extensions to be formatted. For example, the following command will overwrite files (because ${FormatOperation.Write} is the default operation) only if they have the extension ".md" or ".json": ${packageName} ${CliCommandName.Format} ${filesMarkerArg} md json`,
+            },
+            {
+                title: 'Prettier flags',
+                content: `Any other arguments encountered between the operation command (if provided) and the "${filesMarkerArg}" marker are treated as extra arguments to Prettier and will be passed along.`,
+            },
+        ],
+        examples: [
+            {
+                title: 'checks formatting for files',
+                content: `${packageName} ${CliCommandName.Format} ${FormatOperation.Check}`,
+            },
+            {
+                title: 'checks formatting only for .md files',
+                content: `${packageName} ${CliCommandName.Format} ${FormatOperation.Check} ${filesMarkerArg} md`,
+            },
+            {
+                title: 'checks formatting only for .md and .json files',
+                content: `${packageName} ${CliCommandName.Format} ${FormatOperation.Check} ${filesMarkerArg} md json`,
+            },
+            {
+                title: 'fixes formatting for files',
+                content: `${packageName} ${CliCommandName.Format}
+${packageName} ${CliCommandName.Format} ${FormatOperation.Write}`,
+            },
+            {
+                title: `examples with extra Prettier flags`,
+                content: `${packageName} ${CliCommandName.Format} --ignore-path .prettierignore
+${packageName} ${CliCommandName.Format} ${FormatOperation.Write}  --ignore-path .prettierignore
+${packageName} ${CliCommandName.Format} ${FormatOperation.Write}  --ignore-path .prettierignore ${filesMarkerArg} md json`,
+            },
+        ],
+    },
     configKeys: [
         ConfigKey.Prettier,
         ConfigKey.PrettierIgnore,
@@ -93,9 +104,13 @@ export async function runFormatCommand(inputs: CommandFunctionInput): Promise<Cl
 
     const operationFlag = args.operation === FormatOperation.Check ? '--check' : '--write';
 
-    const prettierCommand = `${prettierPath} --color ${args.prettierFlags.join(
-        ' ',
-    )} \"./**/*.+(${args.fileExtensions.join('|')})\" ${operationFlag}`;
+    const fileExtensions = `\"./**/*.+(${args.fileExtensions.join('|')})\"`;
+
+    const hasNonFlags = args.prettierFlags.some((flag) => !flag.startsWith('-'));
+
+    const prettierCommand = `${prettierPath} --color ${args.prettierFlags.join(' ')} ${
+        hasNonFlags ? '' : fileExtensions
+    } ${operationFlag}`;
 
     const results = await runVirmatorShellCommand(prettierCommand, inputs, {
         stdoutFilter: (stdout) =>
@@ -107,6 +122,7 @@ export async function runFormatCommand(inputs: CommandFunctionInput): Promise<Cl
     });
 
     return {
+        command: prettierCommand,
         success: !results.error,
     };
 }
