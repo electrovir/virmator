@@ -145,7 +145,6 @@ Prettier
 PrettierIgnore
 TsConfig
 GitAttributes
-GitHubActionsPrerelease
 GitHubActionsTaggedRelease
 GitHubActionsTest
 GitIgnore
@@ -164,7 +163,6 @@ Update config files that aren't used in any virmator commands, like GitHub actio
 #### list of possible arguments:
 
 GitAttributes
-GitHubActionsPrerelease
 GitHubActionsTaggedRelease
 GitHubActionsTest
 GitIgnore

@@ -27,7 +27,6 @@ const configFileMap: Readonly<
 > = {
     [ConfigKey.Cspell]: '.cspell.json',
     [ConfigKey.GitAttributes]: '.gitattributes',
-    [ConfigKey.GitHubActionsPrerelease]: join('.github', 'workflows', 'virmator-prerelease.yml'),
     [ConfigKey.GitHubActionsTaggedRelease]: join(
         '.github',
         'workflows',

@@ -1,7 +1,6 @@
 /** These config files are not used by any virmator commands but they are still helpful. */
 export enum BareConfigKey {
     GitAttributes = 'GitAttributes',
-    GitHubActionsPrerelease = 'GitHubActionsPrerelease',
     GitHubActionsTaggedRelease = 'GitHubActionsTaggedRelease',
     GitHubActionsTest = 'GitHubActionsTest',
     GitIgnore = 'GitIgnore',
