@@ -6,7 +6,7 @@ import {virmatorRootDir} from './virmator-repo-paths';
 export async function createNodeModulesSymLinkForTests(dir: string): Promise<string> {
     const symlinkPath = join(dir, 'node_modules');
 
-    await createSymLink(join(virmatorRootDir, 'node_modules'), symlinkPath);
+    await createSymLink(join(virmatorRootDir, 'node_modules'), symlinkPath, true);
     return symlinkPath;
 }
 
