@@ -1,91 +1,33 @@
-import {repoRootDir} from '../../file-paths/repo-paths';
-import {CliCommandName} from '../cli-util/cli-command-name';
-import {CliFlagName, CliFlags, fillInCliFlags} from '../cli-util/cli-flags';
+import {CliCommandName} from '../cli-shared/cli-command-name';
 import {CommandConfigKey} from '../config/config-key';
+import {CommandFunctionInput} from './cli-command-inputs';
 
 export type CliCommandResult = {
     command: string | undefined;
     success: boolean;
 };
 
-function extractRawFlags(
-    commandInput?: PartialCommandFunctionInput | Partial<CommandFunctionInput>,
-): Partial<Readonly<CliFlags>> | undefined {
-    if (!commandInput) {
-        return undefined;
-    } else if ('cliFlags' in commandInput) {
-        return commandInput.cliFlags;
-    } else if ('rawCliFlags' in commandInput) {
-        return commandInput.rawCliFlags;
-    } else {
-        return undefined;
-    }
-}
-
-const defaultCommandFunctionInput: Readonly<
-    Omit<CommandFunctionInput, 'stdoutCallback' | 'stderrCallback'>
-> = {
-    rawArgs: [],
-    cliFlags: fillInCliFlags(),
-    repoDir: repoRootDir,
-};
-
-export function fillInCommandInput(
-    commandInput?: PartialCommandFunctionInput | Partial<CommandFunctionInput>,
-): Omit<CommandFunctionInput, 'stdoutCallback' | 'stderrCallback'> {
-    if (!commandInput) {
-        return defaultCommandFunctionInput;
-    }
-
-    const rawCliFlags = extractRawFlags(commandInput);
-
-    return {
-        rawArgs: commandInput?.rawArgs || defaultCommandFunctionInput.rawArgs,
-        cliFlags: fillInCliFlags(rawCliFlags),
-        repoDir: commandInput.repoDir || defaultCommandFunctionInput.repoDir,
-    };
-}
-
-export type CommandFunctionInput = Readonly<{
-    rawArgs: string[];
-    cliFlags: Required<Readonly<CliFlags>>;
-    repoDir: string;
-    stdoutCallback: (stdout: string) => void;
-    stderrCallback: (stderr: string) => void;
-}>;
-
-export const EmptyOutputCallbacks: Pick<CommandFunctionInput, 'stdoutCallback' | 'stderrCallback'> =
-    {
-        stdoutCallback: () => {},
-        stderrCallback: () => {},
-    };
-
-export type PartialCommandFunctionInput = Omit<Partial<CommandFunctionInput>, 'cliFlags'> & {
-    rawCliFlags?: Partial<Readonly<CliFlags>>;
-};
-
-export type CliHelpSection = {
+export type CliHelpSection = Readonly<{
     title: string;
     content: string;
-};
-export type CliHelpDescription = {
+}>;
+export type CliHelpDescription = Readonly<{
     sections: CliHelpSection[];
     examples: CliHelpSection[];
-};
+}>;
+
+export type CliSubCommandDescriptions = Readonly<Record<string, string>>;
+export type AllowedSubCommands<DescriptionsGeneric extends CliSubCommandDescriptions> =
+    keyof DescriptionsGeneric;
 
 export type CliCommandImplementation = Readonly<{
     commandName: CliCommandName;
-    configKeys?: CommandConfigKey[];
+    configKeys?: Readonly<[CommandConfigKey, ...CommandConfigKey[]]> | undefined;
     description: CliHelpDescription;
     implementation: CommandFunction;
-    configFlagSupport: Readonly<
-        Omit<
-            Record<CliFlagName, boolean>,
-            CliFlagName.Silent | CliFlagName.Help | CliFlagName.ExtendableConfig
-        >
-    >;
+    subCommands?: Readonly<[CliSubCommand, ...CliSubCommand[]]> | undefined;
 }>;
 
-export type CommandFunction = (
+export type CommandFunction<SubCommandDescriptions extends CliSubCommandDescriptions> = (
     input: CommandFunctionInput,
 ) => CliCommandResult | Promise<CliCommandResult>;

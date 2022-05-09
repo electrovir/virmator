@@ -1,26 +1,15 @@
 import {isEnumValue} from 'augment-vir';
 import {CliCommandName} from './cli-command-name';
 
-export enum CliFlagName {
-    Help = '--help',
-    NoWriteConfig = '--no-write-config',
-    Silent = '--silent',
-    ExtendableConfig = '--extendable-config',
-}
-
 export type CliFlags = Record<CliFlagName, boolean>;
 
 export const defaultCliFlags: Readonly<Required<Record<CliFlagName, false>>> = {
     [CliFlagName.Silent]: false,
-    [CliFlagName.NoWriteConfig]: false,
     [CliFlagName.Help]: false,
-    [CliFlagName.ExtendableConfig]: false,
 } as const;
 
 export const flagDescriptions: Record<CliFlagName, string> = {
     [CliFlagName.Silent]: 'Turns off most logging.',
-    [CliFlagName.NoWriteConfig]: `Prevents a command from overwriting its relevant config file (if one exists, which they usually do).`,
-    [CliFlagName.ExtendableConfig]: `Not supported by all commands. Rather than updating the current command's relevant config file directly, commands will write an extendable config file so that the user can extend and override config values.`,
     [CliFlagName.Help]: 'Prints this help message.',
 };
 
@@ -32,9 +21,12 @@ export type ExtractedArguments = {
 };
 
 export function fillInCliFlags(
-    inputFlags?: Readonly<Partial<CliFlags>>,
+    inputFlags: Readonly<Partial<CliFlags>> | undefined = {},
 ): Readonly<Required<CliFlags>> {
-    return {...defaultCliFlags, ...(inputFlags || {})};
+    return {
+        ...defaultCliFlags,
+        ...inputFlags,
+    };
 }
 
 export function extractArguments(args: string[]): Required<ExtractedArguments> {

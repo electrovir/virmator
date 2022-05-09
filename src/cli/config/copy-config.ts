@@ -2,7 +2,7 @@ import {writeFileAndDir} from 'augment-vir/dist/node-only';
 import {existsSync} from 'fs-extra';
 import {join} from 'path';
 import {ConfigFileError} from '../../errors/config-file-error';
-import {CliFlagName} from '../cli-util/cli-flags';
+import {CliFlagName} from '../cli-shared/cli-flags';
 import {ConfigKey} from './config-key';
 import {getRepoConfigFilePath} from './config-paths';
 import {readRepoConfigFile, readUpdatedVirmatorConfigFile} from './config-read';

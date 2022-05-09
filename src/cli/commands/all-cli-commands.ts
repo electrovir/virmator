@@ -1,6 +1,6 @@
 import {getEnumTypedValues, getObjectTypedKeys} from 'augment-vir';
-import {CliCommandName} from '../cli-util/cli-command-name';
-import {CliFlagName, CliFlags, flagDescriptions} from '../cli-util/cli-flags';
+import {CliCommandName} from '../cli-shared/cli-command-name';
+import {CliFlagName, CliFlags, flagDescriptions} from '../cli-shared/cli-flags';
 import {CliCommandImplementation, CliCommandResult, CommandFunctionInput} from './cli-command';
 import {
     combineHelpMessage,

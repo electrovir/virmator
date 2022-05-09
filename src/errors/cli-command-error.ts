@@ -1,5 +1,5 @@
 import {getEnumTypedValues} from 'augment-vir';
-import {CliCommandName} from '../cli/cli-util/cli-command-name';
+import {CliCommandName} from '../cli/cli-shared/cli-command-name';
 
 export class VirmatorCliCommandError extends Error {
     public override readonly name = 'VirmatorCliCommandError';

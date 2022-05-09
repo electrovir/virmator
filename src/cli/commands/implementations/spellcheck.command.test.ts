@@ -1,8 +1,8 @@
 import {printShellCommandOutput} from 'augment-vir/dist/node-only';
 import {join} from 'path';
 import {spellcheckTestPaths} from '../../../file-paths/virmator-test-file-paths';
-import {fillInCliFlags} from '../../cli-util/cli-flags';
-import {AllCommandOutput, getAllCommandOutput} from '../../cli-util/get-all-command-output';
+import {fillInCliFlags} from '../../cli-shared/cli-flags';
+import {AllCommandOutput, getAllCommandOutput} from '../../cli-shared/get-all-command-output';
 import {EmptyOutputCallbacks} from '../cli-command';
 import {runSpellcheckCommand} from './spellcheck.command';
 

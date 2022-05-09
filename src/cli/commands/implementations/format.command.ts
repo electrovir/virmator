@@ -1,9 +1,9 @@
 import {DeepWriteable, isEnumValue} from 'augment-vir';
 import {getNpmBinPath} from '../../../file-paths/virmator-repo-paths';
 import {packageName} from '../../../package-name';
-import {CliCommandName} from '../../cli-util/cli-command-name';
-import {CliFlagName} from '../../cli-util/cli-flags';
-import {runVirmatorShellCommand} from '../../cli-util/shell-command-wrapper';
+import {runVirmatorShellCommand} from '../../cli-command/run-shell-command';
+import {CliCommandName} from '../../cli-shared/cli-command-name';
+import {CliFlagName} from '../../cli-shared/cli-flags';
 import {ConfigKey} from '../../config/config-key';
 import {CliCommandImplementation, CliCommandResult, CommandFunctionInput} from '../cli-command';
 
@@ -113,7 +113,7 @@ export async function runFormatCommand(inputs: CommandFunctionInput): Promise<Cl
     } ${operationFlag}`;
 
     const results = await runVirmatorShellCommand(prettierCommand, inputs, {
-        stdoutFilter: (stdout) =>
+        stdoutTransform: (stdout) =>
             stdout
                 // only relevant when running the check command
                 .replace('Checking formatting...\n', '')

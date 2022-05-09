@@ -1,5 +1,5 @@
 import {getObjectTypedKeys} from 'augment-vir';
-import {defaultCliFlags} from '../cli/cli-util/cli-flags';
+import {defaultCliFlags} from '../cli/cli-shared/cli-flags';
 
 export class CliFlagError extends Error {
     public override readonly name = 'CliFlagError';

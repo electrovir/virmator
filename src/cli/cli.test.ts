@@ -17,9 +17,9 @@ import {
     testFormatPaths,
     testTestPaths,
 } from '../file-paths/virmator-test-file-paths';
-import {CliCommandName} from './cli-util/cli-command-name';
-import {CliFlagName} from './cli-util/cli-flags';
-import {cliErrorMessages, getResultMessage} from './cli-util/cli-messages';
+import {CliCommandName} from './cli-shared/cli-command-name';
+import {CliFlagName} from './cli-shared/cli-flags';
+import {cliErrorMessages, getResultMessage} from './cli-shared/cli-messages';
 import {FormatOperation} from './commands/implementations/format.command';
 import {CommandConfigKey, ConfigKey} from './config/config-key';
 import {getRepoConfigFilePath} from './config/config-paths';

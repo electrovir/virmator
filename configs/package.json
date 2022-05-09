@@ -1,0 +1,17 @@
+{
+    "license": "MIT",
+    "main": "dist/cjs/index.js",
+    "module": "dist/esm/index.js",
+    "types": "dist/types/index.d.ts",
+    "scripts": {
+        "compile": "rm -rf dist && tsc --project tsconfig.json && tsc --project tsconfig.cjs.json && tsc --project tsconfig.esm.json",
+        "docs:update": "",
+        "format": "virmator format write",
+        "prepublishOnly": "npm run compile && npm run test:full",
+        "spellcheck": "virmator spellcheck",
+        "start": "npm install && vite --force --config .virmator/vite/vite.config.ts",
+        "test": "virmator test",
+        "test:full": "npm run test:types && npm test && npm run spellcheck && virmator format check",
+        "test:types": "tsc --noEmit"
+    }
+}

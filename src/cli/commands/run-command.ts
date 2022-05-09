@@ -1,8 +1,8 @@
 import {VirmatorCliCommandError} from '../../errors/cli-command-error';
 import {repoRootDir} from '../../file-paths/repo-paths';
-import {CliCommandName} from '../cli-util/cli-command-name';
-import {CliFlagName, fillInCliFlags} from '../cli-util/cli-flags';
-import {cliErrorMessages} from '../cli-util/cli-messages';
+import {CliCommandName} from '../cli-shared/cli-command-name';
+import {CliFlagName, fillInCliFlags} from '../cli-shared/cli-flags';
+import {cliErrorMessages} from '../cli-shared/cli-messages';
 import {copyConfig} from '../config/copy-config';
 import {isExtendableConfig} from '../config/extendable-config';
 import {allCliCommands, getUnsupportedFlags} from './all-cli-commands';

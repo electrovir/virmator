@@ -1,8 +1,8 @@
 import {getEnumTypedValues, joinWithFinalConjunction} from 'augment-vir';
 import {packageName} from '../../../package-name';
-import {CliCommandName} from '../../cli-util/cli-command-name';
-import {CliFlagName} from '../../cli-util/cli-flags';
-import {updateConfigs} from '../../cli-util/update-configs';
+import {CliCommandName} from '../../cli-shared/cli-command-name';
+import {CliFlagName} from '../../cli-shared/cli-flags';
+import {updateConfigs} from '../../cli-shared/update-configs';
 import {BareConfigKey} from '../../config/config-key';
 import {CliCommandImplementation, CliCommandResult, CommandFunctionInput} from '../cli-command';
 

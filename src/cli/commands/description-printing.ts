@@ -1,6 +1,6 @@
 import {safeMatch} from 'augment-vir';
 import {packageName} from '../../package-name';
-import {Color} from '../cli-util/cli-color';
+import {Color} from '../cli-shared/cli-color';
 import {CliCommandImplementation, CliHelpDescription, CliHelpSection} from './cli-command';
 
 export enum MessageSyntax {

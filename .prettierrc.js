@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 const plugins = [
+    'prettier-plugin-toml',
     'prettier-plugin-sort-json',
     'prettier-plugin-packagejson',
     'prettier-plugin-multiline-arrays',

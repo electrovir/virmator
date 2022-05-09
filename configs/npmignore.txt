@@ -1,0 +1,13 @@
+.*
+*.test.d.ts
+*.test.js
+*.test.ts
+**/*/readme-examples/
+**/*/test/
+coverage/
+graphics/
+index.html
+public/
+src/
+test-files/
+tsconfig*.json

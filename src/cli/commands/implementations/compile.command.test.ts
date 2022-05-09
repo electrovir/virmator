@@ -1,7 +1,7 @@
 import {existsSync} from 'fs';
 import {remove} from 'fs-extra';
 import {testCompilePaths} from '../../../file-paths/virmator-test-file-paths';
-import {CliFlagName, fillInCliFlags} from '../../cli-util/cli-flags';
+import {CliFlagName, fillInCliFlags} from '../../cli-shared/cli-flags';
 import {EmptyOutputCallbacks, fillInCommandInput} from '../cli-command';
 import {runCompileCommand} from './compile.command';
 

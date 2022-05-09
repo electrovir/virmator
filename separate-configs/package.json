@@ -1,9 +1,0 @@
-{
-    "scripts": {
-        "format": "virmator format write",
-        "prepublishOnly": "npm run test:full",
-        "spellcheck": "virmator spellcheck",
-        "test": "virmator test",
-        "test:full": "npm test && npm run spellcheck && virmator format check"
-    }
-}

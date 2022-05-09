@@ -1,6 +1,6 @@
 import {createSymLink} from 'augment-vir/dist/node-only';
 import {join} from 'path';
-import {CliCommandName} from '../cli/cli-util/cli-command-name';
+import {CliCommandName} from '../cli/cli-shared/cli-command-name';
 import {virmatorRootDir} from './virmator-repo-paths';
 
 export async function createNodeModulesSymLinkForTests(dir: string): Promise<string> {

@@ -32,7 +32,7 @@ const configFileMap: Readonly<
         'workflows',
         'virmator-tagged-release.yml',
     ),
-    [ConfigKey.GitHubActionsTest]: join('.github', 'workflows', 'virmator-tests.yml'),
+    [ConfigKey.GitHubActionsTests]: join('.github', 'workflows', 'virmator-tests.yml'),
     [ConfigKey.GitIgnore]: {
         virmator: join(relativeSeparateConfigsDir, 'gitignore.txt'),
         repo: '.gitignore',

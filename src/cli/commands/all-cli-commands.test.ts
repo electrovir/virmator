@@ -1,6 +1,6 @@
 import {repoRootDir} from '../../file-paths/repo-paths';
-import {CliFlagName, fillInCliFlags} from '../cli-util/cli-flags';
-import {fillInCommandInput} from './cli-command';
+import {CliFlagName, fillInCliFlags} from '../cli-shared/cli-flags';
+import {fillInCommandInput} from './cli-command-inputs';
 
 describe(fillInCommandInput.name, () => {
     it('should fills in empty command input', () => {
@@ -12,7 +12,7 @@ describe(fillInCommandInput.name, () => {
     });
 
     it('should preserves rawArgs of command input', () => {
-        expect(fillInCommandInput({rawArgs: ['hello']})).toEqual({
+        expect(fillInCommandInput({filteredArgs: ['hello']})).toEqual({
             cliFlags: fillInCliFlags(),
             rawArgs: ['hello'],
             repoDir: repoRootDir,
@@ -20,7 +20,7 @@ describe(fillInCommandInput.name, () => {
     });
 
     it('should preserves rawCliFlags of command input', () => {
-        expect(fillInCommandInput({rawCliFlags: {[CliFlagName.Help]: true}})).toEqual({
+        expect(fillInCommandInput({cliFlags: {[CliFlagName.Help]: true}})).toEqual({
             cliFlags: fillInCliFlags({[CliFlagName.Help]: true}),
             rawArgs: [],
             repoDir: repoRootDir,
@@ -36,8 +36,8 @@ describe(fillInCommandInput.name, () => {
     it('should preserves everything of command input', () => {
         expect(
             fillInCommandInput({
-                rawCliFlags: {[CliFlagName.Help]: true, [CliFlagName.NoWriteConfig]: true},
-                rawArgs: ['hello'],
+                cliFlags: {[CliFlagName.Help]: true},
+                filteredArgs: ['hello'],
                 repoDir: './neither/here/nor/there',
             }),
         ).toEqual({

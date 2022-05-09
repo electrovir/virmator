@@ -1,11 +1,19 @@
-import {interpolationSafeWindowsPath} from 'augment-vir/dist/node-only';
+import {interpolationSafeWindowsPath} from 'augment-vir/dist/cjs/node-only';
 import {getNpmBinPath} from '../../../file-paths/virmator-repo-paths';
-import {CliCommandName} from '../../cli-util/cli-command-name';
-import {CliFlagName} from '../../cli-util/cli-flags';
-import {runVirmatorShellCommand} from '../../cli-util/shell-command-wrapper';
-import {CliCommandImplementation, CliCommandResult, CommandFunctionInput} from '../cli-command';
+import {runVirmatorShellCommand} from '../../cli-command/run-shell-command';
+import {CliCommandName} from '../../cli-shared/cli-command-name';
+import {CliCommandImplementation, CliCommandResult, CliSubCommand} from '../cli-command';
+import {CommandFunctionInput} from '../cli-command-inputs';
+
+const subCommands: Readonly<[CliSubCommand, ...CliSubCommand[]]> = [
+    {
+        subCommand: '',
+        description: '',
+    },
+] as const;
 
 export const codeInMarkdownCommandImplementation: CliCommandImplementation = {
+    subCommands,
     commandName: CliCommandName.CodeInMarkdown,
     description: {
         sections: [
@@ -34,20 +42,15 @@ export const codeInMarkdownCommandImplementation: CliCommandImplementation = {
         ],
     },
     implementation: runCodeInMarkdownCommand,
-    configFlagSupport: {
-        [CliFlagName.NoWriteConfig]: false,
-    },
 };
-
-const mdCodePath = getNpmBinPath('md-code');
 
 export async function runCodeInMarkdownCommand(
     inputs: CommandFunctionInput,
 ): Promise<CliCommandResult> {
-    const args: string = inputs.rawArgs.length
-        ? interpolationSafeWindowsPath(inputs.rawArgs.join(' '))
+    const args: string = inputs.filteredArgs.length
+        ? interpolationSafeWindowsPath(inputs.filteredArgs.join(' '))
         : `\"./**/*.md\"`;
-    const mdCodeCommand = `${mdCodePath} ${args}`;
+    const mdCodeCommand = `${getNpmBinPath('md-code')} ${args}`;
     const results = await runVirmatorShellCommand(mdCodeCommand, inputs);
 
     return {

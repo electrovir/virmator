@@ -1,4 +1,4 @@
-import {interpolationSafeWindowsPath} from 'augment-vir/dist/node-only';
+import {interpolationSafeWindowsPath} from 'augment-vir/dist/cjs/node-only';
 import {existsSync} from 'fs';
 import {join} from 'path';
 
@@ -15,6 +15,10 @@ export function getNpmBinPath(command: string): string {
     const actualBinPath = existsSync(virmatorBinPath)
         ? virmatorBinPath
         : join(virmatorRootDir, '..', '.bin', command);
+
+    if (!existsSync(actualBinPath)) {
+        throw new Error(`Could not find npm bin path for "${command}"`);
+    }
 
     return interpolationSafeWindowsPath(actualBinPath);
 }

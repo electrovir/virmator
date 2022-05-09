@@ -2,9 +2,9 @@ import {interpolationSafeWindowsPath} from 'augment-vir/dist/node-only';
 import {CommandConfigKey} from '../../../cli/config/config-key';
 import {getRepoConfigFilePath} from '../../../cli/config/config-paths';
 import {getNpmBinPath} from '../../../file-paths/virmator-repo-paths';
-import {CliCommandName} from '../../cli-util/cli-command-name';
-import {CliFlagName} from '../../cli-util/cli-flags';
-import {runVirmatorShellCommand} from '../../cli-util/shell-command-wrapper';
+import {runVirmatorShellCommand} from '../../cli-command/run-shell-command';
+import {CliCommandName} from '../../cli-shared/cli-command-name';
+import {CliFlagName} from '../../cli-shared/cli-flags';
 import {CliCommandImplementation, CliCommandResult, CommandFunctionInput} from '../cli-command';
 
 export const testCommandImplementation: CliCommandImplementation = {

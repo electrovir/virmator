@@ -2,9 +2,9 @@
 
 import {VirmatorCliCommandError} from '../errors/cli-command-error';
 import {CliFlagError} from '../errors/cli-flag-error';
-import {CliCommandName} from './cli-util/cli-command-name';
-import {CliFlagName, extractArguments} from './cli-util/cli-flags';
-import {cliErrorMessages, getResultMessage} from './cli-util/cli-messages';
+import {CliCommandName} from './cli-shared/cli-command-name';
+import {CliFlagName, extractArguments} from './cli-shared/cli-flags';
+import {cliErrorMessages, getResultMessage} from './cli-shared/cli-messages';
 import {runCommand} from './commands/run-command';
 
 export async function cli(rawArgs: string[]) {
