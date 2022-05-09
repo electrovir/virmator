@@ -1,15 +1,17 @@
 #!/usr/bin/env node
 
+import {extractErrorMessage} from 'augment-vir';
 import {VirmatorCliCommandError} from '../errors/cli-command-error';
 import {CliFlagError} from '../errors/cli-flag-error';
-import {CliCommandName} from './cli-shared/cli-command-name';
-import {CliFlagName, extractArguments} from './cli-shared/cli-flags';
+import {CliCommandName} from './cli-command/cli-command-name';
+import {CliFlagName} from './cli-flags/cli-flag-name';
 import {cliErrorMessages, getResultMessage} from './cli-shared/cli-messages';
-import {runCommand} from './commands/run-command';
+import {parseArguments} from './parse-arguments';
+import {runCommand} from './run-cli-command';
 
 export async function cli(rawArgs: string[]) {
     try {
-        const {flags, invalidFlags, args, command} = extractArguments(rawArgs);
+        const {flags, invalidFlags, args, command} = parseArguments(rawArgs);
 
         if (invalidFlags.length) {
             throw new CliFlagError(invalidFlags);
@@ -20,28 +22,29 @@ export async function cli(rawArgs: string[]) {
             throw new VirmatorCliCommandError(cliErrorMessages.missingCliCommand);
         }
 
-        if (cliCommand !== CliCommandName.Help && !flags[CliFlagName.Silent]) {
+        const shouldLogStatus = cliCommand !== CliCommandName.Help && !flags[CliFlagName.Silent];
+
+        if (shouldLogStatus) {
             console.info(`running ${cliCommand}...`);
         }
         const commandResult = await runCommand(cliCommand, {
-            rawArgs: args,
-            rawCliFlags: flags,
+            otherArgs: args,
+            cliFlags: flags,
         });
 
-        if (cliCommand !== CliCommandName.Help && !flags[CliFlagName.Silent]) {
+        if (shouldLogStatus) {
             console.info(getResultMessage(cliCommand, commandResult.success));
         }
 
         process.exit(commandResult.success ? 0 : 1);
     } catch (error) {
-        console.error(String(error));
+        console.error(extractErrorMessage(error));
         process.exit(1);
     }
 }
 
 // To run the cli from within this repo itself, use the following bash command:
 // node dist/cli/cli.js
-// if you haven't compiled you'll also need to run npm run compile beforehand (and after all changes)
 if (require.main === module) {
     cli(process.argv.slice(2));
 } else {

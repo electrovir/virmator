@@ -1,4 +1,4 @@
-import {Color} from './cli-color';
+import {Color} from '../cli-color';
 import {CliCommandName} from './cli-command-name';
 import {CliFlagName} from './cli-flags';
 

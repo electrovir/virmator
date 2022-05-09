@@ -1,6 +1,6 @@
 import {printShellCommandOutput, runShellCommand} from 'augment-vir/dist/node-only';
 import {readFile, writeFile} from 'fs/promises';
-import {Color} from '../cli/cli-shared/cli-color';
+import {Color} from '../cli/cli-color';
 import {generateHelpMessage} from '../cli/commands/all-cli-commands';
 import {MessageSyntax} from '../cli/commands/description-printing';
 import {virmatorReadme} from '../file-paths/virmator-test-file-paths';

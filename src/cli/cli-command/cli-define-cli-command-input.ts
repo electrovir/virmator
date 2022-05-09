@@ -1,14 +1,10 @@
-import {CliCommandName} from '../cli-shared/cli-command-name';
 import {CommandConfigKey} from '../config/config-key';
 import {CliHelpDescription} from './cli-command-help';
+import {CliCommandName} from './cli-command-name';
 
-export type DefineCliCommandInputs<
-    SubCommandDescriptionsGeneric extends Readonly<Record<string, string>> = Readonly<
-        Record<string, string>
-    >,
-> = Readonly<{
+export type DefineCliCommandInputs = Readonly<{
     commandName: CliCommandName;
     supportedConfigKeys: Readonly<CommandConfigKey[]>;
-    subCommandDescriptions: SubCommandDescriptionsGeneric;
+    subCommandDescriptions: Readonly<Record<string, string>>;
     commandDescription: CliHelpDescription;
 }>;

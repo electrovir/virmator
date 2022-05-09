@@ -2,8 +2,11 @@ import {getObjectTypedKeys} from 'augment-vir';
 import {DefineCliCommandInputs} from './cli-define-cli-command-input';
 import {CliCommandExecutor} from './cli-executor';
 
-export type CliCommandDefinition<InputsGeneric extends DefineCliCommandInputs> = InputsGeneric & {
+export type CliCommandDefinition<
+    InputsGeneric extends DefineCliCommandInputs = DefineCliCommandInputs,
+> = InputsGeneric & {
     availableSubCommands: (keyof InputsGeneric['subCommandDescriptions'])[];
+    executor: CliCommandExecutor<InputsGeneric>;
 };
 
 export function defineCliCommand<InputsGeneric extends DefineCliCommandInputs>(
@@ -16,5 +19,6 @@ export function defineCliCommand<InputsGeneric extends DefineCliCommandInputs>(
     return {
         ...inputs,
         availableSubCommands,
+        executor,
     };
 }

@@ -31,11 +31,9 @@ const ifUndesiredMessage = `If this is undesired, use the ${CliFlagName.NoWriteC
 
 export async function copyConfig({
     configKey,
-    forceExtendableConfig,
     repoDir,
 }: {
     configKey: ConfigKey;
-    forceExtendableConfig: boolean;
     repoDir: string;
 }): Promise<{logs: CopyConfigLog[]; outputFilePath: string; didWrite: boolean}> {
     const logs: CopyConfigLog[] = [];

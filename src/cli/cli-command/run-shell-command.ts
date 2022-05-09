@@ -1,5 +1,5 @@
 import {runShellCommand, ShellOutput} from 'augment-vir/dist/cjs/node-only';
-import {CliLogging, LogTransform, LogTransforms, noTransform} from './cli-logging';
+import {CliLogging, LogTransform, LogTransforms, noLogTransforms} from './cli-logging';
 
 function logWrapper(
     handleLog: (input: string) => void,
@@ -25,8 +25,8 @@ export async function runVirmatorShellCommand(
 ): Promise<ShellOutput> {
     const shellResults = await runShellCommand(command, {
         cwd,
-        stdoutCallback: logWrapper(logging.stdout, logTransforms?.stdout ?? noTransform),
-        stderrCallback: logWrapper(logging.stderr, logTransforms?.stderr ?? noTransform),
+        stdoutCallback: logWrapper(logging.stdout, logTransforms?.stdout ?? noLogTransforms),
+        stderrCallback: logWrapper(logging.stderr, logTransforms?.stderr ?? noLogTransforms),
     });
 
     return shellResults;

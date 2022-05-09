@@ -5,7 +5,7 @@ import {defineCliCommand} from '../cli-command/define-cli-command';
 import {runVirmatorShellCommand} from '../cli-command/run-shell-command';
 import {CliCommandResult} from '../commands/cli-command';
 
-export const codeInMarkdownCommand = defineCliCommand(
+export const codeInMarkdownCommandDefinition = defineCliCommand(
     {
         commandName: CliCommandName.CodeInMarkdown,
         commandDescription: {
@@ -32,5 +32,3 @@ export const codeInMarkdownCommand = defineCliCommand(
         };
     },
 );
-
-codeInMarkdownCommand.availableSubCommands;
