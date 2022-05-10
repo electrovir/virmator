@@ -1,7 +1,8 @@
-import {safeMatch} from 'augment-vir';
+import {getObjectTypedKeys, safeMatch} from 'augment-vir';
 import {packageName} from '../../package-name';
 import {Color} from '../cli-color';
-import {CliCommandImplementation, CliHelpDescription, CliHelpSection} from './cli-command';
+import {CliCommandDescription, CliHelpSection} from './cli-command-help';
+import {CliCommandDefinition} from './define-cli-command';
 
 export enum MessageSyntax {
     Bash = 'bash',
@@ -70,17 +71,35 @@ export function flagToHelpString(
 }
 
 export function commandToHelpString(
-    command: CliCommandImplementation,
+    commandDefinition: CliCommandDefinition,
     syntax: MessageSyntax,
 ): string {
     const format = (key: keyof typeof formatting) => formatWithSyntax(key, syntax);
 
-    const title = `${indent(1, syntax)}${format('h3')}${command.commandName}${format(
+    const title = `${indent(1, syntax)}${format('h3')}${commandDefinition.commandName}${format(
         'reset',
     )}${format('colon')}`;
-    const description = commandDescriptionToMessage(command.description, syntax);
+    const description = commandDescriptionToMessage(commandDefinition.commandDescription, syntax);
+    const subCommandDescriptions = subCommandDescriptionsToMessage(
+        commandDefinition.subCommandDescriptions,
+        syntax,
+    );
 
-    return `${title}\n${description}\n`;
+    return `${title}\n${subCommandDescriptions}\n${description}\n`;
+}
+
+function subCommandDescriptionsToMessage(
+    subCommandDescriptions: Record<string, string>,
+    syntax: MessageSyntax,
+): string {
+    return getObjectTypedKeys(subCommandDescriptions).reduce((accum, currentKey) => {
+        const keyDescription = subCommandDescriptions[currentKey];
+        const fullDescription = `${currentKey}${formatWithSyntax('colon', syntax)}\n${indent(
+            2,
+            syntax,
+        )}${keyDescription}`;
+        return accum + fullDescription;
+    }, '');
 }
 
 function indent(input: number, syntax: MessageSyntax): string {
@@ -114,7 +133,7 @@ function sectionToString(
 }
 
 function commandDescriptionToMessage(
-    description: CliHelpDescription,
+    description: CliCommandDescription,
     syntax: MessageSyntax,
 ): string {
     const format = (key: keyof typeof formatting) => formatWithSyntax(key, syntax);

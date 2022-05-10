@@ -15,3 +15,8 @@ export function fillInCliFlagValues(
         ...inputFlags,
     };
 }
+
+export const cliFlagDescriptions: Record<CliFlagName, string> = {
+    [CliFlagName.Silent]: 'Turns off most logging.',
+    [CliFlagName.Help]: 'Prints this help message.',
+};

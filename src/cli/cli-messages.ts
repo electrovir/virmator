@@ -1,6 +1,6 @@
-import {Color} from '../cli-color';
-import {CliCommandName} from './cli-command-name';
-import {CliFlagName} from './cli-flags';
+import {Color} from './cli-color';
+import {CliCommandName} from './cli-command/cli-command-name';
+import {CliFlagName} from './cli-flags/cli-flag-name';
 
 export const cliErrorMessages = {
     missingCliCommand: `Missing a command for virmator. Run "virmator help" for details.`,

@@ -1,40 +1,41 @@
-import {getNpmBinPath} from '../../../file-paths/virmator-repo-paths';
-import {runVirmatorShellCommand} from '../../cli-command/run-shell-command';
-import {CliCommandName} from '../../cli-shared/cli-command-name';
-import {CliFlagName} from '../../cli-shared/cli-flags';
-import {ConfigKey} from '../../config/config-key';
-import {CliCommandImplementation, CliCommandResult, CommandFunctionInput} from '../cli-command';
+export {};
+// import {getNpmBinPath} from '../../../file-paths/virmator-repo-paths';
+// import {runVirmatorShellCommand} from '../../cli-command/run-shell-command';
+// import {CliCommandName} from '../../cli-shared/cli-command-name';
+// import {CliFlagName} from '../../cli-shared/cli-flags';
+// import {ConfigKey} from '../../config/config-key';
+// import {CliCommandImplementation, CliCommandResult, CommandFunctionInput} from '../cli-command';
 
-export const spellcheckCommandImplementation: CliCommandImplementation = {
-    commandName: CliCommandName.SpellCheck,
-    description: {
-        sections: [
-            {
-                title: '',
-                content: `Spellcheck code with cspell. Any extra arguments are passed directly to cspell.`,
-            },
-        ],
-        examples: [],
-    },
-    implementation: runSpellcheckCommand,
-    configKeys: [ConfigKey.Cspell],
-    configFlagSupport: {
-        [CliFlagName.NoWriteConfig]: true,
-    },
-};
+// export const spellcheckCommandImplementation: CliCommandImplementation = {
+//     commandName: CliCommandName.SpellCheck,
+//     description: {
+//         sections: [
+//             {
+//                 title: '',
+//                 content: `Spellcheck code with cspell. Any extra arguments are passed directly to cspell.`,
+//             },
+//         ],
+//         examples: [],
+//     },
+//     implementation: runSpellcheckCommand,
+//     configKeys: [ConfigKey.Cspell],
+//     configFlagSupport: {
+//         [CliFlagName.NoWriteConfig]: true,
+//     },
+// };
 
-const cSpellPath = getNpmBinPath('cspell');
+// const cSpellPath = getNpmBinPath('cspell');
 
-export async function runSpellcheckCommand(
-    inputs: CommandFunctionInput,
-): Promise<CliCommandResult> {
-    const spellcheckCommand = `${cSpellPath} --color "{*,.*,**/{.*,*}/**/{.*,*}}" ${inputs.rawArgs.join(
-        ' ',
-    )}`;
-    const results = await runVirmatorShellCommand(spellcheckCommand, inputs);
+// export async function runSpellcheckCommand(
+//     inputs: CommandFunctionInput,
+// ): Promise<CliCommandResult> {
+//     const spellcheckCommand = `${cSpellPath} --color "{*,.*,**/{.*,*}/**/{.*,*}}" ${inputs.rawArgs.join(
+//         ' ',
+//     )}`;
+//     const results = await runVirmatorShellCommand(spellcheckCommand, inputs);
 
-    return {
-        command: spellcheckCommand,
-        success: !results.error,
-    };
-}
+//     return {
+//         command: spellcheckCommand,
+//         success: !results.error,
+//     };
+// }

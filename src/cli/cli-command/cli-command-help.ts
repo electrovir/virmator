@@ -3,7 +3,7 @@ export type CliHelpSection = Readonly<{
     content: string;
 }>;
 
-export type CliHelpDescription = Readonly<{
+export type CliCommandDescription = Readonly<{
     sections: CliHelpSection[];
     examples: CliHelpSection[];
 }>;

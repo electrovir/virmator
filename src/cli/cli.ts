@@ -5,7 +5,7 @@ import {VirmatorCliCommandError} from '../errors/cli-command-error';
 import {CliFlagError} from '../errors/cli-flag-error';
 import {CliCommandName} from './cli-command/cli-command-name';
 import {CliFlagName} from './cli-flags/cli-flag-name';
-import {cliErrorMessages, getResultMessage} from './cli-shared/cli-messages';
+import {cliErrorMessages, getResultMessage} from './cli-messages';
 import {parseArguments} from './parse-arguments';
 import {runCommand} from './run-cli-command';
 

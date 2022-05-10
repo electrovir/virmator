@@ -1,6 +1,6 @@
-import {createSymLink} from 'augment-vir/dist/node-only';
+import {createSymLink} from 'augment-vir/dist/cjs/node-only';
 import {join} from 'path';
-import {CliCommandName} from '../cli/cli-shared/cli-command-name';
+import {CliCommandName} from '../cli/cli-command/cli-command-name';
 import {virmatorRootDir} from './virmator-repo-paths';
 
 export async function createNodeModulesSymLinkForTests(dir: string): Promise<string> {
@@ -15,6 +15,12 @@ const testRepos = join(virmatorRootDir, 'test-files');
 export function getCommandTestRepoDir(command: CliCommandName) {
     return join(testRepos, command);
 }
+
+export const testCodeInMarkdownDirPath = getCommandTestRepoDir(CliCommandName.CodeInMarkdown);
+export const testCodeInMarkdownPaths = {
+    fixedReadme: join(testCodeInMarkdownDirPath, 'README-fixed.md'),
+    brokenReadme: join(testCodeInMarkdownDirPath, 'README-broken.md'),
+};
 
 const formatTestRepos = getCommandTestRepoDir(CliCommandName.Format);
 const invalidFormatRepo = join(formatTestRepos, 'invalid-format-repo');
@@ -50,16 +56,6 @@ export const spellcheckTestPaths = {
     validRepo: join(spellcheckTestRepos, 'valid-spellcheck-repo'),
     invalidRepo: join(spellcheckTestRepos, 'invalid-spellcheck-repo'),
     hiddenStuffRepo: join(spellcheckTestRepos, 'hidden-stuff-spellcheck-repo'),
-};
-
-const updateBareConfigsTestRepos = getCommandTestRepoDir(CliCommandName.UpdateBareConfigs);
-export const updateBareConfigsTestPaths = {
-    emptyRepo: join(updateBareConfigsTestRepos, 'empty-update-bare-configs-repo'),
-};
-
-const updateAllConfigsTestRepos = getCommandTestRepoDir(CliCommandName.UpdateAllConfigs);
-export const updateAllConfigsTestPaths = {
-    fullPackageJsonRepo: join(updateAllConfigsTestRepos, 'full-package-json-repo'),
 };
 
 export const virmatorReadme = join(virmatorRootDir, 'README.md');

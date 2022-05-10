@@ -1,8 +1,7 @@
-import {writeFileAndDir} from 'augment-vir/dist/node-only';
+import {writeFileAndDir} from 'augment-vir/dist/cjs/node-only';
 import {existsSync} from 'fs-extra';
 import {join} from 'path';
 import {ConfigFileError} from '../../errors/config-file-error';
-import {CliFlagName} from '../cli-shared/cli-flags';
 import {ConfigKey} from './config-key';
 import {getRepoConfigFilePath} from './config-paths';
 import {readRepoConfigFile, readUpdatedVirmatorConfigFile} from './config-read';
@@ -27,8 +26,6 @@ async function isConfigFileExtending(configKey: ConfigKey, repoDir: string): Pro
     return isConfigExtending(configKey, fileContents);
 }
 
-const ifUndesiredMessage = `If this is undesired, use the ${CliFlagName.NoWriteConfig} flag to prevent config file updates.`;
-
 export async function copyConfig({
     configKey,
     repoDir,
@@ -45,14 +42,12 @@ export async function copyConfig({
 
     const repoConfigPath = join(repoDir, getRepoConfigFilePath(configKey, false));
     const repoConfigExists = existsSync(repoConfigPath);
-    const shouldExtend =
-        (repoConfigExists && (await isConfigFileExtending(configKey, repoDir))) ||
-        forceExtendableConfig;
+    const shouldExtend = true;
 
     if (!repoConfigExists) {
         logs.push({
             stderr: true,
-            log: `Config file not found, creating new file: ${repoConfigPath}\n${ifUndesiredMessage}`,
+            log: `Config file not found, creating new file: ${repoConfigPath}`,
         });
     }
 
@@ -78,7 +73,7 @@ export async function copyConfig({
                 // only write when we need to update the file
                 logs.push({
                     stderr: false,
-                    log: `Updating ${repoExtendableConfigPath}\n${ifUndesiredMessage}`,
+                    log: `Updating ${repoExtendableConfigPath}\n`,
                 });
                 shouldWriteConfig = true;
             } else {
