@@ -16,6 +16,7 @@ export type CliCommandExecutor<InputsGeneric extends DefineCliCommandInputs> = (
 ) => Promise<CliCommandExecutorOutput> | CliCommandExecutorOutput;
 
 export type CliCommandExecutorOutput = {
+    fullExecutedCommand: string;
     success: boolean;
 };
 

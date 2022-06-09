@@ -1,216 +1,149 @@
-import {ArrayElement} from 'augment-vir';
-import {interpolationSafeWindowsPath, runShellCommand} from 'augment-vir/dist/cjs/node-only';
-import {assert} from 'chai';
-import {describe, it} from 'mocha';
-import {join} from 'path';
-import {assertInstanceOf} from '../augments/test';
-import {virmatorDistDir} from '../file-paths/virmator-repo-paths';
-import {testCodeInMarkdownDirPath} from '../file-paths/virmator-test-file-paths';
-import {allCliCommandDefinitions} from './all-cli-command-definitions';
-import {CliCommandName} from './cli-command/cli-command-name';
-
-const cliPath = join(virmatorDistDir, 'cli', 'cli.js');
-
-describe(__filename, () => {
-    type RunCliCommandInputs<T extends CliCommandName> = {
-        commandName: T;
-        subCommand?:
-            | ArrayElement<typeof allCliCommandDefinitions[T]['availableSubCommands']>
-            | undefined;
-        extraArgs?: string[];
-        cwd: string;
-    };
-
-    async function runCliCommand<T extends CliCommandName>(inputs: RunCliCommandInputs<T>) {
-        const command = interpolationSafeWindowsPath(cliPath);
-        const subCommand = inputs.subCommand ?? '';
-        const extraArgs = inputs.extraArgs?.join(' ') ?? '';
-        const commandString = `node ${command} ${subCommand} ${extraArgs}`;
-
-        const results = await runShellCommand(commandString, {cwd: inputs.cwd});
-
-        return results;
-    }
-
-    // function testCli(inputs: TestCliInput) {
-    //     const expectedOutput: {
-    //         stdout: string | boolean | undefined;
-    //         stderr: string | boolean | undefined;
-    //     } = {
-    //         stderr: inputs.expect.stderr instanceof RegExp ? true : inputs.expect.stderr,
-    //         stdout: inputs.expect.stdout instanceof RegExp ? true : inputs.expect.stdout,
-    //     };
-
-    //     it(inputs.description, async () => {
-    //         const results = await runShellCommand(
-    //             `node ${interpolationSafeWindowsPath(cliPath)} ${inputs.args.join(' ')}`,
-    //             {cwd: inputs.cwd},
-    //         );
-
-    //         if (inputs.debug) {
-    //             printShellCommandOutput(results);
-    //         }
-
-    //         const cleanText: (input: string) => string = inputs.stripColor
-    //             ? stripColor
-    //             : (input: string) => input;
-
-    //         const rawOutput = {
-    //             stdout: cleanText(results.stdout.trim()) || undefined,
-    //             stderr: cleanText(results.stderr.trim()) || undefined,
-    //         };
-
-    //         const output = getObjectTypedKeys(rawOutput).reduce((accum, key) => {
-    //             const value = rawOutput[key];
-    //             const expectValue = inputs.expect[key];
-
-    //             accum[key] = value;
-    //             if (expectValue instanceof RegExp) {
-    //                 accum[key] = !!expectValue.exec(String(value));
-    //             }
-    //             return accum;
-    //         }, {} as {stdout: string | boolean | undefined; stderr: string | boolean | undefined});
-
-    //         const cleanupResult = inputs.cleanup && (await inputs.cleanup());
-
-    //         assert.isUndefined(cleanupResult);
-
-    //         try {
-    //             assert.deepEqual(output, expectedOutput);
-    //         } catch (error) {
-    //             console.error({rawOutput});
-    //             throw error;
-    //         }
-    //     });
-    // }
-
-    describe(CliCommandName.CodeInMarkdown, () => {
-        it('should fail when checking broken file', async () => {
-            const results = await runCliCommand({
-                commandName: CliCommandName.CodeInMarkdown,
-                subCommand: 'check',
-                cwd: testCodeInMarkdownDirPath,
-            });
-
-            assertInstanceOf(results.error, Error);
-            assert.isDefined(results.error.message);
-        });
-    });
-
-    // testCli({
-    //     args: [],
-    //     description: 'fails when no commands are given',
-    //     expect: {stderr: String(new VirmatorCliCommandError(cliErrorMessages.missingCliCommand))},
-    // });
-
-    // const invalidCommand = 'eat-pie';
-
-    // testCli({
-    //     args: [invalidCommand],
-    //     description: 'fails when invalid commands are given',
-    //     expect: {
-    //         stderr: String(new VirmatorCliCommandError(cliErrorMessages.missingCliCommand)),
-    //     },
-    // });
-
-    // testCli({
-    //     args: [
-    //         CliCommandName.Format,
-    //         FormatOperation.Check,
-    //     ],
-    //     description: 'runs format',
-    //     expect: {
-    //         stdout: `running format...\n${getResultMessage(CliCommandName.Format, true)}`,
-    //     },
-    //     cwd: testFormatPaths.validRepo,
-    // });
-
-    // testCli({
-    //     args: [CliCommandName.Test],
-    //     description: 'runs test',
-    //     stripColor: true,
-    //     expect: {
-    //         stdout: /test succeeded\./,
-    //         stderr: /Tests:\s+1 passed, 1 total\n/,
-    //     },
-    //     cwd: testTestPaths.validRepo,
-    //     cleanup: async () => {
-    //         const setupFile = join(
-    //             testTestPaths.validRepo,
-    //             getRepoConfigFilePath(CommandConfigKey.JestSetup, false),
-    //         );
-    //         const configFile = join(
-    //             testTestPaths.validRepo,
-    //             getRepoConfigFilePath(CommandConfigKey.JestConfig, false),
-    //         );
-    //         const files = [
-    //             configFile,
-    //             setupFile,
-    //         ];
-    //         files.forEach((file) => {
-    //             expect(existsSync(file)).toBe(true);
-    //         });
-
-    //         await Promise.all(
-    //             files.map(async (file) => {
-    //                 return remove(file);
-    //             }),
-    //         );
-
-    //         await remove(dirname(configFile));
-
-    //         files.forEach((file) => {
-    //             expect(existsSync(file)).toBe(false);
-    //         });
-
-    //         expect(existsSync(dirname(configFile))).toBe(false);
-    //     },
-    // });
-
-    // testCli({
-    //     args: [
-    //         CliFlagName.NoWriteConfig,
-    //         CliFlagName.Silent,
-    //         CliCommandName.Format,
-    //         FormatOperation.Check,
-    //     ],
-    //     description: 'runs silent format',
-    //     expect: {},
-    //     cwd: testFormatPaths.validRepo,
-    // });
-
-    // testCli({
-    //     args: [
-    //         CliFlagName.NoWriteConfig,
-    //         CliCommandName.Compile,
-    //     ],
-    //     description: 'runs compile',
-    //     expect: {
-    //         stdout: `running compile...\n${getResultMessage(CliCommandName.Compile, true)}`,
-    //     },
-    //     cwd: testCompilePaths.validRepo,
-    //     cleanup: async () => {
-    //         if (!existsSync(testCompilePaths.compiledValidSourceFile)) {
-    //             return `compile command didn't actually compile`;
-    //         }
-    //         await remove(testCompilePaths.compiledValidSourceFile);
-    //         if (existsSync(testCompilePaths.compiledValidSourceFile)) {
-    //             return `compile command test cleanup didn't remove compiled file`;
-    //         }
-
-    //         return;
-    //     },
-    // });
-
-    // testCli({
-    //     args: [CliCommandName.Help],
-    //     description: 'runs help',
-    //     stripColor: true,
-    //     expect: {
-    //         stdout: /^virmator usage:/,
-    //     },
-    // });
-});
+export {};
+// describe(__filename, () => {
+// function testCli(inputs: TestCliInput) {
+//     const expectedOutput: {
+//         stdout: string | boolean | undefined;
+//         stderr: string | boolean | undefined;
+//     } = {
+//         stderr: inputs.expect.stderr instanceof RegExp ? true : inputs.expect.stderr,
+//         stdout: inputs.expect.stdout instanceof RegExp ? true : inputs.expect.stdout,
+//     };
+//     it(inputs.description, async () => {
+//         const results = await runShellCommand(
+//             `node ${interpolationSafeWindowsPath(cliPath)} ${inputs.args.join(' ')}`,
+//             {cwd: inputs.cwd},
+//         );
+//         if (inputs.debug) {
+//             printShellCommandOutput(results);
+//         }
+//         const cleanText: (input: string) => string = inputs.stripColor
+//             ? stripColor
+//             : (input: string) => input;
+//         const rawOutput = {
+//             stdout: cleanText(results.stdout.trim()) || undefined,
+//             stderr: cleanText(results.stderr.trim()) || undefined,
+//         };
+//         const output = getObjectTypedKeys(rawOutput).reduce((accum, key) => {
+//             const value = rawOutput[key];
+//             const expectValue = inputs.expect[key];
+//             accum[key] = value;
+//             if (expectValue instanceof RegExp) {
+//                 accum[key] = !!expectValue.exec(String(value));
+//             }
+//             return accum;
+//         }, {} as {stdout: string | boolean | undefined; stderr: string | boolean | undefined});
+//         const cleanupResult = inputs.cleanup && (await inputs.cleanup());
+//         assert.isUndefined(cleanupResult);
+//         try {
+//             assert.deepEqual(output, expectedOutput);
+//         } catch (error) {
+//             console.error({rawOutput});
+//             throw error;
+//         }
+//     });
+// }
+// testCli({
+//     args: [],
+//     description: 'fails when no commands are given',
+//     expect: {stderr: String(new VirmatorCliCommandError(cliErrorMessages.missingCliCommand))},
+// });
+// const invalidCommand = 'eat-pie';
+// testCli({
+//     args: [invalidCommand],
+//     description: 'fails when invalid commands are given',
+//     expect: {
+//         stderr: String(new VirmatorCliCommandError(cliErrorMessages.missingCliCommand)),
+//     },
+// });
+// testCli({
+//     args: [
+//         CliCommandName.Format,
+//         FormatOperation.Check,
+//     ],
+//     description: 'runs format',
+//     expect: {
+//         stdout: `running format...\n${getResultMessage(CliCommandName.Format, true)}`,
+//     },
+//     cwd: testFormatPaths.validRepo,
+// });
+// testCli({
+//     args: [CliCommandName.Test],
+//     description: 'runs test',
+//     stripColor: true,
+//     expect: {
+//         stdout: /test succeeded\./,
+//         stderr: /Tests:\s+1 passed, 1 total\n/,
+//     },
+//     cwd: testTestPaths.validRepo,
+//     cleanup: async () => {
+//         const setupFile = join(
+//             testTestPaths.validRepo,
+//             getRepoConfigFilePath(CommandConfigKey.JestSetup, false),
+//         );
+//         const configFile = join(
+//             testTestPaths.validRepo,
+//             getRepoConfigFilePath(CommandConfigKey.JestConfig, false),
+//         );
+//         const files = [
+//             configFile,
+//             setupFile,
+//         ];
+//         files.forEach((file) => {
+//             expect(existsSync(file)).toBe(true);
+//         });
+//         await Promise.all(
+//             files.map(async (file) => {
+//                 return remove(file);
+//             }),
+//         );
+//         await remove(dirname(configFile));
+//         files.forEach((file) => {
+//             expect(existsSync(file)).toBe(false);
+//         });
+//         expect(existsSync(dirname(configFile))).toBe(false);
+//     },
+// });
+// testCli({
+//     args: [
+//         CliFlagName.NoWriteConfig,
+//         CliFlagName.Silent,
+//         CliCommandName.Format,
+//         FormatOperation.Check,
+//     ],
+//     description: 'runs silent format',
+//     expect: {},
+//     cwd: testFormatPaths.validRepo,
+// });
+// testCli({
+//     args: [
+//         CliFlagName.NoWriteConfig,
+//         CliCommandName.Compile,
+//     ],
+//     description: 'runs compile',
+//     expect: {
+//         stdout: `running compile...\n${getResultMessage(CliCommandName.Compile, true)}`,
+//     },
+//     cwd: testCompilePaths.validRepo,
+//     cleanup: async () => {
+//         if (!existsSync(testCompilePaths.compiledValidSourceFile)) {
+//             return `compile command didn't actually compile`;
+//         }
+//         await remove(testCompilePaths.compiledValidSourceFile);
+//         if (existsSync(testCompilePaths.compiledValidSourceFile)) {
+//             return `compile command test cleanup didn't remove compiled file`;
+//         }
+//         return;
+//     },
+// });
+// testCli({
+//     args: [CliCommandName.Help],
+//     description: 'runs help',
+//     stripColor: true,
+//     expect: {
+//         stdout: /^virmator usage:/,
+//     },
+// });
+// });
 
 // describe('config file creation', () => {
 //     async function checkConfigs(

@@ -43,9 +43,10 @@ async function main(args: string[]) {
         await writeFile(virmatorReadme, originalReadme);
 
         if (wasReadmeChanged) {
-            throw new Error(
-                `${Color.Bold}${Color.Fail}README usage message is not up to date.${Color.Reset}`,
+            console.log(
+                `${Color.Bold}${Color.Fail}README usage message is not up to date.${Color.Reset}\nRun ${Color.Info}npm run readme:update${Color.Reset} to update.\n`,
             );
+            throw new Error(`README not up to date.`);
         }
     }
 }

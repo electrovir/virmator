@@ -35,7 +35,7 @@
         "readme:check": "npm run compile && ts-node -r tsconfig-paths/register src/scripts/save-help-message.ts check && md-code --check README.md",
         "readme:update": "npm run compile && ts-node -r tsconfig-paths/register src/scripts/save-help-message.ts && md-code README.md",
         "spellcheck": "cspell \"{*,.*,**/{.*,*}/**/{.*,*}}\" --exclude \"test-files/spellcheck/invalid-spellcheck-repo/**/*\" --exclude \"extender-configs\"",
-        "test": "npm install && npm run compile && mocha --config ./.mocharc.js",
+        "test": "npm install && npm run compile && mocha --config .mocharc.js",
         "test:full": "npm run test && npm run spellcheck -- --no-progress && npm run format:check && npm run readme:check",
         "test:help": "ts-node -r tsconfig-paths/register src/cli/cli.ts --help"
     },
@@ -47,7 +47,7 @@
         "chai": "4.3.6",
         "cspell": "5.20.0",
         "fs-extra": "10.1.0",
-        "markdown-code-example-inserter": "0.1.7",
+        "markdown-code-example-inserter": "0.1.9",
         "mocha": "10.0.0",
         "prettier": "2.6.2",
         "prettier-plugin-jsdoc": "0.3.38",

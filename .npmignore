@@ -8,3 +8,4 @@ src/
 dist/scripts/
 dist/tests/
 test-files/
+*.test-helper.ts

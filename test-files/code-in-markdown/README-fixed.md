@@ -4,8 +4,8 @@ There should be some code below here:
 
 <!-- example-link: src/readme-examples/example-file.ts -->
 
-```Typescript
-import {doTheThing} from '..';
+```TypeScript
+import {doTheThing} from 'test-code-in-markdown';
 
 function main() {
     doTheThing();
@@ -19,8 +19,8 @@ More examples:
 -   stuff:
     <!-- example-link: src/readme-examples/example-file.ts -->
 
-    ```Typescript
-    import {doTheThing} from '..';
+    ```TypeScript
+    import {doTheThing} from 'test-code-in-markdown';
 
     function main() {
         doTheThing();

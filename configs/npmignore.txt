@@ -11,3 +11,4 @@ public/
 src/
 test-files/
 tsconfig*.json
+*.test-helper.ts

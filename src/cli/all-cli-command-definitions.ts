@@ -67,7 +67,9 @@ const helpCommandDefinition = defineCliCommand(
     },
     (inputs) => {
         inputs.logging.stdout(wrapLines(generateHelpMessage(MessageSyntax.Bash), 100));
+
         return {
+            fullExecutedCommand: '',
             success: true,
         };
     },

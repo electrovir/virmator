@@ -1,1 +1,1 @@
-/Users/electrovir/repos/virmator/configs/global.d.ts
+../configs/src/global.d.ts

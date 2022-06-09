@@ -35,7 +35,7 @@ export const codeInMarkdownCommandDefinition = defineCliCommand(
             ],
         },
         subCommandDescriptions: {
-            check: 'Check that markdown files have their examples inserted already.',
+            check: 'Check that markdown files have their examples inserted and up-to-date.',
             update: 'Update code in markdown files. This is the default sub-command.',
         },
         supportedConfigKeys: [],
@@ -46,9 +46,19 @@ export const codeInMarkdownCommandDefinition = defineCliCommand(
             : `\"./**/*.md\"`;
         const subCommand = inputs.inputSubCommands.includes('check') ? '--check' : '';
         const mdCodeCommand = `${getNpmBinPath('md-code')} ${subCommand} ${args}`;
-        const results = await runVirmatorShellCommand(mdCodeCommand, inputs);
+        const results = await runVirmatorShellCommand(mdCodeCommand, {
+            ...inputs,
+            logTransforms: {
+                stderr: (stderrInput) =>
+                    stderrInput.replace(
+                        'Run without --check to update.',
+                        'Use the update sub-command to update.',
+                    ),
+            },
+        });
 
         return {
+            fullExecutedCommand: mdCodeCommand,
             success: !results.error,
         };
     },
