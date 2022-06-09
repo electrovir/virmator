@@ -1,5 +1,6 @@
 import {interpolationSafeWindowsPath} from 'augment-vir/dist/cjs/node-only';
 import {getNpmBinPath} from '../../file-paths/virmator-repo-paths';
+import {packageName} from '../../package-name';
 import {CliCommandName} from '../cli-command/cli-command-name';
 import {CliCommandExecutorOutput} from '../cli-command/cli-executor';
 import {defineCliCommand} from '../cli-command/define-cli-command';
@@ -16,21 +17,21 @@ export const codeInMarkdownCommandDefinition = defineCliCommand(
                 },
                 {
                     title: '',
-                    content: `By default this command parses all markdown files in the repo (ignoring node_modules). Specific markdown files can be parsed by giving virmator extra parameters.`,
+                    content: `By default this command parses all markdown files in the repo (ignoring node_modules). Specific markdown files can be parsed by giving ${packageName} extra parameters.`,
                 },
             ],
             examples: [
                 {
                     title: 'default experience (usually all you need)',
-                    content: `virmator ${CliCommandName.CodeInMarkdown}`,
+                    content: `${packageName} ${CliCommandName.CodeInMarkdown}`,
                 },
                 {
                     title: 'override files to check to a single file',
-                    content: `virmator ${CliCommandName.CodeInMarkdown} only/this/one/file.md`,
+                    content: `${packageName} ${CliCommandName.CodeInMarkdown} only/this/one/file.md`,
                 },
                 {
                     title: 'override files to check to a group of files',
-                    content: `virmator ${CliCommandName.CodeInMarkdown} "only/this/dir/*.md"`,
+                    content: `${packageName} ${CliCommandName.CodeInMarkdown} "only/this/dir/*.md"`,
                 },
             ],
         },
