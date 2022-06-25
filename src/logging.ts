@@ -9,9 +9,9 @@ export const noCliLogging: Readonly<Required<CliLogging>> = {
     stdout: () => {},
 };
 
+export type CliLogs = Record<keyof CliLogging, string>;
+
 export const noLogTransforms: LogTransform = (input) => input;
 export type LogTransform = (thingToTransform: string) => string;
-export type LogTransforms = Partial<{
-    stdout: LogTransform;
-    stderr: LogTransform;
-}>;
+
+export type LogTransforms = Partial<Record<keyof CliLogging, LogTransform>>;

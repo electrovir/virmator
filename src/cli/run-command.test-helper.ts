@@ -6,7 +6,7 @@ import {
 } from 'augment-vir/dist/cjs/node-only';
 import {assert} from 'chai';
 import {join} from 'path';
-import {virmatorDistDir} from '../file-paths/virmator-repo-paths';
+import {virmatorDistDir} from '../file-paths/virmator-package-paths';
 import {CliCommandDefinition} from './cli-command/define-cli-command';
 
 const cliPath = join(virmatorDistDir, 'cli', 'cli.js');
@@ -32,6 +32,7 @@ export async function runCliCommandForTest<T extends CliCommandDefinition>(
 
     if (expectations) {
         getObjectTypedKeys(expectations).forEach((expectationKey) => {
+            // this is logged separately so that special characters (like color codes) are visible
             const mismatch = JSON.stringify(
                 {
                     [`${message}${message ? '-' : ''}actual-${expectationKey}`]:

@@ -1,56 +1,36 @@
-import {repoRootDir} from '../file-paths/repo-paths';
-import {allCliCommandDefinitions, builtInCommandNames} from './all-cli-command-definitions';
+import {CliLogging, noCliLogging} from '../logging';
+import {builtInCliCommandDefinitions, builtInCommandNames} from './all-cli-command-definitions';
 import {
     CliCommandExecutorInputs,
     CliCommandExecutorOutput,
     extractSubCommands,
 } from './cli-command/cli-executor';
-import {CliLogging, noCliLogging} from './cli-command/cli-logging';
+import {CliCommandDefinition} from './cli-command/define-cli-command';
 import {CliFlagName} from './cli-flags/cli-flag-name';
 import {CliFlagValues} from './cli-flags/cli-flag-values';
-import {cliErrorMessages} from './cli-messages';
-import {copyConfig} from './config/copy-config';
+import {doesCopyToConfigPathExist} from './config/config-files';
 
 export type RunCommandInputs = {
     cliFlags: CliFlagValues;
     otherArgs: string[];
+    repoDir: string;
 };
 
 export async function runCommand(
-    commandName: string,
-    {cliFlags, otherArgs}: RunCommandInputs,
+    commandDefinition: CliCommandDefinition,
+    runCommandInputs: RunCommandInputs,
 ): Promise<CliCommandExecutorOutput> {
-    const commandDefinition = allCliCommandDefinitions[commandName];
-
-    if (!commandDefinition) {
-        throw new Error(cliErrorMessages.commandNotFound(commandName));
+    if (runCommandInputs.cliFlags[CliFlagName.Help]) {
+        commandDefinition = builtInCliCommandDefinitions.help;
     }
 
-    if (cliFlags[CliFlagName.Help]) {
-        commandName = builtInCommandNames.help;
-    }
-
-    if (commandDefinition.supportedConfigKeys.length) {
-        await Promise.all(
-            commandDefinition.supportedConfigKeys.map(async (configKey) => {
-                const copyConfigOutput = await copyConfig({
-                    configKey: configKey,
-                    repoDir: repoRootDir,
-                });
-
-                copyConfigOutput.logs.forEach((log) => {
-                    if (log.stderr) {
-                        console.error(log.log);
-                    } else {
-                        console.info(log.log);
-                    }
-                });
-            }),
-        );
-    }
+    const missingConfigFiles = commandDefinition.requiredConfigFiles.some((configDefinition) => {
+        return doesCopyToConfigPathExist(configDefinition, runCommandInputs.repoDir);
+    });
 
     const logging: CliLogging =
-        cliFlags[CliFlagName.Silent] && commandName !== builtInCommandNames.help
+        runCommandInputs.cliFlags[CliFlagName.Silent] &&
+        commandDefinition.commandName !== builtInCommandNames.help
             ? noCliLogging
             : {
                   stdout: (input: string) => {
@@ -62,7 +42,7 @@ export async function runCommand(
               };
 
     const {subCommands: inputSubCommands, filteredArgs: filteredInputArgs} = extractSubCommands(
-        otherArgs,
+        runCommandInputs.otherArgs,
         commandDefinition.allAvailableSubCommands,
     );
 

@@ -3,7 +3,7 @@
 import {extractErrorMessage} from 'augment-vir';
 import {VirmatorCliCommandError} from '../errors/cli-command-error';
 import {CliFlagError} from '../errors/cli-flag-error';
-import {builtInCommandNames} from './all-cli-command-definitions';
+import {allCliCommandDefinitions, builtInCommandNames} from './all-cli-command-definitions';
 import {CliFlagName} from './cli-flags/cli-flag-name';
 import {cliErrorMessages, getResultMessage} from './cli-messages';
 import {parseArguments} from './parse-arguments';
@@ -31,9 +31,17 @@ export async function cli(rawArgs: string[]) {
         if (shouldLogStatus) {
             console.info(`running ${cliCommandName}...`);
         }
-        const commandResult = await runCommand(cliCommandName, {
+
+        const commandDefinition = allCliCommandDefinitions[cliCommandName];
+
+        if (!commandDefinition) {
+            throw new Error(cliErrorMessages.commandNotFound(cliCommandName));
+        }
+
+        const commandResult = await runCommand(commandDefinition, {
             otherArgs: args,
             cliFlags: flags,
+            repoDir: process.cwd(),
         });
 
         if (shouldLogStatus) {

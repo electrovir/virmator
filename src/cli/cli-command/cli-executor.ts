@@ -1,5 +1,5 @@
 import {isInTypedArray} from '../../augments/array';
-import {CliLogging} from './cli-logging';
+import {CliLogging} from '../../logging';
 import {DefineCliCommandInputs} from './define-cli-command';
 
 export type CliCommandExecutorInputs<

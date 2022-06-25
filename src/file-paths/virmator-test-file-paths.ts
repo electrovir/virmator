@@ -2,16 +2,16 @@ import {createSymLink} from 'augment-vir/dist/cjs/node-only';
 import {join} from 'path';
 import {codeInMarkdownCommandDefinition} from '../cli/cli-command-implementations/code-in-markdown.command';
 import {compileCommandDefinition} from '../cli/cli-command-implementations/compile.command';
-import {virmatorRootDir} from './virmator-repo-paths';
+import {virmatorPackageDir} from './virmator-package-paths';
 
 export async function createNodeModulesSymLinkForTests(dir: string): Promise<string> {
     const symlinkPath = join(dir, 'node_modules');
 
-    await createSymLink(join(virmatorRootDir, 'node_modules'), symlinkPath, true);
+    await createSymLink(join(virmatorPackageDir, 'node_modules'), symlinkPath, true);
     return symlinkPath;
 }
 
-const testRepos = join(virmatorRootDir, 'test-files');
+const testRepos = join(virmatorPackageDir, 'test-files');
 
 export function getCommandTestRepoDir(command: string) {
     return join(testRepos, command);
@@ -61,4 +61,4 @@ export const spellcheckTestPaths = {
     hiddenStuffRepo: join(spellcheckTestRepos, 'hidden-stuff-spellcheck-repo'),
 };
 
-export const virmatorReadme = join(virmatorRootDir, 'README.md');
+export const virmatorReadme = join(virmatorPackageDir, 'README.md');

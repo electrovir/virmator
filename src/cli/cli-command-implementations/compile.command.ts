@@ -1,9 +1,9 @@
-import {getNpmBinPath} from '../../file-paths/virmator-repo-paths';
+import {getNpmBinPath} from '../../file-paths/virmator-package-paths';
 import {packageName} from '../../package-name';
 import {CliCommandExecutorOutput} from '../cli-command/cli-executor';
 import {defineCliCommand} from '../cli-command/define-cli-command';
 import {runVirmatorShellCommand} from '../cli-command/run-shell-command';
-import {CommandConfigKey} from '../config/config-key';
+import {configFiles} from '../config/config-files';
 
 const commandName = 'compile';
 
@@ -32,7 +32,7 @@ export const compileCommandDefinition = defineCliCommand(
         subCommandDescriptions: {
             check: 'Run type checking without emitting compiled files.',
         },
-        supportedConfigKeys: [CommandConfigKey.TsConfig],
+        requiredConfigFiles: [configFiles.tsConfig],
     } as const,
     async (inputs): Promise<CliCommandExecutorOutput> => {
         const noEmit =

@@ -1,5 +1,5 @@
 import {runShellCommand, ShellOutput} from 'augment-vir/dist/cjs/node-only';
-import {CliLogging, LogTransform, LogTransforms, noLogTransforms} from './cli-logging';
+import {CliLogging, LogTransform, LogTransforms, noLogTransforms} from '../../logging';
 
 function logWrapper(
     handleLog: (input: string) => void,

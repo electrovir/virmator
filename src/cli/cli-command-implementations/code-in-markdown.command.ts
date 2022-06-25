@@ -1,5 +1,5 @@
 import {interpolationSafeWindowsPath} from 'augment-vir/dist/cjs/node-only';
-import {getNpmBinPath} from '../../file-paths/virmator-repo-paths';
+import {getNpmBinPath} from '../../file-paths/virmator-package-paths';
 import {packageName} from '../../package-name';
 import {CliCommandExecutorOutput} from '../cli-command/cli-executor';
 import {defineCliCommand} from '../cli-command/define-cli-command';
@@ -40,7 +40,7 @@ export const codeInMarkdownCommandDefinition = defineCliCommand(
             check: 'Check that markdown files have their examples inserted and up-to-date.',
             update: 'Update code in markdown files. This is the default sub-command.',
         },
-        supportedConfigKeys: [],
+        requiredConfigFiles: [],
     } as const,
     async (inputs): Promise<CliCommandExecutorOutput> => {
         const args: string = inputs.filteredInputArgs.length

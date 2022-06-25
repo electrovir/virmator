@@ -1,7 +1,6 @@
 {
     "license": "MIT",
     "main": "dist/cjs/index.js",
-    "module": "dist/esm/index.js",
     "types": "dist/types/index.d.ts",
     "scripts": {
         "compile": "rm -rf dist && tsc --project tsconfig.json && tsc --project tsconfig.cjs.json && tsc --project tsconfig.esm.json",

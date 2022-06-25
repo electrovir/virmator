@@ -23,8 +23,8 @@ function createUnimplementedCommand<CommandName extends string>(commandName: Com
             },
             commandName,
             subCommandDescriptions: {},
-            supportedConfigKeys: [],
-        },
+            requiredConfigFiles: [],
+        } as const,
         (): CliCommandExecutorOutput => {
             throw new Error(`The ${commandName} command has not been implemented yet.`);
         },
@@ -39,7 +39,7 @@ const helpCommandDefinition = defineCliCommand(
             examples: [],
         },
         subCommandDescriptions: {},
-        supportedConfigKeys: [],
+        requiredConfigFiles: [],
     } as const,
     (inputs) => {
         inputs.logging.stdout(
@@ -70,17 +70,17 @@ export type BuiltInCommandName = ArrayElement<typeof allCommandsArray>['commandN
 
 type AllCommandsMap = Readonly<Record<BuiltInCommandName, CliCommandDefinition>>;
 
-const typedAllCliCommandDefinitions = allCommandsArray.reduce((accum, entry) => {
+export const builtInCliCommandDefinitions = allCommandsArray.reduce((accum, entry) => {
     accum[entry.commandName] = entry;
     return accum;
 }, {} as Writeable<AllCommandsMap>) as AllCommandsMap;
 
-export const allCliCommandDefinitions = typedAllCliCommandDefinitions as Record<
+export const allCliCommandDefinitions = builtInCliCommandDefinitions as Record<
     string,
     CliCommandDefinition
 >;
 
 export const builtInCommandNames: Record<BuiltInCommandName, BuiltInCommandName> = mapObject(
-    typedAllCliCommandDefinitions,
+    builtInCliCommandDefinitions,
     (key) => key,
 );

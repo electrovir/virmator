@@ -1,123 +1,75 @@
-import {writeFileAndDir} from 'augment-vir/dist/cjs/node-only';
-import {existsSync} from 'fs-extra';
-import {join} from 'path';
-import {ConfigFileError} from '../../errors/config-file-error';
-import {ConfigKey} from './config-key';
-import {getRepoConfigFilePath} from './config-paths';
-import {readRepoConfigFile, readUpdatedVirmatorConfigFile} from './config-read';
-import {
-    getExtendableBaseConfigName,
-    isConfigExtending,
-    isExtendableConfig,
-} from './extendable-config';
+import {copyFile, readFile, writeFile} from 'fs/promises';
+import {ConfigFileDefinition, doesCopyToConfigPathExist, getCopyToPath} from './config-files';
 
-export type CopyConfigLog = {
-    stderr: boolean;
-    log: string;
-};
-
-async function isConfigFileExtending(configKey: ConfigKey, repoDir: string): Promise<boolean> {
-    if (!isExtendableConfig(configKey)) {
-        return false;
-    }
-
-    const fileContents = await readRepoConfigFile(configKey, repoDir, false);
-
-    return isConfigExtending(configKey, fileContents);
+export enum CopyConfigOperation {
+    /** Only update the config file if it exists and is marked as being able to be updated. */
+    Update = 'update',
+    /** Overwrite config file, even if it already exists in the repo. */
+    Overwrite = 'overwrite',
+    /** Only write the config file if it doesn't exist already. */
+    Init = 'init',
 }
 
-export async function copyConfig({
-    configKey,
-    repoDir,
-}: {
-    configKey: ConfigKey;
+export type CopyConfigInputs = {
+    configFileDefinition: ConfigFileDefinition;
     repoDir: string;
-}): Promise<{logs: CopyConfigLog[]; outputFilePath: string; didWrite: boolean}> {
-    const logs: CopyConfigLog[] = [];
+    operation: CopyConfigOperation;
+};
 
-    let outputFilePath: string;
-    let shouldWriteConfig: boolean;
+export type CopyConfigOutputs = {
+    copiedToPath: string;
+    didWrite: boolean;
+};
 
-    const virmatorConfigContents = await readUpdatedVirmatorConfigFile(configKey, repoDir, false);
+export async function copyConfig(inputs: CopyConfigInputs): Promise<CopyConfigOutputs> {
+    const copyFromPath = inputs.configFileDefinition.path;
+    const copyToPath = getCopyToPath(inputs.configFileDefinition, inputs.repoDir);
+    const copyToFileExists = doesCopyToConfigPathExist(inputs.configFileDefinition, inputs.repoDir);
+    let shouldWrite = false;
 
-    const repoConfigPath = join(repoDir, getRepoConfigFilePath(configKey, false));
-    const repoConfigExists = existsSync(repoConfigPath);
-    const shouldExtend = true;
-
-    if (!repoConfigExists) {
-        logs.push({
-            stderr: true,
-            log: `Config file not found, creating new file: ${repoConfigPath}`,
-        });
+    switch (inputs.operation) {
+        case CopyConfigOperation.Init: {
+            if (!copyToFileExists) {
+                shouldWrite = true;
+            }
+            break;
+        }
+        case CopyConfigOperation.Overwrite: {
+            shouldWrite = true;
+            break;
+        }
+        case CopyConfigOperation.Update: {
+            if (
+                copyToFileExists &&
+                typeof inputs.configFileDefinition !== 'string' &&
+                inputs.configFileDefinition.canBeUpdated
+            ) {
+                shouldWrite = true;
+            }
+            break;
+        }
     }
 
-    if (shouldExtend && isExtendableConfig(configKey)) {
-        if (!isExtendableConfig(configKey)) {
-            throw new ConfigFileError(`Extendable config files are not supported for ${configKey}`);
-        }
-
-        if (!repoConfigExists) {
-            // if extender config file does not exist, create it
-            const extenderContents = await readUpdatedVirmatorConfigFile(configKey, repoDir, true);
-            await writeFileAndDir(repoConfigPath, extenderContents);
-        }
-
-        const repoExtendableConfigPath = join(repoDir, getExtendableBaseConfigName(configKey));
-        const repoExtendableConfigExists = existsSync(repoExtendableConfigPath);
-
-        if (repoExtendableConfigExists) {
-            // if the extendable config already exists, check if we need to update it
-            const repoExtendableConfigContents = await readRepoConfigFile(configKey, repoDir, true);
-
-            if (repoExtendableConfigContents !== virmatorConfigContents) {
-                // only write when we need to update the file
-                logs.push({
-                    stderr: false,
-                    log: `Updating ${repoExtendableConfigPath}\n`,
-                });
-                shouldWriteConfig = true;
-            } else {
-                shouldWriteConfig = false;
-            }
+    if (shouldWrite) {
+        if (
+            inputs.operation === CopyConfigOperation.Update &&
+            typeof inputs.configFileDefinition !== 'string' &&
+            inputs.configFileDefinition.updateCallback !== undefined
+        ) {
+            const copyFromContents = (await readFile(copyFromPath)).toString();
+            const copyToContents = (await readFile(copyToPath)).toString();
+            const writeContents = inputs.configFileDefinition.updateCallback(
+                copyFromContents,
+                copyToContents,
+            );
+            await writeFile(copyToPath, writeContents);
         } else {
-            // when the extendable config file is not already found, we always write it
-            logs.push({
-                stderr: true,
-                log: `Extendable config file not found, creating new file: ${repoExtendableConfigPath}\n`,
-            });
-
-            shouldWriteConfig = true;
+            await copyFile(copyFromPath, copyToPath);
         }
-
-        outputFilePath = repoExtendableConfigPath;
-    } else {
-        if (repoConfigExists) {
-            const currentConfigPathContents = await readRepoConfigFile(configKey, repoDir, false);
-
-            // only update the config file when they differ
-            if (currentConfigPathContents !== virmatorConfigContents) {
-                logs.push({
-                    stderr: false,
-                    log: `Updating ${repoConfigPath}`,
-                });
-                shouldWriteConfig = true;
-            } else {
-                shouldWriteConfig = false;
-            }
-        } else {
-            shouldWriteConfig = true;
-        }
-
-        outputFilePath = repoConfigPath;
-    }
-
-    if (shouldWriteConfig) {
-        await writeFileAndDir(outputFilePath, virmatorConfigContents);
     }
 
     return {
-        logs,
-        outputFilePath,
-        didWrite: shouldWriteConfig,
+        copiedToPath: copyToPath,
+        didWrite: shouldWrite,
     };
 }
