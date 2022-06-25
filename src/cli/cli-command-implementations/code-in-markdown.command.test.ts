@@ -6,15 +6,15 @@ import {
     testCodeInMarkdownPaths,
 } from '../../file-paths/virmator-test-file-paths';
 import {Color} from '../cli-color';
-import {CliCommandName} from '../cli-command/cli-command-name';
 import {runCliCommandForTest} from '../run-command.test-helper';
+import {codeInMarkdownCommandDefinition} from './code-in-markdown.command';
 
-describe(CliCommandName.CodeInMarkdown, () => {
+describe(codeInMarkdownCommandDefinition.commandName, () => {
     it('should fail when checking broken file', async () => {
         await runCliCommandForTest(
             {
-                commandName: CliCommandName.CodeInMarkdown,
-                subCommand: 'check',
+                commandDefinition: codeInMarkdownCommandDefinition,
+                subCommand: codeInMarkdownCommandDefinition.subCommands.check,
                 cwd: testCodeInMarkdownDirPath,
             },
             {
@@ -27,8 +27,8 @@ describe(CliCommandName.CodeInMarkdown, () => {
     it('should succeed when checking only okay file', async () => {
         await runCliCommandForTest(
             {
-                commandName: CliCommandName.CodeInMarkdown,
-                subCommand: 'check',
+                commandDefinition: codeInMarkdownCommandDefinition,
+                subCommand: codeInMarkdownCommandDefinition.subCommands.check,
                 cwd: testCodeInMarkdownDirPath,
                 extraArgs: ['README-fixed.md'],
             },
@@ -44,8 +44,8 @@ describe(CliCommandName.CodeInMarkdown, () => {
     it('should succeed when checking only bad file', async () => {
         await runCliCommandForTest(
             {
-                commandName: CliCommandName.CodeInMarkdown,
-                subCommand: 'check',
+                commandDefinition: codeInMarkdownCommandDefinition,
+                subCommand: codeInMarkdownCommandDefinition.subCommands.check,
                 cwd: testCodeInMarkdownDirPath,
                 extraArgs: ['README-broken.md'],
             },
@@ -65,8 +65,8 @@ describe(CliCommandName.CodeInMarkdown, () => {
             // should fail before running update
             await runCliCommandForTest(
                 {
-                    commandName: CliCommandName.CodeInMarkdown,
-                    subCommand: 'check',
+                    commandDefinition: codeInMarkdownCommandDefinition,
+                    subCommand: codeInMarkdownCommandDefinition.subCommands.check,
                     cwd: testCodeInMarkdownDirPath,
                     extraArgs: ['README-broken.md'],
                 },
@@ -78,8 +78,8 @@ describe(CliCommandName.CodeInMarkdown, () => {
 
             await runCliCommandForTest(
                 {
-                    commandName: CliCommandName.CodeInMarkdown,
-                    subCommand: 'update',
+                    commandDefinition: codeInMarkdownCommandDefinition,
+                    subCommand: codeInMarkdownCommandDefinition.subCommands.update,
                     cwd: testCodeInMarkdownDirPath,
                     extraArgs: ['README-broken.md'],
                 },
@@ -93,8 +93,8 @@ describe(CliCommandName.CodeInMarkdown, () => {
 
             await runCliCommandForTest(
                 {
-                    commandName: CliCommandName.CodeInMarkdown,
-                    subCommand: 'check',
+                    commandDefinition: codeInMarkdownCommandDefinition,
+                    subCommand: codeInMarkdownCommandDefinition.subCommands.check,
                     cwd: testCodeInMarkdownDirPath,
                     extraArgs: ['README-broken.md'],
                 },
@@ -119,8 +119,8 @@ describe(CliCommandName.CodeInMarkdown, () => {
 
             await runCliCommandForTest(
                 {
-                    commandName: CliCommandName.CodeInMarkdown,
-                    subCommand: 'check',
+                    commandDefinition: codeInMarkdownCommandDefinition,
+                    subCommand: codeInMarkdownCommandDefinition.subCommands.check,
                     cwd: testCodeInMarkdownDirPath,
                     extraArgs: ['README-broken.md'],
                 },
@@ -147,8 +147,8 @@ describe(CliCommandName.CodeInMarkdown, () => {
             // should fail before running update
             await runCliCommandForTest(
                 {
-                    commandName: CliCommandName.CodeInMarkdown,
-                    subCommand: 'check',
+                    commandDefinition: codeInMarkdownCommandDefinition,
+                    subCommand: codeInMarkdownCommandDefinition.subCommands.check,
                     cwd: testCodeInMarkdownDirPath,
                 },
                 {
@@ -159,7 +159,7 @@ describe(CliCommandName.CodeInMarkdown, () => {
 
             await runCliCommandForTest(
                 {
-                    commandName: CliCommandName.CodeInMarkdown,
+                    commandDefinition: codeInMarkdownCommandDefinition,
                     cwd: testCodeInMarkdownDirPath,
                 },
                 {
@@ -172,8 +172,8 @@ describe(CliCommandName.CodeInMarkdown, () => {
 
             await runCliCommandForTest(
                 {
-                    commandName: CliCommandName.CodeInMarkdown,
-                    subCommand: 'check',
+                    commandDefinition: codeInMarkdownCommandDefinition,
+                    subCommand: codeInMarkdownCommandDefinition.subCommands.check,
                     cwd: testCodeInMarkdownDirPath,
                 },
                 {
@@ -206,8 +206,8 @@ describe(CliCommandName.CodeInMarkdown, () => {
 
             await runCliCommandForTest(
                 {
-                    commandName: CliCommandName.CodeInMarkdown,
-                    subCommand: 'check',
+                    commandDefinition: codeInMarkdownCommandDefinition,
+                    subCommand: codeInMarkdownCommandDefinition.subCommands.check,
                     cwd: testCodeInMarkdownDirPath,
                 },
                 {

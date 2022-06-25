@@ -1,19 +1,15 @@
-import {getEnumTypedValues} from 'augment-vir';
+import {ArrayElement, mapObject, Writeable} from 'augment-vir';
 import {codeInMarkdownCommandDefinition} from './cli-command-implementations/code-in-markdown.command';
-import {CliCommandName} from './cli-command/cli-command-name';
+import {compileCommandDefinition} from './cli-command-implementations/compile.command';
 import {
-    combineHelpMessage,
-    commandToHelpString,
-    flagToHelpString,
+    generateHelpMessage,
     MessageSyntax,
     wrapLines,
 } from './cli-command/cli-command-to-help-message';
 import {CliCommandExecutorOutput} from './cli-command/cli-executor';
 import {CliCommandDefinition, defineCliCommand} from './cli-command/define-cli-command';
-import {CliFlagName} from './cli-flags/cli-flag-name';
-import {cliFlagDescriptions} from './cli-flags/cli-flag-values';
 
-function createUnimplementedCommand(commandName: CliCommandName) {
+function createUnimplementedCommand<CommandName extends string>(commandName: CommandName) {
     return defineCliCommand(
         {
             commandDescription: {
@@ -35,38 +31,20 @@ function createUnimplementedCommand(commandName: CliCommandName) {
     );
 }
 
-export function generateHelpMessage(syntax: MessageSyntax) {
-    const flagsMessage = getEnumTypedValues(CliFlagName)
-        .sort()
-        .map((flagName) => {
-            return flagToHelpString(flagName, cliFlagDescriptions[flagName], syntax);
-        })
-        .join('\n');
-
-    const commandsMessage = getEnumTypedValues(CliCommandName)
-        .sort()
-        .map((commandName) => {
-            return commandToHelpString(allCliCommandDefinitions[commandName], syntax);
-        })
-        .join('\n');
-
-    const helpMessage = combineHelpMessage(flagsMessage, commandsMessage, syntax);
-
-    return helpMessage;
-}
-
 const helpCommandDefinition = defineCliCommand(
     {
-        commandName: CliCommandName.Help,
+        commandName: 'help',
         commandDescription: {
             sections: [],
             examples: [],
         },
         subCommandDescriptions: {},
         supportedConfigKeys: [],
-    },
+    } as const,
     (inputs) => {
-        inputs.logging.stdout(wrapLines(generateHelpMessage(MessageSyntax.Bash), 100));
+        inputs.logging.stdout(
+            wrapLines(generateHelpMessage(allCliCommandDefinitions, MessageSyntax.Bash), 100),
+        );
 
         return {
             fullExecutedCommand: '',
@@ -75,19 +53,34 @@ const helpCommandDefinition = defineCliCommand(
     },
 );
 
-export const allCliCommandDefinitions = (<
-    T extends Readonly<Record<CliCommandName, CliCommandDefinition>>,
->(
-    input: T,
-): T => input)({
-    [CliCommandName.CodeInMarkdown]: codeInMarkdownCommandDefinition,
-    [CliCommandName.Compile]: createUnimplementedCommand(CliCommandName.Compile),
-    [CliCommandName.Format]: createUnimplementedCommand(CliCommandName.Format),
-    [CliCommandName.Help]: helpCommandDefinition,
-    [CliCommandName.Init]: createUnimplementedCommand(CliCommandName.Init),
-    [CliCommandName.SpellCheck]: createUnimplementedCommand(CliCommandName.SpellCheck),
-    [CliCommandName.Test]: createUnimplementedCommand(CliCommandName.Test),
-    [CliCommandName.TestWeb]: createUnimplementedCommand(CliCommandName.TestWeb),
-    [CliCommandName.UpdateConfigs]: createUnimplementedCommand(CliCommandName.UpdateConfigs),
-    [CliCommandName.Vite]: createUnimplementedCommand(CliCommandName.Vite),
-} as const);
+const allCommandsArray = [
+    codeInMarkdownCommandDefinition,
+    compileCommandDefinition,
+    helpCommandDefinition,
+    createUnimplementedCommand('format'),
+    createUnimplementedCommand('init'),
+    createUnimplementedCommand('spell-check'),
+    createUnimplementedCommand('test'),
+    createUnimplementedCommand('test-web'),
+    createUnimplementedCommand('update-configs'),
+    createUnimplementedCommand('vite'),
+] as const;
+
+export type BuiltInCommandName = ArrayElement<typeof allCommandsArray>['commandName'];
+
+type AllCommandsMap = Readonly<Record<BuiltInCommandName, CliCommandDefinition>>;
+
+const typedAllCliCommandDefinitions = allCommandsArray.reduce((accum, entry) => {
+    accum[entry.commandName] = entry;
+    return accum;
+}, {} as Writeable<AllCommandsMap>) as AllCommandsMap;
+
+export const allCliCommandDefinitions = typedAllCliCommandDefinitions as Record<
+    string,
+    CliCommandDefinition
+>;
+
+export const builtInCommandNames: Record<BuiltInCommandName, BuiltInCommandName> = mapObject(
+    typedAllCliCommandDefinitions,
+    (key) => key,
+);

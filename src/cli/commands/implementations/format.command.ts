@@ -32,6 +32,7 @@ export {};
 //         'css',
 //         'md',
 //         'js',
+//         'jsx',
 //         'yml',
 //         'yaml',
 //     ],

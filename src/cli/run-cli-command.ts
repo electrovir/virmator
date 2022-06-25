@@ -1,6 +1,5 @@
 import {repoRootDir} from '../file-paths/repo-paths';
-import {allCliCommandDefinitions} from './all-cli-command-definitions';
-import {CliCommandName} from './cli-command/cli-command-name';
+import {allCliCommandDefinitions, builtInCommandNames} from './all-cli-command-definitions';
 import {
     CliCommandExecutorInputs,
     CliCommandExecutorOutput,
@@ -9,6 +8,7 @@ import {
 import {CliLogging, noCliLogging} from './cli-command/cli-logging';
 import {CliFlagName} from './cli-flags/cli-flag-name';
 import {CliFlagValues} from './cli-flags/cli-flag-values';
+import {cliErrorMessages} from './cli-messages';
 import {copyConfig} from './config/copy-config';
 
 export type RunCommandInputs = {
@@ -17,13 +17,17 @@ export type RunCommandInputs = {
 };
 
 export async function runCommand(
-    commandName: CliCommandName,
+    commandName: string,
     {cliFlags, otherArgs}: RunCommandInputs,
 ): Promise<CliCommandExecutorOutput> {
     const commandDefinition = allCliCommandDefinitions[commandName];
 
+    if (!commandDefinition) {
+        throw new Error(cliErrorMessages.commandNotFound(commandName));
+    }
+
     if (cliFlags[CliFlagName.Help]) {
-        commandName = CliCommandName.Help;
+        commandName = builtInCommandNames.help;
     }
 
     if (commandDefinition.supportedConfigKeys.length) {
@@ -46,7 +50,7 @@ export async function runCommand(
     }
 
     const logging: CliLogging =
-        cliFlags[CliFlagName.Silent] && commandName !== CliCommandName.Help
+        cliFlags[CliFlagName.Silent] && commandName !== builtInCommandNames.help
             ? noCliLogging
             : {
                   stdout: (input: string) => {
@@ -59,7 +63,7 @@ export async function runCommand(
 
     const {subCommands: inputSubCommands, filteredArgs: filteredInputArgs} = extractSubCommands(
         otherArgs,
-        commandDefinition.availableSubCommands,
+        commandDefinition.allAvailableSubCommands,
     );
 
     const commandInputs: CliCommandExecutorInputs = {

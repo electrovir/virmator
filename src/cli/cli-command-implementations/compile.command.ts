@@ -1,14 +1,15 @@
 import {getNpmBinPath} from '../../file-paths/virmator-repo-paths';
 import {packageName} from '../../package-name';
-import {CliCommandName} from '../cli-command/cli-command-name';
 import {CliCommandExecutorOutput} from '../cli-command/cli-executor';
 import {defineCliCommand} from '../cli-command/define-cli-command';
 import {runVirmatorShellCommand} from '../cli-command/run-shell-command';
 import {CommandConfigKey} from '../config/config-key';
 
+const commandName = 'compile';
+
 export const compileCommandDefinition = defineCliCommand(
     {
-        commandName: CliCommandName.Compile,
+        commandName: commandName,
         commandDescription: {
             sections: [
                 {
@@ -20,11 +21,11 @@ export const compileCommandDefinition = defineCliCommand(
             examples: [
                 {
                     title: `no extra flags`,
-                    content: `${packageName} ${CliCommandName.Compile}`,
+                    content: `${packageName} ${commandName}`,
                 },
                 {
                     title: `one extra flag`,
-                    content: `${packageName} ${CliCommandName.Compile} --noEmit`,
+                    content: `${packageName} ${commandName} --noEmit`,
                 },
             ],
         },
@@ -32,7 +33,7 @@ export const compileCommandDefinition = defineCliCommand(
             check: 'Run type checking without emitting compiled files.',
         },
         supportedConfigKeys: [CommandConfigKey.TsConfig],
-    },
+    } as const,
     async (inputs): Promise<CliCommandExecutorOutput> => {
         const noEmit =
             inputs.filteredInputArgs.join(' ').includes('--noEmit') ||

@@ -1,14 +1,15 @@
 import {interpolationSafeWindowsPath} from 'augment-vir/dist/cjs/node-only';
 import {getNpmBinPath} from '../../file-paths/virmator-repo-paths';
 import {packageName} from '../../package-name';
-import {CliCommandName} from '../cli-command/cli-command-name';
 import {CliCommandExecutorOutput} from '../cli-command/cli-executor';
 import {defineCliCommand} from '../cli-command/define-cli-command';
 import {runVirmatorShellCommand} from '../cli-command/run-shell-command';
 
+const commandName = 'code-in-markdown';
+
 export const codeInMarkdownCommandDefinition = defineCliCommand(
     {
-        commandName: CliCommandName.CodeInMarkdown,
+        commandName: commandName,
         commandDescription: {
             sections: [
                 {
@@ -23,15 +24,15 @@ export const codeInMarkdownCommandDefinition = defineCliCommand(
             examples: [
                 {
                     title: 'default experience (usually all you need)',
-                    content: `${packageName} ${CliCommandName.CodeInMarkdown}`,
+                    content: `${packageName} ${commandName}`,
                 },
                 {
                     title: 'override files to check to a single file',
-                    content: `${packageName} ${CliCommandName.CodeInMarkdown} only/this/one/file.md`,
+                    content: `${packageName} ${commandName} only/this/one/file.md`,
                 },
                 {
                     title: 'override files to check to a group of files',
-                    content: `${packageName} ${CliCommandName.CodeInMarkdown} "only/this/dir/*.md"`,
+                    content: `${packageName} ${commandName} "only/this/dir/*.md"`,
                 },
             ],
         },
@@ -40,7 +41,7 @@ export const codeInMarkdownCommandDefinition = defineCliCommand(
             update: 'Update code in markdown files. This is the default sub-command.',
         },
         supportedConfigKeys: [],
-    },
+    } as const,
     async (inputs): Promise<CliCommandExecutorOutput> => {
         const args: string = inputs.filteredInputArgs.length
             ? interpolationSafeWindowsPath(inputs.filteredInputArgs.join(' '))

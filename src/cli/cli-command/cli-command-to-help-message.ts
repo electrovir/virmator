@@ -1,8 +1,38 @@
-import {getObjectTypedKeys, safeMatch} from 'augment-vir';
+import {getEnumTypedValues, getObjectTypedKeys, safeMatch} from 'augment-vir';
 import {packageName} from '../../package-name';
 import {Color} from '../cli-color';
+import {CliFlagName} from '../cli-flags/cli-flag-name';
+import {cliFlagDescriptions} from '../cli-flags/cli-flag-values';
 import {CliCommandDescription, CliHelpSection} from './cli-command-help';
 import {CliCommandDefinition} from './define-cli-command';
+
+export function generateHelpMessage(
+    commandDefinitions: Record<string, CliCommandDefinition>,
+    syntax: MessageSyntax,
+) {
+    const flagsMessage = getEnumTypedValues(CliFlagName)
+        .sort()
+        .map((flagName) => {
+            return flagToHelpString(flagName, cliFlagDescriptions[flagName], syntax);
+        })
+        .join('\n');
+
+    const commandsMessage = getObjectTypedKeys(commandDefinitions)
+        .sort()
+        .map((commandName) => {
+            const commandDefinition = commandDefinitions[commandName];
+            if (!commandDefinition) {
+                throw new Error(`Command definition was missing for key "${commandName}"`);
+            }
+
+            return commandToHelpString(commandDefinition, syntax);
+        })
+        .join('\n');
+
+    const helpMessage = combineHelpMessage(flagsMessage, commandsMessage, syntax);
+
+    return helpMessage;
+}
 
 export enum MessageSyntax {
     Bash = 'bash',

@@ -1,6 +1,7 @@
 import {createSymLink} from 'augment-vir/dist/cjs/node-only';
 import {join} from 'path';
-import {CliCommandName} from '../cli/cli-command/cli-command-name';
+import {codeInMarkdownCommandDefinition} from '../cli/cli-command-implementations/code-in-markdown.command';
+import {compileCommandDefinition} from '../cli/cli-command-implementations/compile.command';
 import {virmatorRootDir} from './virmator-repo-paths';
 
 export async function createNodeModulesSymLinkForTests(dir: string): Promise<string> {
@@ -12,17 +13,19 @@ export async function createNodeModulesSymLinkForTests(dir: string): Promise<str
 
 const testRepos = join(virmatorRootDir, 'test-files');
 
-export function getCommandTestRepoDir(command: CliCommandName) {
+export function getCommandTestRepoDir(command: string) {
     return join(testRepos, command);
 }
 
-export const testCodeInMarkdownDirPath = getCommandTestRepoDir(CliCommandName.CodeInMarkdown);
+export const testCodeInMarkdownDirPath = getCommandTestRepoDir(
+    codeInMarkdownCommandDefinition.commandName,
+);
 export const testCodeInMarkdownPaths = {
     fixedReadme: join(testCodeInMarkdownDirPath, 'README-fixed.md'),
     brokenReadme: join(testCodeInMarkdownDirPath, 'README-broken.md'),
 };
 
-const formatTestRepos = getCommandTestRepoDir(CliCommandName.Format);
+const formatTestRepos = getCommandTestRepoDir('');
 const invalidFormatRepo = join(formatTestRepos, 'invalid-format-repo');
 export const testFormatPaths = {
     validRepo: join(formatTestRepos, 'valid-format-repo'),
@@ -30,7 +33,7 @@ export const testFormatPaths = {
     invalidSourceFile: join(invalidFormatRepo, 'invalid-format.ts'),
 };
 
-const compileTestRepos = getCommandTestRepoDir(CliCommandName.Compile);
+const compileTestRepos = getCommandTestRepoDir(compileCommandDefinition.commandName);
 const validCompileRepo = join(compileTestRepos, 'valid-compile-repo');
 const invalidCompileRepo = join(compileTestRepos, 'invalid-compile-repo');
 export const testCompilePaths = {
@@ -43,7 +46,7 @@ export const testCompilePaths = {
     compiledInvalidSourceFile: join(invalidCompileRepo, 'bad-blah.js'),
 };
 
-const testTestRepos = getCommandTestRepoDir(CliCommandName.Test);
+const testTestRepos = getCommandTestRepoDir('');
 export const testTestPaths = {
     validRepo: join(testTestRepos, 'valid-test-repo'),
     invalidRepo: join(testTestRepos, 'invalid-test-repo'),
@@ -51,7 +54,7 @@ export const testTestPaths = {
     runInBandTestRepo: join(testTestRepos, 'run-in-band-test-repo'),
 };
 
-const spellcheckTestRepos = getCommandTestRepoDir(CliCommandName.SpellCheck);
+const spellcheckTestRepos = getCommandTestRepoDir('');
 export const spellcheckTestPaths = {
     validRepo: join(spellcheckTestRepos, 'valid-spellcheck-repo'),
     invalidRepo: join(spellcheckTestRepos, 'invalid-spellcheck-repo'),

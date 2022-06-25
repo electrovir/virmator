@@ -1,6 +1,6 @@
 import {isInTypedArray} from '../../augments/array';
-import {DefineCliCommandInputs} from './cli-define-cli-command-input';
 import {CliLogging} from './cli-logging';
+import {DefineCliCommandInputs} from './define-cli-command';
 
 export type CliCommandExecutorInputs<
     InputsGeneric extends DefineCliCommandInputs = DefineCliCommandInputs,

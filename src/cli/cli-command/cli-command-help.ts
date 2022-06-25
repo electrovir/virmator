@@ -4,6 +4,6 @@ export type CliHelpSection = Readonly<{
 }>;
 
 export type CliCommandDescription = Readonly<{
-    sections: CliHelpSection[];
-    examples: CliHelpSection[];
+    sections: Readonly<CliHelpSection[]>;
+    examples: Readonly<CliHelpSection[]>;
 }>;

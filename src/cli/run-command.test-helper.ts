@@ -7,21 +7,18 @@ import {
 import {assert} from 'chai';
 import {join} from 'path';
 import {virmatorDistDir} from '../file-paths/virmator-repo-paths';
-import {allCliCommandDefinitions} from './all-cli-command-definitions';
-import {CliCommandName} from './cli-command/cli-command-name';
+import {CliCommandDefinition} from './cli-command/define-cli-command';
 
 const cliPath = join(virmatorDistDir, 'cli', 'cli.js');
 
-type RunCliCommandInputs<T extends CliCommandName> = {
-    commandName: T;
-    subCommand?:
-        | ArrayElement<typeof allCliCommandDefinitions[T]['availableSubCommands']>
-        | undefined;
+type RunCliCommandInputs<T extends CliCommandDefinition> = {
+    commandDefinition: T;
+    subCommand?: ArrayElement<T['allAvailableSubCommands']> | undefined;
     extraArgs?: string[];
     cwd: string;
 };
 
-export async function runCliCommandForTest<T extends CliCommandName>(
+export async function runCliCommandForTest<T extends CliCommandDefinition>(
     inputs: RunCliCommandInputs<T>,
     expectations?: Partial<ShellOutput>,
     message: string = '',
@@ -29,7 +26,7 @@ export async function runCliCommandForTest<T extends CliCommandName>(
     const cliCommand = interpolationSafeWindowsPath(cliPath);
     const subCommand = inputs.subCommand ?? '';
     const extraArgs = inputs.extraArgs?.join(' ') ?? '';
-    const commandString = `node ${cliCommand} ${inputs.commandName} ${subCommand} ${extraArgs}`;
+    const commandString = `node ${cliCommand} ${inputs.commandDefinition.commandName} ${subCommand} ${extraArgs}`;
 
     const results = await runShellCommand(commandString, {cwd: inputs.cwd});
 
