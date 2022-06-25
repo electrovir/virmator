@@ -35,15 +35,18 @@ export const compileCommandDefinition = defineCliCommand(
         requiredConfigFiles: [configFiles.tsConfig],
     } as const,
     async (inputs): Promise<CliCommandExecutorOutput> => {
-        const noEmit =
+        const shouldNotEmit =
             inputs.filteredInputArgs.join(' ').includes('--noEmit') ||
             inputs.inputSubCommands.includes('check');
-        const resetCommand = noEmit ? '' : 'rm -rf dist && ';
+        const resetCommand = shouldNotEmit ? '' : 'rm -rf dist && ';
+        const noEmit = shouldNotEmit ? ' --noEmit' : '';
+
         const compileCommand = `${resetCommand}${getNpmBinPath(
             'tsc',
-        )} --pretty ${inputs.filteredInputArgs.map((arg) => `"${arg}"`).join(' ')}`;
+        )} --pretty ${noEmit}${inputs.filteredInputArgs.map((arg) => `"${arg}"`).join(' ')}`;
         const results = await runVirmatorShellCommand(compileCommand, inputs);
 
+        console.log({compileCommand});
         return {
             fullExecutedCommand: compileCommand,
             success: !results.error,

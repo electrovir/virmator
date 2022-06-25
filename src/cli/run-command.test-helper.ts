@@ -1,4 +1,4 @@
-import {ArrayElement, getObjectTypedKeys} from 'augment-vir';
+import {ArrayElement, combineErrors, extractErrorMessage, getObjectTypedKeys} from 'augment-vir';
 import {
     interpolationSafeWindowsPath,
     runShellCommand,
@@ -31,6 +31,7 @@ export async function runCliCommandForTest<T extends CliCommandDefinition>(
     const results = await runShellCommand(commandString, {cwd: inputs.cwd});
 
     if (expectations) {
+        const errors: Error[] = [];
         getObjectTypedKeys(expectations).forEach((expectationKey) => {
             // this is logged separately so that special characters (like color codes) are visible
             const mismatch = JSON.stringify(
@@ -43,8 +44,19 @@ export async function runCliCommandForTest<T extends CliCommandDefinition>(
                 null,
                 4,
             );
-            assert.strictEqual(results[expectationKey], expectations[expectationKey], mismatch);
+            try {
+                assert.strictEqual(
+                    results[expectationKey],
+                    expectations[expectationKey],
+                    `\n${mismatch}\n`,
+                );
+            } catch (error) {
+                errors.push(new Error(extractErrorMessage(error)));
+            }
         });
+        if (errors.length) {
+            throw combineErrors(errors);
+        }
     }
 
     return results;
