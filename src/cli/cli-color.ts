@@ -1,16 +1,10 @@
 import {styles} from 'ansi-colors';
-import {mapObject} from 'augment-vir';
 
-export const Color = mapObject(
-    {
-        Info: styles.blue,
-        Fail: styles.red,
-        Warn: styles.yellow,
-        Success: styles.green,
-        Reset: styles.reset,
-        Bold: styles.bold,
-    } as const,
-    (key, value): string => {
-        return value.open;
-    },
-);
+export const Color = {
+    Info: styles.blue.open,
+    Fail: styles.red.open,
+    Warn: styles.yellow.open,
+    Success: styles.green.open,
+    Reset: styles.reset.open,
+    Bold: styles.bold.open,
+};

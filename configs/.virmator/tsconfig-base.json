@@ -29,7 +29,8 @@
         "../dist",
         "../node_modules",
         "../separate-configs",
-        "../test-files"
+        "../test-files",
+        "../.virmator"
     ],
     "ts-node": {
         "compilerOptions": {

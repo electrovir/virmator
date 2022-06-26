@@ -125,4 +125,14 @@ export const configFiles = (<T extends Record<string, ConfigFileDefinition>>(inp
     mocha: {
         path: join(virmatorConfigsDir, '.mocharc.js'),
     },
+
+    viteBase: {
+        path: join(virmatorConfigs.dotVirmator, 'vite-base.ts'),
+    },
+    viteReloadPlugin: {
+        path: join(virmatorConfigs.dotVirmator, 'vite-always-reload-plugin.ts'),
+    },
+    vite: {
+        path: join(virmatorConfigs.dotVirmator, 'vite.config.ts'),
+    },
 });
