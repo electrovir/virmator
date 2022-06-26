@@ -1,4 +1,10 @@
-import {ArrayElement, combineErrors, extractErrorMessage, getObjectTypedKeys} from 'augment-vir';
+import {
+    ArrayElement,
+    combineErrors,
+    extractErrorMessage,
+    getObjectTypedKeys,
+    Overwrite,
+} from 'augment-vir';
 import {
     interpolationSafeWindowsPath,
     runShellCommand,
@@ -7,6 +13,7 @@ import {
 import {assert} from 'chai';
 import {readdir, readFile, stat} from 'fs/promises';
 import {join} from 'path';
+import {filterObject} from '../augments/object';
 import {virmatorDistDir} from '../file-paths/virmator-package-paths';
 import {CliCommandDefinition} from './cli-command/define-cli-command';
 
@@ -21,7 +28,9 @@ type RunCliCommandInputs<T extends CliCommandDefinition> = {
 
 export async function runCliCommandForTest<T extends CliCommandDefinition>(
     inputs: RunCliCommandInputs<T>,
-    expectations?: Partial<ShellOutput>,
+    expectations?: Partial<
+        Overwrite<ShellOutput, {stderr: string | RegExp; stdout: string | RegExp}>
+    >,
     message: string = '',
 ) {
     const cliCommand = interpolationSafeWindowsPath(cliPath);
@@ -38,27 +47,38 @@ export async function runCliCommandForTest<T extends CliCommandDefinition>(
     const newFiles = dirFileNamesAfter.filter(
         (afterFile) => !dirFileNamesBefore.includes(afterFile),
     );
+    const changedFiles = filterObject(dirFileContentsAfter, (afterContents, key) => {
+        const beforeContents = dirFileContentsBefore[key];
+
+        return beforeContents !== afterContents;
+    });
 
     if (expectations) {
         const errors: Error[] = [];
         getObjectTypedKeys(expectations).forEach((expectationKey) => {
+            const expectation = expectations[expectationKey];
+            const result = results[expectationKey];
+
+            const expectationMessage =
+                expectation instanceof RegExp ? String(expectation) : expectation;
             // this is logged separately so that special characters (like color codes) are visible
             const mismatch = JSON.stringify(
                 {
-                    [`${message}${message ? '-' : ''}actual-${expectationKey}`]:
-                        results[expectationKey],
+                    [`${message}${message ? '-' : ''}actual-${expectationKey}`]: result,
                     [`${message}${message ? '-' : ''}expected-${expectationKey}`]:
-                        expectations[expectationKey],
+                        expectationMessage,
                 },
                 null,
                 4,
             );
+
+            const mismatchMessage = `\n${mismatch}\n`;
             try {
-                assert.strictEqual(
-                    results[expectationKey],
-                    expectations[expectationKey],
-                    `\n${mismatch}\n`,
-                );
+                if (expectation instanceof RegExp) {
+                    assert.match(String(result), expectation, mismatchMessage);
+                } else {
+                    assert.strictEqual(result, expectation, mismatchMessage);
+                }
             } catch (error) {
                 errors.push(new Error(extractErrorMessage(error)));
             }
@@ -74,6 +94,7 @@ export async function runCliCommandForTest<T extends CliCommandDefinition>(
         dirFileNamesAfter,
         dirFileContentsBefore,
         dirFileContentsAfter,
+        changedFiles,
         newFiles,
     };
 }

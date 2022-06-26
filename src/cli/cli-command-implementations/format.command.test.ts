@@ -1,5 +1,7 @@
 import {assert} from 'chai';
+import {readFile, writeFile} from 'fs/promises';
 import {describe, it} from 'mocha';
+import {basename} from 'path';
 import {testFormatPaths} from '../../file-paths/virmator-test-file-paths';
 import {runCliCommandForTest} from '../run-command.test-helper';
 import {formatCommandDefinition} from './format.command';
@@ -53,5 +55,35 @@ describe(formatCommandDefinition.commandName, () => {
             output.dirFileContentsAfter,
             'file contents should not have changed',
         );
+    });
+
+    it('should update formatting', async () => {
+        const output = await runCliCommandForTest(
+            {
+                commandDefinition: formatCommandDefinition,
+                cwd: testFormatPaths.invalidRepo,
+            },
+            {
+                exitCode: 0,
+                stdout: /running format...\ninvalid-format.ts \d+m?s\n\u001b\[1m\u001b\[32mformat succeeded.\u001b\[0m\n/,
+                stderr: '',
+            },
+        );
+        assert.deepEqual(
+            output.dirFileNamesBefore,
+            output.dirFileNamesAfter,
+            'new files should not have been generated',
+        );
+        assert.deepEqual(Object.keys(output.changedFiles), ['invalid-format.ts']);
+        const unformattedBeforeContents =
+            output.dirFileContentsBefore[basename(testFormatPaths.invalidSourceFile)];
+        if (!unformattedBeforeContents) {
+            throw new Error(`"unformattedBeforeContents" is not defined.`);
+        }
+        await writeFile(testFormatPaths.invalidSourceFile, unformattedBeforeContents);
+        const afterCleanUpFileContents = (
+            await readFile(testFormatPaths.invalidSourceFile)
+        ).toString();
+        assert.strictEqual(afterCleanUpFileContents, unformattedBeforeContents);
     });
 });
