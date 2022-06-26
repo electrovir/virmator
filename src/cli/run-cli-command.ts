@@ -1,10 +1,7 @@
+import {isInTypedArray} from '../augments/array';
 import {CliLogging, noCliLogging} from '../logging';
 import {builtInCliCommandDefinitions, builtInCommandNames} from './all-cli-command-definitions';
-import {
-    CliCommandExecutorInputs,
-    CliCommandExecutorOutput,
-    extractSubCommands,
-} from './cli-command/cli-executor';
+import {CliCommandExecutorInputs, CliCommandExecutorOutput} from './cli-command/cli-executor';
 import {CliCommandDefinition} from './cli-command/define-cli-command';
 import {CliFlagName} from './cli-flags/cli-flag-name';
 import {CliFlagValues} from './cli-flags/cli-flag-values';
@@ -56,4 +53,29 @@ export async function runCommand(
     const commandResult = await commandDefinition.executor(commandInputs);
 
     return commandResult;
+}
+
+export type ExtractSubCommandsOutput<T> = {subCommands: T[]; filteredArgs: string[]};
+
+export function extractSubCommands<T>(
+    allArgs: string[],
+    availableSubCommands: T[],
+): ExtractSubCommandsOutput<T> {
+    let stillInSubCommands = true;
+    return allArgs.reduce(
+        (accum, currentArg) => {
+            if (stillInSubCommands) {
+                if (isInTypedArray(currentArg, availableSubCommands)) {
+                    accum.subCommands.push(currentArg);
+                } else {
+                    stillInSubCommands = false;
+                    accum.filteredArgs.push(currentArg);
+                }
+            } else {
+                accum.filteredArgs.push(currentArg);
+            }
+            return accum;
+        },
+        {subCommands: [], filteredArgs: []} as ExtractSubCommandsOutput<T>,
+    );
 }

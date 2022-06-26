@@ -1,16 +1,19 @@
 import {getNpmBinPath} from '../../file-paths/virmator-package-paths';
 import {packageName} from '../../package-name';
-import {CliCommandExecutorOutput} from '../cli-command/cli-executor';
-import {defineCliCommand} from '../cli-command/define-cli-command';
+import {CliCommandExecutorOutput, defineCliCommand} from '../cli-command/define-cli-command';
 import {runVirmatorShellCommand} from '../cli-command/run-shell-command';
 import {configFiles} from '../config/config-files';
 
-const commandName = 'compile';
-
 export const compileCommandDefinition = defineCliCommand(
     {
-        commandName: commandName,
-        commandDescription: {
+        commandName: 'compile',
+        subCommandDescriptions: {
+            check: 'Run type checking without emitting compiled files.',
+        },
+        requiredConfigFiles: [configFiles.tsConfig],
+    } as const,
+    ({commandName}) => {
+        return {
             sections: [
                 {
                     title: '',
@@ -28,16 +31,12 @@ export const compileCommandDefinition = defineCliCommand(
                     content: `${packageName} ${commandName} --noEmit`,
                 },
             ],
-        },
-        subCommandDescriptions: {
-            check: 'Run type checking without emitting compiled files.',
-        },
-        requiredConfigFiles: [configFiles.tsConfig],
-    } as const,
+        };
+    },
     async (inputs): Promise<CliCommandExecutorOutput> => {
         const shouldNotEmit =
             inputs.filteredInputArgs.join(' ').includes('--noEmit') ||
-            inputs.inputSubCommands.includes('check');
+            inputs.inputSubCommands.includes(inputs.subCommands.check);
         const resetCommand = shouldNotEmit ? '' : 'rm -rf dist && ';
         const noEmit = shouldNotEmit ? ' --noEmit' : '';
 
@@ -46,7 +45,6 @@ export const compileCommandDefinition = defineCliCommand(
         )} --pretty ${noEmit}${inputs.filteredInputArgs.map((arg) => `"${arg}"`).join(' ')}`;
         const results = await runVirmatorShellCommand(compileCommand, inputs);
 
-        console.log({compileCommand});
         return {
             fullExecutedCommand: compileCommand,
             success: !results.error,
