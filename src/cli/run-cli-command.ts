@@ -1,8 +1,11 @@
 import {isInTypedArray} from '../augments/array';
 import {CliLogging, noCliLogging} from '../logging';
 import {builtInCliCommandDefinitions, builtInCommandNames} from './all-cli-command-definitions';
-import {CliCommandExecutorInputs, CliCommandExecutorOutput} from './cli-command/cli-executor';
-import {CliCommandDefinition} from './cli-command/define-cli-command';
+import {
+    CliCommandDefinition,
+    CliCommandExecutorInputs,
+    CliCommandExecutorOutput,
+} from './cli-command/define-cli-command';
 import {CliFlagName} from './cli-flags/cli-flag-name';
 import {CliFlagValues} from './cli-flags/cli-flag-values';
 import {doesCopyToConfigPathExist} from './config/config-files';

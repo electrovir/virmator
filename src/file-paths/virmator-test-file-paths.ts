@@ -2,6 +2,7 @@ import {createSymLink} from 'augment-vir/dist/cjs/node-only';
 import {join} from 'path';
 import {codeInMarkdownCommandDefinition} from '../cli/cli-command-implementations/code-in-markdown.command';
 import {compileCommandDefinition} from '../cli/cli-command-implementations/compile.command';
+import {formatCommandDefinition} from '../cli/cli-command-implementations/format.command';
 import {virmatorPackageDir} from './virmator-package-paths';
 
 export async function createNodeModulesSymLinkForTests(dir: string): Promise<string> {
@@ -25,7 +26,7 @@ export const testCodeInMarkdownPaths = {
     brokenReadme: join(testCodeInMarkdownDirPath, 'README-broken.md'),
 };
 
-const formatTestRepos = getCommandTestRepoDir('');
+const formatTestRepos = getCommandTestRepoDir(formatCommandDefinition.commandName);
 const invalidFormatRepo = join(formatTestRepos, 'invalid-format-repo');
 export const testFormatPaths = {
     validRepo: join(formatTestRepos, 'valid-format-repo'),

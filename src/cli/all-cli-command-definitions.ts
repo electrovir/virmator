@@ -1,18 +1,27 @@
 import {ArrayElement, mapObject, Writeable} from 'augment-vir';
 import {codeInMarkdownCommandDefinition} from './cli-command-implementations/code-in-markdown.command';
 import {compileCommandDefinition} from './cli-command-implementations/compile.command';
+import {formatCommandDefinition} from './cli-command-implementations/format.command';
 import {
     generateHelpMessage,
     MessageSyntax,
     wrapLines,
 } from './cli-command/cli-command-to-help-message';
-import {CliCommandExecutorOutput} from './cli-command/cli-executor';
-import {CliCommandDefinition, defineCliCommand} from './cli-command/define-cli-command';
+import {
+    CliCommandDefinition,
+    CliCommandExecutorOutput,
+    defineCliCommand,
+} from './cli-command/define-cli-command';
 
 function createUnimplementedCommand<CommandName extends string>(commandName: CommandName) {
     return defineCliCommand(
         {
-            commandDescription: {
+            commandName,
+            subCommandDescriptions: {},
+            requiredConfigFiles: [],
+        } as const,
+        () => {
+            return {
                 sections: [
                     {
                         content: '',
@@ -20,13 +29,10 @@ function createUnimplementedCommand<CommandName extends string>(commandName: Com
                     },
                 ],
                 examples: [],
-            },
-            commandName,
-            subCommandDescriptions: {},
-            requiredConfigFiles: [],
-        } as const,
+            };
+        },
         (): CliCommandExecutorOutput => {
-            throw new Error(`The ${commandName} command has not been implemented yet.`);
+            throw new Error(`The "${commandName}" command has not been implemented yet.`);
         },
     );
 }
@@ -34,13 +40,15 @@ function createUnimplementedCommand<CommandName extends string>(commandName: Com
 const helpCommandDefinition = defineCliCommand(
     {
         commandName: 'help',
-        commandDescription: {
-            sections: [],
-            examples: [],
-        },
         subCommandDescriptions: {},
         requiredConfigFiles: [],
     } as const,
+    () => {
+        return {
+            sections: [],
+            examples: [],
+        };
+    },
     (inputs) => {
         inputs.logging.stdout(
             wrapLines(generateHelpMessage(allCliCommandDefinitions, MessageSyntax.Bash), 100),
@@ -57,7 +65,7 @@ const allCommandsArray = [
     codeInMarkdownCommandDefinition,
     compileCommandDefinition,
     helpCommandDefinition,
-    createUnimplementedCommand('format'),
+    formatCommandDefinition,
     createUnimplementedCommand('init'),
     createUnimplementedCommand('spell-check'),
     createUnimplementedCommand('test'),

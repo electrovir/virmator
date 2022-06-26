@@ -19,7 +19,7 @@ describe(codeInMarkdownCommandDefinition.commandName, () => {
             },
             {
                 exitCode: 1,
-                stderr: '    README-broken.md: NOT up to date\nCode in Markdown file(s) is out of date. Use the update sub-command to update.\n',
+                stderr: '    README-broken.md: NOT up to date\nCode in Markdown file(s) is out of date. Run without the "check" sub-command in order to update.\n',
             },
         );
     });
@@ -51,7 +51,7 @@ describe(codeInMarkdownCommandDefinition.commandName, () => {
             },
             {
                 exitCode: 1,
-                stderr: '    README-broken.md: NOT up to date\nCode in Markdown file(s) is out of date. Use the update sub-command to update.\n',
+                stderr: '    README-broken.md: NOT up to date\nCode in Markdown file(s) is out of date. Run without the "check" sub-command in order to update.\n',
             },
         );
     });
@@ -79,7 +79,6 @@ describe(codeInMarkdownCommandDefinition.commandName, () => {
             await runCliCommandForTest(
                 {
                     commandDefinition: codeInMarkdownCommandDefinition,
-                    subCommand: codeInMarkdownCommandDefinition.subCommands.update,
                     cwd: testCodeInMarkdownDirPath,
                     extraArgs: ['README-broken.md'],
                 },

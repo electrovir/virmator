@@ -20,7 +20,7 @@ const defaultFormatExtensions = [
 
 const filesMarkerArg = '--file-types' as const;
 
-export const compileCommandDefinition = defineCliCommand(
+export const formatCommandDefinition = defineCliCommand(
     {
         commandName: 'format',
         subCommandDescriptions: {
@@ -93,7 +93,7 @@ export const compileCommandDefinition = defineCliCommand(
 
         const prettier = getNpmBinPath('prettier');
 
-        const formatCommand = `${prettier} --color ${extraPrettierFlags}${fileExtensionsString}${operationString}`;
+        const formatCommand = `${prettier} --color ${extraPrettierFlags}${fileExtensionsString} ${operationString}`;
         const results = await runVirmatorShellCommand(formatCommand, {
             ...inputs,
             logTransforms: {
