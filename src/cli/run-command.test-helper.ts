@@ -5,6 +5,7 @@ import {
     ShellOutput,
 } from 'augment-vir/dist/cjs/node-only';
 import {assert} from 'chai';
+import {readdir} from 'fs/promises';
 import {join} from 'path';
 import {virmatorDistDir} from '../file-paths/virmator-package-paths';
 import {CliCommandDefinition} from './cli-command/define-cli-command';
@@ -28,7 +29,10 @@ export async function runCliCommandForTest<T extends CliCommandDefinition>(
     const extraArgs = inputs.extraArgs?.join(' ') ?? '';
     const commandString = `node ${cliCommand} ${inputs.commandDefinition.commandName} ${subCommand} ${extraArgs}`;
 
+    const beforeTestFiles = (await readdir(inputs.cwd)).sort();
     const results = await runShellCommand(commandString, {cwd: inputs.cwd});
+    const afterTestFiles = (await readdir(inputs.cwd)).sort();
+    const newFiles = afterTestFiles.filter((afterFile) => !beforeTestFiles.includes(afterFile));
 
     if (expectations) {
         const errors: Error[] = [];
@@ -59,5 +63,10 @@ export async function runCliCommandForTest<T extends CliCommandDefinition>(
         }
     }
 
-    return results;
+    return {
+        results,
+        beforeTestFiles,
+        afterTestFiles,
+        newFiles,
+    };
 }
