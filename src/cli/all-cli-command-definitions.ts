@@ -2,6 +2,7 @@ import {ArrayElement, mapObject, Writeable} from 'augment-vir';
 import {codeInMarkdownCommandDefinition} from './cli-command-implementations/code-in-markdown.command';
 import {compileCommandDefinition} from './cli-command-implementations/compile.command';
 import {formatCommandDefinition} from './cli-command-implementations/format.command';
+import {spellcheckCommandDefinition} from './cli-command-implementations/spellcheck.command';
 import {
     generateHelpMessage,
     MessageSyntax,
@@ -66,12 +67,13 @@ const allCommandsArray = [
     compileCommandDefinition,
     helpCommandDefinition,
     formatCommandDefinition,
+    spellcheckCommandDefinition,
     createUnimplementedCommand('init'),
-    createUnimplementedCommand('spell-check'),
     createUnimplementedCommand('test'),
     createUnimplementedCommand('test-web'),
     createUnimplementedCommand('update-configs'),
     createUnimplementedCommand('vite'),
+    createUnimplementedCommand('publish'),
 ] as const;
 
 export type BuiltInCommandName = ArrayElement<typeof allCommandsArray>['commandName'];

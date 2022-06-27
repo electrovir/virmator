@@ -24,12 +24,14 @@ type RunCliCommandInputs<T extends CliCommandDefinition> = {
     subCommand?: ArrayElement<T['allAvailableSubCommands']> | undefined;
     extraArgs?: string[];
     cwd: string;
+    debug?: boolean;
 };
 
 export async function runCliCommandForTest<T extends CliCommandDefinition>(
     inputs: RunCliCommandInputs<T>,
-    expectations?: Partial<
-        Overwrite<ShellOutput, {stderr: string | RegExp; stdout: string | RegExp}>
+    expectations?: Omit<
+        Overwrite<ShellOutput, {stderr: string | RegExp; stdout: string | RegExp}>,
+        'error'
     >,
     message: string = '',
 ) {
@@ -40,7 +42,24 @@ export async function runCliCommandForTest<T extends CliCommandDefinition>(
 
     const dirFileNamesBefore = (await readdir(inputs.cwd)).sort();
     const dirFileContentsBefore = await readFileContents(inputs.cwd);
-    const results = await runShellCommand(commandString, {cwd: inputs.cwd});
+    const results = await runShellCommand(commandString, {
+        cwd: inputs.cwd,
+        ...(inputs.debug
+            ? {
+                  hookUpToConsole: true,
+              }
+            : // ? {
+              //       stderrCallback(stderr) {
+              //           console.error({stderr});
+              //           console.error(stderr);
+              //       },
+              //       stdoutCallback(stdout) {
+              //           console.error({stdout});
+              //           console.error(stdout);
+              //       },
+              //   }
+              {}),
+    });
     const dirFileNamesAfter = (await readdir(inputs.cwd)).sort();
     const dirFileContentsAfter = await readFileContents(inputs.cwd);
 

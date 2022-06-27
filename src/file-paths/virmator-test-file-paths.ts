@@ -3,6 +3,7 @@ import {join} from 'path';
 import {codeInMarkdownCommandDefinition} from '../cli/cli-command-implementations/code-in-markdown.command';
 import {compileCommandDefinition} from '../cli/cli-command-implementations/compile.command';
 import {formatCommandDefinition} from '../cli/cli-command-implementations/format.command';
+import {spellcheckCommandDefinition} from '../cli/cli-command-implementations/spellcheck.command';
 import {virmatorPackageDir} from './virmator-package-paths';
 
 export async function createNodeModulesSymLinkForTests(dir: string): Promise<string> {
@@ -55,11 +56,11 @@ export const testTestPaths = {
     runInBandTestRepo: join(testTestRepos, 'run-in-band-test-repo'),
 };
 
-const spellcheckTestRepos = getCommandTestRepoDir('');
-export const spellcheckTestPaths = {
-    validRepo: join(spellcheckTestRepos, 'valid-spellcheck-repo'),
-    invalidRepo: join(spellcheckTestRepos, 'invalid-spellcheck-repo'),
-    hiddenStuffRepo: join(spellcheckTestRepos, 'hidden-stuff-spellcheck-repo'),
+const testSpellcheckReposDir = getCommandTestRepoDir(spellcheckCommandDefinition.commandName);
+export const testSpellcheckPaths = {
+    validRepo: join(testSpellcheckReposDir, 'valid-spellcheck-repo'),
+    invalidRepo: join(testSpellcheckReposDir, 'invalid-spellcheck-repo'),
+    hiddenStuffRepo: join(testSpellcheckReposDir, 'hidden-stuff-spellcheck-repo'),
 };
 
 export const virmatorReadme = join(virmatorPackageDir, 'README.md');

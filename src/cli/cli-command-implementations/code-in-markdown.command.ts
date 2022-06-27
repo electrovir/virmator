@@ -69,7 +69,7 @@ export const codeInMarkdownCommandDefinition = defineCliCommand(
 
         return {
             fullExecutedCommand: mdCodeCommand,
-            success: !results.error,
+            success: !results.exitCode,
         };
     },
 );

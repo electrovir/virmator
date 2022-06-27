@@ -47,7 +47,7 @@ export const compileCommandDefinition = defineCliCommand(
 
         return {
             fullExecutedCommand: compileCommand,
-            success: !results.error,
+            success: !results.exitCode,
         };
     },
 );

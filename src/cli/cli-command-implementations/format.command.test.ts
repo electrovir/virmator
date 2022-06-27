@@ -16,8 +16,9 @@ describe(formatCommandDefinition.commandName, () => {
             },
             {
                 exitCode: 1,
-                stdout: `running format...\n\u001b[1m\u001b[31mformat failed.\u001b[0m\n`,
+                exitSignal: undefined,
                 stderr: `[\u001b[33mwarn\u001b[39m] invalid-format.ts\n[\u001b[33mwarn\u001b[39m] Code style issues found in the above file. Forgot to run Prettier?\n`,
+                stdout: `running format...\n\u001b[1m\u001b[31mformat failed.\u001b[0m\n`,
             },
         );
         assert.deepEqual(
@@ -41,8 +42,9 @@ describe(formatCommandDefinition.commandName, () => {
             },
             {
                 exitCode: 0,
-                stdout: `running format...\n\u001b[1m\u001b[32mformat succeeded.\u001b[0m\n`,
+                exitSignal: undefined,
                 stderr: '',
+                stdout: `running format...\n\u001b[1m\u001b[32mformat succeeded.\u001b[0m\n`,
             },
         );
         assert.deepEqual(
@@ -65,8 +67,9 @@ describe(formatCommandDefinition.commandName, () => {
             },
             {
                 exitCode: 0,
-                stdout: /running format...\ninvalid-format.ts \d+m?s\n\u001b\[1m\u001b\[32mformat succeeded.\u001b\[0m\n/,
+                exitSignal: undefined,
                 stderr: '',
+                stdout: /running format...\ninvalid-format.ts \d+m?s\n\u001b\[1m\u001b\[32mformat succeeded.\u001b\[0m\n/,
             },
         );
         assert.deepEqual(

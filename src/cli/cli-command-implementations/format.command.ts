@@ -108,7 +108,7 @@ export const formatCommandDefinition = defineCliCommand(
 
         return {
             fullExecutedCommand: formatCommand,
-            success: !results.error,
+            success: !results.exitCode,
         };
     },
 );
