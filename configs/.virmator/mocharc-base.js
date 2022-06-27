@@ -7,7 +7,10 @@ const allTestFiles = 'src/**/*.test.ts?(x)';
 const mochaConfig = {
     checkLeaks: true,
     color: true,
+    parallel: true,
     require: 'ts-node/register',
+    slow: '1500', // ms
+    timeout: '30000', // ms
     ...(process.argv.some(isTestFile) ? {} : {spec: allTestFiles}),
 };
 

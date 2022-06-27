@@ -4,6 +4,7 @@ import {codeInMarkdownCommandDefinition} from '../cli/cli-command-implementation
 import {compileCommandDefinition} from '../cli/cli-command-implementations/compile.command';
 import {formatCommandDefinition} from '../cli/cli-command-implementations/format.command';
 import {spellcheckCommandDefinition} from '../cli/cli-command-implementations/spellcheck.command';
+import {testCommandDefinition} from '../cli/cli-command-implementations/test.command';
 import {virmatorPackageDir} from './virmator-package-paths';
 
 export async function createNodeModulesSymLinkForTests(dir: string): Promise<string> {
@@ -48,7 +49,7 @@ export const testCompilePaths = {
     compiledInvalidSourceFile: join(invalidCompileRepo, 'bad-blah.js'),
 };
 
-const testTestRepos = getCommandTestRepoDir('');
+const testTestRepos = getCommandTestRepoDir(testCommandDefinition.commandName);
 export const testTestPaths = {
     validRepo: join(testTestRepos, 'valid-test-repo'),
     invalidRepo: join(testTestRepos, 'invalid-test-repo'),

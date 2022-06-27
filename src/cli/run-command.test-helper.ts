@@ -48,17 +48,7 @@ export async function runCliCommandForTest<T extends CliCommandDefinition>(
             ? {
                   hookUpToConsole: true,
               }
-            : // ? {
-              //       stderrCallback(stderr) {
-              //           console.error({stderr});
-              //           console.error(stderr);
-              //       },
-              //       stdoutCallback(stdout) {
-              //           console.error({stdout});
-              //           console.error(stdout);
-              //       },
-              //   }
-              {}),
+            : {}),
     });
     const dirFileNamesAfter = (await readdir(inputs.cwd)).sort();
     const dirFileContentsAfter = await readFileContents(inputs.cwd);
@@ -99,6 +89,10 @@ export async function runCliCommandForTest<T extends CliCommandDefinition>(
                     assert.strictEqual(result, expectation, mismatchMessage);
                 }
             } catch (error) {
+                if (expectation instanceof RegExp) {
+                    console.log(expectation, {expectation}, String(expectation));
+                }
+                console.info(result);
                 errors.push(new Error(extractErrorMessage(error)));
             }
         });

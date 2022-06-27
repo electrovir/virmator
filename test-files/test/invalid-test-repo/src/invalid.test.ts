@@ -1,5 +1,8 @@
-describe(__filename, () => {
+import {assert} from 'chai';
+import {basename} from 'path';
+
+describe(basename(__filename), () => {
     it('should have a failing test', () => {
-        expect(false).toBeTruthy();
+        assert.isTrue(false, 'this should fail');
     });
 });
