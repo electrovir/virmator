@@ -4,7 +4,9 @@ import {codeInMarkdownCommandDefinition} from '../cli/cli-command-implementation
 import {compileCommandDefinition} from '../cli/cli-command-implementations/compile.command';
 import {formatCommandDefinition} from '../cli/cli-command-implementations/format.command';
 import {spellcheckCommandDefinition} from '../cli/cli-command-implementations/spellcheck.command';
+import {testWebCommandDefinition} from '../cli/cli-command-implementations/test-web.command';
 import {testCommandDefinition} from '../cli/cli-command-implementations/test.command';
+import {CliCommandDefinition} from '../cli/cli-command/define-cli-command';
 import {virmatorPackageDir} from './virmator-package-paths';
 
 export async function createNodeModulesSymLinkForTests(dir: string): Promise<string> {
@@ -16,19 +18,17 @@ export async function createNodeModulesSymLinkForTests(dir: string): Promise<str
 
 const testRepos = join(virmatorPackageDir, 'test-files');
 
-export function getCommandTestRepoDir(command: string) {
-    return join(testRepos, command);
+export function getCommandTestRepoDir(command: CliCommandDefinition) {
+    return join(testRepos, command.commandName);
 }
 
-export const testCodeInMarkdownDirPath = getCommandTestRepoDir(
-    codeInMarkdownCommandDefinition.commandName,
-);
+export const testCodeInMarkdownDirPath = getCommandTestRepoDir(codeInMarkdownCommandDefinition);
 export const testCodeInMarkdownPaths = {
     fixedReadme: join(testCodeInMarkdownDirPath, 'README-fixed.md'),
     brokenReadme: join(testCodeInMarkdownDirPath, 'README-broken.md'),
 };
 
-const formatTestRepos = getCommandTestRepoDir(formatCommandDefinition.commandName);
+const formatTestRepos = getCommandTestRepoDir(formatCommandDefinition);
 const invalidFormatRepo = join(formatTestRepos, 'invalid-format-repo');
 export const testFormatPaths = {
     validRepo: join(formatTestRepos, 'valid-format-repo'),
@@ -36,7 +36,7 @@ export const testFormatPaths = {
     invalidSourceFile: join(invalidFormatRepo, 'invalid-format.ts'),
 };
 
-const compileTestRepos = getCommandTestRepoDir(compileCommandDefinition.commandName);
+const compileTestRepos = getCommandTestRepoDir(compileCommandDefinition);
 const validCompileRepo = join(compileTestRepos, 'valid-compile-repo');
 const invalidCompileRepo = join(compileTestRepos, 'invalid-compile-repo');
 export const testCompilePaths = {
@@ -49,19 +49,25 @@ export const testCompilePaths = {
     compiledInvalidSourceFile: join(invalidCompileRepo, 'bad-blah.js'),
 };
 
-const testTestRepos = getCommandTestRepoDir(testCommandDefinition.commandName);
+const testTestRepos = getCommandTestRepoDir(testCommandDefinition);
 export const testTestPaths = {
     validRepo: join(testTestRepos, 'valid-test-repo'),
     invalidRepo: join(testTestRepos, 'invalid-test-repo'),
     multiRepo: join(testTestRepos, 'multi-test-repo'),
-    runInBandTestRepo: join(testTestRepos, 'run-in-band-test-repo'),
+    serialTestRepo: join(testTestRepos, 'serial-test-repo'),
 };
 
-const testSpellcheckReposDir = getCommandTestRepoDir(spellcheckCommandDefinition.commandName);
+const testSpellcheckReposDir = getCommandTestRepoDir(spellcheckCommandDefinition);
 export const testSpellcheckPaths = {
     validRepo: join(testSpellcheckReposDir, 'valid-spellcheck-repo'),
     invalidRepo: join(testSpellcheckReposDir, 'invalid-spellcheck-repo'),
     hiddenStuffRepo: join(testSpellcheckReposDir, 'hidden-stuff-spellcheck-repo'),
+};
+
+const testTestWebRepos = getCommandTestRepoDir(testWebCommandDefinition);
+export const testTestWebPaths = {
+    passRepo: join(testTestWebRepos, 'pass-test-repo'),
+    failRepo: join(testTestWebRepos, 'fail-test-repo'),
 };
 
 export const virmatorReadme = join(virmatorPackageDir, 'README.md');

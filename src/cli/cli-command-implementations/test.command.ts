@@ -17,7 +17,7 @@ export const testCommandDefinition = defineCliCommand(
             sections: [
                 {
                     title: '',
-                    content: `Test all .test.ts files with Mocha and Chai.  By default this command tests all .test.ts files in the current directory (recursively) that are not .type.test.ts files. To override this behavior, pass in a custom config file using the --config argument. All other Mocha arguments are also valid and will be passed on to Mocha.`,
+                    content: `Test all .test.ts files with Mocha and Chai.  By default this command tests all ".test.ts" files in the current directory (recursively) that are not ".type.test.ts" files. To override this behavior, override the "spec" property in .mocharc.js.`,
                 },
                 {
                     title: '',
@@ -31,7 +31,7 @@ export const testCommandDefinition = defineCliCommand(
 
             examples: [
                 {
-                    title: 'Test all .test.ts, .test.tsx, .test.js, .test.jsx files',
+                    title: 'Test all .test.ts and .test.tsx files',
                     content: `${packageName} ${commandName}`,
                 },
                 {

@@ -1,6 +1,1 @@
-{
-    "compilerOptions": {
-        "strict": true,
-        "target": "es6"
-    }
-}
+../valid-compile-repo/tsconfig.json

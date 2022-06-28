@@ -1,7 +1,5 @@
-function isTestFile(arg) {
-    return arg.match(/\.tsx?$/);
-}
-const allTestFiles = 'src/**/*.test.ts?(x)';
+const allTestFiles = 'src/**/!(*.type).test.ts?(x)';
+const isTestingOtherFiles = process.argv.some((arg) => arg.match(/\.tsx?$/));
 
 /** @type {import('mocha').MochaOptions} */
 const mochaConfig = {
@@ -11,7 +9,7 @@ const mochaConfig = {
     require: 'ts-node/register',
     slow: '1500', // ms
     timeout: '30000', // ms
-    ...(process.argv.some(isTestFile) ? {} : {spec: allTestFiles}),
+    ...(isTestingOtherFiles ? {} : {spec: allTestFiles}),
 };
 
 module.exports = mochaConfig;

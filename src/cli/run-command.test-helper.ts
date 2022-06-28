@@ -25,6 +25,7 @@ type RunCliCommandInputs<T extends CliCommandDefinition> = {
     extraArgs?: string[];
     cwd: string;
     debug?: boolean;
+    filesShouldNotChange?: boolean;
 };
 
 export async function runCliCommandForTest<T extends CliCommandDefinition>(
@@ -42,6 +43,7 @@ export async function runCliCommandForTest<T extends CliCommandDefinition>(
 
     const dirFileNamesBefore = (await readdir(inputs.cwd)).sort();
     const dirFileContentsBefore = await readFileContents(inputs.cwd);
+    const beforeTimestamp: number = Date.now();
     const results = await runShellCommand(commandString, {
         cwd: inputs.cwd,
         ...(inputs.debug
@@ -50,6 +52,10 @@ export async function runCliCommandForTest<T extends CliCommandDefinition>(
               }
             : {}),
     });
+    const afterTimestamp: number = Date.now();
+
+    const durationMs: number = afterTimestamp - beforeTimestamp;
+
     const dirFileNamesAfter = (await readdir(inputs.cwd)).sort();
     const dirFileContentsAfter = await readFileContents(inputs.cwd);
 
@@ -101,6 +107,19 @@ export async function runCliCommandForTest<T extends CliCommandDefinition>(
         }
     }
 
+    if (inputs.filesShouldNotChange) {
+        assert.deepEqual(
+            dirFileNamesBefore,
+            dirFileNamesAfter,
+            'new files should not have been generated',
+        );
+        assert.deepEqual(
+            dirFileContentsBefore,
+            dirFileContentsAfter,
+            'file contents should not have changed',
+        );
+    }
+
     return {
         results,
         dirFileNamesBefore,
@@ -109,6 +128,7 @@ export async function runCliCommandForTest<T extends CliCommandDefinition>(
         dirFileContentsAfter,
         changedFiles,
         newFiles,
+        durationMs,
     };
 }
 

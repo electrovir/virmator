@@ -135,4 +135,12 @@ export const configFiles = (<T extends Record<string, ConfigFileDefinition>>(inp
     vite: {
         path: join(virmatorConfigs.dotVirmator, 'vite.config.ts'),
     },
+
+    webTestRunnerBase: {
+        path: join(virmatorConfigs.dotVirmator, 'web-test-runner-base.mjs'),
+        canBeUpdated: true,
+    },
+    webTestRunner: {
+        path: join(virmatorConfigs.dotVirmator, 'web-test-runner.config.mjs'),
+    },
 });

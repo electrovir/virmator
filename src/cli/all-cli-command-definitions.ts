@@ -3,6 +3,7 @@ import {codeInMarkdownCommandDefinition} from './cli-command-implementations/cod
 import {compileCommandDefinition} from './cli-command-implementations/compile.command';
 import {formatCommandDefinition} from './cli-command-implementations/format.command';
 import {spellcheckCommandDefinition} from './cli-command-implementations/spellcheck.command';
+import {testWebCommandDefinition} from './cli-command-implementations/test-web.command';
 import {testCommandDefinition} from './cli-command-implementations/test.command';
 import {
     generateHelpMessage,
@@ -70,8 +71,8 @@ const allCommandsArray = [
     formatCommandDefinition,
     spellcheckCommandDefinition,
     testCommandDefinition,
+    testWebCommandDefinition,
     createUnimplementedCommand('init'),
-    createUnimplementedCommand('test-web'),
     createUnimplementedCommand('update-configs'),
     createUnimplementedCommand('vite'),
     createUnimplementedCommand('publish'),
