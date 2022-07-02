@@ -1,4 +1,5 @@
-import {copyFile, readFile, writeFile} from 'fs/promises';
+import {copyFile, mkdir, readFile, writeFile} from 'fs/promises';
+import {dirname} from 'path';
 import {ConfigFileDefinition, doesCopyToConfigPathExist, getCopyToPath} from './config-files';
 
 export enum CopyConfigOperation {
@@ -6,7 +7,7 @@ export enum CopyConfigOperation {
     Update = 'update',
     /** Overwrite config file, even if it already exists in the repo. */
     Overwrite = 'overwrite',
-    /** Only write the config file if it doesn't exist already. */
+    /** Only write the config file if it doesn't exist already or if its updateable. */
     Init = 'init',
 }
 
@@ -42,7 +43,8 @@ export async function copyConfig(inputs: CopyConfigInputs): Promise<CopyConfigOu
             if (
                 copyToFileExists &&
                 typeof inputs.configFileDefinition !== 'string' &&
-                inputs.configFileDefinition.canBeUpdated
+                (inputs.configFileDefinition.canBeUpdated ||
+                    inputs.configFileDefinition.updateCallback)
             ) {
                 shouldWrite = true;
             }
@@ -51,6 +53,8 @@ export async function copyConfig(inputs: CopyConfigInputs): Promise<CopyConfigOu
     }
 
     if (shouldWrite) {
+        await mkdir(dirname(copyToPath), {recursive: true});
+
         if (
             inputs.operation === CopyConfigOperation.Update &&
             typeof inputs.configFileDefinition !== 'string' &&

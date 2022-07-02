@@ -2,6 +2,7 @@ import {ArrayElement, mapObject, Writeable} from 'augment-vir';
 import {codeInMarkdownCommandDefinition} from './cli-command-implementations/code-in-markdown.command';
 import {compileCommandDefinition} from './cli-command-implementations/compile.command';
 import {formatCommandDefinition} from './cli-command-implementations/format.command';
+import {initCommandDefinition} from './cli-command-implementations/init.command';
 import {spellcheckCommandDefinition} from './cli-command-implementations/spellcheck.command';
 import {testWebCommandDefinition} from './cli-command-implementations/test-web.command';
 import {testCommandDefinition} from './cli-command-implementations/test.command';
@@ -72,7 +73,7 @@ const allCommandsArray = [
     spellcheckCommandDefinition,
     testCommandDefinition,
     testWebCommandDefinition,
-    createUnimplementedCommand('init'),
+    initCommandDefinition,
     createUnimplementedCommand('update-configs'),
     createUnimplementedCommand('vite'),
     createUnimplementedCommand('publish'),

@@ -1,5 +1,5 @@
 import {assert} from 'chai';
-import {readFile, writeFile} from 'fs-extra';
+import {readFile, writeFile} from 'fs/promises';
 import {describe, it} from 'mocha';
 import {
     testCodeInMarkdownDirPath,

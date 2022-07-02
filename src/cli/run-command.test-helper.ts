@@ -11,8 +11,9 @@ import {
     ShellOutput,
 } from 'augment-vir/dist/cjs/node-only';
 import {assert} from 'chai';
-import {readdir, readFile, stat} from 'fs/promises';
+import {readdir} from 'fs/promises';
 import {join} from 'path';
+import {readAllDirContents} from '../augments/fs';
 import {filterObject} from '../augments/object';
 import {virmatorDistDir} from '../file-paths/virmator-package-paths';
 import {CliCommandDefinition} from './cli-command/define-cli-command';
@@ -42,7 +43,7 @@ export async function runCliCommandForTest<T extends CliCommandDefinition>(
     const commandString = `node ${cliCommand} ${inputs.commandDefinition.commandName} ${subCommand} ${extraArgs}`;
 
     const dirFileNamesBefore = (await readdir(inputs.cwd)).sort();
-    const dirFileContentsBefore = await readFileContents(inputs.cwd);
+    const dirFileContentsBefore = await readAllDirContents(inputs.cwd);
     const beforeTimestamp: number = Date.now();
     const results = await runShellCommand(commandString, {
         cwd: inputs.cwd,
@@ -57,7 +58,7 @@ export async function runCliCommandForTest<T extends CliCommandDefinition>(
     const durationMs: number = afterTimestamp - beforeTimestamp;
 
     const dirFileNamesAfter = (await readdir(inputs.cwd)).sort();
-    const dirFileContentsAfter = await readFileContents(inputs.cwd);
+    const dirFileContentsAfter = await readAllDirContents(inputs.cwd);
 
     const newFiles = dirFileNamesAfter.filter(
         (afterFile) => !dirFileNamesBefore.includes(afterFile),
@@ -130,23 +131,4 @@ export async function runCliCommandForTest<T extends CliCommandDefinition>(
         newFiles,
         durationMs,
     };
-}
-
-async function readFileContents(dir: string): Promise<Record<string, string>> {
-    const fileNames = await readdir(dir);
-    const allFileContents = await Promise.all(
-        fileNames.map(async (fileName) => {
-            const filePath = join(dir, fileName);
-            const isFile = (await stat(filePath)).isFile();
-            return isFile ? (await readFile(filePath)).toString() : '';
-        }),
-    );
-
-    const mappedFileContents = fileNames.reduce((accum, fileName, index) => {
-        const fileContents = allFileContents[index] ?? '';
-        accum[fileName] = fileContents;
-        return accum;
-    }, {} as Record<string, string>);
-
-    return mappedFileContents;
 }

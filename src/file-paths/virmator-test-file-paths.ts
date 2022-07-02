@@ -3,6 +3,7 @@ import {join} from 'path';
 import {codeInMarkdownCommandDefinition} from '../cli/cli-command-implementations/code-in-markdown.command';
 import {compileCommandDefinition} from '../cli/cli-command-implementations/compile.command';
 import {formatCommandDefinition} from '../cli/cli-command-implementations/format.command';
+import {initCommandDefinition} from '../cli/cli-command-implementations/init.command';
 import {spellcheckCommandDefinition} from '../cli/cli-command-implementations/spellcheck.command';
 import {testWebCommandDefinition} from '../cli/cli-command-implementations/test-web.command';
 import {testCommandDefinition} from '../cli/cli-command-implementations/test.command';
@@ -68,6 +69,11 @@ const testTestWebRepos = getCommandTestRepoDir(testWebCommandDefinition);
 export const testTestWebPaths = {
     passRepo: join(testTestWebRepos, 'pass-test-repo'),
     failRepo: join(testTestWebRepos, 'fail-test-repo'),
+};
+
+const testInitRepos = getCommandTestRepoDir(initCommandDefinition);
+export const testInitPaths = {
+    emptyRepo: join(testInitRepos, 'empty-repo'),
 };
 
 export const virmatorReadme = join(virmatorPackageDir, 'README.md');
