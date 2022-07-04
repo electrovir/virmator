@@ -1,3 +1,3 @@
 function doStuff() {
-    console.log('hello there');
+    console.info('hello there');
 }

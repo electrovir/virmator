@@ -1,6 +1,6 @@
 import {interpolationSafeWindowsPath} from 'augment-vir/dist/cjs/node-only';
 import {existsSync} from 'fs';
-import {join} from 'path';
+import {join, relative} from 'path';
 
 export const virmatorPackageDir = __dirname.replace(/(?:src|dist)\/file-paths$/, '');
 export const virmatorDistDir = join(virmatorPackageDir, 'dist');
@@ -27,4 +27,8 @@ export function getNpmBinPath(command: string): string {
     }
 
     return interpolationSafeWindowsPath(actualBinPath);
+}
+
+export function relativeToVirmatorRoot(fullPath: string): string {
+    return relative(virmatorPackageDir, fullPath);
 }

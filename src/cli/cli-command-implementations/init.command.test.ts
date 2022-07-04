@@ -5,12 +5,13 @@ import {readdir, writeFile} from 'fs/promises';
 import {describe, it} from 'mocha';
 import {basename, join} from 'path';
 import {clearDirectoryContents} from '../../augments/fs';
+import {relativeToVirmatorRoot} from '../../file-paths/virmator-package-paths';
 import {testInitPaths} from '../../file-paths/virmator-test-file-paths';
 import {configFiles, getCopyToPath} from '../config/config-files';
 import {runCliCommandForTest} from '../run-command.test-helper';
 import {initCommandDefinition} from './init.command';
 
-describe(initCommandDefinition.commandName, () => {
+describe(relativeToVirmatorRoot(__filename), () => {
     it('should copy config files', async () => {
         const copyToPaths = Object.values(configFiles).map((configFile) => {
             return getCopyToPath(configFile, testInitPaths.emptyRepo);
@@ -37,10 +38,10 @@ describe(initCommandDefinition.commandName, () => {
             },
         );
 
+        assert.isTrue(copyToPaths.length > 0);
         copyToPaths.forEach((copyToPath) => {
             assert.isTrue(existsSync(copyToPath), `${copyToPath} was not created`);
         });
-        await clearDirectoryContents(testInitPaths.emptyRepo);
 
         const currentDirContents = await readdir(testInitPaths.emptyRepo);
         assert.notDeepEqual(currentDirContents.sort(), output.dirFileNamesBefore.sort());
@@ -50,6 +51,7 @@ describe(initCommandDefinition.commandName, () => {
                 output.dirFileContentsBefore[fileName] ?? '',
             );
         });
+        await clearDirectoryContents(testInitPaths.emptyRepo);
 
         await awaitedForEach(copyToPaths, async (copyToPath) => {
             assert.isFalse(existsSync(copyToPath), `${copyToPath} was not deleted after the test`);

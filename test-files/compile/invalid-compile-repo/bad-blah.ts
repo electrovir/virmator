@@ -1,4 +1,4 @@
 export const blah = () => {
-    console.log(derp);
+    console.info(derp);
     const derp = 'hello';
 };

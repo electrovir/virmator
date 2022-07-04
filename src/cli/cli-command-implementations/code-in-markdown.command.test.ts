@@ -1,6 +1,7 @@
 import {assert} from 'chai';
 import {readFile, writeFile} from 'fs/promises';
 import {describe, it} from 'mocha';
+import {relativeToVirmatorRoot} from '../../file-paths/virmator-package-paths';
 import {
     testCodeInMarkdownDirPath,
     testCodeInMarkdownPaths,
@@ -8,7 +9,7 @@ import {
 import {runCliCommandForTest} from '../run-command.test-helper';
 import {codeInMarkdownCommandDefinition} from './code-in-markdown.command';
 
-describe(codeInMarkdownCommandDefinition.commandName, () => {
+describe(relativeToVirmatorRoot(__filename), () => {
     it('should fail when checking outdated file', async () => {
         await runCliCommandForTest(
             {

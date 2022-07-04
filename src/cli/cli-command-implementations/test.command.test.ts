@@ -1,5 +1,6 @@
 import {assert} from 'chai';
 import {describe, it} from 'mocha';
+import {relativeToVirmatorRoot} from '../../file-paths/virmator-package-paths';
 import {testTestPaths} from '../../file-paths/virmator-test-file-paths';
 import {runCliCommandForTest} from '../run-command.test-helper';
 import {testCommandDefinition} from './test.command';
@@ -13,7 +14,7 @@ function logToRegExp(log: string): RegExp {
     return logRegExp;
 }
 
-describe(testCommandDefinition.commandName, () => {
+describe(relativeToVirmatorRoot(__filename), () => {
     it('should fail when tests fail', async () => {
         const output = await runCliCommandForTest(
             {

@@ -1,3 +1,3 @@
 function doStff() {
-    console.log('hello thre');
+    console.info('hello thre');
 }

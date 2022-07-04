@@ -1,4 +1,5 @@
 import {describe, it} from 'mocha';
+import {relativeToVirmatorRoot} from '../../file-paths/virmator-package-paths';
 import {testTestWebPaths} from '../../file-paths/virmator-test-file-paths';
 import {runCliCommandForTest} from '../run-command.test-helper';
 import {testWebCommandDefinition} from './test-web.command';
@@ -12,7 +13,7 @@ function logToRegExp(log: string): RegExp {
     return logRegExp;
 }
 
-describe(testWebCommandDefinition.commandName, () => {
+describe(relativeToVirmatorRoot(__filename), () => {
     it('should fail when tests fail', async () => {
         const output = await runCliCommandForTest(
             {

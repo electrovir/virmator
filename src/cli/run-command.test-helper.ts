@@ -97,7 +97,7 @@ export async function runCliCommandForTest<T extends CliCommandDefinition>(
                 }
             } catch (error) {
                 if (expectation instanceof RegExp) {
-                    console.log(expectation, {expectation}, String(expectation));
+                    console.info(expectation, {expectation}, String(expectation));
                 }
                 console.info(result);
                 errors.push(new Error(extractErrorMessage(error)));

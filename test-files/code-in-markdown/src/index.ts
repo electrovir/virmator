@@ -1,3 +1,3 @@
 export function doTheThing() {
-    console.log('thing');
+    console.info('thing');
 }
