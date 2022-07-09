@@ -26,6 +26,7 @@
         "entrypoint",
         "entrypoints",
         "esbenp",
+        "esbuild",
         "estree",
         "fleek",
         "gitattributes",

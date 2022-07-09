@@ -28,7 +28,6 @@ export const formatCommandDefinition = defineCliCommand(
         },
         requiredConfigFiles: [
             configFiles.prettier,
-            configFiles.prettierIgnore,
         ],
     } as const,
     ({commandName, subCommands}) => {

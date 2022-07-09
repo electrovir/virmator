@@ -27,13 +27,12 @@ async function main(args: string[]) {
 
     await writeFile(virmatorReadme, newReadme);
 
-    const formatCommand = `node dist/cli/cli.js format write ./README.md`;
+    const formatCommand = `node dist/cli/cli.js format ./README.md`;
     const formatOutput = await runShellCommand(formatCommand);
 
-    printShellCommandOutput({
-        stderr: formatOutput.stderr,
-        stdout: formatOutput.stdout,
-    });
+    if (!check) {
+        printShellCommandOutput(formatOutput);
+    }
 
     if (check) {
         const formattedReadme = (await readFile(virmatorReadme)).toString();

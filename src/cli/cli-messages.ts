@@ -5,6 +5,11 @@ export const cliErrorMessages = {
     commandNotFound(commandName: string) {
         return `No command found by the name of "${commandName}"`;
     },
+    missingConfigFile(commandName: string, configFileNames: string[]) {
+        return `Failed to run "${commandName}". Missing the following config file(s): ${configFileNames.join(
+            ', ',
+        )}`;
+    },
 };
 
 export function getResultMessage(commandName: string, success: boolean) {

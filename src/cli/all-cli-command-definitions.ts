@@ -28,8 +28,8 @@ function createUnimplementedCommand<CommandName extends string>(commandName: Com
             return {
                 sections: [
                     {
-                        content: '',
-                        title: 'This command has not been implemented yet.',
+                        content: 'This command has not been implemented yet',
+                        title: '',
                     },
                 ],
                 examples: [],
@@ -49,7 +49,12 @@ const helpCommandDefinition = defineCliCommand(
     } as const,
     () => {
         return {
-            sections: [],
+            sections: [
+                {
+                    title: '',
+                    content: 'Prints this help output.',
+                },
+            ],
             examples: [],
         };
     },
@@ -96,4 +101,11 @@ export const allCliCommandDefinitions = builtInCliCommandDefinitions as Record<
 export const builtInCommandNames: Record<BuiltInCommandName, BuiltInCommandName> = mapObject(
     builtInCliCommandDefinitions,
     (key) => key,
+);
+
+export const allowedInGlobalInstallation = new Set<BuiltInCommandName>(
+    [
+        helpCommandDefinition,
+        initCommandDefinition,
+    ].map((commandDefinition) => commandDefinition.commandName),
 );

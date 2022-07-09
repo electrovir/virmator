@@ -21,6 +21,7 @@ describe(relativeToVirmatorRoot(__filename), () => {
                 exitCode: 1,
                 exitSignal: undefined,
                 stderr: '    README-broken.md: NOT up to date\nCode in Markdown file(s) is out of date. Run without the "check" sub-command in order to update.\n',
+                // cspell:disable-next-line
                 stdout: 'running code-in-markdown...\nChecking that code in markdown is up to date:\n    README-fixed.md: up to date\n\u001b[1m\u001b[31mcode-in-markdown failed.\u001b[0m\n',
             },
         );
@@ -38,6 +39,7 @@ describe(relativeToVirmatorRoot(__filename), () => {
                 exitCode: 0,
                 exitSignal: undefined,
                 stderr: '',
+                // cspell:disable-next-line
                 stdout: 'running code-in-markdown...\nChecking that code in markdown is up to date:\n    README-fixed.md: up to date\n\u001b[1m\u001b[32mcode-in-markdown succeeded.\u001b[0m\n',
             },
         );
@@ -55,6 +57,7 @@ describe(relativeToVirmatorRoot(__filename), () => {
                 exitCode: 1,
                 exitSignal: undefined,
                 stderr: '    README-broken.md: NOT up to date\nCode in Markdown file(s) is out of date. Run without the "check" sub-command in order to update.\n',
+                // cspell:disable-next-line
                 stdout: 'running code-in-markdown...\nChecking that code in markdown is up to date:\n\u001b[1m\u001b[31mcode-in-markdown failed.\u001b[0m\n',
             },
         );
@@ -77,7 +80,9 @@ describe(relativeToVirmatorRoot(__filename), () => {
                 {
                     exitCode: 1,
                     exitSignal: undefined,
+                    // cspell:disable-next-line
                     stderr: '    README-broken.md: NOT up to date\nCode in Markdown file(s) is out of date. Run without the "check" sub-command in order to update.\n',
+                    // cspell:disable-next-line
                     stdout: 'running code-in-markdown...\nChecking that code in markdown is up to date:\n\u001b[1m\u001b[31mcode-in-markdown failed.\u001b[0m\n',
                 },
                 'check should fail before running update',
@@ -93,6 +98,7 @@ describe(relativeToVirmatorRoot(__filename), () => {
                     exitCode: 0,
                     exitSignal: undefined,
                     stderr: '',
+                    // cspell:disable-next-line
                     stdout: 'running code-in-markdown...\nInserting code into markdown:\n    README-broken.md\n\u001b[1m\u001b[32mcode-in-markdown succeeded.\u001b[0m\n',
                 },
                 'update should pass',
@@ -109,6 +115,7 @@ describe(relativeToVirmatorRoot(__filename), () => {
                     exitCode: 0,
                     exitSignal: undefined,
                     stderr: '',
+                    // cspell:disable-next-line
                     stdout: 'running code-in-markdown...\nChecking that code in markdown is up to date:\n    README-broken.md: up to date\n\u001b[1m\u001b[32mcode-in-markdown succeeded.\u001b[0m\n',
                 },
                 'check should pass after update',
@@ -138,6 +145,7 @@ describe(relativeToVirmatorRoot(__filename), () => {
                     exitCode: 1,
                     exitSignal: undefined,
                     stderr: '    README-broken.md: NOT up to date\nCode in Markdown file(s) is out of date. Run without the "check" sub-command in order to update.\n',
+                    // cspell:disable-next-line
                     stdout: 'running code-in-markdown...\nChecking that code in markdown is up to date:\n\u001b[1m\u001b[31mcode-in-markdown failed.\u001b[0m\n',
                 },
                 'check should fail after reverting',
@@ -168,6 +176,7 @@ describe(relativeToVirmatorRoot(__filename), () => {
                     exitCode: 1,
                     exitSignal: undefined,
                     stderr: '    README-broken.md: NOT up to date\nCode in Markdown file(s) is out of date. Run without the "check" sub-command in order to update.\n',
+                    // cspell:disable-next-line
                     stdout: 'running code-in-markdown...\nChecking that code in markdown is up to date:\n    README-fixed.md: up to date\n\u001b[1m\u001b[31mcode-in-markdown failed.\u001b[0m\n',
                 },
                 'check should fail before running update',
@@ -182,6 +191,7 @@ describe(relativeToVirmatorRoot(__filename), () => {
                     exitCode: 0,
                     exitSignal: undefined,
                     stderr: '',
+                    // cspell:disable-next-line
                     stdout: 'running code-in-markdown...\nInserting code into markdown:\n    README-broken.md\n    README-fixed.md\n\u001b[1m\u001b[32mcode-in-markdown succeeded.\u001b[0m\n',
                 },
                 'update should pass',
@@ -197,6 +207,7 @@ describe(relativeToVirmatorRoot(__filename), () => {
                     exitCode: 0,
                     exitSignal: undefined,
                     stderr: '',
+                    // cspell:disable-next-line
                     stdout: 'running code-in-markdown...\nChecking that code in markdown is up to date:\n    README-broken.md: up to date\n    README-fixed.md: up to date\n\u001b[1m\u001b[32mcode-in-markdown succeeded.\u001b[0m\n',
                 },
                 'check should pass after update',
@@ -234,6 +245,7 @@ describe(relativeToVirmatorRoot(__filename), () => {
                     exitCode: 1,
                     exitSignal: undefined,
                     stderr: '    README-broken.md: NOT up to date\nCode in Markdown file(s) is out of date. Run without the "check" sub-command in order to update.\n',
+                    // cspell:disable-next-line
                     stdout: 'running code-in-markdown...\nChecking that code in markdown is up to date:\n    README-fixed.md: up to date\n\u001b[1m\u001b[31mcode-in-markdown failed.\u001b[0m\n',
                 },
                 'check should fail after reverting',

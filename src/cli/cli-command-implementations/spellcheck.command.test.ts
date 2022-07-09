@@ -40,7 +40,8 @@ describe(relativeToVirmatorRoot(__filename), () => {
         await runSpellCheckTest(testSpellcheckPaths.invalidRepo, {
             exitCode: 1,
             exitSignal: undefined,
-            stderr: 'CSpell: Files checked: 1, Issues found: 2 in 1 files\n',
+            stderr: 'CSpell: Files checked: 10, Issues found: 2 in 1 files\n',
+            // cspell:disable-next-line
             stdout: 'running spellcheck...\n\u001b[32m./stuff.js\u001b[39m:\u001b[33m1:12\u001b[39m - Unknown word (\u001b[31mStff\u001b[39m)\n\u001b[32m./stuff.js\u001b[39m:\u001b[33m2:25\u001b[39m - Unknown word (\u001b[31mthre\u001b[39m)\n\u001b[1m\u001b[31mspellcheck failed.\u001b[0m\n',
         });
     });
@@ -49,7 +50,8 @@ describe(relativeToVirmatorRoot(__filename), () => {
         await runSpellCheckTest(testSpellcheckPaths.validRepo, {
             exitCode: 0,
             exitSignal: undefined,
-            stderr: 'CSpell: Files checked: 1, Issues found: 0 in 0 files\n',
+            stderr: 'CSpell: Files checked: 10, Issues found: 0 in 0 files\n',
+            // cspell:disable-next-line
             stdout: 'running spellcheck...\n\u001b[1m\u001b[32mspellcheck succeeded.\u001b[0m\n',
         });
     });
@@ -59,7 +61,8 @@ describe(relativeToVirmatorRoot(__filename), () => {
             exitCode: 0,
             exitSignal: undefined,
             // this specifically requires there to be 10 files checked
-            stderr: 'CSpell: Files checked: 10, Issues found: 0 in 0 files\n',
+            stderr: 'CSpell: Files checked: 19, Issues found: 0 in 0 files\n',
+            // cspell:disable-next-line
             stdout: 'running spellcheck...\n\u001b[1m\u001b[32mspellcheck succeeded.\u001b[0m\n',
         });
     });

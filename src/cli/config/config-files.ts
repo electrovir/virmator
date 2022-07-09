@@ -1,11 +1,13 @@
 import {existsSync} from 'fs';
 import {join} from 'path';
 import {virmatorConfigs, virmatorConfigsDir} from '../../file-paths/virmator-package-paths';
+import {createDefaultPackageJson} from './create-default-package-json';
 
 export type ConfigFileCopyCallback = (
     copyFromContents: string,
     existingConfigContents: string,
-) => string;
+    repoDir: string,
+) => string | Promise<string>;
 
 export type ConfigFileDefinition = {
     path: string;
@@ -78,7 +80,7 @@ export const configFiles = (<T extends Record<string, ConfigFileDefinition>>(inp
     /** Provides some defaults for package.json properties. */
     packageJson: {
         path: join(virmatorConfigsDir, 'package.json'),
-        updateCallback: (input) => input,
+        updateCallback: createDefaultPackageJson,
     },
 
     /** All the base configs for prettier. */

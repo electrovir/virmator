@@ -1,15 +1,16 @@
 import {assert} from 'chai';
 import {describe, it} from 'mocha';
+import {sanitizeStringForRegExpCreation} from '../../augments/regexp';
 import {relativeToVirmatorRoot} from '../../file-paths/virmator-package-paths';
 import {testTestPaths} from '../../file-paths/virmator-test-file-paths';
 import {runCliCommandForTest} from '../run-command.test-helper';
 import {testCommandDefinition} from './test.command';
 
 function logToRegExp(log: string): RegExp {
-    const sanitized = log
-        .replace(/\(\d+ms\)/g, '(\\d+ms)')
-        .replace(/\//g, '\\/')
-        .replace(/(\(|\)|\[|\]|\.)/g, '\\$1');
+    const sanitized = sanitizeStringForRegExpCreation(log).replace(
+        /\\\(\d+ms\\\)/g,
+        '(\\(\\d+ms\\))?',
+    );
     const logRegExp = new RegExp(sanitized);
     return logRegExp;
 }
@@ -60,6 +61,7 @@ describe(relativeToVirmatorRoot(__filename), () => {
                 exitSignal: undefined,
                 stderr: ``,
                 stdout: logToRegExp(
+                    // cspell:disable-next-line
                     `running test...\n\n\u001b[0m\u001b[0m\n\u001b[0m  first.test.ts\u001b[0m\n  \u001b[32m  ✔\u001b[0m\u001b[90m should take a while to run\u001b[0m\u001b[31m (5003ms)\u001b[0m\n\n\u001b[0m  second.test.ts\u001b[0m\n  \u001b[32m  ✔\u001b[0m\u001b[90m should take a while to run\u001b[0m\u001b[31m (5003ms)\u001b[0m\n\n\n\u001b[92m \u001b[0m\u001b[32m 2 passing\u001b[0m\u001b[90m (10s)\u001b[0m\n\n\u001b[1m\u001b[32mtest succeeded.\u001b[0m\n`,
                 ),
             },
@@ -79,7 +81,8 @@ describe(relativeToVirmatorRoot(__filename), () => {
                 exitSignal: undefined,
                 stderr: ``,
                 stdout: logToRegExp(
-                    `running test...\n\n\u001b[0m\u001b[0m\n\u001b[0m  valid.test.ts\u001b[0m\n  \u001b[32m  ✔\u001b[0m\u001b[90m should have a valid test\u001b[0m\n\n\n\u001b[92m \u001b[0m\u001b[32m 1 passing\u001b[0m\u001b[90m (627ms)\u001b[0m\n\n\u001b[1m\u001b[32mtest succeeded.\u001b[0m\n`,
+                    // cspell:disable-next-line
+                    `running test...\n\n\u001b[0m\u001b[0m\n\u001b[0m  valid.test.ts\u001b[0m\n  \u001b[32m  ✔\u001b[0m\u001b[90m should have a valid test\u001b[0m\n\n\n\u001b[92m \u001b[0m\u001b[32m 1 passing\u001b[0m\u001b[90m (692ms)\u001b[0m\n\n\u001b[1m\u001b[32mtest succeeded.\u001b[0m\n`,
                 ),
             },
         );

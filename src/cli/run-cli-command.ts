@@ -1,4 +1,6 @@
+import {existsSync} from 'fs';
 import {isInTypedArray} from '../augments/array';
+import {VirmatorConfigFileError} from '../errors/virmator-config-file.error';
 import {CliLogging, noCliLogging} from '../logging';
 import {builtInCliCommandDefinitions, builtInCommandNames} from './all-cli-command-definitions';
 import {
@@ -8,7 +10,7 @@ import {
 } from './cli-command/define-cli-command';
 import {CliFlagName} from './cli-flags/cli-flag-name';
 import {CliFlagValues} from './cli-flags/cli-flag-values';
-import {doesCopyToConfigPathExist} from './config/config-files';
+import {getCopyToPath} from './config/config-files';
 
 export type RunCommandInputs = {
     cliFlags: CliFlagValues;
@@ -24,9 +26,21 @@ export async function runCommand(
         commandDefinition = builtInCliCommandDefinitions.help;
     }
 
-    const missingConfigFiles = commandDefinition.requiredConfigFiles.some((configDefinition) => {
-        return doesCopyToConfigPathExist(configDefinition, runCommandInputs.repoDir);
-    });
+    const missingConfigFiles = commandDefinition.requiredConfigFiles
+        .map((configDefinition) => {
+            return getCopyToPath(configDefinition, runCommandInputs.repoDir);
+        })
+        .filter((copyToPath) => {
+            return !existsSync(copyToPath);
+        });
+
+    if (missingConfigFiles.length) {
+        throw new VirmatorConfigFileError(
+            `Missing config file(s) for command ${
+                commandDefinition.commandName
+            }:\n\t${missingConfigFiles.map((filePath) => filePath).join('\n\t')}`,
+        );
+    }
 
     const logging: CliLogging =
         runCommandInputs.cliFlags[CliFlagName.Silent] &&

@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
 import {extractErrorMessage} from 'augment-vir';
-import {VirmatorCliCommandError} from '../errors/cli-command-error';
-import {CliFlagError} from '../errors/cli-flag-error';
+import {VirmatorInvalidCommandError} from '../errors/virmator-invalid-command.error';
+import {VirmatorInvalidFlagsError} from '../errors/virmator-invalid-flags.error';
 import {allCliCommandDefinitions, builtInCommandNames} from './all-cli-command-definitions';
 import {CliFlagName} from './cli-flags/cli-flag-name';
 import {cliErrorMessages, getResultMessage} from './cli-messages';
@@ -14,12 +14,12 @@ export async function cli(rawArgs: string[]) {
         const {flags, invalidFlags, args, commandName} = parseArguments(rawArgs);
 
         if (invalidFlags.length) {
-            throw new CliFlagError(invalidFlags);
+            throw new VirmatorInvalidFlagsError(invalidFlags);
         }
 
         const cliCommandName = flags[CliFlagName.Help] ? builtInCommandNames.help : commandName;
         if (!cliCommandName) {
-            throw new VirmatorCliCommandError(
+            throw new VirmatorInvalidCommandError(
                 cliErrorMessages.missingCliCommand,
                 Object.values(builtInCommandNames),
             );

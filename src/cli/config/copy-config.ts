@@ -1,5 +1,9 @@
+import {awaitedForEach, extractErrorMessage} from 'augment-vir';
+import {existsSync} from 'fs';
 import {copyFile, mkdir, readFile, writeFile} from 'fs/promises';
-import {dirname} from 'path';
+import {basename, dirname} from 'path';
+import {CliLogging} from '../../logging';
+import {Color} from '../cli-color';
 import {ConfigFileDefinition, doesCopyToConfigPathExist, getCopyToPath} from './config-files';
 
 export enum CopyConfigOperation {
@@ -7,7 +11,7 @@ export enum CopyConfigOperation {
     Update = 'update',
     /** Overwrite config file, even if it already exists in the repo. */
     Overwrite = 'overwrite',
-    /** Only write the config file if it doesn't exist already or if its updateable. */
+    /** Only write the config file if it doesn't exist already or if it can be updated. */
     Init = 'init',
 }
 
@@ -61,10 +65,13 @@ export async function copyConfig(inputs: CopyConfigInputs): Promise<CopyConfigOu
             inputs.configFileDefinition.updateCallback !== undefined
         ) {
             const copyFromContents = (await readFile(copyFromPath)).toString();
-            const copyToContents = (await readFile(copyToPath)).toString();
-            const writeContents = inputs.configFileDefinition.updateCallback(
+            const copyToContents = existsSync(copyToPath)
+                ? (await readFile(copyToPath)).toString()
+                : '';
+            const writeContents = await inputs.configFileDefinition.updateCallback(
                 copyFromContents,
                 copyToContents,
+                inputs.repoDir,
             );
             await writeFile(copyToPath, writeContents);
         } else {
@@ -76,4 +83,39 @@ export async function copyConfig(inputs: CopyConfigInputs): Promise<CopyConfigOu
         copiedToPath: copyToPath,
         didWrite: shouldWrite,
     };
+}
+
+export type CopyAllConfigFilesInputs = Omit<CopyConfigInputs, 'configFileDefinition'> & {
+    logging: CliLogging;
+    configFiles: Record<string, ConfigFileDefinition>;
+};
+
+/** Returns success state. True if success, false is errors were encountered. */
+export async function copyAllConfigFiles(inputs: CopyAllConfigFilesInputs): Promise<boolean> {
+    const errors: Error[] = [];
+    await awaitedForEach(Object.values(inputs.configFiles), async (configFile) => {
+        try {
+            await copyConfig({
+                configFileDefinition: configFile,
+                operation: CopyConfigOperation.Init,
+                repoDir: inputs.repoDir,
+            });
+            inputs.logging.stdout(
+                `${Color.Info}Successfully copied${Color.Reset} ${basename(configFile.path)}.`,
+            );
+        } catch (error) {
+            const copyError = new Error(
+                `${Color.Fail}Failed to copy${Color.Reset} ${basename(
+                    configFile.path,
+                )}: ${extractErrorMessage(error)}`,
+            );
+            errors.push(copyError);
+        }
+    });
+
+    errors.forEach((error) => {
+        inputs.logging.stderr(error.message);
+    });
+
+    return !errors.length;
 }

@@ -40,17 +40,17 @@ export enum MessageSyntax {
 }
 
 const formatting = (<T extends Record<string, Record<MessageSyntax, string>>>(input: T) => input)({
-    h2: {
+    h1: {
         [MessageSyntax.Bash]: `${Color.Info}`,
+        [MessageSyntax.Markdown]: '# ',
+    },
+    h2: {
+        [MessageSyntax.Bash]: `${Color.Bold}${Color.Info}`,
         [MessageSyntax.Markdown]: '## ',
     },
     h3: {
-        [MessageSyntax.Bash]: `${Color.Bold}${Color.Info}`,
-        [MessageSyntax.Markdown]: '### ',
-    },
-    h4: {
         [MessageSyntax.Bash]: ``,
-        [MessageSyntax.Markdown]: '#### ',
+        [MessageSyntax.Markdown]: '### ',
     },
     reset: {
         [MessageSyntax.Bash]: `${Color.Reset}`,
@@ -95,7 +95,7 @@ export function flagToHelpString(
 ): string {
     const format = (key: keyof typeof formatting) => formatWithSyntax(key, syntax);
 
-    return `${indent(1, syntax)}${format('h3')}${code(flagName, false, '', syntax)}${format(
+    return `${indent(1, syntax)}${format('h2')}${code(flagName, false, '', syntax)}${format(
         'reset',
     )}${format('colon')}\n${indent(2, syntax)}${description.trim()}`;
 }
@@ -106,7 +106,7 @@ export function commandToHelpString(
 ): string {
     const format = (key: keyof typeof formatting) => formatWithSyntax(key, syntax);
 
-    const title = `${indent(1, syntax)}${format('h3')}${commandDefinition.commandName}${format(
+    const title = `${indent(1, syntax)}${format('h2')}${commandDefinition.commandName}${format(
         'reset',
     )}${format('colon')}`;
     const description = commandDescriptionToMessage(commandDefinition.commandDescription, syntax);
@@ -115,7 +115,7 @@ export function commandToHelpString(
         syntax,
     );
 
-    return `${title}\n${subCommandDescriptions}\n${description}\n`;
+    return `${title}\n${description}\n${subCommandDescriptions}\n`;
 }
 
 function subCommandDescriptionsToMessage(
@@ -124,10 +124,10 @@ function subCommandDescriptionsToMessage(
 ): string {
     return getObjectTypedKeys(subCommandDescriptions).reduce((accum, currentKey) => {
         const keyDescription = subCommandDescriptions[currentKey];
-        const fullDescription = `${currentKey}${formatWithSyntax('colon', syntax)}\n${indent(
-            2,
+        const fullDescription = `${formatWithSyntax('h3', syntax)}${currentKey}${formatWithSyntax(
+            'colon',
             syntax,
-        )}${keyDescription}`;
+        )}\n${indent(2, syntax)}${keyDescription}`;
         return accum + fullDescription;
     }, '');
 }
@@ -146,7 +146,7 @@ function sectionToString(
 
     const sectionIndent = indent(2 + extraIndent, syntax);
     const separator = syntax === MessageSyntax.Bash || !bullets ? `:\n` : ': ';
-    const header = bullets ? '' : format('h4');
+    const header = bullets ? '' : format('h3');
 
     const title = section.title ? `${sectionIndent}${header}${section.title}${separator}` : '';
     if (bullets && syntax === MessageSyntax.Markdown) {
@@ -176,7 +176,7 @@ function commandDescriptionToMessage(
         .map((example) => sectionToString(example, 1, syntax, true))
         .join('\n');
     const examplesTitle = description.examples.length
-        ? `\n\n${indent(2, syntax)}${format('h4')}Examples${format('reset')}${format('colon')}\n`
+        ? `\n\n${indent(2, syntax)}${format('h3')}Examples${format('reset')}${format('colon')}\n`
         : '';
 
     return `${sections}${examplesTitle}${examples}`;
@@ -189,7 +189,7 @@ export function combineHelpMessage(
 ): string {
     const format = (key: keyof typeof formatting) => formatWithSyntax(key, syntax);
 
-    return `${formatting.h2[syntax]}${packageName} usage${format('colon')}${format('reset')}
+    return `${formatting.h1[syntax]}${packageName} usage${format('colon')}${format('reset')}
 ${format('indent')}${code(`[npx] ${packageName} [--flags] command subCommand`, true, '', syntax)}
 
 ${format('indent')}${code(
@@ -199,10 +199,10 @@ ${format('indent')}${code(
         syntax,
     )} is needed when the command is run directly from the terminal (not scoped within an npm script) unless the package has been globally installed (which will work just fine but I wouldn't recommend, simply because I prefer explicit dependencies).
     
-${format('h2')}available flags${format('colon')}${format('reset')}
+${format('h1')}Available flags${format('colon')}${format('reset')}
 ${flagsText}
 
-${format('h2')}available commands${format('colon')}${format('reset')}
+${format('h1')}Available commands${format('colon')}${format('reset')}
 ${commandsText}`;
 }
 
