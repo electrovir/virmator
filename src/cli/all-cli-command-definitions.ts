@@ -81,8 +81,8 @@ const allCommandsArray = [
     testWebCommandDefinition,
     initCommandDefinition,
     updateConfigsCommandDefinition,
-    createUnimplementedCommand('vite'),
-    createUnimplementedCommand('publish'),
+    // createUnimplementedCommand('vite'),
+    // createUnimplementedCommand('publish'),
 ] as const;
 
 export type BuiltInCommandName = ArrayElement<typeof allCommandsArray>['commandName'];
