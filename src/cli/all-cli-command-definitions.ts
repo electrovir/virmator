@@ -6,6 +6,7 @@ import {initCommandDefinition} from './cli-command-implementations/init.command'
 import {spellcheckCommandDefinition} from './cli-command-implementations/spellcheck.command';
 import {testWebCommandDefinition} from './cli-command-implementations/test-web.command';
 import {testCommandDefinition} from './cli-command-implementations/test.command';
+import {updateConfigsCommandDefinition} from './cli-command-implementations/update-configs.command';
 import {
     generateHelpMessage,
     MessageSyntax,
@@ -79,7 +80,7 @@ const allCommandsArray = [
     testCommandDefinition,
     testWebCommandDefinition,
     initCommandDefinition,
-    createUnimplementedCommand('update-configs'),
+    updateConfigsCommandDefinition,
     createUnimplementedCommand('vite'),
     createUnimplementedCommand('publish'),
 ] as const;

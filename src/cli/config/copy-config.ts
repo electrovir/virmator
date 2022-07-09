@@ -23,7 +23,7 @@ export type CopyConfigInputs = {
 
 export type CopyConfigOutputs = {
     copiedToPath: string;
-    didWrite: boolean;
+    shouldWrite: boolean;
 };
 
 export async function copyConfig(inputs: CopyConfigInputs): Promise<CopyConfigOutputs> {
@@ -81,7 +81,7 @@ export async function copyConfig(inputs: CopyConfigInputs): Promise<CopyConfigOu
 
     return {
         copiedToPath: copyToPath,
-        didWrite: shouldWrite,
+        shouldWrite,
     };
 }
 
@@ -95,14 +95,16 @@ export async function copyAllConfigFiles(inputs: CopyAllConfigFilesInputs): Prom
     const errors: Error[] = [];
     await awaitedForEach(Object.values(inputs.configFiles), async (configFile) => {
         try {
-            await copyConfig({
+            const result = await copyConfig({
                 configFileDefinition: configFile,
-                operation: CopyConfigOperation.Init,
+                operation: inputs.operation,
                 repoDir: inputs.repoDir,
             });
-            inputs.logging.stdout(
-                `${Color.Info}Successfully copied${Color.Reset} ${basename(configFile.path)}.`,
-            );
+            if (result.shouldWrite) {
+                inputs.logging.stdout(
+                    `${Color.Info}Successfully copied${Color.Reset} ${basename(configFile.path)}.`,
+                );
+            }
         } catch (error) {
             const copyError = new Error(
                 `${Color.Fail}Failed to copy${Color.Reset} ${basename(

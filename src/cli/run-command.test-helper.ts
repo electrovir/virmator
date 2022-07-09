@@ -27,6 +27,7 @@ type RunCliCommandInputs<T extends CliCommandDefinition> = {
     cwd: string;
     debug?: boolean;
     filesShouldNotChange?: boolean;
+    recursiveFileReading?: boolean;
 };
 
 export async function runCliCommandForTest<T extends CliCommandDefinition>(
@@ -37,13 +38,15 @@ export async function runCliCommandForTest<T extends CliCommandDefinition>(
     >,
     message: string = '',
 ) {
+    const recursiveFileReading: boolean = !!inputs.recursiveFileReading;
+
     const cliCommand = interpolationSafeWindowsPath(cliPath);
     const subCommand = inputs.subCommand ?? '';
     const extraArgs = inputs.extraArgs?.join(' ') ?? '';
     const commandString = `node ${cliCommand} ${inputs.commandDefinition.commandName} ${subCommand} ${extraArgs}`;
 
     const dirFileNamesBefore = (await readdir(inputs.cwd)).sort();
-    const dirFileContentsBefore = await readAllDirContents(inputs.cwd);
+    const dirFileContentsBefore = await readAllDirContents(inputs.cwd, recursiveFileReading);
     const beforeTimestamp: number = Date.now();
     const results = await runShellCommand(commandString, {
         cwd: inputs.cwd,
@@ -58,7 +61,7 @@ export async function runCliCommandForTest<T extends CliCommandDefinition>(
     const durationMs: number = afterTimestamp - beforeTimestamp;
 
     const dirFileNamesAfter = (await readdir(inputs.cwd)).sort();
-    const dirFileContentsAfter = await readAllDirContents(inputs.cwd);
+    const dirFileContentsAfter = await readAllDirContents(inputs.cwd, recursiveFileReading);
 
     const newFiles = dirFileNamesAfter.filter(
         (afterFile) => !dirFileNamesBefore.includes(afterFile),

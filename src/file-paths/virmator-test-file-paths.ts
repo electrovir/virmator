@@ -7,6 +7,7 @@ import {initCommandDefinition} from '../cli/cli-command-implementations/init.com
 import {spellcheckCommandDefinition} from '../cli/cli-command-implementations/spellcheck.command';
 import {testWebCommandDefinition} from '../cli/cli-command-implementations/test-web.command';
 import {testCommandDefinition} from '../cli/cli-command-implementations/test.command';
+import {updateConfigsCommandDefinition} from '../cli/cli-command-implementations/update-configs.command';
 import {CliCommandDefinition} from '../cli/cli-command/define-cli-command';
 import {virmatorPackageDir} from './virmator-package-paths';
 
@@ -74,6 +75,17 @@ export const testTestWebPaths = {
 const testInitRepos = getCommandTestRepoDir(initCommandDefinition);
 export const testInitPaths = {
     emptyRepo: join(testInitRepos, 'empty-repo'),
+};
+
+const testUpdateConfigsRepos = getCommandTestRepoDir(updateConfigsCommandDefinition);
+export const testUpdateConfigsPaths = {
+    partialRepo: join(testUpdateConfigsRepos, 'partial-repo'),
+    partialRepoPrettierBase: join(
+        testUpdateConfigsRepos,
+        'partial-repo',
+        '.virmator',
+        'prettierrc-base.js',
+    ),
 };
 
 export const virmatorReadme = join(virmatorPackageDir, 'README.md');

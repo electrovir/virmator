@@ -1,9 +1,9 @@
 import {awaitedForEach} from 'augment-vir';
 import {assert} from 'chai';
 import {existsSync} from 'fs';
-import {readdir, writeFile} from 'fs/promises';
+import {readdir} from 'fs/promises';
 import {describe, it} from 'mocha';
-import {basename, join} from 'path';
+import {basename} from 'path';
 import {clearDirectoryContents} from '../../augments/fs';
 import {relativeToVirmatorRoot} from '../../file-paths/virmator-package-paths';
 import {testInitPaths} from '../../file-paths/virmator-test-file-paths';
@@ -46,12 +46,7 @@ describe(relativeToVirmatorRoot(__filename), () => {
 
         const currentDirContents = await readdir(testInitPaths.emptyRepo);
         assert.notDeepEqual(currentDirContents.sort(), output.dirFileNamesBefore.sort());
-        await awaitedForEach(Object.keys(output.dirFileContentsBefore), async (fileName) => {
-            await writeFile(
-                join(testInitPaths.emptyRepo, fileName),
-                output.dirFileContentsBefore[fileName] ?? '',
-            );
-        });
+
         await clearDirectoryContents(testInitPaths.emptyRepo);
 
         await awaitedForEach(copyToPaths, async (copyToPath) => {

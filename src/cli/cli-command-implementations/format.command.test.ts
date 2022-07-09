@@ -94,8 +94,8 @@ describe(relativeToVirmatorRoot(__filename), () => {
         assert.deepEqual(Object.keys(output.changedFiles), ['invalid-format.ts']);
         const unformattedBeforeContents =
             output.dirFileContentsBefore[basename(testFormatPaths.invalidSourceFile)];
-        if (!unformattedBeforeContents) {
-            throw new Error(`"unformattedBeforeContents" is not defined.`);
+        if (typeof unformattedBeforeContents !== 'string') {
+            throw new Error(`"unformattedBeforeContents" is not a string.`);
         }
         await writeFile(testFormatPaths.invalidSourceFile, unformattedBeforeContents);
         const afterCleanUpFileContents = (
