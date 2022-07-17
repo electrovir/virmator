@@ -1,7 +1,7 @@
 import {awaitedForEach} from 'augment-vir';
 import {assert} from 'chai';
 import {existsSync} from 'fs';
-import {readdir} from 'fs/promises';
+import {mkdir, readdir} from 'fs/promises';
 import {describe, it} from 'mocha';
 import {basename, join} from 'path';
 import {clearDirectoryContents} from '../../augments/fs';
@@ -16,6 +16,10 @@ describe(relativeToVirmatorRoot(__filename), () => {
         const copyToPaths = Object.values(configFiles).map((configFile) => {
             return getCopyToPath(configFile, testInitPaths.emptyRepo);
         });
+
+        if (!existsSync(testInitPaths.emptyRepo)) {
+            await mkdir(testInitPaths.emptyRepo, {recursive: true});
+        }
 
         try {
             // verify that files do not already exist

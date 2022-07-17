@@ -1,18 +1,24 @@
 const fs = require('fs');
 const path = require('path');
 
+function toPosixPath(input) {
+    return input.replace(/\\/g, '/').replace(/^\w+:/, '');
+}
+
+const posixDirname = path.posix.dirname(toPosixPath(__dirname));
+
 function findClosestNodeModulesPath(dirPath = __dirname) {
-    const currentAttempt = path.posix.join(dirPath, 'node_modules');
+    const currentAttempt = path.join(dirPath, 'node_modules');
     if (fs.existsSync(currentAttempt)) {
         return currentAttempt;
     } else if (dirPath === '/') {
         throw new Error(`Could not find node_modules directory.`);
     } else {
-        return findClosestNodeModulesPath(path.posix.dirname(dirPath));
+        return findClosestNodeModulesPath(path.dirname(dirPath));
     }
 }
 
-const nodeModules = findClosestNodeModulesPath();
+const nodeModules = toPosixPath(findClosestNodeModulesPath());
 
 const plugins = [
     'prettier-plugin-toml',
@@ -27,9 +33,9 @@ const plugins = [
     const nestedPath = path.posix.join(nodeModules, 'virmator', 'node_modules', pluginName);
 
     if (fs.existsSync(flattenedPath)) {
-        return path.posix.resolve(__dirname, flattenedPath);
+        return path.posix.resolve(posixDirname, flattenedPath);
     } else {
-        return path.posix.resolve(__dirname, nestedPath);
+        return path.posix.resolve(posixDirname, nestedPath);
     }
 });
 

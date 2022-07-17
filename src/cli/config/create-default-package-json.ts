@@ -1,6 +1,5 @@
 import {getObjectTypedKeys, isObject} from 'augment-vir';
 import {basename} from 'path';
-import {format, Options, resolveConfig} from 'prettier';
 import simpleGit, {SimpleGit} from 'simple-git';
 import {jsonParseOrUndefined} from '../../augments/json';
 
@@ -30,12 +29,7 @@ export async function createDefaultPackageJson(
         scripts: combinedScripts,
     };
 
-    const repoPrettierOptions: Options = (await resolveConfig(repoDir)) ?? {};
-
-    return format(JSON.stringify(newPackageJson), {
-        ...repoPrettierOptions,
-        filepath: 'package.json',
-    });
+    return await JSON.stringify(newPackageJson);
 }
 
 function combineScripts(

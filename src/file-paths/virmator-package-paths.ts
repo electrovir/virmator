@@ -1,8 +1,9 @@
 import {interpolationSafeWindowsPath} from 'augment-vir/dist/cjs/node-only';
 import {existsSync} from 'fs';
-import {join, relative} from 'path';
+import {dirname, join, relative} from 'path';
 
-export const virmatorPackageDir = __dirname.replace(/(?:src|dist)\/file-paths$/, '');
+export const virmatorPackageDir = dirname(dirname(__dirname));
+
 export const virmatorDistDir = join(virmatorPackageDir, 'dist');
 
 export const virmatorConfigsDir = join(virmatorPackageDir, 'configs');

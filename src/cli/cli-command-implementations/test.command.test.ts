@@ -80,10 +80,7 @@ describe(relativeToVirmatorRoot(__filename), () => {
                 exitCode: 0,
                 exitSignal: undefined,
                 stderr: ``,
-                stdout: logToRegExp(
-                    // cspell:disable-next-line
-                    `running test...\n\n\u001b[0m\u001b[0m\n\u001b[0m  valid.test.ts\u001b[0m\n  \u001b[32m  ✔\u001b[0m\u001b[90m should have a valid test\u001b[0m\n\n\n\u001b[92m \u001b[0m\u001b[32m 1 passing\u001b[0m\u001b[90m (692ms)\u001b[0m\n\n\u001b[1m\u001b[32mtest succeeded.\u001b[0m\n`,
-                ),
+                stdout: /valid\.test\.ts/,
             },
         );
 

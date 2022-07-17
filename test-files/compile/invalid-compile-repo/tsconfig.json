@@ -1,1 +1,7 @@
-../valid-compile-repo/tsconfig.json
+{
+    "compilerOptions": {
+        "moduleResolution": "node",
+        "strict": true,
+        "target": "es6"
+    }
+}

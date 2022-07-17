@@ -42,7 +42,7 @@ describe(relativeToVirmatorRoot(__filename), () => {
             exitSignal: undefined,
             stderr: 'CSpell: Files checked: 9, Issues found: 2 in 1 files\n',
             // cspell:disable-next-line
-            stdout: 'running spellcheck...\n\u001b[32m./stuff.js\u001b[39m:\u001b[33m1:12\u001b[39m - Unknown word (\u001b[31mStff\u001b[39m)\n\u001b[32m./stuff.js\u001b[39m:\u001b[33m2:25\u001b[39m - Unknown word (\u001b[31mthre\u001b[39m)\n\u001b[1m\u001b[31mspellcheck failed.\u001b[0m\n',
+            stdout: /spellcheck failed\./,
         });
     });
 

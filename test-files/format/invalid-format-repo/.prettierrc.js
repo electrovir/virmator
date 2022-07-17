@@ -1,1 +1,0 @@
-../../../configs/.prettierrc.js

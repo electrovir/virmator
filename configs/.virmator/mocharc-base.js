@@ -8,7 +8,7 @@ const mochaConfig = {
     parallel: true,
     require: 'ts-node/register',
     slow: '1500', // ms
-    timeout: '30000', // ms
+    timeout: '60000', // ms
     ...(isTestingOtherFiles ? {} : {spec: allTestFiles}),
 };
 
