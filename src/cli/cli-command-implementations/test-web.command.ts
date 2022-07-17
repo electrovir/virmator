@@ -10,9 +10,6 @@ export const testWebCommandDefinition = defineCliCommand(
     {
         commandName: 'test-web',
         subCommandDescriptions: {},
-        requiredConfigFiles: [
-            configFiles.webTestRunner,
-        ],
     } as const,
     ({commandName}) => {
         return {
@@ -54,7 +51,7 @@ export const testWebCommandDefinition = defineCliCommand(
             ? `--config ./.virmator/web-test-runner.config.mjs`
             : '';
 
-        const testCommand = `${webTestRunnerPath} ${configString} ${joinedArgs}`;
+        const testCommand = `${webTestRunnerPath} --color ${configString} ${joinedArgs}`;
 
         const results = await runVirmatorShellCommand(testCommand, inputs);
 

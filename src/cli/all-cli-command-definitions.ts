@@ -2,6 +2,7 @@ import {ArrayElement, mapObject, Writeable} from 'augment-vir';
 import {codeInMarkdownCommandDefinition} from './cli-command-implementations/code-in-markdown.command';
 import {compileCommandDefinition} from './cli-command-implementations/compile.command';
 import {formatCommandDefinition} from './cli-command-implementations/format.command';
+import {frontendCommandDefinition} from './cli-command-implementations/frontend.command';
 import {initCommandDefinition} from './cli-command-implementations/init.command';
 import {spellcheckCommandDefinition} from './cli-command-implementations/spellcheck.command';
 import {testWebCommandDefinition} from './cli-command-implementations/test-web.command';
@@ -23,7 +24,6 @@ function createUnimplementedCommand<CommandName extends string>(commandName: Com
         {
             commandName,
             subCommandDescriptions: {},
-            requiredConfigFiles: [],
         } as const,
         () => {
             return {
@@ -46,7 +46,6 @@ const helpCommandDefinition = defineCliCommand(
     {
         commandName: 'help',
         subCommandDescriptions: {},
-        requiredConfigFiles: [],
     } as const,
     () => {
         return {
@@ -81,7 +80,7 @@ const allCommandsArray = [
     testWebCommandDefinition,
     initCommandDefinition,
     updateConfigsCommandDefinition,
-    // createUnimplementedCommand('vite'),
+    frontendCommandDefinition,
     // createUnimplementedCommand('publish'),
 ] as const;
 

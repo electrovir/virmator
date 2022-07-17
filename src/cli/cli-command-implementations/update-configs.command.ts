@@ -6,7 +6,6 @@ export const updateConfigsCommandDefinition = defineCliCommand(
     {
         commandName: 'update-configs',
         subCommandDescriptions: {},
-        requiredConfigFiles: [],
     } as const,
     () => {
         return {

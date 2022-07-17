@@ -2,7 +2,6 @@ import {getNpmBinPath} from '../../file-paths/virmator-package-paths';
 import {packageName} from '../../package-name';
 import {CliCommandExecutorOutput, defineCliCommand} from '../cli-command/define-cli-command';
 import {runVirmatorShellCommand} from '../cli-command/run-shell-command';
-import {configFiles} from '../config/config-files';
 
 const defaultFormatExtensions = [
     'css',
@@ -26,9 +25,6 @@ export const formatCommandDefinition = defineCliCommand(
         subCommandDescriptions: {
             check: 'check formatting without overwriting files.',
         },
-        requiredConfigFiles: [
-            configFiles.prettier,
-        ],
     } as const,
     ({commandName, subCommands}) => {
         return {

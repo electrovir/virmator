@@ -13,16 +13,16 @@ export async function cli(rawArgs: string[]) {
     try {
         const {flags, invalidFlags, args, commandName} = parseArguments(rawArgs);
 
-        if (invalidFlags.length) {
-            throw new VirmatorInvalidFlagsError(invalidFlags);
-        }
-
         const cliCommandName = flags[CliFlagName.Help] ? builtInCommandNames.help : commandName;
         if (!cliCommandName) {
             throw new VirmatorInvalidCommandError(
                 cliErrorMessages.missingCliCommand,
                 Object.values(builtInCommandNames),
             );
+        }
+
+        if (invalidFlags.length) {
+            throw new VirmatorInvalidFlagsError(invalidFlags);
         }
 
         const shouldLogStatus =

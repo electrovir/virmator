@@ -6,7 +6,6 @@ export const initCommandDefinition = defineCliCommand(
     {
         commandName: 'init',
         subCommandDescriptions: {},
-        requiredConfigFiles: [],
     } as const,
     () => {
         return {

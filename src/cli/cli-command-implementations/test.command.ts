@@ -2,15 +2,11 @@ import {getNpmBinPath} from '../../file-paths/virmator-package-paths';
 import {packageName} from '../../package-name';
 import {CliCommandExecutorOutput, defineCliCommand} from '../cli-command/define-cli-command';
 import {runVirmatorShellCommand} from '../cli-command/run-shell-command';
-import {configFiles} from '../config/config-files';
 
 export const testCommandDefinition = defineCliCommand(
     {
         commandName: 'test',
         subCommandDescriptions: {},
-        requiredConfigFiles: [
-            configFiles.mocha,
-        ],
     } as const,
     ({commandName}) => {
         return {

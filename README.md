@@ -114,10 +114,6 @@ Prints this help output.
 
 Initialize a repo with all virmator config files.
 
-## publish
-
-This command has not been implemented yet
-
 ## spellcheck
 
 Spellcheck code with cspell. By default this spellchecks every file in the entire repo (except for those ignored in the config file), including .dot files. If any arguments are passed to this command, the default cspell args that this command applies are ignored, you'll have to supply them via your args.
@@ -149,8 +145,4 @@ By default this command runs all tests three times: in Chromium (Chrome), Firefo
 
 ## update-configs
 
-This command has not been implemented yet
-
-## vite
-
-This command has not been implemented yet
+Update all existing configuration files that virmator is able to update. (Like base config files.)

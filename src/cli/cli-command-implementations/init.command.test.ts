@@ -3,7 +3,7 @@ import {assert} from 'chai';
 import {existsSync} from 'fs';
 import {readdir} from 'fs/promises';
 import {describe, it} from 'mocha';
-import {basename} from 'path';
+import {basename, join} from 'path';
 import {clearDirectoryContents} from '../../augments/fs';
 import {relativeToVirmatorRoot} from '../../file-paths/virmator-package-paths';
 import {testInitPaths} from '../../file-paths/virmator-test-file-paths';
@@ -43,6 +43,9 @@ describe(relativeToVirmatorRoot(__filename), () => {
         copyToPaths.forEach((copyToPath) => {
             assert.isTrue(existsSync(copyToPath), `${copyToPath} was not created`);
         });
+
+        assert.isTrue(existsSync(join(testInitPaths.emptyRepo, '.gitignore')));
+        assert.isNotTrue(existsSync(join(testInitPaths.emptyRepo, 'gitignore.txt')));
 
         const currentDirContents = await readdir(testInitPaths.emptyRepo);
         assert.notDeepEqual(currentDirContents.sort(), output.dirFileNamesBefore.sort());

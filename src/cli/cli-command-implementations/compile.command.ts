@@ -2,7 +2,6 @@ import {getNpmBinPath} from '../../file-paths/virmator-package-paths';
 import {packageName} from '../../package-name';
 import {CliCommandExecutorOutput, defineCliCommand} from '../cli-command/define-cli-command';
 import {runVirmatorShellCommand} from '../cli-command/run-shell-command';
-import {configFiles} from '../config/config-files';
 
 export const compileCommandDefinition = defineCliCommand(
     {
@@ -10,7 +9,6 @@ export const compileCommandDefinition = defineCliCommand(
         subCommandDescriptions: {
             check: 'Run type checking without emitting compiled files.',
         },
-        requiredConfigFiles: [configFiles.tsConfig],
     } as const,
     ({commandName}) => {
         return {

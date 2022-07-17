@@ -1,5 +1,6 @@
 import {getObjectTypedKeys, isObject} from 'augment-vir';
 import {basename} from 'path';
+import {format, Options, resolveConfig} from 'prettier';
 import simpleGit, {SimpleGit} from 'simple-git';
 import {jsonParseOrUndefined} from '../../augments/json';
 
@@ -29,26 +30,29 @@ export async function createDefaultPackageJson(
         scripts: combinedScripts,
     };
 
-    return JSON.stringify(newPackageJson);
+    const repoPrettierOptions: Options = (await resolveConfig(repoDir)) ?? {};
+
+    return format(JSON.stringify(newPackageJson), {
+        ...repoPrettierOptions,
+        filepath: 'package.json',
+    });
 }
 
 function combineScripts(
-    virmatorPackageJson: object,
-    currentRepoPackageJson: object,
+    virmatorPackageJson: {scripts?: Record<string, string>},
+    currentRepoPackageJson: {scripts?: Record<string, string>},
 ): Record<string, string> {
     const scripts = {
-        ...currentRepoPackageJson,
+        ...currentRepoPackageJson.scripts,
     };
 
-    getObjectTypedKeys(virmatorPackageJson).forEach((key) => {
+    getObjectTypedKeys(virmatorPackageJson.scripts).forEach((key) => {
         const virmatorValue = virmatorPackageJson[key];
         const currentRepoValue = currentRepoPackageJson[key];
 
-        if (!scripts.hasOwnProperty(key)) {
-            scripts[key] = virmatorValue;
-        } else if (
-            key === 'test' &&
-            currentRepoValue === `echo \"Error: no test specified\" && exit 1`
+        if (
+            !scripts.hasOwnProperty(key) ||
+            (key === 'test' && currentRepoValue === `echo \"Error: no test specified\" && exit 1`)
         ) {
             scripts[key] = virmatorValue;
         }

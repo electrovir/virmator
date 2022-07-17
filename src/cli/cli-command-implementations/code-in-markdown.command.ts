@@ -10,7 +10,6 @@ export const codeInMarkdownCommandDefinition = defineCliCommand(
         subCommandDescriptions: {
             check: 'Check that markdown files have their examples inserted and are up-to-date.',
         },
-        requiredConfigFiles: [],
     } as const,
     ({commandName}) => {
         return {

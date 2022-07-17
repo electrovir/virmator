@@ -1,6 +1,8 @@
 import {existsSync} from 'fs';
-import {join} from 'path';
+import {basename, join} from 'path';
+import {sanitizeStringForRegExpCreation} from '../../augments/regexp';
 import {virmatorConfigs, virmatorConfigsDir} from '../../file-paths/virmator-package-paths';
+import {combineTextConfig} from './combine-text-config';
 import {createDefaultPackageJson} from './create-default-package-json';
 
 export type ConfigFileCopyCallback = (
@@ -34,7 +36,18 @@ export function doesCopyToConfigPathExist(
 }
 
 export function getCopyToPath(configFileDefinition: ConfigFileDefinition, repoDir: string): string {
-    return configFileDefinition.path.replace(virmatorConfigsDir, repoDir);
+    const replacedDir = configFileDefinition.path.replace(virmatorConfigsDir, repoDir);
+
+    if (configFileDefinition.copyName) {
+        const replacedFileName = replacedDir.replace(
+            new RegExp(`${sanitizeStringForRegExpCreation(basename(replacedDir))}$`),
+            configFileDefinition.copyName,
+        );
+
+        return replacedFileName;
+    } else {
+        return replacedDir;
+    }
 }
 
 export const configFiles = (<T extends Record<string, ConfigFileDefinition>>(input: T) => input)({
@@ -54,27 +67,35 @@ export const configFiles = (<T extends Record<string, ConfigFileDefinition>>(inp
     /** Primarily fixes line ending issues on Windows machines. */
     gitAttributes: {
         path: join(virmatorConfigsDir, '.gitattributes'),
+        updateCallback: combineTextConfig,
     },
     gitIgnore: {
         path: join(virmatorConfigsDir, 'gitignore.txt'),
         copyName: '.gitignore',
+        updateCallback: combineTextConfig,
     },
 
     /** Provides a GitHub Actions workflow for building deploying to GitHub Pages */
     gitHubActionsGhPagesBuild: {
         path: join(virmatorConfigs.gitHubWorkflows, 'virmator-build-for-gh-pages.yml'),
+        canBeUpdated: true,
     },
     /** Provides a GitHub Actions workflow for bundling releases for each version tag. */
     gitHubActionsTaggedRelease: {
         path: join(virmatorConfigs.gitHubWorkflows, 'virmator-tagged-release.yml'),
+        canBeUpdated: true,
     },
     /** Provides a GitHub Actions workflow to run all tests. */
-    gitHubActionsTest: {path: join(virmatorConfigs.gitHubWorkflows, 'virmator-tests.yml')},
+    gitHubActionsTest: {
+        path: join(virmatorConfigs.gitHubWorkflows, 'virmator-tests.yml'),
+        canBeUpdated: true,
+    },
 
     /** Ignores files for npm publish. */
     npmIgnore: {
         path: join(virmatorConfigsDir, 'npmignore.txt'),
         copyName: '.npmignore',
+        updateCallback: combineTextConfig,
     },
 
     /** Provides some defaults for package.json properties. */
@@ -95,6 +116,7 @@ export const configFiles = (<T extends Record<string, ConfigFileDefinition>>(inp
     /** Ignore certain files in the formatting process. */
     prettierIgnore: {
         path: join(virmatorConfigsDir, '.prettierignore'),
+        updateCallback: combineTextConfig,
     },
 
     /** Provides base configuration for ts config. */
@@ -130,9 +152,11 @@ export const configFiles = (<T extends Record<string, ConfigFileDefinition>>(inp
 
     viteBase: {
         path: join(virmatorConfigs.dotVirmator, 'vite-base.ts'),
+        canBeUpdated: true,
     },
     viteReloadPlugin: {
         path: join(virmatorConfigs.dotVirmator, 'vite-always-reload-plugin.ts'),
+        canBeUpdated: true,
     },
     vite: {
         path: join(virmatorConfigs.dotVirmator, 'vite.config.ts'),

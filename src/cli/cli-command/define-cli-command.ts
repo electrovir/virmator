@@ -1,6 +1,5 @@
 import {getObjectTypedKeys, mapObject} from 'augment-vir';
 import {CliLogging} from '../../logging';
-import {ConfigFileDefinition} from '../config/config-files';
 import {CliCommandDescription} from './cli-command-help';
 
 export type CliCommandExecutorInputs<
@@ -35,7 +34,6 @@ export type CliCommandExecutorOutput = {
 export type DefineCliCommandInputs<CommandName extends string = string> = Readonly<{
     commandName: CommandName;
     subCommandDescriptions: Readonly<Record<string, string>>;
-    requiredConfigFiles: Readonly<ConfigFileDefinition[]>;
 }>;
 
 type SubCommandsMap<InputsGeneric extends DefineCliCommandInputs> = {
