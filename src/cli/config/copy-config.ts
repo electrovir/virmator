@@ -103,7 +103,8 @@ const failedOperation: Readonly<Record<CopyConfigOperation, string>> = {
 /** Returns success state. True if success, false is errors were encountered. */
 export async function copyAllConfigFiles(inputs: CopyAllConfigFilesInputs): Promise<boolean> {
     const errors: Error[] = [];
-    await awaitedForEach(Object.values(inputs.configFiles), async (configFile) => {
+    await awaitedForEach(Object.keys(inputs.configFiles).sort(), async (configKey) => {
+        const configFile = inputs.configFiles[configKey]!;
         try {
             const result = await copyConfig({
                 configFileDefinition: configFile,
@@ -114,7 +115,7 @@ export async function copyAllConfigFiles(inputs: CopyAllConfigFilesInputs): Prom
                 inputs.logging.stdout(
                     `${Color.Info}Successfully ${successfulOperation[inputs.operation]}${
                         Color.Reset
-                    } ${basename(result.copiedToPath)}.`,
+                    } ${basename(result.copiedToPath)}`,
                 );
             }
         } catch (error) {

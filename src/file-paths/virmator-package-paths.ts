@@ -8,7 +8,7 @@ export const virmatorDistDir = join(virmatorPackageDir, 'dist');
 export const virmatorConfigsDir = join(virmatorPackageDir, 'configs');
 export const virmatorConfigs = {
     dotVirmator: join(virmatorConfigsDir, '.virmator'),
-    gitHubWorkflows: join(virmatorConfigsDir, '.github', 'workflows'),
+    gitHubWorkflows: join(virmatorPackageDir, '.github', 'workflows'),
     vsCode: join(virmatorConfigsDir, '.vscode'),
     src: join(virmatorConfigsDir, 'src'),
 };

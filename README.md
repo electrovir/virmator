@@ -106,6 +106,18 @@ Any other arguments encountered between the operation command (if provided) and 
 
 check formatting without overwriting files.
 
+## frontend
+
+Runs a frontend. Currently uses vite.
+
+### build
+
+Builds and bundles the frontend for deployment.
+
+### preview
+
+Builds and previews the built output.
+
 ## help
 
 Prints this help output.

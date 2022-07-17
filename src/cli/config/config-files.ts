@@ -13,6 +13,7 @@ export type ConfigFileCopyCallback = (
 
 export type ConfigFileDefinition = {
     path: string;
+    copyToPath?: string;
     /**
      * Name to rename the config file to when copying it to a repo.
      *
@@ -36,7 +37,9 @@ export function doesCopyToConfigPathExist(
 }
 
 export function getCopyToPath(configFileDefinition: ConfigFileDefinition, repoDir: string): string {
-    const replacedDir = configFileDefinition.path.replace(virmatorConfigsDir, repoDir);
+    const replacedDir = configFileDefinition.copyToPath
+        ? join(repoDir, configFileDefinition.copyToPath, basename(configFileDefinition.path))
+        : configFileDefinition.path.replace(virmatorConfigsDir, repoDir);
 
     if (configFileDefinition.copyName) {
         const replacedFileName = replacedDir.replace(
@@ -78,16 +81,19 @@ export const configFiles = (<T extends Record<string, ConfigFileDefinition>>(inp
     /** Provides a GitHub Actions workflow for building deploying to GitHub Pages */
     gitHubActionsGhPagesBuild: {
         path: join(virmatorConfigs.gitHubWorkflows, 'virmator-build-for-gh-pages.yml'),
+        copyToPath: join('.github', 'workflows'),
         canBeUpdated: true,
     },
     /** Provides a GitHub Actions workflow for bundling releases for each version tag. */
     gitHubActionsTaggedRelease: {
         path: join(virmatorConfigs.gitHubWorkflows, 'virmator-tagged-release.yml'),
+        copyToPath: join('.github', 'workflows'),
         canBeUpdated: true,
     },
     /** Provides a GitHub Actions workflow to run all tests. */
     gitHubActionsTest: {
         path: join(virmatorConfigs.gitHubWorkflows, 'virmator-tests.yml'),
+        copyToPath: join('.github', 'workflows'),
         canBeUpdated: true,
     },
 

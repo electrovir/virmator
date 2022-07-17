@@ -122,12 +122,13 @@ function subCommandDescriptionsToMessage(
     subCommandDescriptions: Record<string, string>,
     syntax: MessageSyntax,
 ): string {
-    return getObjectTypedKeys(subCommandDescriptions).reduce((accum, currentKey) => {
+    return getObjectTypedKeys(subCommandDescriptions).reduce((accum, currentKey, index) => {
         const keyDescription = subCommandDescriptions[currentKey];
-        const fullDescription = `${formatWithSyntax('h3', syntax)}${currentKey}${formatWithSyntax(
-            'colon',
+        const leadingLine = index > 0 ? '\n\n' : '';
+        const fullDescription = `${leadingLine}${formatWithSyntax(
+            'h3',
             syntax,
-        )}\n${indent(2, syntax)}${keyDescription}`;
+        )}${currentKey}${formatWithSyntax('colon', syntax)}\n${indent(2, syntax)}${keyDescription}`;
         return accum + fullDescription;
     }, '');
 }
