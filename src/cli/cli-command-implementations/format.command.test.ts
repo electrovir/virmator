@@ -161,7 +161,7 @@ describe(relativeToVirmatorRoot(__filename), () => {
         }
     });
 
-    it.only('should update formatting', async () => {
+    it('should update formatting', async () => {
         const originalInvalidFileContents = (
             await readFile(testFormatPaths.invalidSourceFile)
         ).toString();
