@@ -126,6 +126,14 @@ Prints this help output.
 
 Initialize a repo with all virmator config files.
 
+### Examples
+
+-   run init and force all configs to be written: `virmator init force`
+
+### force
+
+force overwrite files even if they already exist.
+
 ## spellcheck
 
 Spellcheck code with cspell. By default this spellchecks every file in the entire repo (except for those ignored in the config file), including .dot files. If any arguments are passed to this command, the default cspell args that this command applies are ignored, you'll have to supply them via your args.
