@@ -1,5 +1,4 @@
-const allTestFiles = 'src/**/!(*.type).test.ts?(x)';
-const isTestingOtherFiles = process.argv.some((arg) => arg.match(/\.tsx?$/));
+const testFiles = require('./test-files-glob.js');
 
 /** @type {import('mocha').MochaOptions} */
 const mochaConfig = {
@@ -9,7 +8,7 @@ const mochaConfig = {
     require: 'ts-node/register',
     slow: '1500', // ms
     timeout: '60000', // ms
-    ...(isTestingOtherFiles ? {} : {spec: allTestFiles}),
+    ...testFiles,
 };
 
 module.exports = mochaConfig;

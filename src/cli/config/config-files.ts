@@ -138,14 +138,14 @@ export const configFiles = (<T extends Record<string, ConfigFileDefinition>>(inp
         path: join(virmatorConfigsDir, 'tsconfig.json'),
     },
 
+    testFilesGlob: {
+        path: join(virmatorConfigs.dotVirmator, 'test-files-glob.js'),
+        canBeUpdated: true,
+    },
+
     /** VS Code settings. */
     vsCodeSettings: {
         path: join(virmatorConfigs.vsCode, 'settings.json'),
-    },
-
-    /** Global types. Specifically used at the moment to block un-imported test functions. */
-    globalTypes: {
-        path: join(virmatorConfigs.src, 'global.d.ts'),
     },
 
     mochaBase: {

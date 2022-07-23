@@ -46,7 +46,6 @@ export async function copyConfig(inputs: CopyConfigInputs): Promise<CopyConfigOu
         case CopyConfigOperation.Update: {
             if (
                 copyToFileExists &&
-                typeof inputs.configFileDefinition !== 'string' &&
                 (inputs.configFileDefinition.canBeUpdated ||
                     inputs.configFileDefinition.updateCallback)
             ) {

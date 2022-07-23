@@ -1,1 +1,0 @@
-../configs/src/global.d.ts

@@ -1,6 +1,6 @@
 import {esbuildPlugin} from '@web/dev-server-esbuild';
 import {playwrightLauncher} from '@web/test-runner-playwright';
-import mochaConfig from './mocharc-base.js';
+import * as testFiles from './test-files-glob.js';
 
 /** @type {import('@web/test-runner').TestRunnerConfig} */
 const webTestRunnerConfig = {
@@ -14,7 +14,7 @@ const webTestRunnerConfig = {
     concurrentBrowsers: 3,
     coverage: true,
     files: [
-        mochaConfig.spec,
+        testFiles.spec,
     ],
     nodeResolve: true,
     plugins: [esbuildPlugin({ts: true})],
