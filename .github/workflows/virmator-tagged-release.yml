@@ -20,7 +20,7 @@ jobs:
             - name: run test
               run: |
                   npm ci
-                  npx playwright install
+                  npx playwright install --with-deps
                   npm run test:full
             - name: pack and set vars
               id: vars
