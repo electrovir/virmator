@@ -156,6 +156,10 @@ export const configFiles = (<T extends Record<string, ConfigFileDefinition>>(inp
         path: join(virmatorConfigsDir, '.mocharc.js'),
     },
 
+    nvmrc: {
+        path: join(virmatorConfigsDir, '.nvmrc'),
+    },
+
     viteBase: {
         path: join(virmatorConfigs.dotVirmator, 'vite-base.ts'),
         canBeUpdated: true,

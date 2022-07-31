@@ -1,6 +1,6 @@
 import {esbuildPlugin} from '@web/dev-server-esbuild';
 import {playwrightLauncher} from '@web/test-runner-playwright';
-import * as testFiles from './test-files-glob.js';
+import testFiles from './test-files-glob.js';
 
 /** @type {import('@web/test-runner').TestRunnerConfig} */
 const webTestRunnerConfig = {
