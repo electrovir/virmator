@@ -29,7 +29,7 @@ export async function createDefaultPackageJson(
         scripts: combinedScripts,
     };
 
-    return await JSON.stringify(newPackageJson);
+    return JSON.stringify(newPackageJson);
 }
 
 function combineScripts(
@@ -41,12 +41,14 @@ function combineScripts(
     };
 
     getObjectTypedKeys(virmatorPackageJson.scripts).forEach((key) => {
-        const virmatorValue = virmatorPackageJson[key];
-        const currentRepoValue = currentRepoPackageJson[key];
+        const virmatorValue = virmatorPackageJson.scripts?.[key];
+        const currentRepoValue = currentRepoPackageJson.scripts?.[key];
 
         if (
-            !scripts.hasOwnProperty(key) ||
-            (key === 'test' && currentRepoValue === `echo \"Error: no test specified\" && exit 1`)
+            virmatorValue &&
+            (!scripts.hasOwnProperty(key) ||
+                (key === 'test' &&
+                    currentRepoValue === `echo \"Error: no test specified\" && exit 1`))
         ) {
             scripts[key] = virmatorValue;
         }
