@@ -35,7 +35,7 @@ export const frontendCommandDefinition = defineCliCommand(
 
         // insert the build command in either sub command
         if (inputs.inputSubCommands.length) {
-            viteCommand = `rm -rf dist && ${vitePath} --colors build ${configString} ${joinedArgs} && cp dist/index.html dist/404.html`;
+            viteCommand = `rm -rf dist && ${vitePath} build ${configString} ${joinedArgs} && cp dist/index.html dist/404.html`;
         }
 
         if (inputs.inputSubCommands.includes('preview')) {
