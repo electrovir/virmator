@@ -1,4 +1,4 @@
-import {createSymLink} from 'augment-vir/dist/node';
+import {createSymLink} from 'augment-vir/dist/cjs/node-only';
 import {join} from 'path';
 import {CliCommandName} from '../cli/cli-util/cli-command-name';
 import {virmatorRootDir} from './virmator-repo-paths';
@@ -6,7 +6,7 @@ import {virmatorRootDir} from './virmator-repo-paths';
 export async function createNodeModulesSymLinkForTests(dir: string): Promise<string> {
     const symlinkPath = join(dir, 'node_modules');
 
-    await createSymLink(join(virmatorRootDir, 'node_modules'), symlinkPath);
+    await createSymLink(join(virmatorRootDir, 'node_modules'), symlinkPath, true);
     return symlinkPath;
 }
 

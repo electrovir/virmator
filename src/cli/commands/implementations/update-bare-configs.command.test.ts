@@ -1,4 +1,4 @@
-import {getEnumTypedValues} from 'augment-vir/dist/node';
+import {getEnumTypedValues} from 'augment-vir';
 import {emptyDir, ensureDir, existsSync} from 'fs-extra';
 import {join} from 'path';
 import {testGroup} from 'test-vir';

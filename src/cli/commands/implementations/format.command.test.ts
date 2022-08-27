@@ -1,4 +1,4 @@
-import {printShellCommandOutput} from 'augment-vir/dist/node';
+import {printShellCommandOutput} from 'augment-vir/dist/cjs/node-only';
 import {readFile, writeFile} from 'fs-extra';
 import {testGroup} from 'test-vir';
 import {testFormatPaths} from '../../../file-paths/virmator-test-repos-paths';

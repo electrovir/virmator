@@ -1,4 +1,4 @@
-import {filterToEnumValues, getEnumTypedValues} from 'augment-vir/dist/node';
+import {filterToEnumValues, getEnumTypedValues} from 'augment-vir';
 import {existsSync} from 'fs-extra';
 import {
     CliCommandResult,

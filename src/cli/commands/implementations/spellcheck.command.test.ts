@@ -1,4 +1,4 @@
-import {printShellCommandOutput} from 'augment-vir/dist/node';
+import {printShellCommandOutput} from 'augment-vir/dist/cjs/node-only';
 import {join, relative} from 'path';
 import {testGroup} from 'test-vir';
 import {spellcheckTestPaths} from '../../../file-paths/virmator-test-repos-paths';

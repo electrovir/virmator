@@ -1,9 +1,9 @@
+import {getObjectTypedKeys} from 'augment-vir';
 import {
-    getObjectTypedKeys,
     interpolationSafeWindowsPath,
     printShellCommandOutput,
     runShellCommand,
-} from 'augment-vir/dist/node';
+} from 'augment-vir/dist/cjs/node-only';
 import {existsSync, readFile, remove, writeFile} from 'fs-extra';
 import {join} from 'path';
 import {testGroup, TestInputObject} from 'test-vir';
@@ -259,7 +259,7 @@ testGroup({
                 },
                 {
                     name: 'config was created',
-                    result: true,
+                    result: false,
                 },
                 {
                     name: 'config was created',
@@ -267,7 +267,7 @@ testGroup({
                 },
                 {
                     name: 'second format has stderr',
-                    result: false,
+                    result: true,
                 },
                 {
                     name: 'config exists after cleanup',

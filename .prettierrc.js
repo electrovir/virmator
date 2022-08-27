@@ -28,7 +28,7 @@ const prettierConfig = {
     bracketSpacing: false,
     endOfLine: 'lf',
     // Arrays with just a single element don't wrap. But after that, they always wrap.
-    multilineArrayWrapThreshold: 1,
+    multilineArraysWrapThreshold: 1,
     htmlWhitespaceSensitivity: 'ignore',
     jsonRecursiveSort: true,
     bracketSameLine: false,

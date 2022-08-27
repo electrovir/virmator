@@ -1,4 +1,4 @@
-import {runShellCommand} from 'augment-vir/dist/node';
+import {runShellCommand} from 'augment-vir/dist/cjs/node-only';
 import {existsSync} from 'fs-extra';
 import {extname, join} from 'path';
 

@@ -1,4 +1,4 @@
-import {writeFileAndDir} from 'augment-vir/dist/node';
+import {writeFileAndDir} from 'augment-vir/dist/cjs/node-only';
 import {existsSync} from 'fs-extra';
 import {join} from 'path';
 import {ConfigFileError} from '../../errors/config-file-error';

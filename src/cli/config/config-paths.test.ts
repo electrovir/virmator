@@ -1,4 +1,4 @@
-import {getEnumTypedValues} from 'augment-vir/dist/node';
+import {getEnumTypedValues} from 'augment-vir';
 import {existsSync} from 'fs';
 import {testGroup} from 'test-vir';
 import {ConfigKey} from './config-key';
