@@ -1,14 +1,14 @@
 import {createSymLink} from 'augment-vir/dist/cjs/node-only';
 import {join} from 'path';
-import {codeInMarkdownCommandDefinition} from '../cli/cli-command-implementations/code-in-markdown.command';
-import {compileCommandDefinition} from '../cli/cli-command-implementations/compile.command';
-import {formatCommandDefinition} from '../cli/cli-command-implementations/format.command';
-import {initCommandDefinition} from '../cli/cli-command-implementations/init.command';
-import {spellcheckCommandDefinition} from '../cli/cli-command-implementations/spellcheck.command';
-import {testWebCommandDefinition} from '../cli/cli-command-implementations/test-web.command';
-import {testCommandDefinition} from '../cli/cli-command-implementations/test.command';
-import {updateConfigsCommandDefinition} from '../cli/cli-command-implementations/update-configs.command';
-import {CliCommandDefinition} from '../cli/cli-command/define-cli-command';
+import {CliCommandDefinition} from '../cli-old/cli-command/define-cli-command';
+import {codeInMarkdownCommandDefinition} from '../default-implementation/commands/code-in-markdown.command';
+import {compileCommandDefinition} from '../default-implementation/commands/compile.command';
+import {formatCommandDefinition} from '../default-implementation/commands/format.command';
+import {initCommandDefinition} from '../default-implementation/commands/init.command';
+import {spellcheckCommandDefinition} from '../default-implementation/commands/spellcheck.command';
+import {testWebCommandDefinition} from '../default-implementation/commands/test-web.command';
+import {testCommandDefinition} from '../default-implementation/commands/test.command';
+import {updateConfigsCommandDefinition} from '../default-implementation/commands/update-configs.command';
 import {virmatorPackageDir} from './virmator-package-paths';
 
 export async function createNodeModulesSymLinkForTests(dir: string): Promise<string> {
