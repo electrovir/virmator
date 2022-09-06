@@ -1,35 +1,26 @@
-import {extractErrorMessage} from 'augment-vir';
-import {CommandMapping, commandsToMapping} from './command/command-mapping';
+import {ArrayElement, extractErrorMessage} from 'augment-vir';
+import {CommandDefinitionArrayToMapping, commandsToMapping} from './command/command-mapping';
 import {generateHelpMessage, HelpMessageSyntax} from './command/command-to-help-message';
 import {CommandDefinition} from './command/define-command';
 import {runExtendedVirmator} from './run-command/run-extended-virmator';
-
-export type ExtendVirmatorInputs = Readonly<{
-    packageBinName: string;
-    commandDefinitions?: ReadonlyArray<CommandDefinition> | undefined;
-}>;
-
-export type ExtendedVirmator = Readonly<{
-    cliHelpMessage: string;
-    markdownHelpMessage: string;
-    commandMapping: Readonly<CommandMapping>;
-    extend: typeof createVirmator;
-    runInCli: () => Promise<void>;
-    run: (allArgs: string[], repoDir: string) => Promise<void>;
-}>;
+import {ExtendedVirmator, ExtendVirmatorInputs} from './virmator-types';
 
 /**
  * Creates a wrapped instance of virmator from which all its CLI commands can be called. Arguments
  * can be passed in to add to virmator default configs or overwrite them.
  */
-export function createVirmator(inputs: ExtendVirmatorInputs): ExtendedVirmator {
+export function createVirmator<
+    CommandDefinitionsGeneric extends ReadonlyArray<CommandDefinition<any>>,
+>(
+    inputs: ExtendVirmatorInputs<CommandDefinitionsGeneric>,
+): ExtendedVirmator<CommandDefinitionArrayToMapping<CommandDefinitionsGeneric>> {
     const commandDefinitions = inputs.commandDefinitions ?? [];
     const commandMapping = commandsToMapping(commandDefinitions);
 
-    const allCommands: CommandMapping = {
+    const allCommands: CommandDefinitionArrayToMapping<CommandDefinitionsGeneric> = {
         ...{}, // todo: put the default commands here
         ...commandMapping,
-    };
+    } as CommandDefinitionArrayToMapping<CommandDefinitionsGeneric>;
 
     const cliHelpMessage = generateHelpMessage(
         inputs.packageBinName,
@@ -43,7 +34,13 @@ export function createVirmator(inputs: ExtendVirmatorInputs): ExtendedVirmator {
     );
 
     async function run(allArgs: string[], repoDir: string) {
-        return await runExtendedVirmator(allArgs, repoDir, inputs.packageBinName, allCommands);
+        return await runExtendedVirmator({
+            allArgs,
+            repoDir,
+            packageBinName: inputs.packageBinName,
+            packageDir: inputs.packageRootDir,
+            commandMapping: allCommands,
+        });
     }
 
     async function runInCli() {
@@ -55,13 +52,22 @@ export function createVirmator(inputs: ExtendVirmatorInputs): ExtendedVirmator {
         }
     }
 
-    function extendVirmator(innerInputs: ExtendVirmatorInputs): ExtendedVirmator {
+    function extendVirmator<NewGeneric extends ReadonlyArray<CommandDefinition>>(
+        innerInputs: ExtendVirmatorInputs<NewGeneric>,
+    ): ExtendedVirmator<
+        CommandDefinitionArrayToMapping<NewGeneric> &
+            CommandDefinitionArrayToMapping<CommandDefinitionsGeneric>
+    > {
+        type CombinedDefinitionsArray = ReadonlyArray<
+            ArrayElement<NewGeneric | CommandDefinitionsGeneric>
+        >;
+
         const allCommandDefinitions = [
             ...commandDefinitions,
             ...(innerInputs.commandDefinitions ?? []),
-        ];
+        ] as CombinedDefinitionsArray;
 
-        return createVirmator({
+        return createVirmator<CombinedDefinitionsArray>({
             ...innerInputs,
             commandDefinitions: allCommandDefinitions,
         });

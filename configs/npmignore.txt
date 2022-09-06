@@ -5,6 +5,7 @@
 *.test.ts
 **/*/readme-examples/
 **/*/test/
+/*.tgz
 /Icon?
 coverage/
 graphics/

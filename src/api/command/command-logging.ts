@@ -20,7 +20,7 @@ export const defaultConsoleLogging: Readonly<Required<CommandLogging>> = {
 
 export type CommandLogs = Record<keyof CommandLogging, string>;
 
-export const noCommandLogTransforms: CommandLogTransform = (input) => input;
+export const identityCommandLogTransform: CommandLogTransform = (input) => input;
 export type CommandLogTransform = (thingToTransform: string) => string;
 
 export type CommandLogTransforms = Partial<Record<keyof CommandLogging, CommandLogTransform>>;

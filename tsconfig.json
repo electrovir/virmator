@@ -1,1 +1,8 @@
-./configs/tsconfig.json
+{
+    "extends": "./base-configs/base-tsconfig.json",
+    "exclude": [
+        "./configs/",
+        "./base-configs/",
+        "./test-files/"
+    ]
+}

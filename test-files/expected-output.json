@@ -1,0 +1,81 @@
+{
+    "code-in-markdown": {
+        "before-whole-dir-update-check-fail": {
+            "dir": "code-in-markdown",
+            "exitCode": 1,
+            "key": "before-whole-dir-update-check-fail",
+            "stderr": "    README-broken.md: NOT up to date\nCode in Markdown file(s) is out of date. Run without the \"check\" sub-command in order to update.\ncode-in-markdown failed.\n",
+            "stdout": "running code-in-markdown...\nnode_modules/.bin/md-code --check \"./**/*.md\"\nChecking that code in markdown is up to date:\n    README-fixed.md: up to date\n"
+        },
+        "outdated-dir-check-fail": {
+            "dir": "code-in-markdown",
+            "exitCode": 1,
+            "key": "outdated-dir-check-fail",
+            "stderr": "    README-broken.md: NOT up to date\nCode in Markdown file(s) is out of date. Run without the \"check\" sub-command in order to update.\ncode-in-markdown failed.\n",
+            "stdout": "running code-in-markdown...\nnode_modules/.bin/md-code --check \"./**/*.md\"\nChecking that code in markdown is up to date:\n    README-fixed.md: up to date\n"
+        },
+        "up-to-date-single-file-check-pass": {
+            "dir": "code-in-markdown",
+            "exitCode": 0,
+            "key": "up-to-date-single-file-check-pass",
+            "stderr": "",
+            "stdout": "running code-in-markdown...\nnode_modules/.bin/md-code --check README-fixed.md\nChecking that code in markdown is up to date:\n    README-fixed.md: up to date\ncode-in-markdown succeeded.\n"
+        },
+        "outdated-single-file-check-fail": {
+            "dir": "code-in-markdown",
+            "exitCode": 1,
+            "key": "outdated-single-file-check-fail",
+            "stderr": "    README-broken.md: NOT up to date\nCode in Markdown file(s) is out of date. Run without the \"check\" sub-command in order to update.\ncode-in-markdown failed.\n",
+            "stdout": "running code-in-markdown...\nnode_modules/.bin/md-code --check README-broken.md\nChecking that code in markdown is up to date:\n"
+        },
+        "outdated-check-pre-single-file-update-fail": {
+            "dir": "code-in-markdown",
+            "exitCode": 1,
+            "key": "outdated-check-pre-single-file-update-fail",
+            "stderr": "    README-broken.md: NOT up to date\nCode in Markdown file(s) is out of date. Run without the \"check\" sub-command in order to update.\ncode-in-markdown failed.\n",
+            "stdout": "running code-in-markdown...\nnode_modules/.bin/md-code --check README-broken.md\nChecking that code in markdown is up to date:\n"
+        },
+        "whole-dir-update-pass": {
+            "dir": "code-in-markdown",
+            "exitCode": 0,
+            "key": "whole-dir-update-pass",
+            "stderr": "",
+            "stdout": "running code-in-markdown...\nnode_modules/.bin/md-code \"./**/*.md\"\nInserting code into markdown:\n    README-broken.md\n    README-fixed.md\ncode-in-markdown succeeded.\n"
+        },
+        "outdated-update-with-single-file-arg-pass": {
+            "dir": "code-in-markdown",
+            "exitCode": 0,
+            "key": "outdated-update-with-single-file-arg-pass",
+            "stderr": "",
+            "stdout": "running code-in-markdown...\nnode_modules/.bin/md-code README-broken.md\nInserting code into markdown:\n    README-broken.md\ncode-in-markdown succeeded.\n"
+        },
+        "whole-dir-check-after-update-pass": {
+            "dir": "code-in-markdown",
+            "exitCode": 0,
+            "key": "whole-dir-check-after-update-pass",
+            "stderr": "",
+            "stdout": "running code-in-markdown...\nnode_modules/.bin/md-code --check \"./**/*.md\"\nChecking that code in markdown is up to date:\n    README-broken.md: up to date\n    README-fixed.md: up to date\ncode-in-markdown succeeded.\n"
+        },
+        "after-update-with-single-file-check-pass": {
+            "dir": "code-in-markdown",
+            "exitCode": 0,
+            "key": "after-update-with-single-file-check-pass",
+            "stderr": "",
+            "stdout": "running code-in-markdown...\nnode_modules/.bin/md-code --check README-broken.md\nChecking that code in markdown is up to date:\n    README-broken.md: up to date\ncode-in-markdown succeeded.\n"
+        },
+        "whole-dir-after-update-revert-check-fail": {
+            "dir": "code-in-markdown",
+            "exitCode": 1,
+            "key": "whole-dir-after-update-revert-check-fail",
+            "stderr": "    README-broken.md: NOT up to date\nCode in Markdown file(s) is out of date. Run without the \"check\" sub-command in order to update.\ncode-in-markdown failed.\n",
+            "stdout": "running code-in-markdown...\nnode_modules/.bin/md-code --check \"./**/*.md\"\nChecking that code in markdown is up to date:\n    README-fixed.md: up to date\n"
+        },
+        "after-update-with-single-file-revert-check-fail": {
+            "dir": "code-in-markdown",
+            "exitCode": 1,
+            "key": "after-update-with-single-file-revert-check-fail",
+            "stderr": "    README-broken.md: NOT up to date\nCode in Markdown file(s) is out of date. Run without the \"check\" sub-command in order to update.\ncode-in-markdown failed.\n",
+            "stdout": "running code-in-markdown...\nnode_modules/.bin/md-code --check README-broken.md\nChecking that code in markdown is up to date:\n"
+        }
+    }
+}

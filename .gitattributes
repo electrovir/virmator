@@ -1,1 +1,2 @@
+# this prevents false negatives in tests due to Windows machines messing up line markers
 * text=auto eol=lf

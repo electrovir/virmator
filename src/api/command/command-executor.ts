@@ -1,5 +1,5 @@
 import {ConfigFileDefinition} from '../config/config-file-definition';
-import {CommandLogTransforms} from './command-logging';
+import {CommandLogging, CommandLogTransforms} from './command-logging';
 import {
     DefineCommandInputs,
     SharedExecutorInputsAndCommandDefinition,
@@ -11,8 +11,15 @@ export type CommandExecutorInputs<
     filteredInputArgs: string[];
     inputSubCommands: (keyof DefineCommandInputsGeneric['subCommandDescriptions'])[];
     repoDir: string;
-    allConfigs: ConfigFileDefinition[];
-} & SharedExecutorInputsAndCommandDefinition<DefineCommandInputsGeneric>;
+    allConfigs: ReadonlyArray<ConfigFileDefinition>;
+    packageDir: string;
+    logging: CommandLogging;
+};
+
+export type CommandExecutorDefinitionInputs<
+    DefineCommandInputsGeneric extends DefineCommandInputs = DefineCommandInputs,
+> = CommandExecutorInputs<DefineCommandInputsGeneric> &
+    SharedExecutorInputsAndCommandDefinition<DefineCommandInputsGeneric>;
 
 export type DetailedArg = {
     arg: string;
@@ -36,6 +43,10 @@ export function isCompletedExecutor(
 }
 
 export type CommandExecutorOutput = BashCommandExecutorOutput | SuccessOnlyExecutorOutput;
+
+export type CommandExecutorDefinition<DefineCommandInputsGeneric extends DefineCommandInputs> = (
+    inputs: CommandExecutorDefinitionInputs<DefineCommandInputsGeneric>,
+) => Promise<CommandExecutorOutput> | CommandExecutorOutput;
 
 export type CommandExecutor<DefineCommandInputsGeneric extends DefineCommandInputs> = (
     inputs: CommandExecutorInputs<DefineCommandInputsGeneric>,

@@ -1,6 +1,6 @@
 import {getObjectTypedKeys, mapObject} from 'augment-vir';
 import {CreateDescriptionsCallback} from './command-description';
-import {CommandExecutor} from './command-executor';
+import {CommandExecutor, CommandExecutorDefinition} from './command-executor';
 import {
     DefineCommandInputs,
     SharedExecutorInputsAndCommandDefinition,
@@ -8,7 +8,7 @@ import {
 } from './define-command-inputs';
 
 export type CommandDefinition<
-    DefineCommandInputsGeneric extends DefineCommandInputs = DefineCommandInputs,
+    DefineCommandInputsGeneric extends DefineCommandInputs = DefineCommandInputs<string>,
 > = SharedExecutorInputsAndCommandDefinition<DefineCommandInputsGeneric> & {
     executor: CommandExecutor<DefineCommandInputsGeneric>;
     createDescription: CreateDescriptionsCallback<DefineCommandInputsGeneric>;
@@ -17,7 +17,7 @@ export type CommandDefinition<
 export function defineCommand<DefineCommandInputsGeneric extends DefineCommandInputs>(
     defineCommandInputs: Readonly<DefineCommandInputsGeneric>,
     createDescription: CreateDescriptionsCallback<DefineCommandInputsGeneric>,
-    inputExecutor: CommandExecutor<DefineCommandInputsGeneric>,
+    inputExecutor: CommandExecutorDefinition<DefineCommandInputsGeneric>,
 ): CommandDefinition<DefineCommandInputsGeneric> {
     const allAvailableSubCommands: (keyof DefineCommandInputsGeneric['subCommandDescriptions'])[] =
         getObjectTypedKeys(defineCommandInputs.subCommandDescriptions);

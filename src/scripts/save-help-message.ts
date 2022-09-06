@@ -6,7 +6,7 @@ import {
     generateHelpMessage,
     MessageSyntax,
 } from '../cli-old/cli-command/cli-command-to-help-message';
-import {virmatorReadme} from '../file-paths/virmator-test-file-paths';
+import {virmatorReadme} from '../test/virmator-test-file-paths';
 
 const usageTrigger = '<!-- usage below -->';
 

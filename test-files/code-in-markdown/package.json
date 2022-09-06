@@ -1,3 +1,7 @@
 {
-    "name": "test-code-in-markdown"
+    "name": "test-code-in-markdown",
+    "devDependencies": {
+        "markdown-code-example-inserter": "0.1.11",
+        "virmator": "file:../../virmator-4.0.0.tgz"
+    }
 }

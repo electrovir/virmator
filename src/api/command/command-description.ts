@@ -7,6 +7,7 @@ export type CreateDescriptionsInputs<DefineCommandInputsGeneric extends DefineCo
 > & {
     packageBinName: string;
     subCommands: SubCommandsMap<DefineCommandInputsGeneric>;
+    configFiles: DefineCommandInputsGeneric['configFiles'];
 };
 
 export type CreateDescriptionsCallback<DefineCommandInputsGeneric extends DefineCommandInputs> = (

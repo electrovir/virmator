@@ -1,3 +1,7 @@
 .DS_Store
-node_modules
-dist
+/*.tgz
+/Icon?
+coverage/
+dist/
+graphics/
+node_modules/

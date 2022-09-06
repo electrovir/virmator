@@ -105,6 +105,7 @@ export function commandToHelpString(
         packageBinName,
         commandName: commandDefinition.commandName,
         subCommands: commandDefinition.subCommands,
+        configFiles: commandDefinition.configFiles,
     });
 
     const format = (key: keyof typeof formatting) => formatWithSyntax(key, syntax);
