@@ -74,6 +74,7 @@ export function createVirmator<
     }
 
     return {
+        packageBinName: inputs.packageBinName,
         cliHelpMessage,
         extend: extendVirmator,
         markdownHelpMessage,

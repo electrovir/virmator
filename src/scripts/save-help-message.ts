@@ -1,18 +1,19 @@
 import {printShellCommandOutput, runShellCommand} from 'augment-vir/dist/cjs/node-only';
 import {readFile, writeFile} from 'fs/promises';
+import {virmator} from '..';
 import {Color} from '../api/cli-color';
-import {allCliCommandDefinitions} from '../cli-old/all-cli-command-definitions';
-import {
-    generateHelpMessage,
-    MessageSyntax,
-} from '../cli-old/cli-command/cli-command-to-help-message';
+import {generateHelpMessage, HelpMessageSyntax} from '../api/command/command-to-help-message';
 import {virmatorReadme} from '../test/virmator-test-file-paths';
 
 const usageTrigger = '<!-- usage below -->';
 
 async function main(args: string[]) {
     const check = args.join(' ').includes('check');
-    const helpMessage = generateHelpMessage(allCliCommandDefinitions, MessageSyntax.Markdown);
+    const helpMessage = generateHelpMessage(
+        virmator.packageBinName,
+        virmator.commandMapping,
+        HelpMessageSyntax.Markdown,
+    );
 
     const originalReadme = (await readFile(virmatorReadme)).toString();
 

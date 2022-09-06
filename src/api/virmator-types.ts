@@ -11,6 +11,7 @@ export type ExtendVirmatorInputs<
 }>;
 
 export type ExtendedVirmator<CommandMappingGeneric extends Readonly<CommandMapping>> = Readonly<{
+    packageBinName: string;
     cliHelpMessage: string;
     markdownHelpMessage: string;
     commandMapping: CommandMappingGeneric;
