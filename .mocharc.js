@@ -4,7 +4,7 @@ const baseOptions = require('./base-configs/base-mocharc.js');
 const mochaConfig = {
     ...baseOptions,
     slow: 5_000, // ms
-    timeout: 300_000, // five minutes in ms
+    timeout: 600_000, // 10 minutes in ms
     // heavy modification of files requires parallel to be off
     parallel: false,
 };

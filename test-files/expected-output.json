@@ -107,5 +107,28 @@
             "stderr": "",
             "stdout": "Installing typescript@4.8.2...\nrunning compile...\nrm -rf dist && /Users/electrovir/repos/electrovir/virmator/test-files/compile/valid-compile-repo/node_modules/.bin/tsc --pretty\ncompile succeeded.\n"
         }
+    },
+    "format": {
+        "fail on format failures in a folder": {
+            "dir": "format",
+            "exitCode": 1,
+            "key": "fail on format failures in a folder",
+            "stderr": "[warn] invalid-format.ts\n[warn] Code style issues found in the above file. Forgot to run Prettier?\nformat failed.\n",
+            "stdout": "Installing prettier@2.7.1...\nInstalling prettier-plugin-jsdoc@0.4.2...\nInstalling prettier-plugin-multiline-arrays@1.1.1...\nInstalling prettier-plugin-organize-imports@3.1.1...\nInstalling prettier-plugin-packagejson@2.2.18...\nInstalling prettier-plugin-sort-json@0.0.3...\nInstalling prettier-plugin-toml@0.3.1...\nrunning format...\nnode_modules/.bin/prettier --color \"./**/*.+(css|html|js|json|jsx|md|toml|ts|tsx|yaml|yml)\" --check \n"
+        },
+        "pass format when there are zero errors": {
+            "dir": "format",
+            "exitCode": 0,
+            "key": "pass format when there are zero errors",
+            "stderr": "",
+            "stdout": "Installing prettier@2.7.1...\nInstalling prettier-plugin-jsdoc@0.4.2...\nInstalling prettier-plugin-multiline-arrays@1.1.1...\nInstalling prettier-plugin-organize-imports@3.1.1...\nInstalling prettier-plugin-packagejson@2.2.18...\nInstalling prettier-plugin-sort-json@0.0.3...\nInstalling prettier-plugin-toml@0.3.1...\nrunning format...\nnode_modules/.bin/prettier --color \"./**/*.+(css|html|js|json|jsx|md|toml|ts|tsx|yaml|yml)\" --check \nformat succeeded.\n"
+        },
+        "format should update invalid files": {
+            "dir": "format",
+            "exitCode": 0,
+            "key": "format should update invalid files",
+            "stderr": "",
+            "stdout": "Installing prettier@2.7.1...\nInstalling prettier-plugin-jsdoc@0.4.2...\nInstalling prettier-plugin-multiline-arrays@1.1.1...\nInstalling prettier-plugin-organize-imports@3.1.1...\nInstalling prettier-plugin-packagejson@2.2.18...\nInstalling prettier-plugin-sort-json@0.0.3...\nInstalling prettier-plugin-toml@0.3.1...\nrunning format...\nnode_modules/.bin/prettier --color --list-different \"./**/*.+(css|html|js|json|jsx|md|toml|ts|tsx|yaml|yml)\" --write\ninvalid-format.ts\nformat succeeded.\n"
+        }
     }
 }

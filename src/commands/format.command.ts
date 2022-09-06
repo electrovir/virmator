@@ -100,6 +100,7 @@ export const formatCommandDefinition = defineCommand(
             ? formatArgs.fileExtensions
             : defaultFormatExtensions;
         const fileExtensionsString = `\"./**/*.+(${fileExtensions.join('|')})\"`;
+        const listDifferentFlag = shouldCheckOnly ? '' : '--list-different';
 
         const extraPrettierFlags = formatArgs.prettierFlags.length ? formatArgs.prettierFlags : '';
 
@@ -116,6 +117,7 @@ export const formatCommandDefinition = defineCommand(
             mainCommand: getNpmBinPath('prettier'),
             args: [
                 '--color',
+                listDifferentFlag,
                 ...extraPrettierFlags,
                 fileExtensionsString,
                 operationString,

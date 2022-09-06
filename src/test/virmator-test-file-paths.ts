@@ -21,7 +21,7 @@ export const testCodeInMarkdownPaths = {
     brokenReadme: join(testCodeInMarkdownDirPath, 'README-broken.md'),
 };
 
-const formatTestRepos = join(testFilesDirPath, '');
+const formatTestRepos = join(testFilesDirPath, 'format');
 const invalidFormatRepo = join(formatTestRepos, 'invalid-format-repo');
 export const testFormatPaths = {
     validRepo: join(formatTestRepos, 'valid-format-repo'),

@@ -28,7 +28,7 @@ async function initDirectory(dir: string): Promise<void> {
         await unlink(packageLockPath);
     }
     const packageJsonPath = join(dir, 'package.json');
-    await writeFile(packageJsonPath, JSON.stringify({name: basename(dir)}, null, 4));
+    await writeFile(packageJsonPath, JSON.stringify({name: basename(dir)}, null, 4) + '\n');
 }
 
 export async function runTestCommand({

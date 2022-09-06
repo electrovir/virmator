@@ -28,7 +28,7 @@
     "bin": "dist/cli.js",
     "scripts": {
         "compile": "rm -rf dist && tsc",
-        "format": "npm run format:base -- --write",
+        "format": "npm run format:base -- --write --list-different",
         "format:base": "prettier \"./**/*.+(ts|json|html|css|md|js)\"",
         "format:check": "npm run format:base -- --check",
         "prepublishOnly": "npm run test:full",
