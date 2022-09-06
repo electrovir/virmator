@@ -49,43 +49,34 @@ describe(relativeToVirmatorRoot(__filename), () => {
 
         try {
             // should fail before running update
-            await runCliCommandForTest(
-                {
-                    args: [
-                        codeInMarkdownCommandDefinition.commandName,
-                        codeInMarkdownCommandDefinition.subCommands.check,
-                        'README-broken.md',
-                    ],
-                    dir: testCodeInMarkdownDirPath,
-                    expectationKey: 'outdated-check-pre-single-file-update-fail',
-                },
-                'check should fail before running update',
-            );
+            await runCliCommandForTest({
+                args: [
+                    codeInMarkdownCommandDefinition.commandName,
+                    codeInMarkdownCommandDefinition.subCommands.check,
+                    'README-broken.md',
+                ],
+                dir: testCodeInMarkdownDirPath,
+                expectationKey: 'single file check should fail before running update',
+            });
 
-            await runCliCommandForTest(
-                {
-                    args: [
-                        codeInMarkdownCommandDefinition.commandName,
-                        'README-broken.md',
-                    ],
-                    dir: testCodeInMarkdownDirPath,
-                    expectationKey: 'outdated-update-with-single-file-arg-pass',
-                },
-                'update should pass',
-            );
+            await runCliCommandForTest({
+                args: [
+                    codeInMarkdownCommandDefinition.commandName,
+                    'README-broken.md',
+                ],
+                dir: testCodeInMarkdownDirPath,
+                expectationKey: 'single file update should pass',
+            });
 
-            await runCliCommandForTest(
-                {
-                    args: [
-                        codeInMarkdownCommandDefinition.commandName,
-                        codeInMarkdownCommandDefinition.subCommands.check,
-                        'README-broken.md',
-                    ],
-                    dir: testCodeInMarkdownDirPath,
-                    expectationKey: 'after-update-with-single-file-check-pass',
-                },
-                'check should pass after update',
-            );
+            await runCliCommandForTest({
+                args: [
+                    codeInMarkdownCommandDefinition.commandName,
+                    codeInMarkdownCommandDefinition.subCommands.check,
+                    'README-broken.md',
+                ],
+                dir: testCodeInMarkdownDirPath,
+                expectationKey: 'single file check should pass after update',
+            });
 
             const badFileAfterUpdate = (
                 await readFile(testCodeInMarkdownPaths.brokenReadme)
@@ -100,18 +91,15 @@ describe(relativeToVirmatorRoot(__filename), () => {
             ).toString();
             assert.strictEqual(badFileBeforeUpdate, badFileAfterRevert);
 
-            await runCliCommandForTest(
-                {
-                    args: [
-                        codeInMarkdownCommandDefinition.commandName,
-                        codeInMarkdownCommandDefinition.subCommands.check,
-                        'README-broken.md',
-                    ],
-                    dir: testCodeInMarkdownDirPath,
-                    expectationKey: 'after-update-with-single-file-revert-check-fail',
-                },
-                'check should fail after reverting',
-            );
+            await runCliCommandForTest({
+                args: [
+                    codeInMarkdownCommandDefinition.commandName,
+                    codeInMarkdownCommandDefinition.subCommands.check,
+                    'README-broken.md',
+                ],
+                dir: testCodeInMarkdownDirPath,
+                expectationKey: 'single file check should fail after reverting',
+            });
         } catch (error) {
             await writeFile(testCodeInMarkdownPaths.brokenReadme, badFileBeforeUpdate);
             throw error;
@@ -128,40 +116,31 @@ describe(relativeToVirmatorRoot(__filename), () => {
 
         try {
             // should fail before running update
-            await runCliCommandForTest(
-                {
-                    args: [
-                        codeInMarkdownCommandDefinition.commandName,
-                        codeInMarkdownCommandDefinition.subCommands.check,
-                    ],
-                    dir: testCodeInMarkdownDirPath,
-                    expectationKey: 'before-whole-dir-update-check-fail',
-                },
-                'check should fail before running update',
-            );
+            await runCliCommandForTest({
+                args: [
+                    codeInMarkdownCommandDefinition.commandName,
+                    codeInMarkdownCommandDefinition.subCommands.check,
+                ],
+                dir: testCodeInMarkdownDirPath,
+                expectationKey: 'check should fail before running single file update',
+            });
 
-            await runCliCommandForTest(
-                {
-                    args: [
-                        codeInMarkdownCommandDefinition.commandName,
-                    ],
-                    dir: testCodeInMarkdownDirPath,
-                    expectationKey: 'whole-dir-update-pass',
-                },
-                'update should pass',
-            );
+            await runCliCommandForTest({
+                args: [
+                    codeInMarkdownCommandDefinition.commandName,
+                ],
+                dir: testCodeInMarkdownDirPath,
+                expectationKey: 'update should pass',
+            });
 
-            await runCliCommandForTest(
-                {
-                    args: [
-                        codeInMarkdownCommandDefinition.commandName,
-                        codeInMarkdownCommandDefinition.subCommands.check,
-                    ],
-                    dir: testCodeInMarkdownDirPath,
-                    expectationKey: 'whole-dir-check-after-update-pass',
-                },
-                'check should pass after update',
-            );
+            await runCliCommandForTest({
+                args: [
+                    codeInMarkdownCommandDefinition.commandName,
+                    codeInMarkdownCommandDefinition.subCommands.check,
+                ],
+                dir: testCodeInMarkdownDirPath,
+                expectationKey: 'check should pass after update',
+            });
 
             const badFileAfterUpdate = (
                 await readFile(testCodeInMarkdownPaths.brokenReadme)
@@ -185,17 +164,14 @@ describe(relativeToVirmatorRoot(__filename), () => {
             assert.strictEqual(badFileBeforeUpdate, badFileAfterRevert);
             assert.strictEqual(goodFileBeforeUpdate, goodFileAfterRevert);
 
-            await runCliCommandForTest(
-                {
-                    args: [
-                        codeInMarkdownCommandDefinition.commandName,
-                        codeInMarkdownCommandDefinition.subCommands.check,
-                    ],
-                    dir: testCodeInMarkdownDirPath,
-                    expectationKey: 'whole-dir-after-update-revert-check-fail',
-                },
-                'check should fail after reverting',
-            );
+            await runCliCommandForTest({
+                args: [
+                    codeInMarkdownCommandDefinition.commandName,
+                    codeInMarkdownCommandDefinition.subCommands.check,
+                ],
+                dir: testCodeInMarkdownDirPath,
+                expectationKey: 'check should fail after reverting',
+            });
         } catch (error) {
             await writeFile(testCodeInMarkdownPaths.brokenReadme, badFileBeforeUpdate);
             throw error;

@@ -3,27 +3,21 @@ import {assert} from 'chai';
 import {readdir, unlink} from 'fs/promises';
 import {describe, it} from 'mocha';
 import {join} from 'path';
-import {runCliCommandForTest} from '../../cli-old/run-command.test-helper';
-import {testCompilePaths} from '../../file-paths/virmator-test-file-paths';
-import {relativeToVirmatorRoot} from '../file-paths/virmator-package-paths';
+import {relativeToVirmatorRoot} from '../file-paths/package-paths';
+import {runCliCommandForTest} from '../test/run-test-command';
+import {testCompilePaths} from '../test/virmator-test-file-paths';
 import {compileCommandDefinition} from './compile.command';
 
 describe(relativeToVirmatorRoot(__filename), () => {
     it('should fail when compile failures exist', async () => {
-        const output = await runCliCommandForTest(
-            {
-                commandDefinition: compileCommandDefinition,
-                subCommand: compileCommandDefinition.subCommands.check,
-                cwd: testCompilePaths.invalidRepo,
-            },
-            {
-                exitCode: 1,
-                exitSignal: undefined,
-                stderr: '',
-                // cspell:disable-next-line
-                stdout: /compile failed\./,
-            },
-        );
+        const output = await runCliCommandForTest({
+            args: [
+                compileCommandDefinition.commandName,
+                compileCommandDefinition.subCommands.check,
+            ],
+            dir: testCompilePaths.invalidRepo,
+            expectationKey: 'compile-errors-failure',
+        });
         assert.deepEqual(output.dirFileNamesBefore, output.dirFileNamesAfter);
         assert.isFalse(
             output.dirFileNamesBefore.some((fileName) => fileName.endsWith('js')),
@@ -36,20 +30,14 @@ describe(relativeToVirmatorRoot(__filename), () => {
     });
 
     it('should pass when no type errors exist', async () => {
-        const output = await runCliCommandForTest(
-            {
-                commandDefinition: compileCommandDefinition,
-                subCommand: compileCommandDefinition.subCommands.check,
-                cwd: testCompilePaths.validRepo,
-            },
-            {
-                exitCode: 0,
-                exitSignal: undefined,
-                stderr: '',
-                // cspell:disable-next-line
-                stdout: `running compile...\n\u001b[1m\u001b[32mcompile succeeded.\u001b[0m\n`,
-            },
-        );
+        const output = await runCliCommandForTest({
+            args: [
+                compileCommandDefinition.commandName,
+                compileCommandDefinition.subCommands.check,
+            ],
+            dir: testCompilePaths.validRepo,
+            expectationKey: 'no-compile-errors-pass',
+        });
         assert.deepEqual(output.dirFileNamesBefore, output.dirFileNamesAfter);
         assert.isFalse(
             output.dirFileNamesBefore.some((fileName) => fileName.endsWith('js')),
@@ -62,25 +50,18 @@ describe(relativeToVirmatorRoot(__filename), () => {
     });
 
     it('should produce output files when not just checking', async () => {
-        const output = await runCliCommandForTest(
-            {
-                commandDefinition: compileCommandDefinition,
-                cwd: testCompilePaths.validRepo,
-            },
-            {
-                exitCode: 0,
-                exitSignal: undefined,
-                stderr: '',
-                // cspell:disable-next-line
-                stdout: `running compile...\n\u001b[1m\u001b[32mcompile succeeded.\u001b[0m\n`,
-            },
-        );
+        const output = await runCliCommandForTest({
+            args: [compileCommandDefinition.commandName],
+            dir: testCompilePaths.validRepo,
+            expectationKey: 'compile-no-errors-with-output',
+        });
         assert.isFalse(
             output.dirFileNamesBefore.some((fileName) => fileName.endsWith('js')),
             'compiled js output files should not exist before running compile',
         );
         assert.deepEqual(output.dirFileNamesBefore, [
             'blah.ts',
+            'package.json',
             'tsconfig.json',
         ]);
         assert.notDeepEqual(output.dirFileNamesBefore, output.dirFileNamesAfter);

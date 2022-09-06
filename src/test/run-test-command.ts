@@ -1,18 +1,35 @@
 import {stripColor} from 'ansi-colors';
-import {combineErrors, extractErrorMessage, typedHasOwnProperty} from 'augment-vir';
+import {extractErrorMessage, typedHasOwnProperty} from 'augment-vir';
 import {runShellCommand, ShellOutput} from 'augment-vir/dist/cjs/node-only';
 import {assert} from 'chai';
-import {readdir} from 'fs/promises';
-import {basename} from 'path';
+import {existsSync} from 'fs';
+import {readdir, rm, unlink, writeFile} from 'fs/promises';
+import {basename, join, relative} from 'path';
 import {readAllDirContents} from '../augments/fs';
 import {filterObject} from '../augments/object';
+import {getFirstPartOfRelativePath} from '../augments/path';
 import {NonEmptyString} from '../augments/string';
+import {virmatorPackageDir} from '../file-paths/package-paths';
 import {
+    expectationToKeyPath,
     loadExpectations,
     saveExpectations,
     TestExpectation,
-    TestExpectations,
 } from './test-expectations';
+import {testExpectationsFilePath, testFilesDirPath} from './virmator-test-file-paths';
+
+async function initDirectory(dir: string): Promise<void> {
+    await rm(join(dir, 'node_modules'), {
+        recursive: true,
+        force: true,
+    });
+    const packageLockPath = join(dir, 'package-lock.json');
+    if (existsSync(packageLockPath)) {
+        await unlink(packageLockPath);
+    }
+    const packageJsonPath = join(dir, 'package.json');
+    await writeFile(packageJsonPath, JSON.stringify({name: basename(dir)}, null, 4));
+}
 
 export async function runTestCommand({
     args,
@@ -40,10 +57,10 @@ type RunCliCommandInputs<KeyGeneric extends string> = {
 
 export async function runCliCommandForTest<KeyGeneric extends string>(
     inputs: RunCliCommandInputs<KeyGeneric>,
-    message: string = '',
 ) {
     const recursiveFileReading: boolean = !!inputs.recursiveFileReading;
 
+    await initDirectory(inputs.dir);
     const dirFileNamesBefore = (await readdir(inputs.dir)).sort();
     const dirFileContentsBefore = await readAllDirContents(inputs.dir, recursiveFileReading);
     const beforeTimestamp: number = Date.now();
@@ -55,6 +72,57 @@ export async function runCliCommandForTest<KeyGeneric extends string>(
         args: inputs.args,
         dir: inputs.dir,
     });
+
+    if (typedHasOwnProperty(inputs, 'expectationKey')) {
+        if (!inputs.expectationKey) {
+            throw new Error(`Expectation key exists but is falsy: "${inputs.expectationKey}"`);
+        }
+        const actualResults: TestExpectation = {
+            dir: getFirstPartOfRelativePath(testFilesDirPath, inputs.dir),
+            exitCode: results.exitCode ?? 0,
+            key: inputs.expectationKey,
+            stderr: stripColor(results.stderr),
+            stdout: stripColor(results.stdout),
+        };
+        const loadedExpectations = await loadExpectations();
+
+        try {
+            if (runKeys.has(actualResults.key)) {
+                throw new Error(`Duplicate key exists: ${expectationToKeyPath(actualResults)}`);
+            } else {
+                runKeys.add(actualResults.key);
+            }
+            const dirExpectations = loadedExpectations[actualResults.dir];
+            if (!dirExpectations) {
+                throw new Error(`Missing ${actualResults.dir} key in expectations file.`);
+            }
+            const expectations = dirExpectations[actualResults.key];
+            if (!expectations) {
+                throw new Error(
+                    `Missing ${expectationToKeyPath(actualResults)} in expectations file.`,
+                );
+            }
+
+            assert.deepStrictEqual(actualResults, expectations);
+        } catch (error) {
+            throw new Error(
+                `${expectationToKeyPath(actualResults)} comparison failed. Check ${relative(
+                    virmatorPackageDir,
+                    testExpectationsFilePath,
+                )}: ${extractErrorMessage(error)}`,
+            );
+        } finally {
+            await initDirectory(inputs.dir);
+            await saveExpectations({
+                ...loadedExpectations,
+                [actualResults.dir]: {
+                    ...loadedExpectations[actualResults.dir],
+                    [actualResults.key]: actualResults,
+                },
+            });
+        }
+    }
+
     const afterTimestamp: number = Date.now();
 
     const durationMs: number = afterTimestamp - beforeTimestamp;
@@ -70,56 +138,6 @@ export async function runCliCommandForTest<KeyGeneric extends string>(
 
         return beforeContents !== afterContents;
     });
-
-    if (typedHasOwnProperty(inputs, 'expectationKey')) {
-        if (!inputs.expectationKey) {
-            throw new Error(`Expectation key exists but is falsy: "${inputs.expectationKey}"`);
-        }
-        const actualResults: TestExpectation = {
-            dir: basename(inputs.dir),
-            exitCode: results.exitCode ?? 0,
-            key: inputs.expectationKey,
-            stderr: stripColor(results.stderr),
-            stdout: stripColor(results.stdout),
-        };
-
-        if (runKeys.has(actualResults.key)) {
-            throw new Error(`Duplicate key exists: ${actualResults.dir} > ${actualResults.key}`);
-        } else {
-            runKeys.add(actualResults.key);
-        }
-        let loadedExpectations: TestExpectations = {};
-        const errors: Error[] = [];
-
-        try {
-            loadedExpectations = await loadExpectations();
-            const dirExpectations = loadedExpectations[actualResults.dir];
-            if (!dirExpectations) {
-                throw new Error(`Missing ${actualResults.dir} key in expectations file.`);
-            }
-            const expectations = dirExpectations[actualResults.key];
-            if (!expectations) {
-                throw new Error(
-                    `Missing ${actualResults.dir} > ${actualResults.key} in expectations file.`,
-                );
-            }
-
-            assert.deepStrictEqual(actualResults, expectations);
-        } catch (error) {
-            errors.push(new Error(extractErrorMessage(error)));
-        } finally {
-            await saveExpectations({
-                ...loadedExpectations,
-                [actualResults.dir]: {
-                    ...loadedExpectations[actualResults.dir],
-                    [actualResults.key]: actualResults,
-                },
-            });
-        }
-        if (errors.length) {
-            throw combineErrors(errors);
-        }
-    }
 
     if (inputs.filesShouldNotChange) {
         assert.deepEqual(

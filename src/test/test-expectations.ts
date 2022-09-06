@@ -19,6 +19,10 @@ export type TestExpectation = {
     dir: string;
 };
 
+export function expectationToKeyPath(expectation: Pick<TestExpectation, 'key' | 'dir'>): string {
+    return `"${expectation.dir}" > "${expectation.key}"`;
+}
+
 export type TestExpectations = {[testFilesDir: string]: {[testKey: string]: TestExpectation}};
 
 export async function loadExpectations(): Promise<TestExpectations> {
@@ -60,7 +64,10 @@ function assertValidLoadExpectations(input: unknown): asserts input is TestExpec
         }
 
         Object.keys(testKeysObject).forEach((testKey) => {
-            const keyPath = `Expectation under ${testDirKey} > ${testKey}`;
+            const keyPath = `Expectation under ${expectationToKeyPath({
+                dir: testDirKey,
+                key: testKey,
+            })}`;
             const testExpectations = (testKeysObject as any)[testKey];
             if (!isObject(testExpectations)) {
                 throw new Error(`${keyPath} was not an object.`);
@@ -114,13 +121,13 @@ function assertOutputProperty(keyPath: string, testExpectations: object, outputK
     const value = testExpectations[outputKey];
 
     if (typeof value !== 'string' && !isObject(value)) {
-        throw new Error(`${keyPath} > ${outputKey} is invalid. Got "${value}"`);
+        throw new Error(`${keyPath} > "${outputKey}" is invalid. Got "${value}"`);
     } else if (isObject(value)) {
         if (!typedHasOwnProperty(value, 'type') || value.type !== 'regexp') {
-            throw new Error(`${keyPath} > ${outputKey}.type is invalid. Expected "regexp".`);
+            throw new Error(`${keyPath} > "${outputKey}".type is invalid. Expected "regexp".`);
         }
         if (!typedHasOwnProperty(value, 'value') || typeof value.value !== 'string') {
-            throw new Error(`${keyPath} > ${outputKey}.value is invalid. Expected a string.`);
+            throw new Error(`${keyPath} > "${outputKey}".value is invalid. Expected a string.`);
         }
     }
 }

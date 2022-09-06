@@ -5,7 +5,7 @@ There should be some code below here:
 <!-- example-link: src/readme-examples/example-file.ts -->
 
 ```TypeScript
-import {doTheThing} from 'test-code-in-markdown';
+import {doTheThing} from 'code-in-markdown';
 
 function main() {
     doTheThing();
@@ -20,7 +20,7 @@ More examples:
     <!-- example-link: src/readme-examples/example-file.ts -->
 
     ```TypeScript
-    import {doTheThing} from 'test-code-in-markdown';
+    import {doTheThing} from 'code-in-markdown';
 
     function main() {
         doTheThing();
