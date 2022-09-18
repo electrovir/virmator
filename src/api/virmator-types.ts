@@ -1,5 +1,6 @@
 import {CommandMapping} from './command/command-mapping';
 import {CommandDefinition} from './command/define-command';
+import {ConfigFileDefinition} from './config/config-file-definition';
 import {createVirmator} from './create-virmator';
 
 export type ExtendVirmatorInputs<
@@ -16,6 +17,7 @@ export type ExtendedVirmator<CommandMappingGeneric extends Readonly<CommandMappi
     markdownHelpMessage: string;
     commandMapping: CommandMappingGeneric;
     extend: typeof createVirmator;
+    allConfigs: ReadonlyArray<ConfigFileDefinition>;
     runInCli: () => Promise<void>;
     run: (allArgs: string[], repoDir: string) => Promise<void>;
 }>;

@@ -11,6 +11,7 @@ export const compileCommandDefinition = defineCommand(
         configFiles: {
             tsConfig: {
                 copyFromInternalPath: join(virmatorConfigsDir, 'tsconfig.json'),
+                copyToPathRelativeToRepoDir: 'tsconfig.json',
                 required: true,
             },
         },

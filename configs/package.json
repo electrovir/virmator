@@ -4,14 +4,17 @@
     "types": "dist/index.d.ts",
     "scripts": {
         "build": "virmator frontend build",
-        "compile": "rm -rf dist && tsc --project tsconfig.json",
+        "compile": "rm -rf dist && virmator compile",
+        "docs:check": "virmator code-in-markdown check",
         "docs:update": "virmator code-in-markdown",
-        "format": "virmator format write",
+        "format": "virmator format",
         "prepublishOnly": "npm run compile && npm run test:full",
+        "preview": "virmator frontend preview",
         "spellcheck": "virmator spellcheck",
-        "start": "npm install && vite --force --config .virmator/vite/vite.config.ts",
+        "start": "npm install && virmator frontend",
         "test": "virmator test",
-        "test:full": "npm run test:types && npm test && npm run spellcheck && virmator format check",
-        "test:types": "tsc --noEmit"
+        "test:full": "npm run test:types && npm test && npm run spellcheck && virmator format check && npm run docs:check",
+        "test:types": "tsc --noEmit",
+        "test:web": "virmator test-web"
     }
 }

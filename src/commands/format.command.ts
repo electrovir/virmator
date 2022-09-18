@@ -28,10 +28,12 @@ export const formatCommandDefinition = defineCommand(
         configFiles: {
             prettierrc: {
                 copyFromInternalPath: join(virmatorConfigsDir, '.prettierrc.js'),
+                copyToPathRelativeToRepoDir: '.prettierrc.js',
                 required: true,
             },
             prettierIgnore: {
                 copyFromInternalPath: join(virmatorConfigsDir, '.prettierignore'),
+                copyToPathRelativeToRepoDir: '.prettierignore',
                 required: true,
             },
         },

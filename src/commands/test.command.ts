@@ -8,7 +8,8 @@ export const testCommandDefinition = defineCommand(
         subCommandDescriptions: {},
         configFiles: {
             mocharc: {
-                copyFromInternalPath: join(virmatorConfigsDir, '.mocharc.js'),
+                copyFromInternalPath: join(virmatorConfigsDir, 'configs', '.mocharc.js'),
+                copyToPathRelativeToRepoDir: join('configs', '.mocharc.js'),
                 required: true,
             },
         },

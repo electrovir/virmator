@@ -1,4 +1,4 @@
-const baseConfig = require('./node_modules/virmator/base-configs/base-prettierrc.js');
+const baseConfig = require('virmator/base-configs/base-prettierrc.js');
 
 /**
  * @typedef {import('prettier-plugin-multiline-arrays').MultilineArrayOptions} MultilineOptions

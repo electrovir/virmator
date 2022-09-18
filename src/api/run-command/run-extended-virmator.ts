@@ -1,10 +1,10 @@
 import {getObjectTypedKeys, typedHasOwnProperty} from 'augment-vir';
-import {extractAllConfigs} from '../command/command-configs';
 import {CommandExecutorInputs} from '../command/command-executor';
 import {CommandLogging, defaultConsoleLogging} from '../command/command-logging';
 import {CommandMapping} from '../command/command-mapping';
 import {getCommandResultMessage} from '../command/command-messages';
 import {CommandDefinition} from '../command/define-command';
+import {ConfigFileDefinition} from '../config/config-file-definition';
 import {updateDepsAsNeeded} from './check-npm-deps';
 import {extractSubCommands, getRelevantArgs} from './extract-arguments';
 import {runCommandExecutor} from './run-command-executor';
@@ -41,16 +41,18 @@ function getValidCommandDefinition(
 
 export async function runExtendedVirmator({
     allArgs,
-    repoDir,
+    allConfigs,
+    commandMapping,
     packageBinName,
     packageDir,
-    commandMapping,
+    repoDir,
 }: {
     allArgs: string[];
-    repoDir: string;
+    allConfigs: readonly ConfigFileDefinition[];
+    commandMapping: CommandMapping;
     packageBinName: string;
     packageDir: string;
-    commandMapping: CommandMapping;
+    repoDir: string;
 }): Promise<void> {
     const args = getRelevantArgs(allArgs, packageBinName);
     const commandName = args[0];
@@ -75,8 +77,6 @@ export async function runExtendedVirmator({
         packageDir,
         repoDir,
     });
-
-    const allConfigs = extractAllConfigs(commandMapping);
 
     const commandInputs: CommandExecutorInputs<any> = {
         logging,

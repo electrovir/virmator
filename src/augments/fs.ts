@@ -1,13 +1,8 @@
-import {mkdir, readdir, readFile, rm, stat} from 'fs/promises';
+import {readdir, readFile, stat} from 'fs/promises';
 import {join} from 'path';
 
 export interface DirContents {
     [key: string]: string | DirContents;
-}
-
-export async function clearDirectoryContents(dirPath: string): Promise<void> {
-    await rm(dirPath, {recursive: true});
-    await mkdir(dirPath);
 }
 
 export async function readAllDirContents(dir: string, recursive = false): Promise<DirContents> {

@@ -16,6 +16,5 @@ set +e;
 
 mocha --config .mocharc.js "$@";
 testResult=$?;
-npm uninstall virmator;
 
 exit "$testResult"

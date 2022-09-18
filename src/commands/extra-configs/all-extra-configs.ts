@@ -7,10 +7,12 @@ import {createDefaultPackageJson} from './create-default-package-json';
 export const nonCommandConfigsToUpdate: ReadonlyArray<ConfigFileDefinition> = [
     {
         copyFromInternalPath: join(virmatorConfigsDir, '.gitattributes'),
+        copyToPathRelativeToRepoDir: '.gitattributes',
         required: true,
     },
     {
         copyFromInternalPath: join(virmatorConfigsDir, '.nvmrc'),
+        copyToPathRelativeToRepoDir: '.nvmrc',
         required: true,
     },
     {
@@ -27,6 +29,7 @@ export const nonCommandConfigsToUpdate: ReadonlyArray<ConfigFileDefinition> = [
     },
     {
         copyFromInternalPath: join(virmatorConfigsDir, 'package.json'),
+        copyToPathRelativeToRepoDir: 'package.json',
         updateExistingConfigFileCallback: createDefaultPackageJson,
         required: true,
     },

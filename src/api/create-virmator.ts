@@ -1,4 +1,5 @@
 import {ArrayElement, extractErrorMessage} from 'augment-vir';
+import {extractAllConfigs} from './command/command-configs';
 import {CommandDefinitionArrayToMapping, commandsToMapping} from './command/command-mapping';
 import {generateHelpMessage, HelpMessageSyntax} from './command/command-to-help-message';
 import {CommandDefinition} from './command/define-command';
@@ -33,6 +34,8 @@ export function createVirmator<
         HelpMessageSyntax.Markdown,
     );
 
+    const allConfigs = extractAllConfigs(commandMapping);
+
     async function run(allArgs: string[], repoDir: string) {
         return await runExtendedVirmator({
             allArgs,
@@ -40,6 +43,7 @@ export function createVirmator<
             packageBinName: inputs.packageBinName,
             packageDir: inputs.packageRootDir,
             commandMapping: allCommands,
+            allConfigs,
         });
     }
 
@@ -79,6 +83,7 @@ export function createVirmator<
         extend: extendVirmator,
         markdownHelpMessage,
         commandMapping: allCommands,
+        allConfigs,
         runInCli,
         run,
     };

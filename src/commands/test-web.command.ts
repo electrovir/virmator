@@ -9,7 +9,12 @@ export const testWebCommandDefinition = defineCommand(
         subCommandDescriptions: {},
         configFiles: {
             webTestRunner: {
-                copyFromInternalPath: join(virmatorConfigsDir, 'web-test-runner-config.mjs'),
+                copyFromInternalPath: join(
+                    virmatorConfigsDir,
+                    'configs',
+                    'web-test-runner.config.mjs',
+                ),
+                copyToPathRelativeToRepoDir: join('configs', 'web-test-runner.config.mjs'),
                 required: true,
             },
         },
@@ -55,7 +60,7 @@ export const testWebCommandDefinition = defineCommand(
     (inputs) => {
         const shouldUseConfig = !inputs.filteredInputArgs.includes('--config');
         const configString = shouldUseConfig
-            ? `--config ./.virmator/web-test-runner.config.mjs`
+            ? `--config ${inputs.configFiles.webTestRunner.copyToPathRelativeToRepoDir}`
             : '';
 
         return {

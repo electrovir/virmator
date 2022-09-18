@@ -12,7 +12,8 @@ export const frontendCommandDefinition = defineCommand(
         },
         configFiles: {
             vite: {
-                copyFromInternalPath: join(virmatorConfigsDir, 'vite.config.ts'),
+                copyFromInternalPath: join(virmatorConfigsDir, 'configs', 'vite.config.ts'),
+                copyToPathRelativeToRepoDir: join('configs', 'vite.config.ts'),
                 required: true,
             },
         },

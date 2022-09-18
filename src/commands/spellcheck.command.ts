@@ -13,6 +13,7 @@ export const spellcheckCommandDefinition = defineCommand(
         configFiles: {
             cspell: {
                 copyFromInternalPath: join(virmatorConfigsDir, 'cspell.config.js'),
+                copyToPathRelativeToRepoDir: 'cspell.config.js',
                 required: true,
             },
         },

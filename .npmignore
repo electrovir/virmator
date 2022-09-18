@@ -1,14 +1,14 @@
-.*
 *.test-helper.ts
 *.test.d.ts
 *.test.js
 *.test.ts
 **/*/readme-examples/
 **/*/test/
+/.*
 /*.tgz
 /Icon?
 coverage/
 graphics/
 src/
 test-files/
-tsconfig*.json
+/tsconfig.json

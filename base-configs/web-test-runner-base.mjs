@@ -10,7 +10,7 @@ const webTestRunnerConfig = {
         playwrightLauncher({product: 'webkit'}),
     ],
     // 2 minutes cause GitHub Actions be slow
-    browserStartTimeout: 120000,
+    browserStartTimeout: 120_000,
     concurrentBrowsers: 3,
     coverage: true,
     files: [
@@ -20,8 +20,7 @@ const webTestRunnerConfig = {
     plugins: [esbuildPlugin({ts: true})],
     testFramework: {
         config: {
-            // // uncomment for debugging
-            // timeout: 100000,
+            timeout: 120_000,
         },
     },
 };
