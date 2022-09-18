@@ -105,7 +105,7 @@
             "exitCode": 0,
             "key": "compile-no-errors-with-output",
             "stderr": "",
-            "stdout": "Installing typescript@4.8.2...\nrunning compile...\nrm -rf dist && /Users/electrovir/repos/electrovir/virmator/test-files/compile/valid-compile-repo/node_modules/.bin/tsc --pretty\ncompile succeeded.\n"
+            "stdout": "Installing typescript@4.8.2...\nrunning compile...\nrm -rf dist && ./test-files/compile/valid-compile-repo/node_modules/.bin/tsc --pretty\ncompile succeeded.\n"
         }
     },
     "format": {
@@ -129,6 +129,29 @@
             "key": "format should update invalid files",
             "stderr": "",
             "stdout": "Installing prettier@2.7.1...\nInstalling prettier-plugin-jsdoc@0.4.2...\nInstalling prettier-plugin-multiline-arrays@1.1.1...\nInstalling prettier-plugin-organize-imports@3.1.1...\nInstalling prettier-plugin-packagejson@2.2.18...\nInstalling prettier-plugin-sort-json@0.0.3...\nInstalling prettier-plugin-toml@0.3.1...\nrunning format...\nnode_modules/.bin/prettier --color --list-different \"./**/*.+(css|html|js|json|jsx|md|toml|ts|tsx|yaml|yml)\" --write\ninvalid-format.ts\nformat succeeded.\n"
+        }
+    },
+    "spellcheck": {
+        "typos-exist": {
+            "dir": "spellcheck",
+            "exitCode": 1,
+            "key": "typos-exist",
+            "stderr": "CSpell: Files checked: 2, Issues found: 2 in 1 files\nspellcheck failed.\n",
+            "stdout": "Installing cspell@6.8.1...\nrunning spellcheck...\nnode_modules/.bin/cspell --color --unique --no-progress --relative --dot \"**/*\"\n./stuff.js:1:12 - Unknown word (Stff)\n./stuff.js:2:25 - Unknown word (thre)\n"
+        },
+        "no-typos": {
+            "dir": "spellcheck",
+            "exitCode": 0,
+            "key": "no-typos",
+            "stderr": "CSpell: Files checked: 2, Issues found: 0 in 0 files\n",
+            "stdout": "Installing cspell@6.8.1...\nrunning spellcheck...\nnode_modules/.bin/cspell --color --unique --no-progress --relative --dot \"**/*\"\nspellcheck succeeded.\n"
+        },
+        "dot-files": {
+            "dir": "spellcheck",
+            "exitCode": 0,
+            "key": "dot-files",
+            "stderr": "CSpell: Files checked: 11, Issues found: 0 in 0 files\n",
+            "stdout": "Installing cspell@6.8.1...\nrunning spellcheck...\nnode_modules/.bin/cspell --color --unique --no-progress --relative --dot \"**/*\"\nspellcheck succeeded.\n"
         }
     }
 }

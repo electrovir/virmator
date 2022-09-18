@@ -55,6 +55,10 @@ type RunCliCommandInputs<KeyGeneric extends string> = {
     recursiveFileReading?: boolean;
 };
 
+function stripFullPath(input: string): string {
+    return input.replace(new RegExp(virmatorPackageDir, 'g'), '.');
+}
+
 export async function runCliCommandForTest<KeyGeneric extends string>(
     inputs: RunCliCommandInputs<KeyGeneric>,
 ) {
@@ -81,8 +85,8 @@ export async function runCliCommandForTest<KeyGeneric extends string>(
             dir: getFirstPartOfRelativePath(testFilesDirPath, inputs.dir),
             exitCode: results.exitCode ?? 0,
             key: inputs.expectationKey,
-            stderr: stripColor(results.stderr),
-            stdout: stripColor(results.stdout),
+            stderr: stripFullPath(stripColor(results.stderr)),
+            stdout: stripFullPath(stripColor(results.stdout)),
         };
         const loadedExpectations = await loadExpectations();
 
