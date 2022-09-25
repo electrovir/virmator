@@ -19,7 +19,7 @@ export async function createDefaultPackageJson(
     }
 
     const combinedScripts = combineScripts(
-        baseVirmatorPackageJson as object,
+        baseVirmatorPackageJson as {scripts: Record<string, string>},
         currentRepoPackageJson as object,
     );
 
@@ -37,22 +37,23 @@ export async function createDefaultPackageJson(
 }
 
 function combineScripts(
-    virmatorPackageJson: {scripts?: Record<string, string>},
+    virmatorPackageJson: {scripts: Record<string, string>},
     currentRepoPackageJson: {scripts?: Record<string, string>},
 ): Record<string, string> {
-    const scripts = {
+    const scripts: Record<string, string> = {
         ...currentRepoPackageJson.scripts,
     };
 
     getObjectTypedKeys(virmatorPackageJson.scripts).forEach((key) => {
-        const virmatorValue = virmatorPackageJson.scripts?.[key];
-        const currentRepoValue = currentRepoPackageJson.scripts?.[key];
+        const virmatorValue = virmatorPackageJson.scripts[key];
+        const currentRepoValue = scripts[key];
 
         if (
             virmatorValue &&
             (!scripts.hasOwnProperty(key) ||
                 (key === 'test' &&
-                    currentRepoValue === `echo \"Error: no test specified\" && exit 1`))
+                    currentRepoValue &&
+                    currentRepoValue.includes('Error: no test specified')))
         ) {
             scripts[key] = virmatorValue;
         }

@@ -53,6 +53,7 @@ type RunCliCommandInputs<KeyGeneric extends string> = {
     debug?: boolean;
     filesShouldNotChange?: boolean;
     recursiveFileReading?: boolean;
+    ignoreWipeInExpectation?: boolean;
 };
 
 function stripFullPath(input: string): string {
@@ -116,7 +117,9 @@ export async function runCliCommandForTest<KeyGeneric extends string>(
                 )}: ${extractErrorMessage(error)}`,
             );
         } finally {
-            await initDirectory(inputs.dir);
+            if (!inputs.ignoreWipeInExpectation) {
+                await initDirectory(inputs.dir);
+            }
             await saveExpectations({
                 ...loadedExpectations,
                 [actualResults.dir]: {

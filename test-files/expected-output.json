@@ -153,5 +153,21 @@
             "stderr": "CSpell: Files checked: 11, Issues found: 0 in 0 files\n",
             "stdout": "Installing cspell@6.8.1...\nrunning spellcheck...\nnode_modules/.bin/cspell --color --unique --no-progress --relative --dot \"**/*\"\nspellcheck succeeded.\n"
         }
+    },
+    "init": {
+        "init with files to upgrade": {
+            "dir": "init",
+            "exitCode": 0,
+            "key": "init with files to upgrade",
+            "stderr": "",
+            "stdout": "running init...\nSuccessfully copied .gitattributes\nSuccessfully copied .gitignore\nSuccessfully copied .mocharc.js\nSuccessfully copied .npmignore\nSuccessfully copied .nvmrc\nSuccessfully copied .prettierignore\nSuccessfully copied .prettierrc.js\nSuccessfully copied cspell.config.js\nSuccessfully copied package.json\nSuccessfully copied settings.json\nSuccessfully copied tsconfig.json\nSuccessfully copied vite.config.ts\nSuccessfully copied web-test-runner.config.mjs\ninit succeeded.\n"
+        },
+        "basic-init": {
+            "dir": "init",
+            "exitCode": 0,
+            "key": "basic-init",
+            "stderr": "",
+            "stdout": "running init...\nSuccessfully copied .gitattributes\nSuccessfully copied .gitignore\nSuccessfully copied .mocharc.js\nSuccessfully copied .npmignore\nSuccessfully copied .nvmrc\nSuccessfully copied .prettierignore\nSuccessfully copied .prettierrc.js\nSuccessfully copied cspell.config.js\nSuccessfully copied package.json\nSuccessfully copied settings.json\nSuccessfully copied tsconfig.json\nSuccessfully copied vite.config.ts\nSuccessfully copied web-test-runner.config.mjs\ninit succeeded.\n"
+        }
     }
 }

@@ -41,7 +41,7 @@ function checkIfShouldWrite({
 
     switch (operation) {
         case CopyConfigOperation.Init: {
-            return !fileExists;
+            return !fileExists || !!configFileDefinition.updateExistingConfigFileCallback;
         }
         case CopyConfigOperation.Overwrite: {
             return true;

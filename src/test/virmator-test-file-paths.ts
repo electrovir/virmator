@@ -66,6 +66,7 @@ export const testTestWebPaths = {
 const testInitRepos = join(testFilesDirPath, 'init');
 export const testInitPaths = {
     emptyRepo: join(testInitRepos, 'empty-repo'),
+    filesForUpdate: join(testInitRepos, 'files-for-update'),
 };
 
 const testUpdateConfigsRepos = join(testFilesDirPath, 'update-configs');

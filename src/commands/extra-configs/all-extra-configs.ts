@@ -1,6 +1,7 @@
 import {join} from 'path';
 import {ConfigFileDefinition} from '../../api/config/config-file-definition';
 import {virmatorConfigsDir} from '../../file-paths/package-paths';
+import {combineJsonConfig} from './combine-json-config';
 import {combineTextConfig} from './combine-text-config';
 import {createDefaultPackageJson} from './create-default-package-json';
 
@@ -31,6 +32,12 @@ export const nonCommandConfigsToUpdate: ReadonlyArray<ConfigFileDefinition> = [
         copyFromInternalPath: join(virmatorConfigsDir, 'package.json'),
         copyToPathRelativeToRepoDir: 'package.json',
         updateExistingConfigFileCallback: createDefaultPackageJson,
+        required: true,
+    },
+    {
+        copyFromInternalPath: join(virmatorConfigsDir, '.vscode', 'settings.json'),
+        copyToPathRelativeToRepoDir: join('.vscode', 'settings.json'),
+        updateExistingConfigFileCallback: combineJsonConfig,
         required: true,
     },
 ];

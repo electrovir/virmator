@@ -9,10 +9,12 @@ function splitContentsIntoArrayOfLines(input: string): string[] {
         .sort();
 }
 
-export const combineTextConfig: UpdateConfigCallback = (
-    newConfigContents,
-    existingConfigContents,
-): string => {
+export function combineTextConfig(
+    ...[
+        newConfigContents,
+        existingConfigContents,
+    ]: Parameters<UpdateConfigCallback>
+): ReturnType<UpdateConfigCallback> {
     const sortedNew = splitContentsIntoArrayOfLines(newConfigContents);
     const sortedExisting = splitContentsIntoArrayOfLines(existingConfigContents);
 
@@ -29,4 +31,4 @@ export const combineTextConfig: UpdateConfigCallback = (
     });
 
     return sortedNew.join('\n');
-};
+}

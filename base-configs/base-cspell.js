@@ -1,8 +1,9 @@
 const baseConfig = {
     ignorePaths: [
-        '*.tgz',
         '.DS_Store',
         '.git/',
+        '*.sqlite',
+        '*.tgz',
         'dist/',
         'node_modules/',
         'package-lock.json',
