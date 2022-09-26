@@ -13,6 +13,7 @@ describe(relativeToVirmatorRoot(__filename), () => {
                 codeInMarkdownCommandDefinition.commandName,
                 codeInMarkdownCommandDefinition.subCommands.check,
             ],
+            checkConfigFiles: [],
             dir: testCodeInMarkdownDirPath,
             expectationKey: 'outdated-dir-check-fail',
         });
@@ -25,6 +26,7 @@ describe(relativeToVirmatorRoot(__filename), () => {
                 codeInMarkdownCommandDefinition.subCommands.check,
                 'README-fixed.md',
             ],
+            checkConfigFiles: [],
             dir: testCodeInMarkdownDirPath,
             expectationKey: 'up-to-date-single-file-check-pass',
         });
@@ -37,6 +39,7 @@ describe(relativeToVirmatorRoot(__filename), () => {
                 codeInMarkdownCommandDefinition.subCommands.check,
                 'README-broken.md',
             ],
+            checkConfigFiles: [],
             dir: testCodeInMarkdownDirPath,
             expectationKey: 'outdated-single-file-check-fail',
         });
@@ -55,6 +58,7 @@ describe(relativeToVirmatorRoot(__filename), () => {
                     codeInMarkdownCommandDefinition.subCommands.check,
                     'README-broken.md',
                 ],
+                checkConfigFiles: [],
                 dir: testCodeInMarkdownDirPath,
                 expectationKey: 'single file check should fail before running update',
             });
@@ -64,6 +68,7 @@ describe(relativeToVirmatorRoot(__filename), () => {
                     codeInMarkdownCommandDefinition.commandName,
                     'README-broken.md',
                 ],
+                checkConfigFiles: [],
                 dir: testCodeInMarkdownDirPath,
                 expectationKey: 'single file update should pass',
             });
@@ -74,6 +79,7 @@ describe(relativeToVirmatorRoot(__filename), () => {
                     codeInMarkdownCommandDefinition.subCommands.check,
                     'README-broken.md',
                 ],
+                checkConfigFiles: [],
                 dir: testCodeInMarkdownDirPath,
                 expectationKey: 'single file check should pass after update',
             });
@@ -97,6 +103,7 @@ describe(relativeToVirmatorRoot(__filename), () => {
                     codeInMarkdownCommandDefinition.subCommands.check,
                     'README-broken.md',
                 ],
+                checkConfigFiles: [],
                 dir: testCodeInMarkdownDirPath,
                 expectationKey: 'single file check should fail after reverting',
             });
@@ -121,6 +128,7 @@ describe(relativeToVirmatorRoot(__filename), () => {
                     codeInMarkdownCommandDefinition.commandName,
                     codeInMarkdownCommandDefinition.subCommands.check,
                 ],
+                checkConfigFiles: [],
                 dir: testCodeInMarkdownDirPath,
                 expectationKey: 'check should fail before running single file update',
             });
@@ -129,6 +137,7 @@ describe(relativeToVirmatorRoot(__filename), () => {
                 args: [
                     codeInMarkdownCommandDefinition.commandName,
                 ],
+                checkConfigFiles: [],
                 dir: testCodeInMarkdownDirPath,
                 expectationKey: 'update should pass',
             });
@@ -138,6 +147,7 @@ describe(relativeToVirmatorRoot(__filename), () => {
                     codeInMarkdownCommandDefinition.commandName,
                     codeInMarkdownCommandDefinition.subCommands.check,
                 ],
+                checkConfigFiles: [],
                 dir: testCodeInMarkdownDirPath,
                 expectationKey: 'check should pass after update',
             });
@@ -169,6 +179,7 @@ describe(relativeToVirmatorRoot(__filename), () => {
                     codeInMarkdownCommandDefinition.commandName,
                     codeInMarkdownCommandDefinition.subCommands.check,
                 ],
+                checkConfigFiles: [],
                 dir: testCodeInMarkdownDirPath,
                 expectationKey: 'check should fail after reverting',
             });

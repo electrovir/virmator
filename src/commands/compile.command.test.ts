@@ -15,6 +15,7 @@ describe(relativeToVirmatorRoot(__filename), () => {
                 compileCommandDefinition.commandName,
                 compileCommandDefinition.subCommands.check,
             ],
+            checkConfigFiles: Object.values(compileCommandDefinition.configFiles),
             dir: testCompilePaths.invalidRepo,
             expectationKey: 'compile-errors-failure',
         });
@@ -35,6 +36,7 @@ describe(relativeToVirmatorRoot(__filename), () => {
                 compileCommandDefinition.commandName,
                 compileCommandDefinition.subCommands.check,
             ],
+            checkConfigFiles: Object.values(compileCommandDefinition.configFiles),
             dir: testCompilePaths.validRepo,
             expectationKey: 'no-compile-errors-pass',
         });
@@ -52,6 +54,7 @@ describe(relativeToVirmatorRoot(__filename), () => {
     it('should produce output files when not just checking', async () => {
         const output = await runCliCommandForTest({
             args: [compileCommandDefinition.commandName],
+            checkConfigFiles: Object.values(compileCommandDefinition.configFiles),
             dir: testCompilePaths.validRepo,
             expectationKey: 'compile-no-errors-with-output',
         });

@@ -1,39 +1,34 @@
 import {assert} from 'chai';
 import {describe, it} from 'mocha';
-import {sanitizeStringForRegExpCreation} from '../../augments/regexp';
-import {runCliCommandForTest} from '../../cli-old/run-command.test-helper';
-import {testTestPaths} from '../../file-paths/virmator-test-file-paths';
-import {relativeToVirmatorRoot} from '../file-paths/virmator-package-paths';
+import {relativeToVirmatorRoot} from '../file-paths/package-paths';
+import {runCliCommandForTest, RunCliCommandInputs} from '../test/run-test-command';
+import {testTestPaths} from '../test/virmator-test-file-paths';
 import {testCommandDefinition} from './test.command';
 
-function logToRegExp(log: string): RegExp {
-    const sanitized = sanitizeStringForRegExpCreation(log).replace(
-        /\\\(\d+ms\\\)/g,
-        '(\\(\\d+ms\\))?',
-    );
-    const logRegExp = new RegExp(sanitized);
-    return logRegExp;
+async function runTestTestCommand<KeyGeneric extends string>(
+    inputs: Required<Pick<RunCliCommandInputs<KeyGeneric>, 'expectationKey' | 'args' | 'dir'>>,
+) {
+    return await runCliCommandForTest({
+        args: [
+            testCommandDefinition.commandName,
+            ...inputs.args,
+        ],
+        dir: inputs.dir,
+        checkConfigFiles: Object.values(testCommandDefinition.configFiles),
+        logTransform: (input) => {
+            return input.replace(/\(\d+m?s\)/g, '');
+        },
+        expectationKey: inputs.expectationKey,
+    });
 }
 
 describe(relativeToVirmatorRoot(__filename), () => {
     it('should fail when tests fail', async () => {
-        const output = await runCliCommandForTest(
-            {
-                commandDefinition: testCommandDefinition,
-                cwd: testTestPaths.invalidRepo,
-                filesShouldNotChange: true,
-            },
-            {
-                exitCode: 1,
-                exitSignal: undefined,
-                stderr: ``,
-                // for some reason (idk why) logToRegExp is not working for this output
-                // but is working for the other tests
-                stdout: /.*/,
-            },
-        );
-
-        assert.isTrue(output.durationMs <= 10_000);
+        const output = await runTestTestCommand({
+            args: [],
+            dir: testTestPaths.invalidRepo,
+            expectationKey: 'failing-tests',
+        });
 
         try {
             assert.include(
@@ -49,61 +44,30 @@ describe(relativeToVirmatorRoot(__filename), () => {
     });
 
     it('should run tests in serial when instructed to do so', async () => {
-        const output = await runCliCommandForTest(
-            {
-                commandDefinition: testCommandDefinition,
-                cwd: testTestPaths.serialTestRepo,
-                filesShouldNotChange: true,
-                extraArgs: ['--jobs 1'],
-            },
-            {
-                exitCode: 0,
-                exitSignal: undefined,
-                stderr: ``,
-                stdout: logToRegExp(
-                    // cspell:disable-next-line
-                    `running test...\n\n\u001b[0m\u001b[0m\n\u001b[0m  first.test.ts\u001b[0m\n  \u001b[32m  ✔\u001b[0m\u001b[90m should take a while to run\u001b[0m\u001b[31m (5003ms)\u001b[0m\n\n\u001b[0m  second.test.ts\u001b[0m\n  \u001b[32m  ✔\u001b[0m\u001b[90m should take a while to run\u001b[0m\u001b[31m (5003ms)\u001b[0m\n\n\n\u001b[92m \u001b[0m\u001b[32m 2 passing\u001b[0m\u001b[90m (10s)\u001b[0m\n\n\u001b[1m\u001b[32mtest succeeded.\u001b[0m\n`,
-                ),
-            },
-        );
-        assert.isTrue(output.durationMs > 10_000);
+        const output = await runTestTestCommand({
+            args: [
+                '--jobs 1',
+            ],
+            dir: testTestPaths.serialTestRepo,
+            expectationKey: 'serial tests',
+        });
     });
 
     it('should pass when tests pass', async () => {
-        const output = await runCliCommandForTest(
-            {
-                commandDefinition: testCommandDefinition,
-                cwd: testTestPaths.validRepo,
-                filesShouldNotChange: true,
-            },
-            {
-                exitCode: 0,
-                exitSignal: undefined,
-                stderr: ``,
-                stdout: /valid\.test\.ts/,
-            },
-        );
-
-        assert.isTrue(output.durationMs <= 10_000);
+        const output = await runTestTestCommand({
+            args: [],
+            dir: testTestPaths.validRepo,
+            expectationKey: 'passing-tests',
+        });
     });
 
     it('should run all tests', async () => {
-        const output = await runCliCommandForTest(
-            {
-                commandDefinition: testCommandDefinition,
-                cwd: testTestPaths.multiRepo,
-                filesShouldNotChange: true,
-            },
-            {
-                exitCode: 1,
-                exitSignal: undefined,
-                stderr: ``,
-                // this is tested below
-                stdout: /./,
-            },
-        );
+        const output = await runTestTestCommand({
+            args: [],
+            dir: testTestPaths.multiRepo,
+            expectationKey: 'all-tests',
+        });
 
-        assert.isTrue(output.durationMs <= 10_000);
         assert.include(output.results.stdout, '1 passing');
         assert.include(output.results.stdout, '1 failing');
     });

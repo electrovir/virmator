@@ -56,7 +56,9 @@ export const testCommandDefinition = defineCommand(
     },
     (inputs) => {
         const useDefaultConfigArgs = !inputs.filteredInputArgs.includes('--config');
-        const configString = useDefaultConfigArgs ? '--config .mocharc.js ' : '';
+        const configString = useDefaultConfigArgs
+            ? `--config ${inputs.configFiles.mocharc.copyToPathRelativeToRepoDir} `
+            : '';
 
         return {
             mainCommand: getNpmBinPath('mocha'),

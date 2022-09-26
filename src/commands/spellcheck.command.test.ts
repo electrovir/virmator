@@ -1,26 +1,24 @@
-import {assert} from 'chai';
 import {describe, it} from 'mocha';
+import {basename} from 'path';
 import {relativeToVirmatorRoot} from '../file-paths/package-paths';
+import {assertNewFilesWereCreated, assertNoFileChanges} from '../test/file-change-tests';
 import {runCliCommandForTest} from '../test/run-test-command';
 import {testSpellcheckPaths} from '../test/virmator-test-file-paths';
 import {spellcheckCommandDefinition} from './spellcheck.command';
+
+const spellcheckConfigNames = Object.values(spellcheckCommandDefinition.configFiles).map(
+    (configFile) => basename(configFile.copyToPathRelativeToRepoDir),
+);
 
 async function runSpellCheckTest(dir: string, expectationKey: string) {
     const output = await runCliCommandForTest({
         args: [spellcheckCommandDefinition.commandName],
         dir,
+        checkConfigFiles: Object.values(spellcheckCommandDefinition.configFiles),
         expectationKey,
     });
-    assert.deepEqual(
-        output.dirFileNamesBefore,
-        output.dirFileNamesAfter,
-        'new files should not have been generated',
-    );
-    assert.deepEqual(
-        output.dirFileContentsBefore,
-        output.dirFileContentsAfter,
-        'file contents should not have changed',
-    );
+    assertNewFilesWereCreated(output, spellcheckConfigNames);
+    assertNoFileChanges(output, spellcheckConfigNames);
 
     return output;
 }

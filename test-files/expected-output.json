@@ -91,21 +91,21 @@
             "exitCode": 1,
             "key": "compile-errors-failure",
             "stderr": "compile failed.\n",
-            "stdout": "Installing typescript@4.8.2...\nrunning compile...\nnode_modules/.bin/tsc --pretty --noEmit\nbad-blah.ts:2:18 - error TS2448: Block-scoped variable 'derp' used before its declaration.\n\n2     console.info(derp);\n                   ~~~~\n\n  bad-blah.ts:3:11\n    3     const derp = 'hello';\n                ~~~~\n    'derp' is declared here.\n\nbad-blah.ts:2:18 - error TS2454: Variable 'derp' is used before being assigned.\n\n2     console.info(derp);\n                   ~~~~\n\n\nFound 2 errors in the same file, starting at: bad-blah.ts:2\n\n"
+            "stdout": "Installing typescript@4.8.3...\nrunning compile...\nnode_modules/.bin/tsc --pretty --noEmit\nbad-blah.ts:2:18 - error TS2448: Block-scoped variable 'derp' used before its declaration.\n\n2     console.info(derp);\n                   ~~~~\n\n  bad-blah.ts:3:11\n    3     const derp = 'hello';\n                ~~~~\n    'derp' is declared here.\n\nbad-blah.ts:2:18 - error TS2454: Variable 'derp' is used before being assigned.\n\n2     console.info(derp);\n                   ~~~~\n\n\nFound 2 errors in the same file, starting at: bad-blah.ts:2\n\n"
         },
         "no-compile-errors-pass": {
             "dir": "compile",
             "exitCode": 0,
             "key": "no-compile-errors-pass",
             "stderr": "",
-            "stdout": "Installing typescript@4.8.2...\nrunning compile...\nnode_modules/.bin/tsc --pretty --noEmit\ncompile succeeded.\n"
+            "stdout": "Installing typescript@4.8.3...\nrunning compile...\nnode_modules/.bin/tsc --pretty --noEmit\ncompile succeeded.\n"
         },
         "compile-no-errors-with-output": {
             "dir": "compile",
             "exitCode": 0,
             "key": "compile-no-errors-with-output",
             "stderr": "",
-            "stdout": "Installing typescript@4.8.2...\nrunning compile...\nrm -rf dist && ./test-files/compile/valid-compile-repo/node_modules/.bin/tsc --pretty\ncompile succeeded.\n"
+            "stdout": "Installing typescript@4.8.3...\nrunning compile...\nrm -rf dist && ./test-files/compile/valid-compile-repo/node_modules/.bin/tsc --pretty\ncompile succeeded.\n"
         }
     },
     "format": {
@@ -114,21 +114,21 @@
             "exitCode": 1,
             "key": "fail on format failures in a folder",
             "stderr": "[warn] invalid-format.ts\n[warn] Code style issues found in the above file. Forgot to run Prettier?\nformat failed.\n",
-            "stdout": "Installing prettier@2.7.1...\nInstalling prettier-plugin-jsdoc@0.4.2...\nInstalling prettier-plugin-multiline-arrays@1.1.1...\nInstalling prettier-plugin-organize-imports@3.1.1...\nInstalling prettier-plugin-packagejson@2.2.18...\nInstalling prettier-plugin-sort-json@0.0.3...\nInstalling prettier-plugin-toml@0.3.1...\nrunning format...\nnode_modules/.bin/prettier --color \"./**/*.+(css|html|js|json|jsx|md|toml|ts|tsx|yaml|yml)\" --check \n"
+            "stdout": "Installing prettier@2.7.1...\nInstalling prettier-plugin-jsdoc@0.4.2...\nInstalling prettier-plugin-multiline-arrays@1.1.1...\nInstalling prettier-plugin-organize-imports@3.1.1...\nInstalling prettier-plugin-packagejson@2.2.18...\nInstalling prettier-plugin-sort-json@0.0.3...\nInstalling prettier-plugin-toml@0.3.1...\nrunning format...\nSuccessfully copied .prettierignore\nSuccessfully copied .prettierrc.js\nnode_modules/.bin/prettier --color \"./**/*.+(css|html|js|json|jsx|md|toml|ts|tsx|yaml|yml)\" --check \n"
         },
         "pass format when there are zero errors": {
             "dir": "format",
             "exitCode": 0,
             "key": "pass format when there are zero errors",
             "stderr": "",
-            "stdout": "Installing prettier@2.7.1...\nInstalling prettier-plugin-jsdoc@0.4.2...\nInstalling prettier-plugin-multiline-arrays@1.1.1...\nInstalling prettier-plugin-organize-imports@3.1.1...\nInstalling prettier-plugin-packagejson@2.2.18...\nInstalling prettier-plugin-sort-json@0.0.3...\nInstalling prettier-plugin-toml@0.3.1...\nrunning format...\nnode_modules/.bin/prettier --color \"./**/*.+(css|html|js|json|jsx|md|toml|ts|tsx|yaml|yml)\" --check \nformat succeeded.\n"
+            "stdout": "Installing prettier@2.7.1...\nInstalling prettier-plugin-jsdoc@0.4.2...\nInstalling prettier-plugin-multiline-arrays@1.1.1...\nInstalling prettier-plugin-organize-imports@3.1.1...\nInstalling prettier-plugin-packagejson@2.2.18...\nInstalling prettier-plugin-sort-json@0.0.3...\nInstalling prettier-plugin-toml@0.3.1...\nrunning format...\nSuccessfully copied .prettierignore\nSuccessfully copied .prettierrc.js\nnode_modules/.bin/prettier --color \"./**/*.+(css|html|js|json|jsx|md|toml|ts|tsx|yaml|yml)\" --check \nformat succeeded.\n"
         },
         "format should update invalid files": {
             "dir": "format",
             "exitCode": 0,
             "key": "format should update invalid files",
             "stderr": "",
-            "stdout": "Installing prettier@2.7.1...\nInstalling prettier-plugin-jsdoc@0.4.2...\nInstalling prettier-plugin-multiline-arrays@1.1.1...\nInstalling prettier-plugin-organize-imports@3.1.1...\nInstalling prettier-plugin-packagejson@2.2.18...\nInstalling prettier-plugin-sort-json@0.0.3...\nInstalling prettier-plugin-toml@0.3.1...\nrunning format...\nnode_modules/.bin/prettier --color --list-different \"./**/*.+(css|html|js|json|jsx|md|toml|ts|tsx|yaml|yml)\" --write\ninvalid-format.ts\nformat succeeded.\n"
+            "stdout": "Installing prettier@2.7.1...\nInstalling prettier-plugin-jsdoc@0.4.2...\nInstalling prettier-plugin-multiline-arrays@1.1.1...\nInstalling prettier-plugin-organize-imports@3.1.1...\nInstalling prettier-plugin-packagejson@2.2.18...\nInstalling prettier-plugin-sort-json@0.0.3...\nInstalling prettier-plugin-toml@0.3.1...\nrunning format...\nSuccessfully copied .prettierignore\nSuccessfully copied .prettierrc.js\nnode_modules/.bin/prettier --color --list-different \"./**/*.+(css|html|js|json|jsx|md|toml|ts|tsx|yaml|yml)\" --write\ninvalid-format.ts\nformat succeeded.\n"
         }
     },
     "spellcheck": {
@@ -136,22 +136,22 @@
             "dir": "spellcheck",
             "exitCode": 1,
             "key": "typos-exist",
-            "stderr": "CSpell: Files checked: 2, Issues found: 2 in 1 files\nspellcheck failed.\n",
-            "stdout": "Installing cspell@6.8.1...\nrunning spellcheck...\nnode_modules/.bin/cspell --color --unique --no-progress --relative --dot \"**/*\"\n./stuff.js:1:12 - Unknown word (Stff)\n./stuff.js:2:25 - Unknown word (thre)\n"
+            "stderr": "CSpell: Files checked: 3, Issues found: 2 in 1 files\nspellcheck failed.\n",
+            "stdout": "Installing cspell@6.10.1...\nrunning spellcheck...\nSuccessfully copied cspell.config.js\nnode_modules/.bin/cspell --config cspell.config.js --color --unique --no-progress --relative --dot \"**/*\"\n./stuff.js:1:12 - Unknown word (Stff)\n./stuff.js:2:25 - Unknown word (thre)\n"
         },
         "no-typos": {
             "dir": "spellcheck",
             "exitCode": 0,
             "key": "no-typos",
-            "stderr": "CSpell: Files checked: 2, Issues found: 0 in 0 files\n",
-            "stdout": "Installing cspell@6.8.1...\nrunning spellcheck...\nnode_modules/.bin/cspell --color --unique --no-progress --relative --dot \"**/*\"\nspellcheck succeeded.\n"
+            "stderr": "CSpell: Files checked: 3, Issues found: 0 in 0 files\n",
+            "stdout": "Installing cspell@6.10.1...\nrunning spellcheck...\nSuccessfully copied cspell.config.js\nnode_modules/.bin/cspell --config cspell.config.js --color --unique --no-progress --relative --dot \"**/*\"\nspellcheck succeeded.\n"
         },
         "dot-files": {
             "dir": "spellcheck",
             "exitCode": 0,
             "key": "dot-files",
-            "stderr": "CSpell: Files checked: 11, Issues found: 0 in 0 files\n",
-            "stdout": "Installing cspell@6.8.1...\nrunning spellcheck...\nnode_modules/.bin/cspell --color --unique --no-progress --relative --dot \"**/*\"\nspellcheck succeeded.\n"
+            "stderr": "CSpell: Files checked: 12, Issues found: 0 in 0 files\n",
+            "stdout": "Installing cspell@6.10.1...\nrunning spellcheck...\nSuccessfully copied cspell.config.js\nnode_modules/.bin/cspell --config cspell.config.js --color --unique --no-progress --relative --dot \"**/*\"\nspellcheck succeeded.\n"
         }
     },
     "init": {
@@ -168,6 +168,36 @@
             "key": "basic-init",
             "stderr": "",
             "stdout": "running init...\nSuccessfully copied .gitattributes\nSuccessfully copied .gitignore\nSuccessfully copied .mocharc.js\nSuccessfully copied .npmignore\nSuccessfully copied .nvmrc\nSuccessfully copied .prettierignore\nSuccessfully copied .prettierrc.js\nSuccessfully copied cspell.config.js\nSuccessfully copied package.json\nSuccessfully copied settings.json\nSuccessfully copied tsconfig.json\nSuccessfully copied vite.config.ts\nSuccessfully copied web-test-runner.config.mjs\ninit succeeded.\n"
+        }
+    },
+    "test": {
+        "failing-tests": {
+            "dir": "test",
+            "exitCode": 1,
+            "key": "failing-tests",
+            "stderr": "test failed.\n",
+            "stdout": "Installing @types/chai@4.3.3...\nInstalling @types/mocha@9.1.1...\nInstalling chai@4.3.6...\nInstalling mocha@10.0.0...\nInstalling ts-node@10.9.1...\nrunning test...\nSuccessfully copied .mocharc.js\nnode_modules/.bin/mocha --config configs/.mocharc.js \n\n\n  invalid.test.ts\n    1) should have a failing test\n\n\n  0 passing \n  1 failing\n\n  1) invalid.test.ts\n       should have a failing test:\n\n      this should fail\n      + expected - actual\n\n      -false\n      +true\n      \n      at Context.<anonymous> (src/invalid.test.ts:6:16)\n      at processImmediate (node:internal/timers:466:21)\n\n\n\n"
+        },
+        "serial tests": {
+            "dir": "test",
+            "exitCode": 0,
+            "key": "serial tests",
+            "stderr": "",
+            "stdout": "Installing @types/chai@4.3.3...\nInstalling @types/mocha@9.1.1...\nInstalling chai@4.3.6...\nInstalling mocha@10.0.0...\nInstalling ts-node@10.9.1...\nrunning test...\nSuccessfully copied .mocharc.js\nnode_modules/.bin/mocha --config configs/.mocharc.js  --jobs 1\n\n\n  first.test.ts\n    ✔ should take a while to run \n\n  second.test.ts\n    ✔ should take a while to run \n\n\n  2 passing \n\ntest succeeded.\n"
+        },
+        "passing-tests": {
+            "dir": "test",
+            "exitCode": 0,
+            "key": "passing-tests",
+            "stderr": "",
+            "stdout": "Installing @types/chai@4.3.3...\nInstalling @types/mocha@9.1.1...\nInstalling chai@4.3.6...\nInstalling mocha@10.0.0...\nInstalling ts-node@10.9.1...\nrunning test...\nSuccessfully copied .mocharc.js\nnode_modules/.bin/mocha --config configs/.mocharc.js \n\n\n  valid.test.ts\n    ✔ should have a valid test\n\n\n  1 passing \n\ntest succeeded.\n"
+        },
+        "all-tests": {
+            "dir": "test",
+            "exitCode": 1,
+            "key": "all-tests",
+            "stderr": "test failed.\n",
+            "stdout": "Installing @types/chai@4.3.3...\nInstalling @types/mocha@9.1.1...\nInstalling chai@4.3.6...\nInstalling mocha@10.0.0...\nInstalling ts-node@10.9.1...\nrunning test...\nSuccessfully copied .mocharc.js\nnode_modules/.bin/mocha --config configs/.mocharc.js \n\n\n  valid.test.ts\n    ✔ should have passing test\n\n\n  invalid.test.ts\n    1) should have a failing test\n\n\n  1 passing \n  1 failing\n\n  1) invalid.test.ts\n       should have a failing test:\n\n      AssertionError: expected false to be true\n      + expected - actual\n\n      -false\n      +true\n      \n      at Context.<anonymous> (src/invalid.test.ts:6:16)\n      at processImmediate (node:internal/timers:466:21)\n\n\n\n"
         }
     }
 }

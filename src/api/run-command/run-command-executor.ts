@@ -9,6 +9,7 @@ import {
 } from '../command/command-executor';
 import {CommandDefinition} from '../command/define-command';
 import {DefineCommandInputs} from '../command/define-command-inputs';
+import {copyAllConfigFiles, CopyConfigOperation} from '../config/copy-config';
 import {runVirmatorShellCommand} from './run-shell-command';
 
 export function createCommandString(executorOutput: BashCommandExecutorOutput): string {
@@ -33,6 +34,14 @@ export async function runCommandExecutor<DefineCommandInputsGeneric extends Defi
     commandInputs: CommandExecutorInputs<DefineCommandInputsGeneric>,
 ): Promise<boolean> {
     console.info(`${Color.Info}running ${commandDefinition.commandName}...${Color.Reset}`);
+
+    await copyAllConfigFiles({
+        logging: commandInputs.logging,
+        configFiles: Object.values(commandDefinition.configFiles),
+        operation: CopyConfigOperation.Init,
+        packageDir: commandInputs.packageDir,
+        repoDir: commandInputs.repoDir,
+    });
     const executorOutput = await commandDefinition.executor(commandInputs);
     if (isCompletedExecutor(executorOutput)) {
         return executorOutput.success;

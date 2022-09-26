@@ -34,10 +34,14 @@ export const spellcheckCommandDefinition = defineCommand(
         const containsNonFlagArgs = inputs.filteredInputArgs.some((arg) => !arg.startsWith('-'));
 
         const fileArg = containsNonFlagArgs ? '' : '"**/*"';
+        const configArg = inputs.filteredInputArgs.includes('--config')
+            ? ''
+            : `--config ${inputs.configFiles.cspell.copyToPathRelativeToRepoDir}`;
 
         return {
             mainCommand: getNpmBinPath('cspell'),
             args: [
+                configArg,
                 '--color',
                 '--unique',
                 '--no-progress',

@@ -1,8 +1,10 @@
 {
     "extends": "./base-configs/base-tsconfig.json",
     "exclude": [
-        "./configs/",
         "./base-configs/",
+        "./configs/",
+        "./dist/",
+        "./node_modules/",
         "./test-files/"
     ]
 }

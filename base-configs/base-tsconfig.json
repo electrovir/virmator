@@ -25,12 +25,6 @@
         "target": "ES2019",
         "useUnknownInCatchVariables": true
     },
-    "exclude": [
-        "../dist",
-        "../node_modules",
-        "../test-files",
-        "../vite.config.ts"
-    ],
     "ts-node": {
         "compilerOptions": {
             "module": "CommonJS"

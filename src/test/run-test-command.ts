@@ -1,10 +1,12 @@
 import {stripColor} from 'ansi-colors';
-import {extractErrorMessage, typedHasOwnProperty} from 'augment-vir';
+import {awaitedForEach, extractErrorMessage, typedHasOwnProperty} from 'augment-vir';
 import {runShellCommand, ShellOutput} from 'augment-vir/dist/cjs/node-only';
 import {assert} from 'chai';
 import {existsSync} from 'fs';
 import {readdir, rm, unlink, writeFile} from 'fs/promises';
 import {basename, join, relative} from 'path';
+import {CommandLogTransform, identityCommandLogTransform} from '../api/command/command-logging';
+import {ConfigFileDefinition} from '../api/config/config-file-definition';
 import {readAllDirContents} from '../augments/fs';
 import {filterObject} from '../augments/object';
 import {getFirstPartOfRelativePath} from '../augments/path';
@@ -31,13 +33,7 @@ async function initDirectory(dir: string): Promise<void> {
     await writeFile(packageJsonPath, JSON.stringify({name: basename(dir)}, null, 4) + '\n');
 }
 
-export async function runTestCommand({
-    args,
-    dir,
-}: {
-    args: string[];
-    dir: string;
-}): Promise<ShellOutput> {
+async function runTestCommand({args, dir}: {args: string[]; dir: string}): Promise<ShellOutput> {
     const command = `npx virmator ${args.join(' ')}`;
     const results = await runShellCommand(command, {cwd: dir});
 
@@ -46,14 +42,14 @@ export async function runTestCommand({
 
 const runKeys = new Set<string>();
 
-type RunCliCommandInputs<KeyGeneric extends string> = {
+export type RunCliCommandInputs<KeyGeneric extends string> = {
     args: string[];
     dir: string;
+    checkConfigFiles: ConfigFileDefinition[];
     expectationKey?: NonEmptyString<KeyGeneric>;
     debug?: boolean;
-    filesShouldNotChange?: boolean;
-    recursiveFileReading?: boolean;
     ignoreWipeInExpectation?: boolean;
+    logTransform?: CommandLogTransform;
 };
 
 function stripFullPath(input: string): string {
@@ -63,31 +59,46 @@ function stripFullPath(input: string): string {
 export async function runCliCommandForTest<KeyGeneric extends string>(
     inputs: RunCliCommandInputs<KeyGeneric>,
 ) {
-    const recursiveFileReading: boolean = !!inputs.recursiveFileReading;
-
+    const configFilesExistedBeforeTest = inputs.checkConfigFiles.reduce((accum, configFile) => {
+        if (existsSync(join(inputs.dir, configFile.copyToPathRelativeToRepoDir))) {
+            accum[configFile.copyToPathRelativeToRepoDir] = true;
+        }
+        return accum;
+    }, {} as Record<string, boolean>);
     await initDirectory(inputs.dir);
     const dirFileNamesBefore = (await readdir(inputs.dir)).sort();
-    const dirFileContentsBefore = await readAllDirContents(inputs.dir, recursiveFileReading);
+    const dirFileContentsBefore = await readAllDirContents(inputs.dir, true);
     const beforeTimestamp: number = Date.now();
     await runShellCommand(`npm i -D ${process.env.TAR_TO_INSTALL}`, {
         cwd: inputs.dir,
         rejectOnError: true,
     });
+
     const results = await runTestCommand({
         args: inputs.args,
         dir: inputs.dir,
+    });
+
+    inputs.checkConfigFiles.forEach((configFile) => {
+        assert.isTrue(
+            existsSync(join(inputs.dir, configFile.copyToPathRelativeToRepoDir)),
+            `config file "${configFile.copyToPathRelativeToRepoDir}" did not get copied to "${inputs.dir}".`,
+        );
     });
 
     if (typedHasOwnProperty(inputs, 'expectationKey')) {
         if (!inputs.expectationKey) {
             throw new Error(`Expectation key exists but is falsy: "${inputs.expectationKey}"`);
         }
+
+        const logTransform = inputs.logTransform ?? identityCommandLogTransform;
+
         const actualResults: TestExpectation = {
             dir: getFirstPartOfRelativePath(testFilesDirPath, inputs.dir),
             exitCode: results.exitCode ?? 0,
             key: inputs.expectationKey,
-            stderr: stripFullPath(stripColor(results.stderr)),
-            stdout: stripFullPath(stripColor(results.stdout)),
+            stderr: logTransform(stripFullPath(stripColor(results.stderr))),
+            stdout: logTransform(stripFullPath(stripColor(results.stdout))),
         };
         const loadedExpectations = await loadExpectations();
 
@@ -135,7 +146,7 @@ export async function runCliCommandForTest<KeyGeneric extends string>(
     const durationMs: number = afterTimestamp - beforeTimestamp;
 
     const dirFileNamesAfter = (await readdir(inputs.dir)).sort();
-    const dirFileContentsAfter = await readAllDirContents(inputs.dir, recursiveFileReading);
+    const dirFileContentsAfter = await readAllDirContents(inputs.dir, true);
 
     const newFiles = dirFileNamesAfter.filter(
         (afterFile) => !dirFileNamesBefore.includes(afterFile),
@@ -146,18 +157,23 @@ export async function runCliCommandForTest<KeyGeneric extends string>(
         return beforeContents !== afterContents;
     });
 
-    if (inputs.filesShouldNotChange) {
-        assert.deepEqual(
-            dirFileNamesBefore,
-            dirFileNamesAfter,
-            'new files should not have been generated',
-        );
-        assert.deepEqual(
-            dirFileContentsBefore,
-            dirFileContentsAfter,
-            'file contents should not have changed',
-        );
-    }
+    await awaitedForEach(inputs.checkConfigFiles, async (configFile) => {
+        const configFilePath = join(inputs.dir, configFile.copyToPathRelativeToRepoDir);
+        if (configFilesExistedBeforeTest[configFile.copyToPathRelativeToRepoDir]) {
+            assert.isTrue(
+                existsSync(configFilePath),
+                `config file "${configFile.copyToPathRelativeToRepoDir}" should still exist in "${inputs.dir}"`,
+            );
+        } else {
+            if (existsSync(configFilePath)) {
+                await unlink(configFilePath);
+            }
+            assert.isFalse(
+                existsSync(configFilePath),
+                `config file "${configFile.copyToPathRelativeToRepoDir}" was not deleted from "${inputs.dir}"`,
+            );
+        }
+    });
 
     return {
         results,

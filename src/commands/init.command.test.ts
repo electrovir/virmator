@@ -39,6 +39,7 @@ describe(relativeToVirmatorRoot(__filename), () => {
 
         const output = await runCliCommandForTest({
             args: [initCommandDefinition.commandName],
+            checkConfigFiles: [],
             dir: testInitPaths.filesForUpdate,
             expectationKey: 'init with files to upgrade',
             ignoreWipeInExpectation: true,
@@ -110,6 +111,7 @@ describe(relativeToVirmatorRoot(__filename), () => {
 
         const output = await runCliCommandForTest({
             args: [initCommandDefinition.commandName],
+            checkConfigFiles: [],
             dir: testInitPaths.emptyRepo,
             expectationKey: 'basic-init',
         });
