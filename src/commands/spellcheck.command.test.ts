@@ -2,7 +2,7 @@ import {describe, it} from 'mocha';
 import {basename} from 'path';
 import {relativeToVirmatorRoot} from '../file-paths/package-paths';
 import {assertNewFilesWereCreated, assertNoFileChanges} from '../test/file-change-tests';
-import {runCliCommandForTest} from '../test/run-test-command';
+import {runCliCommandForTestFromDefinition} from '../test/run-test-command';
 import {testSpellcheckPaths} from '../test/virmator-test-file-paths';
 import {spellcheckCommandDefinition} from './spellcheck.command';
 
@@ -11,10 +11,8 @@ const spellcheckConfigNames = Object.values(spellcheckCommandDefinition.configFi
 );
 
 async function runSpellCheckTest(dir: string, expectationKey: string) {
-    const output = await runCliCommandForTest({
-        args: [spellcheckCommandDefinition.commandName],
+    const output = await runCliCommandForTestFromDefinition(spellcheckCommandDefinition, {
         dir,
-        checkConfigFiles: Object.values(spellcheckCommandDefinition.configFiles),
         expectationKey,
     });
     assertNewFilesWereCreated(output, spellcheckConfigNames);

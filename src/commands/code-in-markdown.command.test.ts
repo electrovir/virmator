@@ -2,44 +2,46 @@ import {assert} from 'chai';
 import {readFile, writeFile} from 'fs/promises';
 import {describe, it} from 'mocha';
 import {relativeToVirmatorRoot} from '../file-paths/package-paths';
-import {runCliCommandForTest} from '../test/run-test-command';
+import {runCliCommandForTestFromDefinition, RunCliCommandInputs} from '../test/run-test-command';
 import {testCodeInMarkdownDirPath, testCodeInMarkdownPaths} from '../test/virmator-test-file-paths';
 import {codeInMarkdownCommandDefinition} from './code-in-markdown.command';
 
+async function runCodeInMarkdownTest<KeyGeneric extends string>(
+    inputs: Pick<RunCliCommandInputs<KeyGeneric>, 'dir' | 'expectationKey' | 'args'>,
+) {
+    return await runCliCommandForTestFromDefinition(codeInMarkdownCommandDefinition, {
+        ...inputs,
+    });
+}
+
 describe(relativeToVirmatorRoot(__filename), () => {
     it('should fail when checking outdated file', async () => {
-        await runCliCommandForTest({
+        await runCodeInMarkdownTest({
             args: [
-                codeInMarkdownCommandDefinition.commandName,
                 codeInMarkdownCommandDefinition.subCommands.check,
             ],
-            checkConfigFiles: [],
             dir: testCodeInMarkdownDirPath,
             expectationKey: 'outdated-dir-check-fail',
         });
     });
 
     it('should succeed when checking only up-to-date file', async () => {
-        await runCliCommandForTest({
+        await runCodeInMarkdownTest({
             args: [
-                codeInMarkdownCommandDefinition.commandName,
                 codeInMarkdownCommandDefinition.subCommands.check,
                 'README-fixed.md',
             ],
-            checkConfigFiles: [],
             dir: testCodeInMarkdownDirPath,
             expectationKey: 'up-to-date-single-file-check-pass',
         });
     });
 
     it('should fail when checking only outdated file', async () => {
-        await runCliCommandForTest({
+        await runCodeInMarkdownTest({
             args: [
-                codeInMarkdownCommandDefinition.commandName,
                 codeInMarkdownCommandDefinition.subCommands.check,
                 'README-broken.md',
             ],
-            checkConfigFiles: [],
             dir: testCodeInMarkdownDirPath,
             expectationKey: 'outdated-single-file-check-fail',
         });
@@ -52,34 +54,28 @@ describe(relativeToVirmatorRoot(__filename), () => {
 
         try {
             // should fail before running update
-            await runCliCommandForTest({
+            await runCodeInMarkdownTest({
                 args: [
-                    codeInMarkdownCommandDefinition.commandName,
                     codeInMarkdownCommandDefinition.subCommands.check,
                     'README-broken.md',
                 ],
-                checkConfigFiles: [],
                 dir: testCodeInMarkdownDirPath,
                 expectationKey: 'single file check should fail before running update',
             });
 
-            await runCliCommandForTest({
+            await runCodeInMarkdownTest({
                 args: [
-                    codeInMarkdownCommandDefinition.commandName,
                     'README-broken.md',
                 ],
-                checkConfigFiles: [],
                 dir: testCodeInMarkdownDirPath,
                 expectationKey: 'single file update should pass',
             });
 
-            await runCliCommandForTest({
+            await runCodeInMarkdownTest({
                 args: [
-                    codeInMarkdownCommandDefinition.commandName,
                     codeInMarkdownCommandDefinition.subCommands.check,
                     'README-broken.md',
                 ],
-                checkConfigFiles: [],
                 dir: testCodeInMarkdownDirPath,
                 expectationKey: 'single file check should pass after update',
             });
@@ -97,13 +93,11 @@ describe(relativeToVirmatorRoot(__filename), () => {
             ).toString();
             assert.strictEqual(badFileBeforeUpdate, badFileAfterRevert);
 
-            await runCliCommandForTest({
+            await runCodeInMarkdownTest({
                 args: [
-                    codeInMarkdownCommandDefinition.commandName,
                     codeInMarkdownCommandDefinition.subCommands.check,
                     'README-broken.md',
                 ],
-                checkConfigFiles: [],
                 dir: testCodeInMarkdownDirPath,
                 expectationKey: 'single file check should fail after reverting',
             });
@@ -123,31 +117,24 @@ describe(relativeToVirmatorRoot(__filename), () => {
 
         try {
             // should fail before running update
-            await runCliCommandForTest({
+            await runCodeInMarkdownTest({
                 args: [
-                    codeInMarkdownCommandDefinition.commandName,
                     codeInMarkdownCommandDefinition.subCommands.check,
                 ],
-                checkConfigFiles: [],
                 dir: testCodeInMarkdownDirPath,
                 expectationKey: 'check should fail before running single file update',
             });
 
-            await runCliCommandForTest({
-                args: [
-                    codeInMarkdownCommandDefinition.commandName,
-                ],
-                checkConfigFiles: [],
+            await runCodeInMarkdownTest({
+                args: [],
                 dir: testCodeInMarkdownDirPath,
                 expectationKey: 'update should pass',
             });
 
-            await runCliCommandForTest({
+            await runCodeInMarkdownTest({
                 args: [
-                    codeInMarkdownCommandDefinition.commandName,
                     codeInMarkdownCommandDefinition.subCommands.check,
                 ],
-                checkConfigFiles: [],
                 dir: testCodeInMarkdownDirPath,
                 expectationKey: 'check should pass after update',
             });
@@ -174,12 +161,10 @@ describe(relativeToVirmatorRoot(__filename), () => {
             assert.strictEqual(badFileBeforeUpdate, badFileAfterRevert);
             assert.strictEqual(goodFileBeforeUpdate, goodFileAfterRevert);
 
-            await runCliCommandForTest({
+            await runCodeInMarkdownTest({
                 args: [
-                    codeInMarkdownCommandDefinition.commandName,
                     codeInMarkdownCommandDefinition.subCommands.check,
                 ],
-                checkConfigFiles: [],
                 dir: testCodeInMarkdownDirPath,
                 expectationKey: 'check should fail after reverting',
             });

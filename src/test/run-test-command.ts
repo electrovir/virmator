@@ -1,11 +1,12 @@
 import {stripColor} from 'ansi-colors';
-import {awaitedForEach, extractErrorMessage, typedHasOwnProperty} from 'augment-vir';
+import {awaitedForEach, extractErrorMessage, RequiredBy, typedHasOwnProperty} from 'augment-vir';
 import {runShellCommand, ShellOutput} from 'augment-vir/dist/cjs/node-only';
 import {assert} from 'chai';
 import {existsSync} from 'fs';
 import {readdir, rm, unlink, writeFile} from 'fs/promises';
 import {basename, join, relative} from 'path';
 import {CommandLogTransform, identityCommandLogTransform} from '../api/command/command-logging';
+import {CommandDefinition} from '../api/command/define-command';
 import {ConfigFileDefinition} from '../api/config/config-file-definition';
 import {readAllDirContents} from '../augments/fs';
 import {filterObject} from '../augments/object';
@@ -45,10 +46,10 @@ const runKeys = new Set<string>();
 export type RunCliCommandInputs<KeyGeneric extends string> = {
     args: string[];
     dir: string;
-    checkConfigFiles: ConfigFileDefinition[];
+    configFilesToCheck: ConfigFileDefinition[];
     expectationKey?: NonEmptyString<KeyGeneric>;
     debug?: boolean;
-    ignoreWipeInExpectation?: boolean;
+    keepFiles?: boolean;
     logTransform?: CommandLogTransform;
 };
 
@@ -56,10 +57,25 @@ function stripFullPath(input: string): string {
     return input.replace(new RegExp(virmatorPackageDir, 'g'), '.');
 }
 
-export async function runCliCommandForTest<KeyGeneric extends string>(
+export async function runCliCommandForTestFromDefinition<KeyGeneric extends string>(
+    commandDefinition: CommandDefinition<any>,
+    inputs: RequiredBy<Partial<Omit<RunCliCommandInputs<KeyGeneric>, 'configFilesToCheck'>>, 'dir'>,
+) {
+    const fullInputs: RunCliCommandInputs<KeyGeneric> = {
+        ...inputs,
+        configFilesToCheck: Object.values(commandDefinition.configFiles),
+        args: [
+            commandDefinition.commandName,
+            ...(inputs.args ?? []),
+        ],
+    };
+    return await runCliCommandForTest(fullInputs);
+}
+
+async function runCliCommandForTest<KeyGeneric extends string>(
     inputs: RunCliCommandInputs<KeyGeneric>,
 ) {
-    const configFilesExistedBeforeTest = inputs.checkConfigFiles.reduce((accum, configFile) => {
+    const configFilesExistedBeforeTest = inputs.configFilesToCheck.reduce((accum, configFile) => {
         if (existsSync(join(inputs.dir, configFile.copyToPathRelativeToRepoDir))) {
             accum[configFile.copyToPathRelativeToRepoDir] = true;
         }
@@ -79,7 +95,7 @@ export async function runCliCommandForTest<KeyGeneric extends string>(
         dir: inputs.dir,
     });
 
-    inputs.checkConfigFiles.forEach((configFile) => {
+    inputs.configFilesToCheck.forEach((configFile) => {
         assert.isTrue(
             existsSync(join(inputs.dir, configFile.copyToPathRelativeToRepoDir)),
             `config file "${configFile.copyToPathRelativeToRepoDir}" did not get copied to "${inputs.dir}".`,
@@ -128,7 +144,7 @@ export async function runCliCommandForTest<KeyGeneric extends string>(
                 )}: ${extractErrorMessage(error)}`,
             );
         } finally {
-            if (!inputs.ignoreWipeInExpectation) {
+            if (!inputs.keepFiles) {
                 await initDirectory(inputs.dir);
             }
             await saveExpectations({
@@ -157,7 +173,7 @@ export async function runCliCommandForTest<KeyGeneric extends string>(
         return beforeContents !== afterContents;
     });
 
-    await awaitedForEach(inputs.checkConfigFiles, async (configFile) => {
+    await awaitedForEach(inputs.configFilesToCheck, async (configFile) => {
         const configFilePath = join(inputs.dir, configFile.copyToPathRelativeToRepoDir);
         if (configFilesExistedBeforeTest[configFile.copyToPathRelativeToRepoDir]) {
             assert.isTrue(

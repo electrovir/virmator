@@ -2,6 +2,7 @@ import {defaultConsoleLogging} from '../api/command/command-logging';
 import {defineCommand} from '../api/command/define-command';
 import {copyAllConfigFiles, CopyConfigOperation} from '../api/config/copy-config';
 import {nonCommandConfigsToUpdate} from './extra-configs/all-extra-configs';
+import {formatCommandDefinition} from './format.command';
 
 export const initCommandDefinition = defineCommand(
     {
@@ -10,7 +11,7 @@ export const initCommandDefinition = defineCommand(
             force: 'force overwrite files even if they already exist.',
         },
         configFiles: {},
-        npmDeps: [],
+        npmDeps: [...formatCommandDefinition.npmDeps],
     } as const,
     ({commandName, subCommands, packageBinName}) => {
         return {

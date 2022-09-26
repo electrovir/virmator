@@ -1,24 +1,18 @@
 import {assert} from 'chai';
 import {describe, it} from 'mocha';
 import {relativeToVirmatorRoot} from '../file-paths/package-paths';
-import {runCliCommandForTest, RunCliCommandInputs} from '../test/run-test-command';
+import {runCliCommandForTestFromDefinition, RunCliCommandInputs} from '../test/run-test-command';
 import {testTestPaths} from '../test/virmator-test-file-paths';
 import {testCommandDefinition} from './test.command';
 
 async function runTestTestCommand<KeyGeneric extends string>(
     inputs: Required<Pick<RunCliCommandInputs<KeyGeneric>, 'expectationKey' | 'args' | 'dir'>>,
 ) {
-    return await runCliCommandForTest({
-        args: [
-            testCommandDefinition.commandName,
-            ...inputs.args,
-        ],
-        dir: inputs.dir,
-        checkConfigFiles: Object.values(testCommandDefinition.configFiles),
+    return await runCliCommandForTestFromDefinition(testCommandDefinition, {
+        ...inputs,
         logTransform: (input) => {
             return input.replace(/\(\d+m?s\)/g, '');
         },
-        expectationKey: inputs.expectationKey,
     });
 }
 
@@ -44,7 +38,7 @@ describe(relativeToVirmatorRoot(__filename), () => {
     });
 
     it('should run tests in serial when instructed to do so', async () => {
-        const output = await runTestTestCommand({
+        await runTestTestCommand({
             args: [
                 '--jobs 1',
             ],
@@ -54,7 +48,7 @@ describe(relativeToVirmatorRoot(__filename), () => {
     });
 
     it('should pass when tests pass', async () => {
-        const output = await runTestTestCommand({
+        await runTestTestCommand({
             args: [],
             dir: testTestPaths.validRepo,
             expectationKey: 'passing-tests',

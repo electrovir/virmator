@@ -1,10 +1,12 @@
 const baseOptions = require('./base-configs/base-mocharc.js');
 
+const oneMinuteMs = 60_000;
+
 /** @type {import('mocha').MochaOptions} */
 const mochaConfig = {
     ...baseOptions,
-    slow: 5_000, // ms
-    timeout: 600_000, // 10 minutes in ms
+    slow: 30_000, // ms
+    timeout: 20 * oneMinuteMs,
     // heavy modification of files requires parallel to be off
     parallel: false,
 };

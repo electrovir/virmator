@@ -8,10 +8,18 @@ import {virmator} from '..';
 import {getCopyToPath} from '../api/config/config-paths';
 import {assertString} from '../augments/test';
 import {relativeToVirmatorRoot} from '../file-paths/package-paths';
-import {runCliCommandForTest} from '../test/run-test-command';
+import {runCliCommandForTestFromDefinition, RunCliCommandInputs} from '../test/run-test-command';
 import {testInitPaths} from '../test/virmator-test-file-paths';
 import {nonCommandConfigsToUpdate} from './extra-configs/all-extra-configs';
 import {initCommandDefinition} from './init.command';
+
+async function runInitTest<KeyGeneric extends string>(
+    inputs: Pick<RunCliCommandInputs<KeyGeneric>, 'dir' | 'expectationKey' | 'args' | 'keepFiles'>,
+) {
+    return await runCliCommandForTestFromDefinition(initCommandDefinition, {
+        ...inputs,
+    });
+}
 
 describe(relativeToVirmatorRoot(__filename), () => {
     const configs = [
@@ -37,12 +45,11 @@ describe(relativeToVirmatorRoot(__filename), () => {
             );
         });
 
-        const output = await runCliCommandForTest({
-            args: [initCommandDefinition.commandName],
-            checkConfigFiles: [],
+        const output = await runInitTest({
+            args: [],
             dir: testInitPaths.filesForUpdate,
             expectationKey: 'init with files to upgrade',
-            ignoreWipeInExpectation: true,
+            keepFiles: true,
         });
 
         if (output.results.exitCode) {
@@ -109,9 +116,8 @@ describe(relativeToVirmatorRoot(__filename), () => {
             );
         });
 
-        const output = await runCliCommandForTest({
-            args: [initCommandDefinition.commandName],
-            checkConfigFiles: [],
+        const output = await runInitTest({
+            args: [],
             dir: testInitPaths.emptyRepo,
             expectationKey: 'basic-init',
         });

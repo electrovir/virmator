@@ -1,8 +1,10 @@
 import {assert} from 'chai';
 import {filterObject} from '../augments/object';
-import {runCliCommandForTest} from './run-test-command';
+import {runCliCommandForTestFromDefinition} from './run-test-command';
 
-export function assertNoNewFile(output: Awaited<ReturnType<typeof runCliCommandForTest>>) {
+export function assertNoNewFile(
+    output: Awaited<ReturnType<typeof runCliCommandForTestFromDefinition>>,
+) {
     assert.deepEqual(
         output.dirFileNamesBefore,
         output.dirFileNamesAfter,
@@ -11,7 +13,7 @@ export function assertNoNewFile(output: Awaited<ReturnType<typeof runCliCommandF
 }
 
 export function assertNoFileChanges(
-    output: Awaited<ReturnType<typeof runCliCommandForTest>>,
+    output: Awaited<ReturnType<typeof runCliCommandForTestFromDefinition>>,
     ignoreTheseFiles: string[] = [],
 ) {
     assert.deepEqual(
@@ -26,7 +28,7 @@ export function assertNoFileChanges(
 }
 
 export function assertNewFilesWereCreated(
-    output: Awaited<ReturnType<typeof runCliCommandForTest>>,
+    output: Awaited<ReturnType<typeof runCliCommandForTestFromDefinition>>,
     newFilesNames: string[],
 ) {
     assert.deepEqual(

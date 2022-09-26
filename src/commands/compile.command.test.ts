@@ -4,18 +4,24 @@ import {readdir, unlink} from 'fs/promises';
 import {describe, it} from 'mocha';
 import {join} from 'path';
 import {relativeToVirmatorRoot} from '../file-paths/package-paths';
-import {runCliCommandForTest} from '../test/run-test-command';
+import {runCliCommandForTestFromDefinition, RunCliCommandInputs} from '../test/run-test-command';
 import {testCompilePaths} from '../test/virmator-test-file-paths';
 import {compileCommandDefinition} from './compile.command';
 
+async function runCodeInMarkdownTest<KeyGeneric extends string>(
+    inputs: Pick<RunCliCommandInputs<KeyGeneric>, 'dir' | 'expectationKey' | 'args'>,
+) {
+    return await runCliCommandForTestFromDefinition(compileCommandDefinition, {
+        ...inputs,
+    });
+}
+
 describe(relativeToVirmatorRoot(__filename), () => {
     it('should fail when compile failures exist', async () => {
-        const output = await runCliCommandForTest({
+        const output = await runCodeInMarkdownTest({
             args: [
-                compileCommandDefinition.commandName,
                 compileCommandDefinition.subCommands.check,
             ],
-            checkConfigFiles: Object.values(compileCommandDefinition.configFiles),
             dir: testCompilePaths.invalidRepo,
             expectationKey: 'compile-errors-failure',
         });
@@ -31,12 +37,10 @@ describe(relativeToVirmatorRoot(__filename), () => {
     });
 
     it('should pass when no type errors exist', async () => {
-        const output = await runCliCommandForTest({
+        const output = await runCodeInMarkdownTest({
             args: [
-                compileCommandDefinition.commandName,
                 compileCommandDefinition.subCommands.check,
             ],
-            checkConfigFiles: Object.values(compileCommandDefinition.configFiles),
             dir: testCompilePaths.validRepo,
             expectationKey: 'no-compile-errors-pass',
         });
@@ -52,9 +56,8 @@ describe(relativeToVirmatorRoot(__filename), () => {
     });
 
     it('should produce output files when not just checking', async () => {
-        const output = await runCliCommandForTest({
-            args: [compileCommandDefinition.commandName],
-            checkConfigFiles: Object.values(compileCommandDefinition.configFiles),
+        const output = await runCodeInMarkdownTest({
+            args: [],
             dir: testCompilePaths.validRepo,
             expectationKey: 'compile-no-errors-with-output',
         });

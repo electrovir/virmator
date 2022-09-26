@@ -4,7 +4,7 @@ import {describe, it} from 'mocha';
 import {basename} from 'path';
 import {relativeToVirmatorRoot} from '../file-paths/package-paths';
 import {assertNewFilesWereCreated, assertNoFileChanges} from '../test/file-change-tests';
-import {runCliCommandForTest} from '../test/run-test-command';
+import {runCliCommandForTestFromDefinition, RunCliCommandInputs} from '../test/run-test-command';
 import {testFormatPaths} from '../test/virmator-test-file-paths';
 import {formatCommandDefinition} from './format.command';
 
@@ -12,14 +12,20 @@ const formatConfigNames = Object.values(formatCommandDefinition.configFiles).map
     basename(configFile.copyToPathRelativeToRepoDir),
 );
 
+async function runFormatTest<KeyGeneric extends string>(
+    inputs: Pick<RunCliCommandInputs<KeyGeneric>, 'dir' | 'expectationKey' | 'args'>,
+) {
+    return await runCliCommandForTestFromDefinition(formatCommandDefinition, {
+        ...inputs,
+    });
+}
+
 describe(relativeToVirmatorRoot(__filename), () => {
     it('should fail when format failures exist', async () => {
-        const output = await runCliCommandForTest({
+        const output = await runFormatTest({
             args: [
-                formatCommandDefinition.commandName,
                 formatCommandDefinition.subCommands.check,
             ],
-            checkConfigFiles: Object.values(formatCommandDefinition.configFiles),
             dir: testFormatPaths.invalidRepo,
             expectationKey: 'fail on format failures in a folder',
         });
@@ -28,12 +34,10 @@ describe(relativeToVirmatorRoot(__filename), () => {
     });
 
     it('should pass when formatting is all perfect', async () => {
-        const output = await runCliCommandForTest({
+        const output = await runFormatTest({
             args: [
-                formatCommandDefinition.commandName,
                 formatCommandDefinition.subCommands.check,
             ],
-            checkConfigFiles: Object.values(formatCommandDefinition.configFiles),
             dir: testFormatPaths.validRepo,
             expectationKey: 'pass format when there are zero errors',
         });
@@ -47,9 +51,8 @@ describe(relativeToVirmatorRoot(__filename), () => {
         ).toString();
 
         try {
-            const output = await runCliCommandForTest({
-                args: [formatCommandDefinition.commandName],
-                checkConfigFiles: Object.values(formatCommandDefinition.configFiles),
+            const output = await runFormatTest({
+                args: [],
                 dir: testFormatPaths.invalidRepo,
                 expectationKey: 'format should update invalid files',
             });

@@ -160,14 +160,14 @@
             "exitCode": 0,
             "key": "init with files to upgrade",
             "stderr": "",
-            "stdout": "running init...\nSuccessfully copied .gitattributes\nSuccessfully copied .gitignore\nSuccessfully copied .mocharc.js\nSuccessfully copied .npmignore\nSuccessfully copied .nvmrc\nSuccessfully copied .prettierignore\nSuccessfully copied .prettierrc.js\nSuccessfully copied cspell.config.js\nSuccessfully copied package.json\nSuccessfully copied settings.json\nSuccessfully copied tsconfig.json\nSuccessfully copied vite.config.ts\nSuccessfully copied web-test-runner.config.mjs\ninit succeeded.\n"
+            "stdout": "Installing prettier@2.7.1...\nInstalling prettier-plugin-jsdoc@0.4.2...\nInstalling prettier-plugin-multiline-arrays@1.1.1...\nInstalling prettier-plugin-organize-imports@3.1.1...\nInstalling prettier-plugin-packagejson@2.2.18...\nInstalling prettier-plugin-sort-json@0.0.3...\nInstalling prettier-plugin-toml@0.3.1...\nrunning init...\nSuccessfully copied .gitattributes\nSuccessfully copied .gitignore\nSuccessfully copied .mocharc.js\nSuccessfully copied .npmignore\nSuccessfully copied .nvmrc\nSuccessfully copied .prettierignore\nSuccessfully copied .prettierrc.js\nSuccessfully copied cspell.config.js\nSuccessfully copied package.json\nSuccessfully copied settings.json\nSuccessfully copied tsconfig.json\nSuccessfully copied vite.config.ts\nSuccessfully copied web-test-runner.config.mjs\ninit succeeded.\n"
         },
         "basic-init": {
             "dir": "init",
             "exitCode": 0,
             "key": "basic-init",
             "stderr": "",
-            "stdout": "running init...\nSuccessfully copied .gitattributes\nSuccessfully copied .gitignore\nSuccessfully copied .mocharc.js\nSuccessfully copied .npmignore\nSuccessfully copied .nvmrc\nSuccessfully copied .prettierignore\nSuccessfully copied .prettierrc.js\nSuccessfully copied cspell.config.js\nSuccessfully copied package.json\nSuccessfully copied settings.json\nSuccessfully copied tsconfig.json\nSuccessfully copied vite.config.ts\nSuccessfully copied web-test-runner.config.mjs\ninit succeeded.\n"
+            "stdout": "Installing prettier@2.7.1...\nInstalling prettier-plugin-jsdoc@0.4.2...\nInstalling prettier-plugin-multiline-arrays@1.1.1...\nInstalling prettier-plugin-organize-imports@3.1.1...\nInstalling prettier-plugin-packagejson@2.2.18...\nInstalling prettier-plugin-sort-json@0.0.3...\nInstalling prettier-plugin-toml@0.3.1...\nrunning init...\nSuccessfully copied .gitattributes\nSuccessfully copied .gitignore\nSuccessfully copied .mocharc.js\nSuccessfully copied .npmignore\nSuccessfully copied .nvmrc\nSuccessfully copied .prettierignore\nSuccessfully copied .prettierrc.js\nSuccessfully copied cspell.config.js\nSuccessfully copied package.json\nSuccessfully copied settings.json\nSuccessfully copied tsconfig.json\nSuccessfully copied vite.config.ts\nSuccessfully copied web-test-runner.config.mjs\ninit succeeded.\n"
         }
     },
     "test": {
@@ -198,6 +198,22 @@
             "key": "all-tests",
             "stderr": "test failed.\n",
             "stdout": "Installing @types/chai@4.3.3...\nInstalling @types/mocha@9.1.1...\nInstalling chai@4.3.6...\nInstalling mocha@10.0.0...\nInstalling ts-node@10.9.1...\nrunning test...\nSuccessfully copied .mocharc.js\nnode_modules/.bin/mocha --config configs/.mocharc.js \n\n\n  valid.test.ts\n    ✔ should have passing test\n\n\n  invalid.test.ts\n    1) should have a failing test\n\n\n  1 passing \n  1 failing\n\n  1) invalid.test.ts\n       should have a failing test:\n\n      AssertionError: expected false to be true\n      + expected - actual\n\n      -false\n      +true\n      \n      at Context.<anonymous> (src/invalid.test.ts:6:16)\n      at processImmediate (node:internal/timers:466:21)\n\n\n\n"
+        }
+    },
+    "test-web": {
+        "failing-web-test": {
+            "dir": "test-web",
+            "exitCode": 1,
+            "key": "failing-web-test",
+            "stderr": "test-web failed.\n",
+            "stdout": "Installing @open-wc/testing@3.1.6...\nInstalling @web/dev-server-esbuild@0.3.2...\nInstalling @web/test-runner@0.14.0...\nInstalling @web/test-runner-commands@0.6.5...\nInstalling @web/test-runner-playwright@0.8.10...\nrunning test-web...\nSuccessfully copied web-test-runner.config.mjs\nnode_modules/.bin/web-test-runner --color --config configs/web-test-runner.config.mjs\n\n\nRunning tests...\n\nRunning 1 test files...\n\n\nsrc/should-fail.test.ts:\n\n ❌ should fail test > should fail\n      AssertionError: expected false to be true\n      + expected - actual\n      \n      -false\n      +true\n      \n      at o.<anonymous> (src/should-fail.test.ts:5:15)\n\n\nView full coverage report at coverage/lcov-report/index.html\n\nFinished running tests in  with 3 failed tests.\n\n\n"
+        },
+        "passing-web-test": {
+            "dir": "test-web",
+            "exitCode": 0,
+            "key": "passing-web-test",
+            "stderr": "",
+            "stdout": "Installing @open-wc/testing@3.1.6...\nInstalling @web/dev-server-esbuild@0.3.2...\nInstalling @web/test-runner@0.14.0...\nInstalling @web/test-runner-commands@0.6.5...\nInstalling @web/test-runner-playwright@0.8.10...\nrunning test-web...\nSuccessfully copied web-test-runner.config.mjs\nnode_modules/.bin/web-test-runner --color --config configs/web-test-runner.config.mjs\n\n\nRunning tests...\n\nRunning 1 test files...\n\n\n\nView full coverage report at coverage/lcov-report/index.html\n\nFinished running tests in , all tests passed! 🎉\n\n\ntest-web succeeded.\n"
         }
     }
 }
