@@ -1,0 +1,16 @@
+**/*/readme-examples/
+**/*/test/
+*.test-helper.ts
+*.test.d.ts
+*.test.js
+*.test.ts
+.*
+/*.tgz
+/Icon?
+coverage/
+graphics/
+src/
+test-files/
+tsconfig*.json
+
+./something-that-doesn't-exist/

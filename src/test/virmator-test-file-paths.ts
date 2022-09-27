@@ -72,12 +72,7 @@ export const testInitPaths = {
 const testUpdateConfigsRepos = join(testFilesDirPath, 'update-configs');
 export const testUpdateConfigsPaths = {
     partialRepo: join(testUpdateConfigsRepos, 'partial-repo'),
-    partialRepoPrettierBase: join(
-        testUpdateConfigsRepos,
-        'partial-repo',
-        '.virmator',
-        'prettierrc-base.js',
-    ),
+    fullRepo: join(testUpdateConfigsRepos, 'full-repo'),
 };
 
 export const virmatorReadme = join(virmatorPackageDir, 'README.md');

@@ -10,7 +10,7 @@ async function runTestWebTestCommand<KeyGeneric extends string>(
     await runCliCommandForTestFromDefinition(testWebCommandDefinition, {
         ...inputs,
         logTransform: (input) => {
-            return input.replace(/(Finished running tests in )\d+m?s/g, '$1');
+            return input.replace(/(Finished running tests in )[\d\.]+m?s/g, '$1');
         },
     });
 }
@@ -19,14 +19,14 @@ describe(relativeToVirmatorRoot(__filename), () => {
     it('should fail when web tests fail', async () => {
         await runTestWebTestCommand({
             dir: testTestWebPaths.failRepo,
-            expectationKey: 'failing-web-test',
+            expectationKey: 'failing-test-web',
         });
     });
 
     it('should pass when web tests pass', async () => {
         await runTestWebTestCommand({
             dir: testTestWebPaths.passRepo,
-            expectationKey: 'passing-web-test',
+            expectationKey: 'passing-test-web',
         });
     });
 });

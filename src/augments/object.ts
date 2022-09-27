@@ -1,16 +1,10 @@
-import {
-    getEnumTypedKeys,
-    getObjectTypedKeys,
-    isObject,
-    Overwrite,
-    typedHasOwnProperty,
-} from 'augment-vir';
+import {getObjectTypedKeys, isObject, Overwrite, typedHasOwnProperty} from 'augment-vir';
 
 export function filterObject<T extends object>(
     fullObject: Readonly<T>,
     callback: (value: T[keyof T], key: keyof T, fullObject: Readonly<T>) => boolean,
 ): Partial<T> {
-    return getEnumTypedKeys(fullObject).reduce((accum, key) => {
+    return getObjectTypedKeys(fullObject).reduce((accum, key) => {
         const value = fullObject[key];
         if (callback(value, key, fullObject)) {
             accum[key] = value;
@@ -37,4 +31,25 @@ export function deeplyCombineObjects<
         }
         return accum;
     }, originalObject as unknown as Overwrite<OriginalObjectGeneric, OverwriteObjectGeneric>);
+}
+
+export function filterToDifferentValues<T extends object>(
+    baseObject: T,
+    changedObject: T,
+): Partial<T> {
+    return getObjectTypedKeys(baseObject).reduce((accum, key) => {
+        const beforeValue = baseObject[key];
+        const afterValue = changedObject[key];
+
+        if (isObject(beforeValue) && isObject(afterValue)) {
+            const innerDiff = filterToDifferentValues(beforeValue, afterValue);
+            if (Object.keys(innerDiff).length) {
+                accum[key] = filterToDifferentValues(beforeValue, afterValue) as T[keyof T];
+            }
+        } else if (beforeValue !== afterValue) {
+            accum[key] = afterValue;
+        }
+
+        return accum;
+    }, {} as Partial<T>);
 }

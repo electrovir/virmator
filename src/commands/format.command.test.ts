@@ -61,7 +61,6 @@ describe(relativeToVirmatorRoot(__filename), () => {
                 Object.keys(output.changedFiles).sort(),
                 [
                     'invalid-format.ts',
-                    ...formatConfigNames,
                 ].sort(),
             );
         } catch (error) {

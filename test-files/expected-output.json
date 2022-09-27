@@ -201,19 +201,35 @@
         }
     },
     "test-web": {
-        "failing-web-test": {
+        "failing-test-web": {
             "dir": "test-web",
             "exitCode": 1,
-            "key": "failing-web-test",
+            "key": "failing-test-web",
             "stderr": "test-web failed.\n",
             "stdout": "Installing @open-wc/testing@3.1.6...\nInstalling @web/dev-server-esbuild@0.3.2...\nInstalling @web/test-runner@0.14.0...\nInstalling @web/test-runner-commands@0.6.5...\nInstalling @web/test-runner-playwright@0.8.10...\nrunning test-web...\nSuccessfully copied web-test-runner.config.mjs\nnode_modules/.bin/web-test-runner --color --config configs/web-test-runner.config.mjs\n\n\nRunning tests...\n\nRunning 1 test files...\n\n\nsrc/should-fail.test.ts:\n\n ❌ should fail test > should fail\n      AssertionError: expected false to be true\n      + expected - actual\n      \n      -false\n      +true\n      \n      at o.<anonymous> (src/should-fail.test.ts:5:15)\n\n\nView full coverage report at coverage/lcov-report/index.html\n\nFinished running tests in  with 3 failed tests.\n\n\n"
         },
-        "passing-web-test": {
+        "passing-test-web": {
             "dir": "test-web",
             "exitCode": 0,
-            "key": "passing-web-test",
+            "key": "passing-test-web",
             "stderr": "",
             "stdout": "Installing @open-wc/testing@3.1.6...\nInstalling @web/dev-server-esbuild@0.3.2...\nInstalling @web/test-runner@0.14.0...\nInstalling @web/test-runner-commands@0.6.5...\nInstalling @web/test-runner-playwright@0.8.10...\nrunning test-web...\nSuccessfully copied web-test-runner.config.mjs\nnode_modules/.bin/web-test-runner --color --config configs/web-test-runner.config.mjs\n\n\nRunning tests...\n\nRunning 1 test files...\n\n\n\nView full coverage report at coverage/lcov-report/index.html\n\nFinished running tests in , all tests passed! 🎉\n\n\ntest-web succeeded.\n"
+        }
+    },
+    "update-configs": {
+        "updating-configs": {
+            "dir": "update-configs",
+            "exitCode": 0,
+            "key": "updating-configs",
+            "stderr": "",
+            "stdout": "running update-configs...\nSuccessfully updated .gitignore\nSuccessfully updated .npmignore\nSuccessfully updated package.json\nSuccessfully updated settings.json\nupdate-configs succeeded.\n"
+        },
+        "not-updating-any-configs": {
+            "dir": "update-configs",
+            "exitCode": 0,
+            "key": "not-updating-any-configs",
+            "stderr": "",
+            "stdout": "running update-configs...\nupdate-configs succeeded.\n"
         }
     }
 }

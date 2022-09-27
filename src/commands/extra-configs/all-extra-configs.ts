@@ -5,7 +5,7 @@ import {combineJsonConfig} from './combine-json-config';
 import {combineTextConfig} from './combine-text-config';
 import {createDefaultPackageJson} from './create-default-package-json';
 
-export const nonCommandConfigsToUpdate: ReadonlyArray<ConfigFileDefinition> = [
+export const nonCommandConfigs: ReadonlyArray<ConfigFileDefinition> = [
     {
         copyFromInternalPath: join(virmatorConfigsDir, '.gitattributes'),
         copyToPathRelativeToRepoDir: '.gitattributes',

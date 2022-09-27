@@ -1,6 +1,7 @@
 import {defaultConsoleLogging} from '../api/command/command-logging';
 import {defineCommand} from '../api/command/define-command';
 import {copyAllConfigFiles, CopyConfigOperation} from '../api/config/copy-config';
+import {nonCommandConfigs} from './extra-configs/all-extra-configs';
 
 export const updateConfigsCommandDefinition = defineCommand(
     {
@@ -24,7 +25,10 @@ export const updateConfigsCommandDefinition = defineCommand(
     async (inputs) => {
         const success = await copyAllConfigFiles({
             packageDir: inputs.packageDir,
-            configFiles: inputs.allConfigs,
+            configFiles: [
+                ...inputs.allConfigs,
+                ...nonCommandConfigs,
+            ],
             logging: defaultConsoleLogging,
             operation: CopyConfigOperation.Update,
             repoDir: inputs.repoDir,

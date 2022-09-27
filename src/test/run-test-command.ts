@@ -9,7 +9,7 @@ import {CommandLogTransform, identityCommandLogTransform} from '../api/command/c
 import {CommandDefinition} from '../api/command/define-command';
 import {ConfigFileDefinition} from '../api/config/config-file-definition';
 import {readAllDirContents} from '../augments/fs';
-import {filterObject} from '../augments/object';
+import {filterToDifferentValues} from '../augments/object';
 import {getFirstPartOfRelativePath} from '../augments/path';
 import {NonEmptyString} from '../augments/string';
 import {virmatorPackageDir} from '../file-paths/package-paths';
@@ -21,17 +21,23 @@ import {
 } from './test-expectations';
 import {testExpectationsFilePath, testFilesDirPath} from './virmator-test-file-paths';
 
-async function initDirectory(dir: string): Promise<void> {
-    await rm(join(dir, 'node_modules'), {
-        recursive: true,
-        force: true,
-    });
-    const packageLockPath = join(dir, 'package-lock.json');
-    if (existsSync(packageLockPath)) {
-        await unlink(packageLockPath);
+async function initDirectory(dir: string, keepFiles: ReadonlyArray<string> = []): Promise<void> {
+    if (!keepFiles.includes('node_modules')) {
+        await rm(join(dir, 'node_modules'), {
+            recursive: true,
+            force: true,
+        });
     }
-    const packageJsonPath = join(dir, 'package.json');
-    await writeFile(packageJsonPath, JSON.stringify({name: basename(dir)}, null, 4) + '\n');
+    if (!keepFiles.includes('package-lock.json')) {
+        const packageLockPath = join(dir, 'package-lock.json');
+        if (existsSync(packageLockPath)) {
+            await unlink(packageLockPath);
+        }
+    }
+    if (!keepFiles.includes('package.json')) {
+        const packageJsonPath = join(dir, 'package.json');
+        await writeFile(packageJsonPath, JSON.stringify({name: basename(dir)}, null, 4) + '\n');
+    }
 }
 
 async function runTestCommand({args, dir}: {args: string[]; dir: string}): Promise<ShellOutput> {
@@ -49,7 +55,7 @@ export type RunCliCommandInputs<KeyGeneric extends string> = {
     configFilesToCheck: ConfigFileDefinition[];
     expectationKey?: NonEmptyString<KeyGeneric>;
     debug?: boolean;
-    keepFiles?: boolean;
+    keepFiles?: ReadonlyArray<string>;
     logTransform?: CommandLogTransform;
 };
 
@@ -81,9 +87,12 @@ async function runCliCommandForTest<KeyGeneric extends string>(
         }
         return accum;
     }, {} as Record<string, boolean>);
-    await initDirectory(inputs.dir);
+    await initDirectory(inputs.dir, inputs.keepFiles);
     const dirFileNamesBefore = (await readdir(inputs.dir)).sort();
-    const dirFileContentsBefore = await readAllDirContents(inputs.dir, true);
+    const dirFileContentsBefore = await readAllDirContents({
+        dir: inputs.dir,
+        recursive: true,
+    });
     const beforeTimestamp: number = Date.now();
     await runShellCommand(`npm i -D ${process.env.TAR_TO_INSTALL}`, {
         cwd: inputs.dir,
@@ -144,9 +153,7 @@ async function runCliCommandForTest<KeyGeneric extends string>(
                 )}: ${extractErrorMessage(error)}`,
             );
         } finally {
-            if (!inputs.keepFiles) {
-                await initDirectory(inputs.dir);
-            }
+            await initDirectory(inputs.dir, inputs.keepFiles);
             await saveExpectations({
                 ...loadedExpectations,
                 [actualResults.dir]: {
@@ -162,16 +169,15 @@ async function runCliCommandForTest<KeyGeneric extends string>(
     const durationMs: number = afterTimestamp - beforeTimestamp;
 
     const dirFileNamesAfter = (await readdir(inputs.dir)).sort();
-    const dirFileContentsAfter = await readAllDirContents(inputs.dir, true);
+    const dirFileContentsAfter = await readAllDirContents({
+        dir: inputs.dir,
+        recursive: true,
+    });
 
     const newFiles = dirFileNamesAfter.filter(
         (afterFile) => !dirFileNamesBefore.includes(afterFile),
     );
-    const changedFiles = filterObject(dirFileContentsAfter, (afterContents, key) => {
-        const beforeContents = dirFileContentsBefore[key];
-
-        return beforeContents !== afterContents;
-    });
+    const changedFiles = filterToDifferentValues(dirFileContentsBefore, dirFileContentsAfter);
 
     await awaitedForEach(inputs.configFilesToCheck, async (configFile) => {
         const configFilePath = join(inputs.dir, configFile.copyToPathRelativeToRepoDir);

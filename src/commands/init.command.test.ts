@@ -10,7 +10,7 @@ import {assertString} from '../augments/test';
 import {relativeToVirmatorRoot} from '../file-paths/package-paths';
 import {runCliCommandForTestFromDefinition, RunCliCommandInputs} from '../test/run-test-command';
 import {testInitPaths} from '../test/virmator-test-file-paths';
-import {nonCommandConfigsToUpdate} from './extra-configs/all-extra-configs';
+import {nonCommandConfigs} from './extra-configs/all-extra-configs';
 import {initCommandDefinition} from './init.command';
 
 async function runInitTest<KeyGeneric extends string>(
@@ -23,7 +23,7 @@ async function runInitTest<KeyGeneric extends string>(
 
 describe(relativeToVirmatorRoot(__filename), () => {
     const configs = [
-        ...nonCommandConfigsToUpdate,
+        ...nonCommandConfigs,
         ...Object.values(virmator.allConfigs),
     ];
 
@@ -49,7 +49,7 @@ describe(relativeToVirmatorRoot(__filename), () => {
             args: [],
             dir: testInitPaths.filesForUpdate,
             expectationKey: 'init with files to upgrade',
-            keepFiles: true,
+            keepFiles: ['package.json'],
         });
 
         if (output.results.exitCode) {
