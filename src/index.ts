@@ -39,5 +39,3 @@ export const virmator = createVirmator({
         updateConfigsCommandDefinition,
     ],
 });
-
-virmator.commandMapping['code-in-markdown'];
