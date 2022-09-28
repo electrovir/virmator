@@ -2,7 +2,7 @@
 
 set -e;
 
-scriptDir=$(dirname "$(readlink -f "${BASH_SOURCE[0]}")");
+scriptDir="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 repoRootDir=$(dirname "$(dirname "$scriptDir")")
 
 npm install;
