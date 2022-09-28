@@ -1,7 +1,7 @@
 import {stripColor} from 'ansi-colors';
 import {awaitedForEach, extractErrorMessage, RequiredBy, typedHasOwnProperty} from 'augment-vir';
 import {runShellCommand, ShellOutput} from 'augment-vir/dist/cjs/node-only';
-import {assert} from 'chai';
+import {assert, config} from 'chai';
 import {existsSync} from 'fs';
 import {readdir, rm, unlink, writeFile} from 'fs/promises';
 import {basename, join, relative} from 'path';
@@ -20,6 +20,8 @@ import {
     TestExpectation,
 } from './test-expectations';
 import {testExpectationsFilePath, testFilesDirPath} from './virmator-test-file-paths';
+
+config.truncateThreshold = 0;
 
 async function initDirectory(dir: string, keepFiles: ReadonlyArray<string> = []): Promise<void> {
     if (!keepFiles.includes('node_modules')) {
@@ -94,6 +96,7 @@ async function runCliCommandForTest<KeyGeneric extends string>(
         recursive: true,
     });
     const beforeTimestamp: number = Date.now();
+    console.log({tarAddress: process.env.TAR_TO_INSTALL});
     await runShellCommand(`npm i -D ${process.env.TAR_TO_INSTALL}`, {
         cwd: inputs.dir,
         rejectOnError: true,

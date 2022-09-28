@@ -1,8 +1,8 @@
-import {printShellCommandOutput, runShellCommand} from 'augment-vir/dist/cjs/node-only';
 import {readFile, writeFile} from 'fs/promises';
 import {virmator} from '..';
 import {Color} from '../api/cli-color';
 import {generateHelpMessage, HelpMessageSyntax} from '../api/command/command-to-help-message';
+import {formatCode} from '../augments/prettier';
 import {virmatorReadme} from '../test/virmator-test-file-paths';
 
 const usageTrigger = '<!-- usage below -->';
@@ -24,19 +24,12 @@ async function main(args: string[]) {
         );
     }
 
-    const newReadme = `${originalReadme.slice(
-        0,
-        triggerIndex + usageTrigger.length,
-    )}\n\n${helpMessage}`;
+    const newReadme = await formatCode(
+        `${originalReadme.slice(0, triggerIndex + usageTrigger.length)}\n\n${helpMessage}`,
+        'README.md',
+    );
 
     await writeFile(virmatorReadme, newReadme);
-
-    const formatCommand = `node dist/cli/cli.js format ./README.md`;
-    const formatOutput = await runShellCommand(formatCommand);
-
-    if (!check) {
-        printShellCommandOutput(formatOutput);
-    }
 
     if (check) {
         const formattedReadme = (await readFile(virmatorReadme)).toString();
