@@ -1,4 +1,3 @@
-import {collapseWhiteSpace} from 'augment-vir';
 import {assert} from 'chai';
 import {describe, it} from 'mocha';
 import {relativeToVirmatorRoot} from '../file-paths/package-paths';
@@ -12,7 +11,7 @@ async function runTestTestCommand<KeyGeneric extends string>(
     return await runCliCommandForTestFromDefinition(testCommandDefinition, {
         ...inputs,
         logTransform: (input) => {
-            return collapseWhiteSpace(
+            return (
                 input
                     // remove time duration cause it can always change
                     .replace(/\(\d+m?s\)/g, '')
@@ -20,7 +19,7 @@ async function runTestTestCommand<KeyGeneric extends string>(
                      * Remove the file output ordering because the order is non-deterministic,
                      * leading to flaky tests.
                      */
-                    .replace(/\n\n\n\s+(?:in)?valid\.test\.ts[.\n\s\w\W]+?\n\n\n/g, ''),
+                    .replace(/\n\n\n\s+(?:in)?valid\.test\.ts[.\n\s\w\W]+?\n\n\n/g, '')
             );
         },
     });

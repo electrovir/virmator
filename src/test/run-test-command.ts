@@ -1,6 +1,12 @@
 import {stripColor} from 'ansi-colors';
-import {awaitedForEach, extractErrorMessage, RequiredBy, typedHasOwnProperty} from 'augment-vir';
-import {runShellCommand, ShellOutput} from 'augment-vir/dist/cjs/node-only';
+import {
+    awaitedForEach,
+    collapseWhiteSpace,
+    extractErrorMessage,
+    RequiredBy,
+    typedHasOwnProperty,
+} from 'augment-vir';
+import {runShellCommand, ShellOutput, toPosixPath} from 'augment-vir/dist/cjs/node-only';
 import {assert, config} from 'chai';
 import {existsSync} from 'fs';
 import {readdir, rm, unlink, writeFile} from 'fs/promises';
@@ -76,6 +82,10 @@ export async function runCliCommandForTestFromDefinition<KeyGeneric extends stri
             commandDefinition.commandName,
             ...(inputs.args ?? []),
         ],
+        logTransform: (input) => {
+            const fromInputs = inputs.logTransform?.(input) ?? input;
+            return toPosixPath(collapseWhiteSpace(fromInputs));
+        },
     };
     return await runCliCommandForTest(fullInputs);
 }

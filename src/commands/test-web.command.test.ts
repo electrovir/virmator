@@ -1,4 +1,3 @@
-import {collapseWhiteSpace} from 'augment-vir';
 import {rm} from 'fs/promises';
 import {describe, it} from 'mocha';
 import {join} from 'path';
@@ -13,9 +12,7 @@ async function runTestWebTestCommand<KeyGeneric extends string>(
     await runCliCommandForTestFromDefinition(testWebCommandDefinition, {
         ...inputs,
         logTransform: (input) => {
-            return collapseWhiteSpace(
-                input.replace(/(Finished running tests in )[\d\.]+m?s/g, '$1'),
-            );
+            return input.replace(/(Finished running tests in )[\d\.]+m?s/g, '$1');
         },
     });
     await rm(join(inputs.dir, 'coverage'), {
