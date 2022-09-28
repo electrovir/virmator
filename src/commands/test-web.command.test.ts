@@ -1,4 +1,6 @@
+import {rm} from 'fs/promises';
 import {describe, it} from 'mocha';
+import {join} from 'path';
 import {relativeToVirmatorRoot} from '../file-paths/package-paths';
 import {runCliCommandForTestFromDefinition, RunCliCommandInputs} from '../test/run-test-command';
 import {testTestWebPaths} from '../test/virmator-test-file-paths';
@@ -12,6 +14,10 @@ async function runTestWebTestCommand<KeyGeneric extends string>(
         logTransform: (input) => {
             return input.replace(/(Finished running tests in )[\d\.]+m?s/g, '$1');
         },
+    });
+    await rm(join(inputs.dir, 'coverage'), {
+        force: true,
+        recursive: true,
     });
 }
 

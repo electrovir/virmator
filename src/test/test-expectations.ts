@@ -38,7 +38,7 @@ export async function loadExpectations(): Promise<TestExpectations> {
 }
 
 export async function saveExpectations(expectations: TestExpectations): Promise<void> {
-    await writeFile(testExpectationsFilePath, JSON.stringify(expectations, null, 4));
+    await writeFile(testExpectationsFilePath, JSON.stringify(expectations, null, 4) + '\n');
 }
 
 function assertValidLoadExpectations(input: unknown): asserts input is TestExpectations {
