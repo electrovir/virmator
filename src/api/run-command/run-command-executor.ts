@@ -1,5 +1,5 @@
 import {isTruthy} from 'augment-vir';
-import {interpolationSafeWindowsPath} from 'augment-vir/dist/cjs/node-only';
+import {interpolationSafeWindowsPath, toPosixPath} from 'augment-vir/dist/cjs/node-only';
 import {relative} from 'path';
 import {Color} from '../cli-color';
 import {
@@ -47,7 +47,9 @@ export async function runCommandExecutor<DefineCommandInputsGeneric extends Defi
         return executorOutput.success;
     } else {
         const commandString = createCommandString(executorOutput);
-        console.log(`${Color.Faint}${relative(process.cwd(), commandString)}${Color.Reset}`);
+        console.log(
+            `${Color.Faint}${toPosixPath(relative(process.cwd(), commandString))}${Color.Reset}`,
+        );
         const commandResult = await runVirmatorShellCommand(commandString, {
             repoDir: commandInputs.repoDir,
             logging: commandInputs.logging,

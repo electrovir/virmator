@@ -64,34 +64,42 @@ function combineScripts(
 
 async function getGitProperties(
     repoDir: string,
-): Promise<Partial<ReturnType<typeof createGitHubUrls>>> {
+): Promise<Partial<ReturnType<typeof createGitUrls>>> {
     const git: SimpleGit = simpleGit(repoDir);
     const remotes = await git.getRemotes(true);
     const originRemote = remotes.find((remote) => remote.name === 'origin') || remotes[0];
-    if (originRemote && originRemote.refs.fetch.includes('github.com')) {
-        return createGitHubUrls(originRemote.refs.fetch);
+    if (originRemote) {
+        return createGitUrls(originRemote.refs.fetch);
     } else {
         return {};
     }
 }
 
-function createGitHubUrls(ref: string) {
-    const repoPath = ref.replace(/^.*github.com:/, '').replace(/\.git$/, '');
-    const gitHubUrl = `https://github.com/${repoPath}`;
-    const user = repoPath.replace(/\/[^\/]+$/, '');
+function createGitUrls(ref: string) {
+    const repoPath = ref
+        .replace(/(\w):(\w)/g, '$1/$2')
+        .replace(/\.git$/, '')
+        .replace(/^git@/g, 'https://');
+    const isGitHub = repoPath.includes('github.com');
+    const issuesUrl = isGitHub ? `${repoPath}/issues` : '';
+    const username = repoPath.replace(/^.+\.com\//, '').replace(/\/.+$/, '');
+    const bugsObject = issuesUrl ? {bugs: {url: issuesUrl}} : {};
+    const userUrlObject = isGitHub
+        ? {
+              url: `https://github.com/${username}`,
+          }
+        : {};
 
     return {
-        homepage: gitHubUrl,
-        bugs: {
-            url: `${gitHubUrl}/issues`,
-        },
+        homepage: repoPath,
+        ...bugsObject,
         repository: {
             type: 'git',
-            url: gitHubUrl,
+            url: repoPath,
         },
         author: {
-            name: user,
-            url: `https://github.com/${user}`,
+            name: username,
+            ...userUrlObject,
         },
     };
 }
