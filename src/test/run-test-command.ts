@@ -106,7 +106,7 @@ async function runCliCommandForTest<KeyGeneric extends string>(
         recursive: true,
     });
     const beforeTimestamp: number = Date.now();
-    console.log({tarAddress: process.env.TAR_TO_INSTALL});
+
     await runShellCommand(`npm i -D ${process.env.TAR_TO_INSTALL}`, {
         cwd: inputs.dir,
         rejectOnError: true,
