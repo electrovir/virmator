@@ -79,5 +79,5 @@ export const testWebCommandDefinition = defineCommand(
 
 function testWebTransform(input: string): string {
     // remove annoying progress messages
-    return input.replace(/[^\n]+█[^\n]+\n/g, '');
+    return input.replace(/[^\n]+█[^\n]+\n/g, '').replace(/Running tests\.\.\./g, '');
 }

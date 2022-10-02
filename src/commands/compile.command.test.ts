@@ -8,8 +8,8 @@ import {runCliCommandForTestFromDefinition, RunCliCommandInputs} from '../test/r
 import {testCompilePaths} from '../test/virmator-test-file-paths';
 import {compileCommandDefinition} from './compile.command';
 
-async function runCodeInMarkdownTest<KeyGeneric extends string>(
-    inputs: Pick<RunCliCommandInputs<KeyGeneric>, 'dir' | 'expectationKey' | 'args'>,
+async function runCompileTest<KeyGeneric extends string>(
+    inputs: Omit<RunCliCommandInputs<KeyGeneric>, 'configFilesToCheck'>,
 ) {
     return await runCliCommandForTestFromDefinition(compileCommandDefinition, {
         ...inputs,
@@ -18,7 +18,7 @@ async function runCodeInMarkdownTest<KeyGeneric extends string>(
 
 describe(relativeToVirmatorRoot(__filename), () => {
     it('should fail when compile failures exist', async () => {
-        const output = await runCodeInMarkdownTest({
+        const output = await runCompileTest({
             args: [
                 compileCommandDefinition.subCommands.check,
             ],
@@ -37,7 +37,7 @@ describe(relativeToVirmatorRoot(__filename), () => {
     });
 
     it('should pass when no type errors exist', async () => {
-        const output = await runCodeInMarkdownTest({
+        const output = await runCompileTest({
             args: [
                 compileCommandDefinition.subCommands.check,
             ],
@@ -56,10 +56,16 @@ describe(relativeToVirmatorRoot(__filename), () => {
     });
 
     it('should produce output files when not just checking', async () => {
-        const output = await runCodeInMarkdownTest({
+        const output = await runCompileTest({
             args: [],
             dir: testCompilePaths.validRepo,
             expectationKey: 'compile-no-errors-with-output',
+            logTransform: (input) => {
+                return input.replace(
+                    /running compile\.\.\.\s+.+?\/tsc\s+/g,
+                    'running compile... tsc ',
+                );
+            },
         });
         assert.isFalse(
             output.dirFileNamesBefore.some((fileName) => fileName.endsWith('js')),
