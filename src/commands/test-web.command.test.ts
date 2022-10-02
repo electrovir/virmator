@@ -6,19 +6,24 @@ import {runCliCommandForTestFromDefinition, RunCliCommandInputs} from '../test/r
 import {testTestWebPaths} from '../test/virmator-test-file-paths';
 import {testWebCommandDefinition} from './test-web.command';
 
+async function removeCoverageDirectory(dir: string) {
+    await rm(join(dir, 'coverage'), {
+        force: true,
+        recursive: true,
+    });
+}
+
 async function runTestWebTestCommand<KeyGeneric extends string>(
     inputs: Required<Pick<RunCliCommandInputs<KeyGeneric>, 'dir' | 'expectationKey'>>,
 ) {
+    await removeCoverageDirectory(inputs.dir);
     await runCliCommandForTestFromDefinition(testWebCommandDefinition, {
         ...inputs,
         logTransform: (input) => {
             return input.replace(/(Finished running tests in )[\d\.]+m?s/g, '$1');
         },
     });
-    await rm(join(inputs.dir, 'coverage'), {
-        force: true,
-        recursive: true,
-    });
+    await removeCoverageDirectory(inputs.dir);
 }
 
 describe(relativeToVirmatorRoot(__filename), () => {
