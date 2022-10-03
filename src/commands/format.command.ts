@@ -4,12 +4,17 @@ import {defineCommand} from '../api/command/define-command';
 import {getNpmBinPath, virmatorConfigsDir} from '../file-paths/package-paths';
 
 const defaultFormatExtensions = [
+    'cjs',
     'css',
+    'graphql',
     'html',
     'js',
     'json',
     'jsx',
+    'less',
     'md',
+    'mjs',
+    'scss',
     'toml',
     'ts',
     'tsx',
