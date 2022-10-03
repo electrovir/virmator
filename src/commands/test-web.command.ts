@@ -20,10 +20,11 @@ export const testWebCommandDefinition = defineCommand(
         },
         npmDeps: [
             '@open-wc/testing',
+            '@types/mocha',
             '@web/dev-server-esbuild',
-            '@web/test-runner',
             '@web/test-runner-commands',
             '@web/test-runner-playwright',
+            '@web/test-runner',
         ],
     } as const,
     ({commandName, packageBinName, configFiles}) => {

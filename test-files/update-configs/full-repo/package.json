@@ -31,6 +31,6 @@
         "test:web": "virmator test-web"
     },
     "devDependencies": {
-        "virmator": "file:../../../virmator-4.0.0.tgz"
+        "virmator": "file:../../../virmator.tgz"
     }
 }

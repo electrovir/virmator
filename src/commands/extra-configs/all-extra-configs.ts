@@ -15,6 +15,7 @@ export const nonCommandConfigs: ReadonlyArray<ConfigFileDefinition> = [
         copyFromInternalPath: join(virmatorConfigsDir, '.nvmrc'),
         copyToPathRelativeToRepoDir: '.nvmrc',
         required: true,
+        updateExistingConfigFileCallback: (newContents) => newContents,
     },
     {
         copyFromInternalPath: join(virmatorConfigsDir, 'gitignore.txt'),

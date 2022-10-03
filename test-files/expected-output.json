@@ -206,14 +206,14 @@
             "exitCode": 1,
             "key": "failing-test-web",
             "stderr": "test-web failed.",
-            "stdout": "Installing @open-wc/testing@3.1.6... Installing @web/dev-server-esbuild@0.3.2... Installing @web/test-runner@0.14.0... Installing @web/test-runner-commands@0.6.5... Installing @web/test-runner-playwright@0.8.10... running test-web... Successfully copied web-test-runner.config.mjs node_modules/.bin/web-test-runner --color --config configs/web-test-runner.config.mjs Running 1 test files... src/should-fail.test.ts: ❌ should fail test > should fail AssertionError: expected false to be true + expected - actual -false +true at o.<anonymous> (src/should-fail.test.ts:5:15) View full coverage report at coverage/lcov-report/index.html Finished running tests in with 3 failed tests."
+            "stdout": "Installing @open-wc/testing@3.1.6... Installing @types/mocha@10.0.0... Installing @web/dev-server-esbuild@0.3.2... Installing @web/test-runner-commands@0.6.5... Installing @web/test-runner-playwright@0.8.10... Installing @web/test-runner@0.14.0... running test-web... Successfully copied web-test-runner.config.mjs node_modules/.bin/web-test-runner --color --config configs/web-test-runner.config.mjs Running 1 test files... src/should-fail.test.ts: ❌ should fail test > should fail AssertionError: expected false to be true + expected - actual -false +true at o.<anonymous> (src/should-fail.test.ts:5:15) View full coverage report at coverage/lcov-report/index.html Finished running tests in with 3 failed tests."
         },
         "passing-test-web": {
             "dir": "test-web",
             "exitCode": 0,
             "key": "passing-test-web",
             "stderr": "",
-            "stdout": "Installing @open-wc/testing@3.1.6... Installing @web/dev-server-esbuild@0.3.2... Installing @web/test-runner@0.14.0... Installing @web/test-runner-commands@0.6.5... Installing @web/test-runner-playwright@0.8.10... running test-web... Successfully copied web-test-runner.config.mjs node_modules/.bin/web-test-runner --color --config configs/web-test-runner.config.mjs Running 1 test files... View full coverage report at coverage/lcov-report/index.html Finished running tests in , all tests passed! 🎉 test-web succeeded."
+            "stdout": "Installing @open-wc/testing@3.1.6... Installing @types/mocha@10.0.0... Installing @web/dev-server-esbuild@0.3.2... Installing @web/test-runner-commands@0.6.5... Installing @web/test-runner-playwright@0.8.10... Installing @web/test-runner@0.14.0... running test-web... Successfully copied web-test-runner.config.mjs node_modules/.bin/web-test-runner --color --config configs/web-test-runner.config.mjs Running 1 test files... View full coverage report at coverage/lcov-report/index.html Finished running tests in , all tests passed! 🎉 test-web succeeded."
         }
     },
     "update-configs": {

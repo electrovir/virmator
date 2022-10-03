@@ -6,19 +6,19 @@ function toPosixPath(input) {
 }
 
 const posixDirname = path.posix.dirname(toPosixPath(__dirname));
+const packageRoot = path.parse(__dirname).root;
 
-function findClosestNodeModulesPath(dirPath = __dirname) {
-    const currentAttempt = path.join(dirPath, 'node_modules');
+function findClosestPackagePath(dirPath, packageName) {
+    const currentAttempt = path.join(dirPath, 'node_modules', packageName);
+
     if (fs.existsSync(currentAttempt)) {
         return currentAttempt;
-    } else if (dirPath === '/') {
-        throw new Error(`Could not find node_modules directory.`);
+    } else if (dirPath === packageRoot) {
+        throw new Error(`Could not find ${packageName} package.`);
     } else {
-        return findClosestNodeModulesPath(path.dirname(dirPath));
+        return findClosestPackagePath(path.dirname(dirPath), packageName);
     }
 }
-
-const nodeModules = toPosixPath(findClosestNodeModulesPath());
 
 const plugins = [
     'prettier-plugin-toml',
@@ -28,15 +28,10 @@ const plugins = [
     'prettier-plugin-organize-imports',
     'prettier-plugin-jsdoc',
 ].map((pluginName) => {
-    // account for installations where node_modules is flattened and installations where it's nested
-    const flattenedPath = path.posix.join(nodeModules, pluginName);
-    const nestedPath = path.posix.join(nodeModules, 'virmator', 'node_modules', pluginName);
-
-    if (fs.existsSync(flattenedPath)) {
-        return path.posix.resolve(posixDirname, flattenedPath);
-    } else {
-        return path.posix.resolve(posixDirname, nestedPath);
-    }
+    return path.posix.resolve(
+        posixDirname,
+        toPosixPath(findClosestPackagePath(__dirname, pluginName)),
+    );
 });
 
 /**
