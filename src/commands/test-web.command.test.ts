@@ -10,6 +10,8 @@ async function removeCoverageDirectory(dir: string) {
     await rm(join(dir, 'coverage'), {
         force: true,
         recursive: true,
+        maxRetries: 3,
+        retryDelay: 100,
     });
 }
 
