@@ -31,7 +31,6 @@
         "format": "npm run format:base -- --write --list-different",
         "format:base": "prettier \"./**/*.+(ts|json|html|css|md|js)\"",
         "format:check": "npm run format:base -- --check",
-        "prepack": "npm run compile",
         "prepublishOnly": "npm run test:all",
         "readme:check": "npm run compile && ts-node -r tsconfig-paths/register src/scripts/save-help-message.ts check && md-code --check README.md",
         "readme:update": "npm run compile && ts-node -r tsconfig-paths/register src/scripts/save-help-message.ts && md-code README.md",
