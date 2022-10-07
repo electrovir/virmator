@@ -1,3 +1,4 @@
+import {remove} from 'fs-extra';
 import {rm} from 'fs/promises';
 import {describe, it} from 'mocha';
 import {join} from 'path';
@@ -13,6 +14,8 @@ async function removeCoverageDirectory(dir: string) {
         maxRetries: 3,
         retryDelay: 100,
     });
+    // try... again? Cause Windows sucks.
+    await remove(join(dir, 'coverage'));
 }
 
 async function runTestWebTestCommand<KeyGeneric extends string>(
