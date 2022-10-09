@@ -120,7 +120,9 @@ async function runCliCommandForTest<KeyGeneric extends string>(
     inputs.configFilesToCheck.forEach((configFile) => {
         assert.isTrue(
             existsSync(join(inputs.dir, configFile.copyToPathRelativeToRepoDir)),
-            `config file "${configFile.copyToPathRelativeToRepoDir}" did not get copied to "${inputs.dir}".`,
+            `config file "${configFile.copyToPathRelativeToRepoDir}" did not get copied to "${
+                inputs.dir
+            }".: ${JSON.stringify({results}, null, 4)}`,
         );
     });
 

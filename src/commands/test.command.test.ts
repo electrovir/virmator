@@ -26,7 +26,8 @@ async function runTestTestCommand<KeyGeneric extends string>(
 }
 
 const runInSerialArgs = [
-    '--jobs 1',
+    '--parallel=false',
+    '--sort',
 ];
 
 describe(relativeToVirmatorRoot(__filename), () => {

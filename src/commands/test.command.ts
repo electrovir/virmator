@@ -17,6 +17,7 @@ export const testCommandDefinition = defineCommand(
             '@types/chai',
             '@types/mocha',
             'chai',
+            'mocha-spec-reporter-with-file-names',
             'mocha',
             'ts-node',
         ],

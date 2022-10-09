@@ -56,7 +56,11 @@ async function getVersionsToUpgradeTo({
 
     return npmDeps.map((npmDep) => {
         const currentRepoVersion = currentRepoDepVersions[npmDep];
-        const packageDepVersion = semver.clean(packageDepVersions[npmDep] ?? '');
+        const packageDepVersion = packageDepVersions[npmDep]
+            ? semver.clean(packageDepVersions[npmDep]) ??
+              semver.minVersion(packageDepVersions[npmDep])?.raw ??
+              undefined
+            : undefined;
 
         if (!packageDepVersion) {
             throw new Error(

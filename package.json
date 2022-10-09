@@ -1,6 +1,6 @@
 {
     "name": "virmator",
-    "version": "4.0.3",
+    "version": "4.1.0",
     "description": "Handle all the stuffs in one package.",
     "keywords": [
         "automation",
@@ -64,6 +64,7 @@
         "fs-extra": "^10.1.0",
         "markdown-code-example-inserter": "0.1.11",
         "mocha": "10.0.0",
+        "mocha-spec-reporter-with-file-names": "^0.0.0",
         "prettier": "2.7.1",
         "prettier-plugin-jsdoc": "0.4.2",
         "prettier-plugin-multiline-arrays": "1.1.1",

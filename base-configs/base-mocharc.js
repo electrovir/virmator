@@ -1,4 +1,5 @@
 const testFiles = require('./test-files-glob.js');
+const SpecReporterWithFileNames = require('mocha-spec-reporter-with-file-names');
 
 /** @type {import('mocha').MochaOptions} */
 const mochaConfig = {
@@ -8,6 +9,7 @@ const mochaConfig = {
     require: 'ts-node/register',
     slow: 1_500, // ms
     timeout: 60_000, // 1 minute in ms
+    reporter: SpecReporterWithFileNames.pathToThisReporter,
     ...testFiles,
 };
 

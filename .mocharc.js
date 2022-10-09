@@ -1,4 +1,5 @@
 const baseOptions = require('./base-configs/base-mocharc.js');
+const SpecReporterWithFileNames = require('mocha-spec-reporter-with-file-names');
 
 const oneMinuteMs = 60_000;
 
@@ -9,6 +10,7 @@ const mochaConfig = {
     timeout: 20 * oneMinuteMs,
     // heavy modification of files requires parallel to be off
     parallel: false,
+    reporter: SpecReporterWithFileNames.pathToThisReporter,
 };
 
 module.exports = mochaConfig;

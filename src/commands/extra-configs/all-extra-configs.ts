@@ -42,13 +42,6 @@ export const nonCommandConfigs: ReadonlyArray<ConfigFileDefinition> = [
         required: true,
     },
     {
-        copyFromInternalPath: join(virmatorConfigsDir, 'src', 'index.d.ts'),
-        copyToPathRelativeToRepoDir: join('src', 'index.d.ts'),
-        updateExistingConfigFileCallback: combineTextConfig,
-        required: true,
-    },
-
-    {
         copyFromInternalPath: join(
             virmatorConfigsDir,
             '.github',
