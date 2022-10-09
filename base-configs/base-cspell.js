@@ -17,6 +17,7 @@ const baseConfig = {
         'autofixable',
         'autofixing',
         'browserconfig',
+        'checkmark',
         'combinator',
         'combinators',
         'cpsell',

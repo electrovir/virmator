@@ -41,4 +41,36 @@ export const nonCommandConfigs: ReadonlyArray<ConfigFileDefinition> = [
         updateExistingConfigFileCallback: combineJsonConfig,
         required: true,
     },
+    {
+        copyFromInternalPath: join(virmatorConfigsDir, 'src', 'index.d.ts'),
+        copyToPathRelativeToRepoDir: join('src', 'index.d.ts'),
+        updateExistingConfigFileCallback: combineTextConfig,
+        required: true,
+    },
+
+    {
+        copyFromInternalPath: join(
+            virmatorConfigsDir,
+            '.github',
+            'workflows',
+            'build-for-gh-pages.yml',
+        ),
+        copyToPathRelativeToRepoDir: join('.github', 'workflows', 'build-for-gh-pages.yml'),
+        required: true,
+    },
+    {
+        copyFromInternalPath: join(
+            virmatorConfigsDir,
+            '.github',
+            'workflows',
+            'tagged-release.yml',
+        ),
+        copyToPathRelativeToRepoDir: join('.github', 'workflows', 'tagged-release.yml'),
+        required: true,
+    },
+    {
+        copyFromInternalPath: join(virmatorConfigsDir, '.github', 'workflows', 'tests.yml'),
+        copyToPathRelativeToRepoDir: join('.github', 'workflows', 'tests.yml'),
+        required: true,
+    },
 ];
