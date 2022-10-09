@@ -58,14 +58,14 @@ export const testWebCommandDefinition = defineCommand(
             ],
         };
     },
-    (inputs) => {
+    async (inputs) => {
         const shouldUseConfig = !inputs.filteredInputArgs.includes('--config');
         const configString = shouldUseConfig
             ? `--config ${inputs.configFiles.webTestRunner.copyToPathRelativeToRepoDir}`
             : '';
 
         return {
-            mainCommand: getNpmBinPath('web-test-runner'),
+            mainCommand: await getNpmBinPath('web-test-runner'),
             logTransforms: {
                 stdout: testWebTransform,
             },

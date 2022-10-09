@@ -95,7 +95,7 @@ export const formatCommandDefinition = defineCommand(
             ],
         };
     },
-    (inputs) => {
+    async (inputs) => {
         const formatArgs = extractFormatArgs(inputs.filteredInputArgs);
 
         const shouldCheckOnly =
@@ -121,7 +121,7 @@ export const formatCommandDefinition = defineCommand(
         };
 
         return {
-            mainCommand: getNpmBinPath('prettier'),
+            mainCommand: await getNpmBinPath('prettier'),
             args: [
                 '--color',
                 listDifferentFlag,

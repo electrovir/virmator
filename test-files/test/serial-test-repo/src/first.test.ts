@@ -7,4 +7,10 @@ describe(basename(__filename), () => {
         await delayPromise(5000);
         assert.isTrue(true);
     });
+    it('should run instantly', async () => {
+        // don't await this cause it never resolves (that's the point)
+        // but its here for test coverage hah
+        delayPromise(-1);
+        assert.isTrue(true);
+    });
 });

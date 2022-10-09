@@ -1,6 +1,8 @@
+import {extractErrorMessage} from 'augment-vir';
 import {interpolationSafeWindowsPath} from 'augment-vir/dist/cjs/node-only';
 import {existsSync} from 'fs';
 import {dirname, join, relative} from 'path';
+import {recursivelyUpwardsSearchForDir} from '../augments/fs';
 
 export const virmatorPackageDir = dirname(dirname(__dirname));
 
@@ -12,20 +14,40 @@ export const virmatorConfigs = {
     src: join(virmatorConfigsDir, 'src'),
 };
 
-export const virmatorNodeBin = join(virmatorPackageDir, 'node_modules', '.bin');
+export async function getNpmBinPath(command: string): Promise<string> {
+    const joinPath = join('node_modules', '.bin', command);
+    const startSearchDirPath = virmatorPackageDir;
 
-export function getNpmBinPath(command: string): string {
-    const virmatorBinPath = join(virmatorNodeBin, command);
+    try {
+        const nodeModulesWithValidBin = await recursivelyUpwardsSearchForDir(
+            startSearchDirPath,
+            (dirPath) => {
+                return existsSync(join(dirPath, joinPath));
+            },
+        );
 
-    const actualBinPath = existsSync(virmatorBinPath)
-        ? virmatorBinPath
-        : join(virmatorPackageDir, '..', '.bin', command);
+        if (!nodeModulesWithValidBin) {
+            throw new Error(
+                `Search failed to find "${command}" bin path. Started in "${startSearchDirPath}".`,
+            );
+        }
 
-    if (!existsSync(actualBinPath)) {
-        throw new Error(`Could not find npm bin path for "${command}"`);
+        const actualBinPath = join(nodeModulesWithValidBin, joinPath);
+
+        if (!existsSync(actualBinPath)) {
+            throw new Error(
+                `Discovered bin path for "${command}" does not actually exist: "${actualBinPath}". Started at "${startSearchDirPath}".`,
+            );
+        }
+
+        return interpolationSafeWindowsPath(actualBinPath);
+    } catch (error) {
+        throw new Error(
+            `Failed to find npm bin path for "${command}": ${extractErrorMessage(
+                error,
+            )}. Started at "${startSearchDirPath}".`,
+        );
     }
-
-    return interpolationSafeWindowsPath(actualBinPath);
 }
 
 export function relativeToVirmatorRoot(fullPath: string): string {

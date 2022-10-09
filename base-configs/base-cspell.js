@@ -49,6 +49,7 @@ const baseConfig = {
         'noopener',
         'noreferrer',
         'npmignore',
+        'nycrc',
         'packagejson',
         'parens',
         'pdfs',

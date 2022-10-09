@@ -1,6 +1,7 @@
 import {awaitedForEach} from 'augment-vir';
+import {existsSync} from 'fs';
 import {readdir, readFile, stat, writeFile} from 'fs/promises';
-import {join} from 'path';
+import {dirname, join} from 'path';
 
 export interface DirContents {
     [key: string]: string | DirContents;
@@ -49,4 +50,23 @@ export async function writeFiles(dir: string, allFileContents: DirContents): Pro
             await writeFiles(currentPath, value);
         }
     });
+}
+
+export async function recursivelyUpwardsSearchForDir(
+    startDirPath: string,
+    check: (dirPath: string) => boolean,
+): Promise<string> {
+    if (!existsSync(startDirPath) || !startDirPath) {
+        throw new Error(`Could not search in "${startDirPath}": it does not exist.`);
+    }
+    if (check(startDirPath)) {
+        return startDirPath;
+    }
+    const parent = dirname(startDirPath);
+
+    if (parent === startDirPath) {
+        throw new Error(`Cannot recurse any higher, already at "${parent}"`);
+    }
+
+    return recursivelyUpwardsSearchForDir(parent, check);
 }

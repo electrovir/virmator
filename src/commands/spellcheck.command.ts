@@ -30,7 +30,7 @@ export const spellcheckCommandDefinition = defineCommand(
             examples: [],
         };
     },
-    (inputs) => {
+    async (inputs) => {
         const containsNonFlagArgs = inputs.filteredInputArgs.some((arg) => !arg.startsWith('-'));
 
         const fileArg = containsNonFlagArgs ? '' : '"**/*"';
@@ -39,7 +39,7 @@ export const spellcheckCommandDefinition = defineCommand(
             : `--config ${inputs.configFiles.cspell.copyToPathRelativeToRepoDir}`;
 
         return {
-            mainCommand: getNpmBinPath('cspell'),
+            mainCommand: await getNpmBinPath('cspell'),
             args: [
                 configArg,
                 '--color',

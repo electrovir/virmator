@@ -1,5 +1,7 @@
 import {assert} from 'chai';
+import {remove} from 'fs-extra';
 import {describe, it} from 'mocha';
+import {join} from 'path';
 import {relativeToVirmatorRoot} from '../file-paths/package-paths';
 import {runCliCommandForTestFromDefinition, RunCliCommandInputs} from '../test/run-test-command';
 import {testTestPaths} from '../test/virmator-test-file-paths';
@@ -8,7 +10,7 @@ import {testCommandDefinition} from './test.command';
 async function runTestTestCommand<KeyGeneric extends string>(
     inputs: Required<Pick<RunCliCommandInputs<KeyGeneric>, 'expectationKey' | 'args' | 'dir'>>,
 ) {
-    return await runCliCommandForTestFromDefinition(testCommandDefinition, {
+    const result = await runCliCommandForTestFromDefinition(testCommandDefinition, {
         ...inputs,
         logTransform: (input) => {
             return (
@@ -23,6 +25,10 @@ async function runTestTestCommand<KeyGeneric extends string>(
             );
         },
     });
+
+    await remove(join(inputs.dir, 'coverage'));
+
+    return result;
 }
 
 const runInSerialArgs = [
@@ -46,7 +52,7 @@ describe(relativeToVirmatorRoot(__filename), () => {
             assert.include(output.results.stdout, 'should have a failing test');
             assert.include(output.results.stdout, '1 failing');
         } catch (error) {
-            console.info({stdout: output.results.stdout});
+            console.info({stdout: output.results.stdout, stderr: output.results.stderr});
             throw error;
         }
     });

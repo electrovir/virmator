@@ -1,8 +1,6 @@
 import {createSymLink} from 'augment-vir/dist/cjs/node-only';
 import {join} from 'path';
-import {virmatorNodeBin, virmatorPackageDir} from '../file-paths/package-paths';
-
-export const virmatorNodeModulesBin = join(virmatorNodeBin, 'virmator');
+import {virmatorPackageDir} from '../file-paths/package-paths';
 
 export async function createNodeModulesSymLinkForTests(dir: string): Promise<string> {
     const symlinkPath = join(dir, 'node_modules');

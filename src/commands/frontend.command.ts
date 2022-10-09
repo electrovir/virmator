@@ -33,7 +33,7 @@ export const frontendCommandDefinition = defineCommand(
             examples: [],
         };
     },
-    (inputs) => {
+    async (inputs) => {
         const needToBuild = !!inputs.inputSubCommands.length;
         const useDefaultConfigArgs = !inputs.filteredInputArgs.includes('--config');
         const configString = useDefaultConfigArgs
@@ -44,7 +44,7 @@ export const frontendCommandDefinition = defineCommand(
               })}`
             : '';
 
-        const viteBinPath = getNpmBinPath('vite');
+        const viteBinPath = await getNpmBinPath('vite');
         const removeOutput = needToBuild ? 'rm -rf dist' : '';
         const mainCommand = `${removeOutput}${viteBinPath}`;
 

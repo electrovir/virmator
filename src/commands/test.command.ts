@@ -7,9 +7,14 @@ export const testCommandDefinition = defineCommand(
         commandName: 'test',
         subCommandDescriptions: {},
         configFiles: {
-            mocharc: {
-                copyFromInternalPath: join(virmatorConfigsDir, 'configs', '.mocharc.js'),
-                copyToPathRelativeToRepoDir: join('configs', '.mocharc.js'),
+            mochaConfig: {
+                copyFromInternalPath: join(virmatorConfigsDir, 'configs', 'mocha.config.js'),
+                copyToPathRelativeToRepoDir: join('configs', 'mocha.config.js'),
+                required: true,
+            },
+            nycConfig: {
+                copyFromInternalPath: join(virmatorConfigsDir, 'configs', 'nyc.config.js'),
+                copyToPathRelativeToRepoDir: join('configs', 'nyc.config.js'),
                 required: true,
             },
         },
@@ -20,6 +25,7 @@ export const testCommandDefinition = defineCommand(
             'mocha-spec-reporter-with-file-names',
             'mocha',
             'ts-node',
+            'nyc',
         ],
     } as const,
     ({commandName, packageBinName}) => {
@@ -55,15 +61,24 @@ export const testCommandDefinition = defineCommand(
             ],
         };
     },
-    (inputs) => {
+    async (inputs) => {
         const useDefaultConfigArgs = !inputs.filteredInputArgs.includes('--config');
         const configString = useDefaultConfigArgs
-            ? `--config ${inputs.configFiles.mocharc.copyToPathRelativeToRepoDir} `
+            ? `--config '${inputs.configFiles.mochaConfig.copyToPathRelativeToRepoDir}'`
+            : '';
+
+        const useDefaultNycConfigPath = !inputs.filteredInputArgs.includes('--nycrc-path');
+        const nycConfigFlag = useDefaultNycConfigPath
+            ? `--nycrc-path '${inputs.configFiles.nycConfig.copyToPathRelativeToRepoDir}'`
             : '';
 
         return {
-            mainCommand: getNpmBinPath('mocha'),
+            mainCommand: await getNpmBinPath('nyc'),
             args: [
+                // force colors in nyc
+                '--colors',
+                nycConfigFlag,
+                await getNpmBinPath('mocha'),
                 configString,
                 ...inputs.filteredInputArgs,
             ],

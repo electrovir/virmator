@@ -47,7 +47,7 @@ export const codeInMarkdownCommandDefinition = defineCommand(
             ],
         };
     },
-    (inputs) => {
+    async (inputs) => {
         const args: string[] = inputs.filteredInputArgs.length
             ? inputs.filteredInputArgs
             : [`\"./**/*.md\"`];
@@ -63,7 +63,7 @@ export const codeInMarkdownCommandDefinition = defineCommand(
         };
 
         return {
-            mainCommand: getNpmBinPath('md-code'),
+            mainCommand: await getNpmBinPath('md-code'),
             logTransforms,
             args: [
                 subCommand,
