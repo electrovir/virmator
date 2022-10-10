@@ -16,11 +16,8 @@ const baseConfig = {
     skipFull: true,
     tempDir: './node_modules/.nyc-output/',
 
-    /** Require 100% test coverage in all things */
-    branches: 100,
-    functions: 100,
+    /** Require 100% test coverage */
     lines: 100,
-    statements: 100,
 };
 
 module.exports = baseConfig;
