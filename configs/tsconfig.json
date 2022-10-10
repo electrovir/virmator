@@ -5,9 +5,9 @@
         "rootDir": "./src"
     },
     "exclude": [
-        "./configs/",
-        "./dist/",
-        "./node_modules/",
-        "./test-files/"
+        "./configs",
+        "./dist",
+        "./node_modules",
+        "./test-files"
     ]
 }
