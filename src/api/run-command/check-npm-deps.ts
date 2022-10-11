@@ -44,13 +44,25 @@ async function getVersionsToUpgradeTo({
     npmDeps,
     packageBinName,
 }: UpdateDepsInput): Promise<(string | undefined)[]> {
-    const listedDeps = await runShellCommand(`npm list --depth=0 2>&1 -json`, {cwd: repoDir});
+    const listedDeps = await runShellCommand(`npm list --depth=0 2>&1 -json`, {
+        cwd: repoDir,
+        rejectOnError: true,
+    });
+    const packageName = (
+        await runShellCommand(`cut -d "=" -f 2 <<< $(npm run env | grep "npm_package_name")`, {
+            cwd: repoDir,
+            rejectOnError: true,
+        })
+    ).stdout.trim();
 
-    const currentRepoDepVersions = parseCurrentDeps(listedDeps.stdout);
-    const packageJson = JSON.parse((await readFile(join(packageDir, 'package.json'))).toString());
+    const currentRepoDepVersions = parseCurrentDeps(listedDeps.stdout, packageName);
+
+    const virmatorPackageJson = JSON.parse(
+        (await readFile(join(packageDir, 'package.json'))).toString(),
+    );
     const packageDepVersions = {
-        ...packageJson.devDependencies,
-        ...packageJson.dependencies,
+        ...virmatorPackageJson.devDependencies,
+        ...virmatorPackageJson.dependencies,
     };
 
     return npmDeps.map((npmDep) => {
@@ -83,20 +95,28 @@ type ListOutput = {
     dependencies?: Record<string, Omit<ListOutput, 'name'>>;
 };
 
-function parseCurrentDeps(stdout: string): Readonly<Record<string, string>> {
+function parseCurrentDeps(stdout: string, packageName: string): Readonly<Record<string, string>> {
     const parsedListOutput = JSON.parse(stdout) as TopLevelListOutput;
     const deps = parsedListOutput.dependencies;
 
+    return readDeps(deps, packageName);
+}
+
+function readDeps(rawDeps: NonNullable<ListOutput['dependencies']>, packageName: string) {
     const depsAndVersions: Record<string, string> = {};
+
+    const nestedDeps = rawDeps[packageName]?.dependencies;
+    const deps = nestedDeps ?? rawDeps;
 
     Object.keys(deps).forEach((depName) => {
         const depValue = deps[depName];
 
         if (
+            depValue &&
             // ignore sub packages
-            !depValue?.dependencies &&
+            !depValue.dependencies &&
             // just a quick check that .version also exists
-            !!depValue?.version
+            !!depValue.version
         ) {
             depsAndVersions[depName] = depValue.version;
         }
