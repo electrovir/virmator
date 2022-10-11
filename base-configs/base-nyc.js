@@ -1,29 +1,23 @@
 'use strict';
 
 const baseConfig = {
-    /** Run thresholds on each individual file */
-    perFile: 100,
-    /** Caches cause problems. */
+    all: true,
+    branches: 100,
     cache: false,
-    /** Fail when 100% test coverage is not met */
     checkCoverage: true,
-    /** Print report to console and also to html files. */
+    exclude: ['./test-files'],
+    functions: 100,
+    include: ['./src/**/*.{ts,tsx,js,mjs,cjs,jsx}'],
+    lines: 100,
+    perFile: 100,
     reporter: [
         'html',
         'text',
     ],
     skipEmpty: true,
-    /** Don't show files that meet 100% test coverage. */
     skipFull: true,
-    tempDir: './node_modules/.nyc-output/',
-
-    /** Require 100% test coverage in all things */
-    branches: 100,
-    functions: 100,
-    lines: 100,
     statements: 100,
-
-    exclude: ['test-files'],
+    tempDir: './node_modules/.nyc-output/',
 };
 
 module.exports = baseConfig;
