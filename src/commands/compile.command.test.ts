@@ -3,7 +3,6 @@ import {assert} from 'chai';
 import {readdir, unlink} from 'fs/promises';
 import {describe, it} from 'mocha';
 import {join} from 'path';
-import {relativeToVirmatorRoot} from '../file-paths/package-paths';
 import {runCliCommandForTestFromDefinition, RunCliCommandInputs} from '../test/run-test-command';
 import {testCompilePaths} from '../test/virmator-test-file-paths';
 import {compileCommandDefinition} from './compile.command';
@@ -16,7 +15,7 @@ async function runCompileTest<KeyGeneric extends string>(
     });
 }
 
-describe(relativeToVirmatorRoot(__filename), () => {
+describe(compileCommandDefinition.commandName, () => {
     it('should fail when compile failures exist', async () => {
         const output = await runCompileTest({
             args: [
@@ -28,7 +27,7 @@ describe(relativeToVirmatorRoot(__filename), () => {
         assert.deepEqual(output.dirFileNamesBefore, output.dirFileNamesAfter);
         assert.isFalse(
             output.dirFileNamesBefore.some((fileName) => fileName.endsWith('js')),
-            'compiled js output files should not exist before running compile',
+            'compiled js output files should not exist before running compile 1',
         );
         assert.isFalse(
             output.dirFileNamesAfter.some((fileName) => fileName.endsWith('js')),
@@ -47,7 +46,7 @@ describe(relativeToVirmatorRoot(__filename), () => {
         assert.deepEqual(output.dirFileNamesBefore, output.dirFileNamesAfter);
         assert.isFalse(
             output.dirFileNamesBefore.some((fileName) => fileName.endsWith('js')),
-            'compiled js output files should not exist before running compile',
+            'compiled js output files should not exist before running compile 2',
         );
         assert.isFalse(
             output.dirFileNamesAfter.some((fileName) => fileName.endsWith('js')),
@@ -69,7 +68,7 @@ describe(relativeToVirmatorRoot(__filename), () => {
         });
         assert.isFalse(
             output.dirFileNamesBefore.some((fileName) => fileName.endsWith('js')),
-            'compiled js output files should not exist before running compile',
+            'compiled js output files should not exist before running compile 3',
         );
         assert.deepEqual(output.dirFileNamesBefore, [
             'blah.ts',

@@ -1,5 +1,4 @@
-import {stripColor} from 'ansi-colors';
-import {awaitedForEach, isTruthy, safeMatch} from 'augment-vir';
+import {awaitedForEach, isTruthy, RequiredAndNotNullBy} from 'augment-vir';
 import {runShellCommand} from 'augment-vir/dist/cjs/node-only';
 import {readFile} from 'fs/promises';
 import {join} from 'path';
@@ -45,7 +44,7 @@ async function getVersionsToUpgradeTo({
     npmDeps,
     packageBinName,
 }: UpdateDepsInput): Promise<(string | undefined)[]> {
-    const listedDeps = await runShellCommand(`npm list --depth=0 2>&1`, {cwd: repoDir});
+    const listedDeps = await runShellCommand(`npm list --depth=0 2>&1 -json`, {cwd: repoDir});
 
     const currentRepoDepVersions = parseCurrentDeps(listedDeps.stdout);
     const packageJson = JSON.parse((await readFile(join(packageDir, 'package.json'))).toString());
@@ -76,43 +75,32 @@ async function getVersionsToUpgradeTo({
     });
 }
 
-function parseCurrentDeps(stdout: string): Readonly<Record<string, string>> {
-    const lines = stdout.split('\n');
-    const depLines = lines.filter((line) => line.match(/\s*[├└]─/) && !line.match(/─\s*\(empty\)/));
-    const namesAndVersions = depLines.map((depLine) => {
-        const nameAndVersion = safeMatch(
-            stripColor(depLine),
-            /\s*[├└]─+\s*(?:UNMET DEPENDENCY\s*)?(.+)$/,
-        )[1];
+type TopLevelListOutput = RequiredAndNotNullBy<ListOutput, 'dependencies'> & {name: string};
 
-        if (!nameAndVersion) {
-            throw new Error(
-                `Failed to retrieve dependency name and version from line "${depLine}"`,
-            );
+type ListOutput = {
+    version: string;
+    resolved: string;
+    dependencies?: Record<string, Omit<ListOutput, 'name'>>;
+};
+
+function parseCurrentDeps(stdout: string): Readonly<Record<string, string>> {
+    const parsedListOutput = JSON.parse(stdout) as TopLevelListOutput;
+    const deps = parsedListOutput.dependencies;
+
+    const depsAndVersions: Record<string, string> = {};
+
+    Object.keys(deps).forEach((depName) => {
+        const depValue = deps[depName];
+
+        if (
+            // ignore sub packages
+            !depValue?.dependencies &&
+            // just a quick check that .version also exists
+            !!depValue?.version
+        ) {
+            depsAndVersions[depName] = depValue.version;
         }
-        return nameAndVersion;
     });
 
-    const nameToVersionMap: Record<string, string> = namesAndVersions.reduce(
-        (accum, nameVersion) => {
-            const [
-                ,
-                depName,
-                depVersion,
-            ] = safeMatch(nameVersion, /(.+)@(.+)/);
-            const cleanedVersion = semver.clean(depVersion ?? '');
-            if (!depName || !cleanedVersion) {
-                console.error({depLines, namesAndVersions});
-                throw new Error(`Failed to extract dep name and version from "${nameVersion}"`);
-            }
-            if (!semver.valid(cleanedVersion)) {
-                throw new Error(`Extracted dependency version is not valid: "${cleanedVersion}"`);
-            }
-            accum[depName] = cleanedVersion;
-            return accum;
-        },
-        {} as Record<string, string>,
-    );
-
-    return nameToVersionMap;
+    return depsAndVersions;
 }

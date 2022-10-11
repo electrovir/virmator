@@ -7,7 +7,6 @@ import {basename, join} from 'path';
 import {virmator} from '..';
 import {getCopyToPath} from '../api/config/config-paths';
 import {assertString} from '../augments/test';
-import {relativeToVirmatorRoot} from '../file-paths/package-paths';
 import {runCliCommandForTestFromDefinition, RunCliCommandInputs} from '../test/run-test-command';
 import {testInitPaths} from '../test/virmator-test-file-paths';
 import {nonCommandConfigs} from './extra-configs/all-extra-configs';
@@ -21,7 +20,7 @@ async function runInitTest<KeyGeneric extends string>(
     });
 }
 
-describe(relativeToVirmatorRoot(__filename), () => {
+describe(initCommandDefinition.commandName, () => {
     const configs = [
         ...nonCommandConfigs,
         ...Object.values(virmator.allConfigs),

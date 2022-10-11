@@ -2,7 +2,6 @@ import {remove} from 'fs-extra';
 import {rm} from 'fs/promises';
 import {describe, it} from 'mocha';
 import {join} from 'path';
-import {relativeToVirmatorRoot} from '../file-paths/package-paths';
 import {runCliCommandForTestFromDefinition, RunCliCommandInputs} from '../test/run-test-command';
 import {testTestWebPaths} from '../test/virmator-test-file-paths';
 import {testWebCommandDefinition} from './test-web.command';
@@ -31,7 +30,7 @@ async function runTestWebTestCommand<KeyGeneric extends string>(
     await removeCoverageDirectory(inputs.dir);
 }
 
-describe(relativeToVirmatorRoot(__filename), () => {
+describe(testWebCommandDefinition.commandName, () => {
     it('should fail when web tests fail', async () => {
         await runTestWebTestCommand({
             dir: testTestWebPaths.failRepo,

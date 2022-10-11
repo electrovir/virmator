@@ -1,6 +1,5 @@
 import {describe, it} from 'mocha';
 import {basename} from 'path';
-import {relativeToVirmatorRoot} from '../file-paths/package-paths';
 import {assertNewFilesWereCreated, assertNoFileChanges} from '../test/file-change-tests';
 import {runCliCommandForTestFromDefinition} from '../test/run-test-command';
 import {testSpellcheckPaths} from '../test/virmator-test-file-paths';
@@ -21,7 +20,7 @@ async function runSpellCheckTest(dir: string, expectationKey: string) {
     return output;
 }
 
-describe(relativeToVirmatorRoot(__filename), () => {
+describe(spellcheckCommandDefinition.commandName, () => {
     it('should fail when typos exist', async () => {
         await runSpellCheckTest(testSpellcheckPaths.invalidRepo, 'typos-exist');
     });

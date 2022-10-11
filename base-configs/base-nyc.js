@@ -12,6 +12,7 @@ const baseConfig = {
         'html',
         'text',
     ],
+    skipEmpty: true,
     /** Don't show files that meet 100% test coverage. */
     skipFull: true,
     tempDir: './node_modules/.nyc-output/',
@@ -21,6 +22,8 @@ const baseConfig = {
     functions: 100,
     lines: 100,
     statements: 100,
+
+    exclude: ['test-files'],
 };
 
 module.exports = baseConfig;

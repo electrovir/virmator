@@ -2,7 +2,6 @@ import {assert} from 'chai';
 import {readFile, writeFile} from 'fs/promises';
 import {describe, it} from 'mocha';
 import {basename} from 'path';
-import {relativeToVirmatorRoot} from '../file-paths/package-paths';
 import {assertNewFilesWereCreated, assertNoFileChanges} from '../test/file-change-tests';
 import {runCliCommandForTestFromDefinition, RunCliCommandInputs} from '../test/run-test-command';
 import {testFormatPaths} from '../test/virmator-test-file-paths';
@@ -20,7 +19,7 @@ async function runFormatTest<KeyGeneric extends string>(
     });
 }
 
-describe(relativeToVirmatorRoot(__filename), () => {
+describe(formatCommandDefinition.commandName, () => {
     it('should fail when format failures exist', async () => {
         const output = await runFormatTest({
             args: [

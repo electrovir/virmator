@@ -2,7 +2,6 @@ import {assert} from 'chai';
 import {remove} from 'fs-extra';
 import {describe, it} from 'mocha';
 import {join} from 'path';
-import {relativeToVirmatorRoot} from '../file-paths/package-paths';
 import {runCliCommandForTestFromDefinition, RunCliCommandInputs} from '../test/run-test-command';
 import {testTestPaths} from '../test/virmator-test-file-paths';
 import {testCommandDefinition} from './test.command';
@@ -22,6 +21,11 @@ async function runTestTestCommand<KeyGeneric extends string>(
                      * leading to flaky tests.
                      */
                     .replace(/\n\n\n\s+(?:in)?valid\.test\.ts[.\n\s\w\W]+?\n\n\n/g, '')
+                    /** Remove the Istanbul coverage table because it varies in size */
+                    .replace(
+                        /[\-\|\s]+\s+File\s+\|\s+% Stmts\s+\|\s+% Branch\s+\|\s+% Funcs\s+\|\s+% Lines\s+\|\s+Uncovered Line #s[\-\|\s]+/s,
+                        '',
+                    )
             );
         },
     });
@@ -36,7 +40,7 @@ const runInSerialArgs = [
     '--sort',
 ];
 
-describe(relativeToVirmatorRoot(__filename), () => {
+describe(testCommandDefinition.commandName, () => {
     it('should fail when tests fail', async () => {
         const output = await runTestTestCommand({
             args: runInSerialArgs,

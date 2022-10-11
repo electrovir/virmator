@@ -1,7 +1,6 @@
 import {assert} from 'chai';
 import {readFile, writeFile} from 'fs/promises';
 import {describe, it} from 'mocha';
-import {relativeToVirmatorRoot} from '../file-paths/package-paths';
 import {runCliCommandForTestFromDefinition, RunCliCommandInputs} from '../test/run-test-command';
 import {testCodeInMarkdownDirPath, testCodeInMarkdownPaths} from '../test/virmator-test-file-paths';
 import {codeInMarkdownCommandDefinition} from './code-in-markdown.command';
@@ -14,7 +13,7 @@ async function runCodeInMarkdownTest<KeyGeneric extends string>(
     });
 }
 
-describe(relativeToVirmatorRoot(__filename), () => {
+describe(codeInMarkdownCommandDefinition.commandName, () => {
     it('should fail when checking outdated file', async () => {
         await runCodeInMarkdownTest({
             args: [

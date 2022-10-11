@@ -1,7 +1,6 @@
 import {assert} from 'chai';
 import {describe, it} from 'mocha';
 import {readAllDirContents, writeFiles} from '../augments/fs';
-import {relativeToVirmatorRoot} from '../file-paths/package-paths';
 import {runCliCommandForTestFromDefinition, RunCliCommandInputs} from '../test/run-test-command';
 import {testUpdateConfigsPaths} from '../test/virmator-test-file-paths';
 import {updateConfigsCommandDefinition} from './update-configs.command';
@@ -16,7 +15,7 @@ async function runUpdateConfigsTestCommand<KeyGeneric extends string>(
     });
 }
 
-describe(relativeToVirmatorRoot(__filename), () => {
+describe(updateConfigsCommandDefinition.commandName, () => {
     it('should only update existing and update-able configs', async () => {
         const output = await runUpdateConfigsTestCommand({
             args: [],

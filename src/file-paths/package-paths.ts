@@ -1,7 +1,7 @@
 import {extractErrorMessage} from 'augment-vir';
 import {interpolationSafeWindowsPath} from 'augment-vir/dist/cjs/node-only';
 import {existsSync} from 'fs';
-import {dirname, join, relative} from 'path';
+import {dirname, join} from 'path';
 import {recursivelyUpwardsSearchForDir} from '../augments/fs';
 
 export const virmatorPackageDir = dirname(dirname(__dirname));
@@ -48,8 +48,4 @@ export async function getNpmBinPath(command: string): Promise<string> {
             )}. Started at "${startSearchDirPath}".`,
         );
     }
-}
-
-export function relativeToVirmatorRoot(fullPath: string): string {
-    return relative(virmatorPackageDir, fullPath);
 }
