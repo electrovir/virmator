@@ -15,7 +15,7 @@ export function generateHelpMessage(
     syntax: HelpMessageSyntax,
     cliWrapIfMoreThanThisManyColumns = 100,
 ) {
-    const commandsMessage = getObjectTypedKeys(commandDefinitions)
+    const commandsMessage = [...getObjectTypedKeys(commandDefinitions)]
         .sort()
         .map((commandName) => {
             const commandDefinition = commandDefinitions[commandName];

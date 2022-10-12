@@ -19,8 +19,9 @@ export function defineCommand<DefineCommandInputsGeneric extends DefineCommandIn
     createDescription: CreateDescriptionsCallback<DefineCommandInputsGeneric>,
     inputExecutor: CommandExecutorDefinition<DefineCommandInputsGeneric>,
 ): CommandDefinition<DefineCommandInputsGeneric> {
-    const allAvailableSubCommands: (keyof DefineCommandInputsGeneric['subCommandDescriptions'])[] =
-        getObjectTypedKeys(defineCommandInputs.subCommandDescriptions);
+    const allAvailableSubCommands: ReadonlyArray<
+        keyof DefineCommandInputsGeneric['subCommandDescriptions']
+    > = getObjectTypedKeys(defineCommandInputs.subCommandDescriptions);
     const subCommands: SubCommandsMap<DefineCommandInputsGeneric> = mapObject(
         defineCommandInputs.subCommandDescriptions,
         (key) => key,

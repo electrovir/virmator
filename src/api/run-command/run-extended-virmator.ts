@@ -1,4 +1,4 @@
-import {getObjectTypedKeys, typedHasOwnProperty} from 'augment-vir';
+import {getObjectTypedKeys, typedHasProperty} from 'augment-vir';
 import {CommandExecutorInputs} from '../command/command-executor';
 import {CommandLogging, defaultConsoleLogging} from '../command/command-logging';
 import {CommandMapping} from '../command/command-mapping';
@@ -28,7 +28,7 @@ function getValidCommandDefinition(
 
     const commandDefinition = commandMapping[givenCommandName];
 
-    if (!typedHasOwnProperty(commandMapping, givenCommandName) || !commandDefinition) {
+    if (!typedHasProperty(commandMapping, givenCommandName) || !commandDefinition) {
         throw new Error(
             `Invalid command "${givenCommandName} for ${binName}.${availableCommandsString(
                 commandMapping,

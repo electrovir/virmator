@@ -1,4 +1,4 @@
-import {getObjectTypedKeys, isObject, Overwrite, typedHasOwnProperty} from 'augment-vir';
+import {getObjectTypedKeys, isObject, Overwrite, typedHasProperty} from 'augment-vir';
 
 export function filterObject<T extends object>(
     fullObject: Readonly<T>,
@@ -23,7 +23,7 @@ export function deeplyCombineObjects<
     return getObjectTypedKeys(overwriteObject).reduce((accum, currentKey) => {
         const currentNewValue = overwriteObject[currentKey];
         const currentOldValue =
-            typedHasOwnProperty(originalObject, currentKey) && originalObject[currentKey];
+            typedHasProperty(originalObject, currentKey) && originalObject[currentKey];
         if (isObject(currentOldValue) && isObject(currentNewValue)) {
             accum[currentKey] = deeplyCombineObjects(currentOldValue, currentNewValue) as any;
         } else {

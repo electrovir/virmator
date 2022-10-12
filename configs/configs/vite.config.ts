@@ -1,8 +1,6 @@
-import baseConfig from 'virmator/base-configs/base-vite';
-import {UserConfig} from 'vite';
+import baseConfig from 'virmator/dist/compiled-base-configs/base-vite';
+import {defineConfig} from 'vite';
 
-const viteConfig: UserConfig = {
+export default defineConfig({
     ...baseConfig,
-};
-
-export default viteConfig;
+});

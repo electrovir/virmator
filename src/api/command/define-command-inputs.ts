@@ -10,7 +10,9 @@ export type DefineCommandInputs<CommandName extends string = string> = Readonly<
 export type SharedExecutorInputsAndCommandDefinition<
     DefineCommandInputsGeneric extends DefineCommandInputs,
 > = DefineCommandInputsGeneric & {
-    allAvailableSubCommands: (keyof DefineCommandInputsGeneric['subCommandDescriptions'])[];
+    allAvailableSubCommands: ReadonlyArray<
+        keyof DefineCommandInputsGeneric['subCommandDescriptions']
+    >;
     subCommands: SubCommandsMap<DefineCommandInputsGeneric>;
 };
 

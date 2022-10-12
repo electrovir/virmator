@@ -19,8 +19,8 @@ export function getRelevantArgs(allArgs: string[], binName: string) {
 export type ExtractSubCommandsOutput<T> = {subCommands: T[]; filteredArgs: string[]};
 
 export function extractSubCommands<T>(
-    allArgs: string[],
-    availableSubCommands: T[],
+    allArgs: ReadonlyArray<string>,
+    availableSubCommands: ReadonlyArray<T>,
 ): ExtractSubCommandsOutput<T> {
     let stillInSubCommands = true;
     return allArgs.reduce(

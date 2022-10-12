@@ -1,4 +1,4 @@
-import {extractErrorMessage, isObject, typedHasOwnProperty} from 'augment-vir';
+import {extractErrorMessage, isObject, typedHasProperty} from 'augment-vir';
 import {existsSync, statSync} from 'fs';
 import {readFile, writeFile} from 'fs/promises';
 import {join} from 'path';
@@ -75,7 +75,7 @@ function assertValidLoadExpectations(input: unknown): asserts input is TestExpec
 
             // key
             if (
-                !typedHasOwnProperty(testExpectations, 'key') ||
+                !typedHasProperty(testExpectations, 'key') ||
                 typeof testExpectations.key !== 'string'
             ) {
                 throw new Error(`${keyPath} > key was not a string.`);
@@ -88,7 +88,7 @@ function assertValidLoadExpectations(input: unknown): asserts input is TestExpec
 
             // exit code
             if (
-                !typedHasOwnProperty(testExpectations, 'exitCode') ||
+                !typedHasProperty(testExpectations, 'exitCode') ||
                 typeof testExpectations.exitCode !== 'number'
             ) {
                 throw new Error(`${keyPath} > exitCode was not a number.`);
@@ -96,7 +96,7 @@ function assertValidLoadExpectations(input: unknown): asserts input is TestExpec
 
             // dir
             if (
-                !typedHasOwnProperty(testExpectations, 'dir') ||
+                !typedHasProperty(testExpectations, 'dir') ||
                 typeof testExpectations.dir !== 'string'
             ) {
                 throw new Error(`${keyPath} > dir was not a string.`);
@@ -114,7 +114,7 @@ function assertValidLoadExpectations(input: unknown): asserts input is TestExpec
 }
 
 function assertOutputProperty(keyPath: string, testExpectations: object, outputKey: string): void {
-    if (!typedHasOwnProperty(testExpectations, outputKey)) {
+    if (!typedHasProperty(testExpectations, outputKey)) {
         throw new Error(`${keyPath} > ${outputKey} is missing.`);
     }
 
@@ -123,10 +123,10 @@ function assertOutputProperty(keyPath: string, testExpectations: object, outputK
     if (typeof value !== 'string' && !isObject(value)) {
         throw new Error(`${keyPath} > "${outputKey}" is invalid. Got "${value}"`);
     } else if (isObject(value)) {
-        if (!typedHasOwnProperty(value, 'type') || value.type !== 'regexp') {
+        if (!typedHasProperty(value, 'type') || value.type !== 'regexp') {
             throw new Error(`${keyPath} > "${outputKey}".type is invalid. Expected "regexp".`);
         }
-        if (!typedHasOwnProperty(value, 'value') || typeof value.value !== 'string') {
+        if (!typedHasProperty(value, 'value') || typeof value.value !== 'string') {
             throw new Error(`${keyPath} > "${outputKey}".value is invalid. Expected a string.`);
         }
     }

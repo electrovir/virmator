@@ -4,7 +4,7 @@ import {
     collapseWhiteSpace,
     extractErrorMessage,
     RequiredBy,
-    typedHasOwnProperty,
+    typedHasProperty,
 } from 'augment-vir';
 import {runShellCommand, ShellOutput, toPosixPath} from 'augment-vir/dist/cjs/node-only';
 import {assert, config} from 'chai';
@@ -126,7 +126,7 @@ async function runCliCommandForTest<KeyGeneric extends string>(
         );
     });
 
-    if (typedHasOwnProperty(inputs, 'expectationKey')) {
+    if (typedHasProperty(inputs, 'expectationKey')) {
         if (!inputs.expectationKey) {
             throw new Error(`Expectation key exists but is falsy: "${inputs.expectationKey}"`);
         }
