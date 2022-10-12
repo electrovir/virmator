@@ -121,7 +121,7 @@ export const formatCommandDefinition = defineCommand(
         };
 
         return {
-            mainCommand: await getNpmBinPath('prettier'),
+            mainCommand: await getNpmBinPath(inputs.repoDir, 'prettier'),
             args: [
                 '--color',
                 listDifferentFlag,

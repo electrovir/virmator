@@ -44,7 +44,7 @@ export const frontendCommandDefinition = defineCommand(
               })}`
             : '';
 
-        const viteBinPath = await getNpmBinPath('vite');
+        const viteBinPath = await getNpmBinPath(inputs.repoDir, 'vite');
         const removeOutput = needToBuild ? 'rm -rf dist' : '';
         const mainCommand = `${removeOutput}${viteBinPath}`;
 

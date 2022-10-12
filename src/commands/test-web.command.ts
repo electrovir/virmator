@@ -65,7 +65,7 @@ export const testWebCommandDefinition = defineCommand(
             : '';
 
         return {
-            mainCommand: await getNpmBinPath('web-test-runner'),
+            mainCommand: await getNpmBinPath(inputs.repoDir, 'web-test-runner'),
             logTransforms: {
                 stdout: testWebTransform,
             },

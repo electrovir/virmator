@@ -23,10 +23,11 @@ export const testCommandDefinition = defineCommand(
             '@types/chai',
             '@types/mocha',
             'chai',
+            'istanbul-smart-text-reporter',
             'mocha-spec-reporter-with-file-names',
             'mocha',
-            'ts-node',
             'nyc',
+            'ts-node',
         ],
     } as const,
     ({commandName, packageBinName}) => {
@@ -74,12 +75,12 @@ export const testCommandDefinition = defineCommand(
             : '';
 
         return {
-            mainCommand: await getNpmBinPath('nyc'),
+            mainCommand: await getNpmBinPath(inputs.repoDir, 'nyc'),
             args: [
                 // force colors in nyc
                 '--colors',
                 nycConfigFlag,
-                await getNpmBinPath('mocha'),
+                await getNpmBinPath(inputs.repoDir, 'mocha'),
                 configString,
                 ...inputs.filteredInputArgs,
             ],

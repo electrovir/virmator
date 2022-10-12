@@ -45,7 +45,7 @@ export const compileCommandDefinition = defineCommand(
         const resetCommand = shouldNotEmit ? '' : 'rm -rf dist && ';
         const noEmit = shouldNotEmit ? '--noEmit' : '';
 
-        const mainCommand = `${resetCommand}${await getNpmBinPath('tsc')}`;
+        const mainCommand = `${resetCommand}${await getNpmBinPath(inputs.repoDir, 'tsc')}`;
 
         return {
             mainCommand,

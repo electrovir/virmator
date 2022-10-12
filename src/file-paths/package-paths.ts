@@ -14,15 +14,19 @@ export const virmatorConfigs = {
     src: join(virmatorConfigsDir, 'src'),
 };
 
-export async function getNpmBinPath(command: string): Promise<string> {
-    const joinPath = join('node_modules', '.bin', command);
-    const startSearchDirPath = virmatorPackageDir;
+export async function getNpmBinPath(repoDir: string, command: string): Promise<string> {
+    const topLevelBinPath = join('node_modules', '.bin', command);
+    const virmatorBinPath = join('node_modules', 'virmator', 'node_modules', '.bin', command);
+    const startSearchDirPath = repoDir;
 
     try {
         const nodeModulesWithValidBin = await recursivelyUpwardsSearchForDir(
             startSearchDirPath,
             (dirPath) => {
-                return existsSync(join(dirPath, joinPath));
+                return (
+                    existsSync(join(dirPath, topLevelBinPath)) ||
+                    existsSync(join(dirPath, virmatorBinPath))
+                );
             },
         );
 
@@ -32,7 +36,12 @@ export async function getNpmBinPath(command: string): Promise<string> {
             );
         }
 
-        const actualBinPath = join(nodeModulesWithValidBin, joinPath);
+        const foundTopLevelBinPath = join(nodeModulesWithValidBin, topLevelBinPath);
+        const foundVirmatorBinPath = join(nodeModulesWithValidBin, virmatorBinPath);
+
+        const actualBinPath = existsSync(foundVirmatorBinPath)
+            ? foundVirmatorBinPath
+            : foundTopLevelBinPath;
 
         if (!existsSync(actualBinPath)) {
             throw new Error(

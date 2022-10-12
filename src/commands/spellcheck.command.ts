@@ -39,7 +39,7 @@ export const spellcheckCommandDefinition = defineCommand(
             : `--config ${inputs.configFiles.cspell.copyToPathRelativeToRepoDir}`;
 
         return {
-            mainCommand: await getNpmBinPath('cspell'),
+            mainCommand: await getNpmBinPath(inputs.repoDir, 'cspell'),
             args: [
                 configArg,
                 '--color',
