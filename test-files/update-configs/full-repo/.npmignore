@@ -5,12 +5,13 @@
 .*
 /*.tgz
 /Icon?
+/configs/
 /coverage/
 /cspell.config.js
 /graphics/
-/scripts/
 /src/
 /test-files/
+bash-scripts/
 tsconfig*.json
 
 ./something-that-doesn't-exist/

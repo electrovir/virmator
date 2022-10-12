@@ -19,6 +19,7 @@ export const testCommandDefinition = defineCommand(
             },
         },
         npmDeps: [
+            '@istanbuljs/nyc-config-typescript',
             '@types/chai',
             '@types/mocha',
             'chai',

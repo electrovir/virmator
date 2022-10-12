@@ -1,6 +1,6 @@
 {
     "name": "virmator",
-    "version": "4.2.5",
+    "version": "4.2.6",
     "description": "Handle all the stuffs in one package.",
     "keywords": [
         "automation",
@@ -47,6 +47,7 @@
         "simple-git": "3.14.1"
     },
     "devDependencies": {
+        "@istanbuljs/nyc-config-typescript": "^1.0.2",
         "@open-wc/testing": "3.1.6",
         "@types/chai": "4.3.3",
         "@types/fs-extra": "^9.0.13",
@@ -62,6 +63,7 @@
         "chai": "4.3.6",
         "cspell": "6.12.0",
         "fs-extra": "^10.1.0",
+        "istanbul-smart-text-reporter": "^0.0.0",
         "markdown-code-example-inserter": "0.1.11",
         "mocha": "10.0.0",
         "mocha-spec-reporter-with-file-names": "^0.0.0",

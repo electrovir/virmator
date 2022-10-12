@@ -4,11 +4,12 @@
 **/*/readme-examples/
 **/*/test/
 /*.tgz
+/configs/
 /coverage/
 /cspell.config.js
 /graphics/
 /Icon?
-/scripts/
 /src/
 /test-files/
+bash-scripts/
 tsconfig*.json
