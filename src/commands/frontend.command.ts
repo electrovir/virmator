@@ -45,14 +45,12 @@ export const frontendCommandDefinition = defineCommand(
             : '';
 
         const viteBinPath = await getNpmBinPath(inputs.repoDir, 'vite');
-        const removeOutput = needToBuild ? 'rm -rf dist ' : '';
+        const removeOutput = needToBuild ? 'rm -rf dist && ' : '';
         const mainCommand = `${removeOutput}${viteBinPath}`;
 
         const subCommandArgs = needToBuild
             ? [
-                  '--colors',
                   'build',
-                  configString,
                   ...inputs.filteredInputArgs,
                   '&&',
                   'cp dist/index.html dist/404.html',
@@ -65,7 +63,6 @@ export const frontendCommandDefinition = defineCommand(
                   '&&',
                   viteBinPath,
                   'preview',
-                  configString,
                   ...inputs.filteredInputArgs,
                   hostString,
               ]
