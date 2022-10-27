@@ -79,6 +79,8 @@ export const testCommandDefinition = defineCommand(
                 '--colors',
                 nycConfigFlag,
                 await getNpmBinPath(inputs.repoDir, 'mocha'),
+                // force colors in mocha
+                '--colors',
                 configString,
                 ...inputs.filteredInputArgs,
             ],
