@@ -7,8 +7,11 @@
 /.*
 /*.tgz
 /Icon?
+/tsconfig.json
 coverage/
 graphics/
 src/
+src/scripts/
 test-files/
-/tsconfig.json
+test.d.ts
+test.js

@@ -1,7 +1,8 @@
-import {awaitedForEach, isTruthy, RequiredAndNotNullBy} from 'augment-vir';
+import {awaitedForEach, extractErrorMessage, isTruthy, RequiredAndNotNullBy} from 'augment-vir';
 import {runShellCommand} from 'augment-vir/dist/cjs/node-only';
+import {existsSync} from 'fs';
 import {readFile} from 'fs/promises';
-import {join} from 'path';
+import {dirname, join, parse as parsePath} from 'path';
 import * as semver from 'semver';
 import {Color} from '../cli-color';
 
@@ -13,29 +14,33 @@ export type UpdateDepsInput = Readonly<{
 }>;
 
 export async function updateDepsAsNeeded(inputs: UpdateDepsInput): Promise<void> {
-    const upgradeVersions = await getVersionsToUpgradeTo(inputs);
-    const depsToUpdate = inputs.npmDeps
-        .map((npmDep, index) => {
-            const version = upgradeVersions[index];
-            if (version) {
-                return {
-                    npmDep,
-                    version,
-                };
-            } else {
-                return undefined;
-            }
-        })
-        .filter(isTruthy);
+    try {
+        const upgradeVersions = await getVersionsToUpgradeTo(inputs);
+        const depsToUpdate = inputs.npmDeps
+            .map((npmDep, index) => {
+                const version = upgradeVersions[index];
+                if (version) {
+                    return {
+                        npmDep,
+                        version,
+                    };
+                } else {
+                    return undefined;
+                }
+            })
+            .filter(isTruthy);
 
-    await awaitedForEach(depsToUpdate, async (depDetails) => {
-        const depToInstall = `${depDetails.npmDep}@${depDetails.version}`;
-        console.info(`${Color.Info}Installing ${depToInstall}...`);
-        await runShellCommand(`npm i -D ${depToInstall}`, {
-            cwd: inputs.repoDir,
-            rejectOnError: true,
+        await awaitedForEach(depsToUpdate, async (depDetails) => {
+            const depToInstall = `${depDetails.npmDep}@${depDetails.version}`;
+            console.info(`${Color.Info}Installing ${depToInstall}...`);
+            await runShellCommand(`npm i -D ${depToInstall}`, {
+                cwd: inputs.repoDir,
+                rejectOnError: true,
+            });
         });
-    });
+    } catch (error) {
+        throw new Error(`Failed to update deps: ${extractErrorMessage(error)}`);
+    }
 }
 
 async function getVersionsToUpgradeTo({
@@ -44,10 +49,6 @@ async function getVersionsToUpgradeTo({
     npmDeps,
     packageBinName,
 }: UpdateDepsInput): Promise<(string | undefined)[]> {
-    const listedDeps = await runShellCommand(`npm list --depth=0 2>&1 -json`, {
-        cwd: repoDir,
-        rejectOnError: true,
-    });
     const packageName = (
         await runShellCommand(`cut -d "=" -f 2 <<< $(npm run env | grep "npm_package_name")`, {
             cwd: repoDir,
@@ -55,7 +56,8 @@ async function getVersionsToUpgradeTo({
         })
     ).stdout.trim();
 
-    const currentRepoDepVersions = parseCurrentDeps(listedDeps.stdout, packageName);
+    const listedDepsJson = await findDepsListWithPackageName(repoDir, packageName);
+    const currentRepoDepVersions = parseCurrentDeps(listedDepsJson, packageName);
 
     const virmatorPackageJson = JSON.parse(
         (await readFile(join(packageDir, 'package.json'))).toString(),
@@ -87,6 +89,30 @@ async function getVersionsToUpgradeTo({
     });
 }
 
+async function findDepsListWithPackageName(repoDir: string, packageName: string): Promise<object> {
+    if (repoDir === parsePath(process.cwd()).root) {
+        return {};
+    }
+    if (!existsSync(join(repoDir, 'package.json'))) {
+        return findDepsListWithPackageName(dirname(repoDir), packageName);
+    }
+
+    const listedDeps = await runShellCommand(`npm list --depth=0 -json`, {
+        cwd: repoDir,
+        rejectOnError: true,
+    });
+    const output = JSON.parse(listedDeps.stdout);
+
+    if (
+        output.name === packageName ||
+        (packageName in output.dependencies && 'dependencies' in output.dependencies[packageName])
+    ) {
+        return output;
+    } else {
+        return findDepsListWithPackageName(dirname(repoDir), packageName);
+    }
+}
+
 type TopLevelListOutput = RequiredAndNotNullBy<ListOutput, 'dependencies'> & {name: string};
 
 type ListOutput = {
@@ -95,8 +121,11 @@ type ListOutput = {
     dependencies?: Record<string, Omit<ListOutput, 'name'>>;
 };
 
-function parseCurrentDeps(stdout: string, packageName: string): Readonly<Record<string, string>> {
-    const parsedListOutput = JSON.parse(stdout) as TopLevelListOutput;
+function parseCurrentDeps(
+    objectInput: object,
+    packageName: string,
+): Readonly<Record<string, string>> {
+    const parsedListOutput = objectInput as TopLevelListOutput;
     const deps = parsedListOutput.dependencies;
 
     return readDeps(deps, packageName);
