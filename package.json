@@ -27,7 +27,6 @@
     "types": "dist/index.d.ts",
     "bin": "dist/cli.js",
     "scripts": {
-        "": "",
         "compile": "rm -rf dist && tsc",
         "format": "npm run format:base -- --write --list-different",
         "format:base": "prettier \"./**/*.+(ts|json|html|css|md|js)\"",

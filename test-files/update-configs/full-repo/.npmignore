@@ -10,8 +10,8 @@
 /cspell.config.js
 /graphics/
 /src/
-/test-files/
 bash-scripts/
+test-files/
 tsconfig*.json
 
 ./something-that-doesn't-exist/
