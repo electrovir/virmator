@@ -14,7 +14,6 @@ export const spellcheckCommandDefinition = defineCommand(
             cspell: {
                 copyFromInternalPath: join(virmatorConfigsDir, 'cspell.config.js'),
                 copyToPathRelativeToRepoDir: 'cspell.config.js',
-                required: true,
             },
         },
         npmDeps: ['cspell'],

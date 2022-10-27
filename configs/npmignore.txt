@@ -10,6 +10,6 @@
 /graphics/
 /Icon?
 /src/
-/test-files/
 bash-scripts/
+test-files/
 tsconfig*.json

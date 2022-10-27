@@ -17,5 +17,4 @@ export type ConfigFileDefinition = {
      * be the new file contents.
      */
     updateExistingConfigFileCallback?: UpdateConfigCallback;
-    required: boolean;
 };

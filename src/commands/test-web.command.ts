@@ -15,7 +15,6 @@ export const testWebCommandDefinition = defineCommand(
                     'web-test-runner.config.mjs',
                 ),
                 copyToPathRelativeToRepoDir: join('configs', 'web-test-runner.config.mjs'),
-                required: true,
             },
         },
         npmDeps: [

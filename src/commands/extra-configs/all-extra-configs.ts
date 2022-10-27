@@ -9,37 +9,31 @@ export const nonCommandConfigs: ReadonlyArray<ConfigFileDefinition> = [
     {
         copyFromInternalPath: join(virmatorConfigsDir, '.gitattributes'),
         copyToPathRelativeToRepoDir: '.gitattributes',
-        required: true,
     },
     {
         copyFromInternalPath: join(virmatorConfigsDir, '.nvmrc'),
         copyToPathRelativeToRepoDir: '.nvmrc',
-        required: true,
         updateExistingConfigFileCallback: (newContents) => newContents,
     },
     {
         copyFromInternalPath: join(virmatorConfigsDir, 'gitignore.txt'),
         updateExistingConfigFileCallback: combineTextConfig,
         copyToPathRelativeToRepoDir: '.gitignore',
-        required: true,
     },
     {
         copyFromInternalPath: join(virmatorConfigsDir, 'npmignore.txt'),
         updateExistingConfigFileCallback: combineTextConfig,
         copyToPathRelativeToRepoDir: '.npmignore',
-        required: true,
     },
     {
         copyFromInternalPath: join(virmatorConfigsDir, 'package.json'),
         copyToPathRelativeToRepoDir: 'package.json',
         updateExistingConfigFileCallback: createDefaultPackageJson,
-        required: true,
     },
     {
         copyFromInternalPath: join(virmatorConfigsDir, '.vscode', 'settings.json'),
         copyToPathRelativeToRepoDir: join('.vscode', 'settings.json'),
         updateExistingConfigFileCallback: combineJsonConfig,
-        required: true,
     },
     {
         copyFromInternalPath: join(
@@ -49,7 +43,6 @@ export const nonCommandConfigs: ReadonlyArray<ConfigFileDefinition> = [
             'build-for-gh-pages.yml',
         ),
         copyToPathRelativeToRepoDir: join('.github', 'workflows', 'build-for-gh-pages.yml'),
-        required: true,
     },
     {
         copyFromInternalPath: join(
@@ -59,11 +52,17 @@ export const nonCommandConfigs: ReadonlyArray<ConfigFileDefinition> = [
             'tagged-release.yml',
         ),
         copyToPathRelativeToRepoDir: join('.github', 'workflows', 'tagged-release.yml'),
-        required: true,
     },
     {
         copyFromInternalPath: join(virmatorConfigsDir, '.github', 'workflows', 'tests.yml'),
         copyToPathRelativeToRepoDir: join('.github', 'workflows', 'tests.yml'),
-        required: true,
+    },
+    {
+        copyFromInternalPath: join(virmatorConfigsDir, 'public', 'index.css'),
+        copyToPathRelativeToRepoDir: join('public', 'index.css'),
+    },
+    {
+        copyFromInternalPath: join(virmatorConfigsDir, 'index.html'),
+        copyToPathRelativeToRepoDir: join('index.html'),
     },
 ];
