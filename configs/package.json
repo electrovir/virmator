@@ -7,7 +7,6 @@
         "compile": "rm -rf dist && virmator compile",
         "docs:update": "virmator code-in-markdown",
         "format": "virmator format",
-        "prepack": "npm run compile",
         "prepublishOnly": "npm run compile && npm run test:all",
         "preview": "virmator frontend preview",
         "spellcheck": "virmator spellcheck",

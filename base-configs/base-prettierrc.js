@@ -42,12 +42,13 @@ const plugins = [
  */
 const prettierConfig = {
     arrowParens: 'always',
+    bracketSameLine: false,
     bracketSpacing: false,
     endOfLine: 'lf',
     htmlWhitespaceSensitivity: 'ignore',
     jsonRecursiveSort: true,
-    bracketSameLine: false,
     plugins,
+    pluginSearchDirs: false,
     printWidth: 100,
     singleQuote: true,
     tabWidth: 4,
