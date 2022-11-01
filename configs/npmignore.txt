@@ -9,6 +9,7 @@
 /cspell.config.js
 /graphics/
 /Icon?
+/public/
 /src/
 bash-scripts/
 test-files/

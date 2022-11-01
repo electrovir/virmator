@@ -137,21 +137,21 @@
             "exitCode": 1,
             "key": "typos-exist",
             "stderr": "CSpell: Files checked: 3, Issues found: 2 in 1 files spellcheck failed.",
-            "stdout": "Installing cspell@6.12.0... running spellcheck... Successfully copied cspell.config.js node_modules/.bin/cspell --config cspell.config.js --color --unique --no-progress --relative --dot \"**/*\" ./stuff.js:1:12 - Unknown word (Stff) ./stuff.js:2:25 - Unknown word (thre)"
+            "stdout": "Installing cspell@6.13.3... running spellcheck... Successfully copied cspell.config.js node_modules/.bin/cspell --config cspell.config.js --color --unique --no-progress --relative --dot \"**/*\" ./stuff.js:1:12 - Unknown word (Stff) ./stuff.js:2:25 - Unknown word (thre)"
         },
         "no-typos": {
             "dir": "spellcheck",
             "exitCode": 0,
             "key": "no-typos",
             "stderr": "CSpell: Files checked: 3, Issues found: 0 in 0 files",
-            "stdout": "Installing cspell@6.12.0... running spellcheck... Successfully copied cspell.config.js node_modules/.bin/cspell --config cspell.config.js --color --unique --no-progress --relative --dot \"**/*\" spellcheck succeeded."
+            "stdout": "Installing cspell@6.13.3... running spellcheck... Successfully copied cspell.config.js node_modules/.bin/cspell --config cspell.config.js --color --unique --no-progress --relative --dot \"**/*\" spellcheck succeeded."
         },
         "dot-files": {
             "dir": "spellcheck",
             "exitCode": 0,
             "key": "dot-files",
             "stderr": "CSpell: Files checked: 12, Issues found: 0 in 0 files",
-            "stdout": "Installing cspell@6.12.0... running spellcheck... Successfully copied cspell.config.js node_modules/.bin/cspell --config cspell.config.js --color --unique --no-progress --relative --dot \"**/*\" spellcheck succeeded."
+            "stdout": "Installing cspell@6.13.3... running spellcheck... Successfully copied cspell.config.js node_modules/.bin/cspell --config cspell.config.js --color --unique --no-progress --relative --dot \"**/*\" spellcheck succeeded."
         }
     },
     "init": {

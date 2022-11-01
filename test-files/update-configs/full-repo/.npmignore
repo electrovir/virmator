@@ -9,6 +9,7 @@
 /coverage/
 /cspell.config.js
 /graphics/
+/public/
 /src/
 bash-scripts/
 test-files/
