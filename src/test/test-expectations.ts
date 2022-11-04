@@ -2,6 +2,7 @@ import {extractErrorMessage, isObject, typedHasProperty} from 'augment-vir';
 import {existsSync, statSync} from 'fs';
 import {readFile, writeFile} from 'fs/promises';
 import {join} from 'path';
+import {getFirstPartOfPath} from '../augments/path';
 import {testExpectationsFilePath, testFilesDirPath} from './virmator-test-file-paths';
 
 export type OutputExpect =
@@ -101,9 +102,11 @@ function assertValidLoadExpectations(input: unknown): asserts input is TestExpec
             ) {
                 throw new Error(`${keyPath} > dir was not a string.`);
             }
-            if (testExpectations.dir !== testDirKey) {
+            if (getFirstPartOfPath(testExpectations.dir) !== testDirKey) {
                 throw new Error(
-                    `${keyPath} > dir does not match its test dir (should be "${testDirKey}" but was "${testExpectations.dir}").`,
+                    `${keyPath} > dir does not match its test dir (should be "${testDirKey}" but was "${getFirstPartOfPath(
+                        testExpectations.dir,
+                    )}").`,
                 );
             }
 

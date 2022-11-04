@@ -11,6 +11,7 @@ function getBaseConfigWithCoveragePercent(percent) {
         exclude: [
             '**/*.test.ts',
             'src/readme-examples',
+            '**/*.type.test.ts',
         ],
         functions: percent,
         include: 'src/*',

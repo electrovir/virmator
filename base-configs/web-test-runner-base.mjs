@@ -13,9 +13,7 @@ const webTestRunnerConfig = {
     browserStartTimeout: 120_000,
     concurrentBrowsers: 3,
     coverage: true,
-    files: [
-        testFiles.spec,
-    ],
+    files: testFiles.spec,
     nodeResolve: true,
     plugins: [esbuildPlugin({ts: true})],
     testFramework: {

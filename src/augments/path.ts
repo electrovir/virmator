@@ -1,12 +1,11 @@
-import {relative, sep} from 'path';
+import {sep} from 'path';
 
-export function getFirstPartOfRelativePath(from: string, to: string): string {
-    const relativePath = relative(from, to);
-    const split = relativePath.split(sep);
+export function getFirstPartOfPath(inputPath: string): string {
+    const split = inputPath.split(sep);
     const firstPart = split[0];
 
     if (!firstPart) {
-        throw new Error(`First pat of path was empty from: "${from}" to "${to}"`);
+        throw new Error(`First path of path was empty from "${inputPath}"`);
     }
     return firstPart;
 }

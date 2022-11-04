@@ -1,4 +1,4 @@
-import {getObjectTypedKeys, mapObject} from 'augment-vir';
+import {getObjectTypedKeys, mapObjectValues} from 'augment-vir';
 import {CreateDescriptionsCallback} from './command-description';
 import {CommandExecutor, CommandExecutorDefinition} from './command-executor';
 import {
@@ -22,7 +22,7 @@ export function defineCommand<DefineCommandInputsGeneric extends DefineCommandIn
     const allAvailableSubCommands: ReadonlyArray<
         keyof DefineCommandInputsGeneric['subCommandDescriptions']
     > = getObjectTypedKeys(defineCommandInputs.subCommandDescriptions);
-    const subCommands: SubCommandsMap<DefineCommandInputsGeneric> = mapObject(
+    const subCommands: SubCommandsMap<DefineCommandInputsGeneric> = mapObjectValues(
         defineCommandInputs.subCommandDescriptions,
         (key) => key,
     ) as SubCommandsMap<DefineCommandInputsGeneric>;

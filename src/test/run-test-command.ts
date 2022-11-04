@@ -16,7 +16,7 @@ import {CommandDefinition} from '../api/command/define-command';
 import {ConfigFileDefinition} from '../api/config/config-file-definition';
 import {readAllDirContents} from '../augments/fs';
 import {filterToDifferentValues} from '../augments/object';
-import {getFirstPartOfRelativePath} from '../augments/path';
+import {getFirstPartOfPath} from '../augments/path';
 import {NonEmptyString} from '../augments/string';
 import {virmatorPackageDir} from '../file-paths/package-paths';
 import {
@@ -134,12 +134,13 @@ async function runCliCommandForTest<KeyGeneric extends string>(
         const logTransform = inputs.logTransform ?? identityCommandLogTransform;
 
         const actualResults: TestExpectation = {
-            dir: getFirstPartOfRelativePath(testFilesDirPath, inputs.dir),
+            dir: relative(testFilesDirPath, inputs.dir),
             exitCode: results.exitCode ?? 0,
             key: inputs.expectationKey,
             stderr: logTransform(stripFullPath(stripColor(results.stderr))),
             stdout: logTransform(stripFullPath(stripColor(results.stdout))),
         };
+        const expectationTopKey = getFirstPartOfPath(actualResults.dir);
         const loadedExpectations = await loadExpectations();
 
         try {
@@ -148,7 +149,7 @@ async function runCliCommandForTest<KeyGeneric extends string>(
             } else {
                 runKeys.add(actualResults.key);
             }
-            const dirExpectations = loadedExpectations[actualResults.dir];
+            const dirExpectations = loadedExpectations[expectationTopKey];
             if (!dirExpectations) {
                 throw new Error(`Missing ${actualResults.dir} key in expectations file.`);
             }
@@ -171,8 +172,8 @@ async function runCliCommandForTest<KeyGeneric extends string>(
             await initDirectory(inputs.dir, inputs.keepFiles);
             await saveExpectations({
                 ...loadedExpectations,
-                [actualResults.dir]: {
-                    ...loadedExpectations[actualResults.dir],
+                [expectationTopKey]: {
+                    ...loadedExpectations[expectationTopKey],
                     [actualResults.key]: actualResults,
                 },
             });

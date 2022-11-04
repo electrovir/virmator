@@ -15,7 +15,7 @@ mv "$originalTarOutput" "$TAR_TO_INSTALL";
 # allow mocha to fail without exiting the script
 set +e;
 
-mocha --config .mocharc.js "$@";
+mocha --config mocha.config.js "$@";
 testResult=$?;
 
 exit "$testResult";
