@@ -1,6 +1,6 @@
 {
     "name": "virmator",
-    "version": "4.2.16",
+    "version": "4.2.17",
     "description": "Handle all the stuffs in one package.",
     "keywords": [
         "automation",
@@ -66,7 +66,7 @@
         "istanbul-smart-text-reporter": "^0.0.1",
         "markdown-code-example-inserter": "^0.1.11",
         "mocha": "^10.1.0",
-        "mocha-spec-reporter-with-file-names": "^0.0.1",
+        "mocha-spec-reporter-with-file-names": "^0.0.2",
         "nyc": "^15.1.0",
         "prettier": "^2.7.1",
         "prettier-plugin-jsdoc": "^0.4.2",
