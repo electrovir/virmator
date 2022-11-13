@@ -114,21 +114,21 @@
             "exitCode": 1,
             "key": "fail on format failures in a folder",
             "stderr": "[warn] invalid-format.ts [warn] Code style issues found in the above file. Forgot to run Prettier? format failed.",
-            "stdout": "Installing prettier@2.7.1... Installing prettier-plugin-jsdoc@0.4.2... Installing prettier-plugin-multiline-arrays@1.1.1... Installing prettier-plugin-organize-imports@3.1.1... Installing prettier-plugin-packagejson@2.3.0... Installing prettier-plugin-sort-json@0.0.3... Installing prettier-plugin-toml@0.3.1... running format... Successfully copied .prettierignore Successfully copied .prettierrc.js node_modules/.bin/prettier --color \"./**/*.+(cjs|css|graphql|html|js|json|jsx|less|md|mjs|scss|toml|ts|tsx|yaml|yml)\" --check"
+            "stdout": "Installing prettier@2.7.1... Installing prettier-plugin-jsdoc@0.4.2... Installing prettier-plugin-multiline-arrays@1.1.1... Installing prettier-plugin-organize-imports@3.2.0... Installing prettier-plugin-packagejson@2.3.0... Installing prettier-plugin-sort-json@0.0.3... Installing prettier-plugin-toml@0.3.1... running format... Successfully copied .prettierignore Successfully copied .prettierrc.js node_modules/.bin/prettier --color \"./**/*.+(cjs|css|graphql|html|js|json|jsx|less|md|mjs|scss|toml|ts|tsx|yaml|yml)\" --check"
         },
         "pass format when there are zero errors": {
             "dir": "format/valid-format-repo",
             "exitCode": 0,
             "key": "pass format when there are zero errors",
             "stderr": "",
-            "stdout": "Installing prettier@2.7.1... Installing prettier-plugin-jsdoc@0.4.2... Installing prettier-plugin-multiline-arrays@1.1.1... Installing prettier-plugin-organize-imports@3.1.1... Installing prettier-plugin-packagejson@2.3.0... Installing prettier-plugin-sort-json@0.0.3... Installing prettier-plugin-toml@0.3.1... running format... Successfully copied .prettierignore Successfully copied .prettierrc.js node_modules/.bin/prettier --color \"./**/*.+(cjs|css|graphql|html|js|json|jsx|less|md|mjs|scss|toml|ts|tsx|yaml|yml)\" --check format succeeded."
+            "stdout": "Installing prettier@2.7.1... Installing prettier-plugin-jsdoc@0.4.2... Installing prettier-plugin-multiline-arrays@1.1.1... Installing prettier-plugin-organize-imports@3.2.0... Installing prettier-plugin-packagejson@2.3.0... Installing prettier-plugin-sort-json@0.0.3... Installing prettier-plugin-toml@0.3.1... running format... Successfully copied .prettierignore Successfully copied .prettierrc.js node_modules/.bin/prettier --color \"./**/*.+(cjs|css|graphql|html|js|json|jsx|less|md|mjs|scss|toml|ts|tsx|yaml|yml)\" --check format succeeded."
         },
         "format should update invalid files": {
             "dir": "format/invalid-format-repo",
             "exitCode": 0,
             "key": "format should update invalid files",
             "stderr": "",
-            "stdout": "Installing prettier@2.7.1... Installing prettier-plugin-jsdoc@0.4.2... Installing prettier-plugin-multiline-arrays@1.1.1... Installing prettier-plugin-organize-imports@3.1.1... Installing prettier-plugin-packagejson@2.3.0... Installing prettier-plugin-sort-json@0.0.3... Installing prettier-plugin-toml@0.3.1... running format... Successfully copied .prettierignore Successfully copied .prettierrc.js node_modules/.bin/prettier --color --list-different \"./**/*.+(cjs|css|graphql|html|js|json|jsx|less|md|mjs|scss|toml|ts|tsx|yaml|yml)\" --write invalid-format.ts format succeeded."
+            "stdout": "Installing prettier@2.7.1... Installing prettier-plugin-jsdoc@0.4.2... Installing prettier-plugin-multiline-arrays@1.1.1... Installing prettier-plugin-organize-imports@3.2.0... Installing prettier-plugin-packagejson@2.3.0... Installing prettier-plugin-sort-json@0.0.3... Installing prettier-plugin-toml@0.3.1... running format... Successfully copied .prettierignore Successfully copied .prettierrc.js node_modules/.bin/prettier --color --list-different \"./**/*.+(cjs|css|graphql|html|js|json|jsx|less|md|mjs|scss|toml|ts|tsx|yaml|yml)\" --write invalid-format.ts format succeeded."
         }
     },
     "spellcheck": {
@@ -137,21 +137,21 @@
             "exitCode": 1,
             "key": "typos-exist",
             "stderr": "CSpell: Files checked: 3, Issues found: 2 in 1 files spellcheck failed.",
-            "stdout": "Installing cspell@6.14.1... running spellcheck... Successfully copied cspell.config.js node_modules/.bin/cspell --config cspell.config.js --color --unique --no-progress --relative --dot \"**/*\" ./stuff.js:1:12 - Unknown word (Stff) ./stuff.js:2:25 - Unknown word (thre)"
+            "stdout": "Installing cspell@6.14.2... running spellcheck... Successfully copied cspell.config.js node_modules/.bin/cspell --config cspell.config.js --color --unique --no-progress --relative --dot \"**/*\" ./stuff.js:1:12 - Unknown word (Stff) ./stuff.js:2:25 - Unknown word (thre)"
         },
         "no-typos": {
             "dir": "spellcheck/valid-spellcheck-repo",
             "exitCode": 0,
             "key": "no-typos",
             "stderr": "CSpell: Files checked: 3, Issues found: 0 in 0 files",
-            "stdout": "Installing cspell@6.14.1... running spellcheck... Successfully copied cspell.config.js node_modules/.bin/cspell --config cspell.config.js --color --unique --no-progress --relative --dot \"**/*\" spellcheck succeeded."
+            "stdout": "Installing cspell@6.14.2... running spellcheck... Successfully copied cspell.config.js node_modules/.bin/cspell --config cspell.config.js --color --unique --no-progress --relative --dot \"**/*\" spellcheck succeeded."
         },
         "dot-files": {
             "dir": "spellcheck/hidden-stuff-spellcheck-repo",
             "exitCode": 0,
             "key": "dot-files",
             "stderr": "CSpell: Files checked: 12, Issues found: 0 in 0 files",
-            "stdout": "Installing cspell@6.14.1... running spellcheck... Successfully copied cspell.config.js node_modules/.bin/cspell --config cspell.config.js --color --unique --no-progress --relative --dot \"**/*\" spellcheck succeeded."
+            "stdout": "Installing cspell@6.14.2... running spellcheck... Successfully copied cspell.config.js node_modules/.bin/cspell --config cspell.config.js --color --unique --no-progress --relative --dot \"**/*\" spellcheck succeeded."
         }
     },
     "init": {
@@ -160,14 +160,14 @@
             "exitCode": 0,
             "key": "init with files to upgrade",
             "stderr": "",
-            "stdout": "Installing prettier@2.7.1... Installing prettier-plugin-jsdoc@0.4.2... Installing prettier-plugin-multiline-arrays@1.1.1... Installing prettier-plugin-organize-imports@3.1.1... Installing prettier-plugin-packagejson@2.3.0... Installing prettier-plugin-sort-json@0.0.3... Installing prettier-plugin-toml@0.3.1... running init... Successfully copied .gitattributes Successfully copied .gitignore Successfully copied .npmignore Successfully copied .nvmrc Successfully copied .prettierignore Successfully copied .prettierrc.js Successfully copied build-for-gh-pages.yml Successfully copied cspell.config.js Successfully copied index.css Successfully copied index.html Successfully copied mocha.config.js Successfully copied nyc.config.js Successfully copied package.json Successfully copied settings.json Successfully copied tagged-release.yml Successfully copied tests.yml Successfully copied tsconfig.json Successfully copied vite.config.ts Successfully copied web-test-runner.config.mjs init succeeded."
+            "stdout": "Installing prettier@2.7.1... Installing prettier-plugin-jsdoc@0.4.2... Installing prettier-plugin-multiline-arrays@1.1.1... Installing prettier-plugin-organize-imports@3.2.0... Installing prettier-plugin-packagejson@2.3.0... Installing prettier-plugin-sort-json@0.0.3... Installing prettier-plugin-toml@0.3.1... running init... Successfully copied .gitattributes Successfully copied .gitignore Successfully copied .npmignore Successfully copied .nvmrc Successfully copied .prettierignore Successfully copied .prettierrc.js Successfully copied build-for-gh-pages.yml Successfully copied cspell.config.js Successfully copied index.css Successfully copied index.html Successfully copied mocha.config.js Successfully copied nyc.config.js Successfully copied package.json Successfully copied settings.json Successfully copied tagged-release.yml Successfully copied tests.yml Successfully copied tsconfig.json Successfully copied vite.config.ts Successfully copied web-test-runner.config.mjs init succeeded."
         },
         "basic-init": {
             "dir": "init/empty-repo",
             "exitCode": 0,
             "key": "basic-init",
             "stderr": "",
-            "stdout": "Installing prettier@2.7.1... Installing prettier-plugin-jsdoc@0.4.2... Installing prettier-plugin-multiline-arrays@1.1.1... Installing prettier-plugin-organize-imports@3.1.1... Installing prettier-plugin-packagejson@2.3.0... Installing prettier-plugin-sort-json@0.0.3... Installing prettier-plugin-toml@0.3.1... running init... Successfully copied .gitattributes Successfully copied .gitignore Successfully copied .npmignore Successfully copied .nvmrc Successfully copied .prettierignore Successfully copied .prettierrc.js Successfully copied build-for-gh-pages.yml Successfully copied cspell.config.js Successfully copied index.css Successfully copied index.html Successfully copied mocha.config.js Successfully copied nyc.config.js Successfully copied package.json Successfully copied settings.json Successfully copied tagged-release.yml Successfully copied tests.yml Successfully copied tsconfig.json Successfully copied vite.config.ts Successfully copied web-test-runner.config.mjs init succeeded."
+            "stdout": "Installing prettier@2.7.1... Installing prettier-plugin-jsdoc@0.4.2... Installing prettier-plugin-multiline-arrays@1.1.1... Installing prettier-plugin-organize-imports@3.2.0... Installing prettier-plugin-packagejson@2.3.0... Installing prettier-plugin-sort-json@0.0.3... Installing prettier-plugin-toml@0.3.1... running init... Successfully copied .gitattributes Successfully copied .gitignore Successfully copied .npmignore Successfully copied .nvmrc Successfully copied .prettierignore Successfully copied .prettierrc.js Successfully copied build-for-gh-pages.yml Successfully copied cspell.config.js Successfully copied index.css Successfully copied index.html Successfully copied mocha.config.js Successfully copied nyc.config.js Successfully copied package.json Successfully copied settings.json Successfully copied tagged-release.yml Successfully copied tests.yml Successfully copied tsconfig.json Successfully copied vite.config.ts Successfully copied web-test-runner.config.mjs init succeeded."
         }
     },
     "test": {
@@ -206,14 +206,14 @@
             "exitCode": 1,
             "key": "failing-test-web",
             "stderr": "test-web failed.",
-            "stdout": "Installing @open-wc/testing@3.1.6... Installing @types/mocha@10.0.0... Installing @web/dev-server-esbuild@0.3.3... Installing @web/test-runner-commands@0.6.5... Installing @web/test-runner-playwright@0.9.0... Installing @web/test-runner@0.15.0... running test-web... Successfully copied web-test-runner.config.mjs node_modules/.bin/web-test-runner --color --config configs/web-test-runner.config.mjs Running 1 test files... src/should-fail.test.ts: ❌ should fail test > should fail AssertionError: expected false to be true + expected - actual -false +true at o.<anonymous> (src/should-fail.test.ts:5:15) View full coverage report at coverage/lcov-report/index.html Finished running tests in with 3 failed tests."
+            "stdout": "Installing @open-wc/testing@3.1.7... Installing @types/mocha@10.0.0... Installing @web/dev-server-esbuild@0.3.3... Installing @web/test-runner-commands@0.6.5... Installing @web/test-runner-playwright@0.9.0... Installing @web/test-runner@0.15.0... running test-web... Successfully copied web-test-runner.config.mjs node_modules/.bin/web-test-runner --color --config configs/web-test-runner.config.mjs Running 1 test files... src/should-fail.test.ts: ❌ should fail test > should fail AssertionError: expected false to be true + expected - actual -false +true at o.<anonymous> (src/should-fail.test.ts:5:15) View full coverage report at coverage/lcov-report/index.html Finished running tests in with 3 failed tests."
         },
         "passing-test-web": {
             "dir": "test-web/pass-test-repo",
             "exitCode": 0,
             "key": "passing-test-web",
             "stderr": "",
-            "stdout": "Installing @open-wc/testing@3.1.6... Installing @types/mocha@10.0.0... Installing @web/dev-server-esbuild@0.3.3... Installing @web/test-runner-commands@0.6.5... Installing @web/test-runner-playwright@0.9.0... Installing @web/test-runner@0.15.0... running test-web... Successfully copied web-test-runner.config.mjs node_modules/.bin/web-test-runner --color --config configs/web-test-runner.config.mjs Running 1 test files... View full coverage report at coverage/lcov-report/index.html Finished running tests in , all tests passed! 🎉 test-web succeeded."
+            "stdout": "Installing @open-wc/testing@3.1.7... Installing @types/mocha@10.0.0... Installing @web/dev-server-esbuild@0.3.3... Installing @web/test-runner-commands@0.6.5... Installing @web/test-runner-playwright@0.9.0... Installing @web/test-runner@0.15.0... running test-web... Successfully copied web-test-runner.config.mjs node_modules/.bin/web-test-runner --color --config configs/web-test-runner.config.mjs Running 1 test files... View full coverage report at coverage/lcov-report/index.html Finished running tests in , all tests passed! 🎉 test-web succeeded."
         }
     },
     "update-configs": {

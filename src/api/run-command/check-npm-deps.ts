@@ -103,10 +103,7 @@ async function findDepsListWithPackageName(repoDir: string, packageName: string)
     });
     const output = JSON.parse(listedDeps.stdout);
 
-    if (
-        output.name === packageName ||
-        (packageName in output.dependencies && 'dependencies' in output.dependencies[packageName])
-    ) {
+    if (output.name === packageName || packageName in output.dependencies) {
         return output;
     } else {
         return findDepsListWithPackageName(dirname(repoDir), packageName);

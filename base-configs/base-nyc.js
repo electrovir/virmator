@@ -12,6 +12,7 @@ function getBaseConfigWithCoveragePercent(percent) {
             '**/*.test.ts',
             'src/readme-examples',
             '**/*.type.test.ts',
+            '**/*.test-helper.ts',
         ],
         functions: percent,
         include: 'src/*',
