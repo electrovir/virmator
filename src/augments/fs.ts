@@ -1,11 +1,13 @@
 import {awaitedForEach} from 'augment-vir';
 import {existsSync} from 'fs';
 import {readdir, readFile, stat, writeFile} from 'fs/promises';
-import {dirname, join} from 'path';
+import {dirname, join, parse as parsePath} from 'path';
 
 export interface DirContents {
     [key: string]: string | DirContents;
 }
+
+export const systemRootPath = parsePath(process.cwd()).root;
 
 export async function readAllDirContents({
     dir,

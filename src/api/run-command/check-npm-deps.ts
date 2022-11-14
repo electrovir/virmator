@@ -2,8 +2,9 @@ import {awaitedForEach, extractErrorMessage, isTruthy, RequiredAndNotNullBy} fro
 import {runShellCommand} from 'augment-vir/dist/cjs/node-only';
 import {existsSync} from 'fs';
 import {readFile} from 'fs/promises';
-import {dirname, join, parse as parsePath} from 'path';
+import {dirname, join} from 'path';
 import * as semver from 'semver';
+import {systemRootPath} from '../../augments/fs';
 import {Color} from '../cli-color';
 
 export type UpdateDepsInput = Readonly<{
@@ -90,7 +91,7 @@ async function getVersionsToUpgradeTo({
 }
 
 async function findDepsListWithPackageName(repoDir: string, packageName: string): Promise<object> {
-    if (repoDir === parsePath(process.cwd()).root) {
+    if (repoDir === systemRootPath) {
         return {};
     }
     if (!existsSync(join(repoDir, 'package.json'))) {

@@ -1,6 +1,7 @@
 .*
 *.test-helper.*
 *.test.*
+*.tsbuildinfo
 **/*/readme-examples/
 **/*/test/
 /*.tgz

@@ -121,6 +121,14 @@ Initialize a repo with all virmator config files.
 
 force overwrite files even if they already exist.
 
+## publish
+
+Publish an npm package. Includes workspace support.
+
+### Examples
+
+-   publish a package: `virmator publish`
+
 ## spellcheck
 
 Spellcheck code with cspell. By default this spellchecks every file in the entire repo (except for those ignored in the config file), including .dot files. If any arguments are passed to this command, the default cspell args that this command applies are ignored, you'll have to supply them via your args.

@@ -2,6 +2,7 @@
 **/*/test/
 *.test-helper.*
 *.test.*
+*.tsbuildinfo
 .*
 /*.tgz
 /Icon?

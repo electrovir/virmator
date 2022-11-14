@@ -4,6 +4,7 @@ import {compileCommandDefinition} from './commands/compile.command';
 import {formatCommandDefinition} from './commands/format.command';
 import {frontendCommandDefinition} from './commands/frontend.command';
 import {initCommandDefinition} from './commands/init.command';
+import {publishCommandDefinition} from './commands/publish.command';
 import {spellcheckCommandDefinition} from './commands/spellcheck.command';
 import {testWebCommandDefinition} from './commands/test-web.command';
 import {testCommandDefinition} from './commands/test.command';
@@ -33,9 +34,10 @@ export const virmator = createVirmator({
         formatCommandDefinition,
         frontendCommandDefinition,
         initCommandDefinition,
+        publishCommandDefinition,
         spellcheckCommandDefinition,
-        testWebCommandDefinition,
         testCommandDefinition,
+        testWebCommandDefinition,
         updateConfigsCommandDefinition,
     ],
 });
