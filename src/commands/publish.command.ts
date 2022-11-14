@@ -43,7 +43,7 @@ export const publishCommandDefinition = defineCommand(
         }
 
         const workspaceDirs = getWorkspaceDirs(packageJson, packageJsonPath);
-        if (await isCurrentVersionPublished(packageJson)) {
+        if (await isCurrentVersionPublished(packageJson, workspaceDirs)) {
             await bumpPackageVersion(packageJson, packageJsonPath, workspaceDirs);
         }
         await updateWorkspaceVersions(packageJsonPath, workspaceDirs);
@@ -126,8 +126,24 @@ async function publishPackages(workspaceDirPaths: ReadonlyArray<string>, package
     }
 }
 
-async function isCurrentVersionPublished(packageJson: CleanPackageJson): Promise<boolean> {
-    const output = await runShellCommand(`npm show ${packageJson.name}@${packageJson.version}`);
+async function isCurrentVersionPublished(
+    packageJson: CleanPackageJson,
+    workspaceDirs: ReadonlyArray<string>,
+): Promise<boolean> {
+    const arePublished = await Promise.all(
+        workspaceDirs.map(async (workspaceDirPath) => {
+            const workspacePackageJson = await readPackageJson(
+                join(workspaceDirPath, 'package.json'),
+            );
+            return await isPublished(workspacePackageJson);
+        }),
+    );
+
+    return arePublished.some((entry) => entry) || (await isPublished(packageJson));
+}
+
+async function isPublished({name, version}: {name: string; version: string}) {
+    const output = await runShellCommand(`npm show ${name}@${version}`);
     return output.exitCode === 0;
 }
 
@@ -162,6 +178,7 @@ async function bumpPackageVersion(
             'or',
         )}.`,
         questionToAsk: releaseTypeMessage,
+        timeoutMs: 0,
     })) as ReleaseType;
     const newVersion = inc(packageJson.version, releaseType);
     if (!newVersion) {
