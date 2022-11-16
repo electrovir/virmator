@@ -43,10 +43,15 @@ export const publishCommandDefinition = defineCommand(
         }
 
         const workspaceDirs = getWorkspaceDirs(packageJson, packageJsonPath);
+        await updateWorkspaceVersions(packageJsonPath, workspaceDirs);
         if (await isCurrentVersionPublished(packageJson, workspaceDirs)) {
             await bumpPackageVersion(packageJson, packageJsonPath);
         }
         await updateWorkspaceVersions(packageJsonPath, workspaceDirs);
+        await runShellCommand(`npm i`, {
+            rejectOnError: true,
+            cwd: dirname(packageJsonPath),
+        });
 
         await publishPackages(workspaceDirs, packageJsonPath);
 
@@ -90,11 +95,6 @@ async function updateWorkspaceVersions(
             workspacePackageJsonPath,
             JSON.stringify(newWorkspacePackageJson, null, 4) + '\n',
         );
-    });
-
-    await runShellCommand(`npm i`, {
-        rejectOnError: true,
-        cwd: dirname(packageJsonPath),
     });
 }
 
