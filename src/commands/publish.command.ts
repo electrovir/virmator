@@ -44,7 +44,7 @@ export const publishCommandDefinition = defineCommand(
 
         const workspaceDirs = getWorkspaceDirs(packageJson, packageJsonPath);
         if (await isCurrentVersionPublished(packageJson, workspaceDirs)) {
-            await bumpPackageVersion(packageJson, packageJsonPath, workspaceDirs);
+            await bumpPackageVersion(packageJson, packageJsonPath);
         }
         await updateWorkspaceVersions(packageJsonPath, workspaceDirs);
 
@@ -90,6 +90,11 @@ async function updateWorkspaceVersions(
             workspacePackageJsonPath,
             JSON.stringify(newWorkspacePackageJson, null, 4) + '\n',
         );
+    });
+
+    await runShellCommand(`npm i`, {
+        rejectOnError: true,
+        cwd: dirname(packageJsonPath),
     });
 }
 
@@ -167,7 +172,6 @@ const releaseTypeMessage = `Choose a release type: ${joinWithFinalConjunction(
 async function bumpPackageVersion(
     packageJson: CleanPackageJson,
     packageJsonPath: string,
-    workspaceDirPaths: ReadonlyArray<string>,
 ): Promise<void> {
     const releaseType: ReleaseType = (await askQuestionUntilConditionMet({
         conditionCallback: (input) => {
