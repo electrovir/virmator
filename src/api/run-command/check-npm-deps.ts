@@ -1,4 +1,4 @@
-import {awaitedForEach, extractErrorMessage, isTruthy, RequiredAndNotNullBy} from 'augment-vir';
+import {awaitedForEach, extractErrorMessage, isTruthy} from 'augment-vir';
 import {runShellCommand} from 'augment-vir/dist/cjs/node-only';
 import {existsSync} from 'fs';
 import {readFile} from 'fs/promises';
@@ -111,7 +111,7 @@ async function findDepsListWithPackageName(repoDir: string, packageName: string)
     }
 }
 
-type TopLevelListOutput = RequiredAndNotNullBy<ListOutput, 'dependencies'> & {name: string};
+type TopLevelListOutput = ListOutput & {name: string};
 
 type ListOutput = {
     version: string;
@@ -129,7 +129,10 @@ function parseCurrentDeps(
     return readDeps(deps, packageName);
 }
 
-function readDeps(rawDeps: NonNullable<ListOutput['dependencies']>, packageName: string) {
+function readDeps(rawDeps: ListOutput['dependencies'], packageName: string) {
+    if (!rawDeps) {
+        return {};
+    }
     const depsAndVersions: Record<string, string> = {};
 
     const nestedDeps = rawDeps[packageName]?.dependencies;
