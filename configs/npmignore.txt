@@ -1,10 +1,10 @@
 .*
 *.test-helper.*
 *.test.*
+*.tgz
 *.tsbuildinfo
 **/*/readme-examples/
 **/*/test/
-/*.tgz
 /configs/
 /coverage/
 /cspell.config.js
