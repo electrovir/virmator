@@ -8,6 +8,7 @@ const mochaConfig = {
     parallel: true,
     require: ['ts-node/register'],
     slow: 1_500, // ms
+    fullTrace: true,
     timeout: 60_000, // 1 minute in ms
     reporter: SpecReporterWithFileNames.pathToThisReporter,
     ...testFiles,
