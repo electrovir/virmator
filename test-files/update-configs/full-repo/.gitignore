@@ -1,5 +1,5 @@
+*.tgz
 .DS_Store
-/*.tgz
 /Icon?
 coverage/
 dist/
