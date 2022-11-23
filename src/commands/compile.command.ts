@@ -41,10 +41,9 @@ export const compileCommandDefinition = defineCommand(
         const shouldNotEmit =
             inputs.filteredInputArgs.join(' ').includes('--noEmit') ||
             inputs.inputSubCommands.includes(inputs.subCommands.check);
-        const resetCommand = shouldNotEmit ? '' : 'rm -rf dist && ';
         const noEmit = shouldNotEmit ? '--noEmit' : '';
 
-        const mainCommand = `${resetCommand}${await getNpmBinPath(inputs.repoDir, 'tsc')}`;
+        const mainCommand = await getNpmBinPath(inputs.repoDir, 'tsc');
 
         return {
             mainCommand,
