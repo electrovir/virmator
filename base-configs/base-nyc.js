@@ -5,19 +5,23 @@ function getBaseConfigWithCoveragePercent(percent) {
         extends: '@istanbuljs/nyc-config-typescript',
         all: true,
         branches: percent,
+        clean: true,
         cache: false,
         instrument: true,
-        checkCoverage: true,
+        // use the reporter (istanbul-smart-text-reporter) to fail instead of printing errors for
+        // every message
+        checkCoverage: false,
         exclude: [
             '**/*.test.ts',
-            'src/readme-examples',
+            '**/*.example.ts',
             '**/*.type.test.ts',
             '**/*.test-helper.ts',
         ],
         functions: percent,
-        include: 'src/*',
+        include: ['src/**/*.ts'],
         lines: percent,
-        perFile: true,
+        // so we don't get error messages printed for every file
+        perFile: false,
         reporter: [
             'html',
             'istanbul-smart-text-reporter',

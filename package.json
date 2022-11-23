@@ -65,7 +65,7 @@
         "chai": "^4.3.7",
         "cspell": "^6.14.3",
         "fs-extra": "^10.1.0",
-        "istanbul-smart-text-reporter": "^0.0.1",
+        "istanbul-smart-text-reporter": "^1.0.0",
         "markdown-code-example-inserter": "^0.1.11",
         "mocha": "^10.1.0",
         "mocha-spec-reporter-with-file-names": "^0.0.2",
