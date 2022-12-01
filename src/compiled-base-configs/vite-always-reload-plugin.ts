@@ -1,4 +1,4 @@
-import {styles} from 'ansi-colors';
+import {logColors} from '@augment-vir/node-js';
 import {existsSync, lstatSync, readlinkSync} from 'fs';
 import {relative} from 'path';
 import {PluginOption} from 'vite';
@@ -60,8 +60,8 @@ export function alwaysReloadPlugin(
                         path: '*',
                     });
                     logger.info(
-                        `${styles.green.open}page reload ${styles.dim.open}${relative(root, path)}${
-                            styles.reset.open
+                        `${logColors.success}page reload ${logColors.faint}${relative(root, path)}${
+                            logColors.reset
                         }`,
                         {clear: true, timestamp: true},
                     );

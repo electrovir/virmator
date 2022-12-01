@@ -1,4 +1,4 @@
-import {runShellCommand, ShellOutput} from 'augment-vir/dist/cjs/node-only';
+import {runShellCommand, ShellOutput} from '@augment-vir/node-js';
 import {
     CommandLogging,
     CommandLogTransform,

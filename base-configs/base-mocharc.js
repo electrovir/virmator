@@ -6,7 +6,7 @@ const mochaConfig = {
     checkLeaks: true,
     color: true,
     parallel: true,
-    require: ['ts-node/register'],
+    require: ['tsx'],
     slow: 1_500, // ms
     fullTrace: true,
     timeout: 60_000, // 1 minute in ms

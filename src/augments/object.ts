@@ -1,4 +1,4 @@
-import {getObjectTypedKeys, isObject, Overwrite, typedHasProperty} from 'augment-vir';
+import {getObjectTypedKeys, isObject, Overwrite, typedHasProperty} from '@augment-vir/common';
 
 export function filterObject<T extends object>(
     fullObject: Readonly<T>,

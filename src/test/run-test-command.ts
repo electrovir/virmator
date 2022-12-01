@@ -1,12 +1,12 @@
-import {stripColor} from 'ansi-colors';
 import {
     awaitedForEach,
     collapseWhiteSpace,
     extractErrorMessage,
+    removeColor,
     RequiredBy,
     typedHasProperty,
-} from 'augment-vir';
-import {runShellCommand, ShellOutput, toPosixPath} from 'augment-vir/dist/cjs/node-only';
+} from '@augment-vir/common';
+import {runShellCommand, ShellOutput, toPosixPath} from '@augment-vir/node-js';
 import {assert, config} from 'chai';
 import {existsSync} from 'fs';
 import {readdir, rm, unlink, writeFile} from 'fs/promises';
@@ -137,8 +137,8 @@ async function runCliCommandForTest<KeyGeneric extends string>(
             dir: relative(testFilesDirPath, inputs.dir),
             exitCode: results.exitCode ?? 0,
             key: inputs.expectationKey,
-            stderr: logTransform(stripFullPath(stripColor(results.stderr))),
-            stdout: logTransform(stripFullPath(stripColor(results.stdout))),
+            stderr: logTransform(stripFullPath(removeColor(results.stderr))),
+            stdout: logTransform(stripFullPath(removeColor(results.stdout))),
         };
         const expectationTopKey = getFirstPartOfPath(actualResults.dir);
         const loadedExpectations = await loadExpectations();

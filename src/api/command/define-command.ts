@@ -1,4 +1,4 @@
-import {getObjectTypedKeys, mapObjectValues} from 'augment-vir';
+import {getObjectTypedKeys, mapObjectValues} from '@augment-vir/common';
 import {CreateDescriptionsCallback} from './command-description';
 import {CommandExecutor, CommandExecutorDefinition} from './command-executor';
 import {

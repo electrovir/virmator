@@ -1,8 +1,8 @@
-import {Color} from '../cli-color';
+import {logColors} from '@augment-vir/node-js';
 
 export function getCommandResultMessage(commandName: string, success: boolean) {
-    const specificColor = success ? Color.Success : Color.Fail;
+    const specificColor = success ? logColors.success : logColors.error;
     const specificPhrase = success ? 'succeeded' : 'failed';
 
-    return `${Color.Bold}${specificColor}${commandName} ${specificPhrase}.${Color.Reset}`;
+    return `${logColors.bold}${specificColor}${commandName} ${specificPhrase}.${logColors.reset}`;
 }

@@ -1,4 +1,4 @@
-import {getObjectTypedKeys, typedHasProperty} from 'augment-vir';
+import {getObjectTypedKeys, typedHasProperty} from '@augment-vir/common';
 import {CommandExecutorInputs} from '../command/command-executor';
 import {CommandLogging, defaultConsoleLogging} from '../command/command-logging';
 import {CommandMapping} from '../command/command-mapping';

@@ -1,8 +1,8 @@
-import {awaitedForEach, extractErrorMessage, Writeable} from 'augment-vir';
+import {awaitedForEach, extractErrorMessage, Writeable} from '@augment-vir/common';
+import {logColors} from '@augment-vir/node-js';
 import {existsSync} from 'fs';
 import {mkdir, readFile, writeFile} from 'fs/promises';
 import {basename, dirname} from 'path';
-import {Color} from '../cli-color';
 import {CommandLogging} from '../command/command-logging';
 import {ConfigFileDefinition} from './config-file-definition';
 import {getCopyToPath} from './config-paths';
@@ -121,15 +121,15 @@ export async function copyAllConfigFiles(inputs: CopyAllConfigFilesInputs): Prom
                 });
                 if (result.shouldWrite) {
                     inputs.logging.stdout(
-                        `${Color.Info}Successfully ${successfulOperation[inputs.operation]}${
-                            Color.Reset
+                        `${logColors.info}Successfully ${successfulOperation[inputs.operation]}${
+                            logColors.reset
                         } ${basename(result.copiedToPath)}`,
                     );
                 }
             } catch (error) {
                 const copyError = new Error(
-                    `${Color.Fail}Failed to ${failedOperation[inputs.operation]}${
-                        Color.Reset
+                    `${logColors.error}Failed to ${failedOperation[inputs.operation]}${
+                        logColors.reset
                     } ${basename(
                         configFile.copyToPathRelativeToRepoDir || configFile.copyFromInternalPath,
                     )}: ${extractErrorMessage(error)}`,

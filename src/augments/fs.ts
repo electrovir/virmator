@@ -1,4 +1,4 @@
-import {awaitedForEach} from 'augment-vir';
+import {awaitedForEach} from '@augment-vir/common';
 import {existsSync} from 'fs';
 import {readdir, readFile, stat, writeFile} from 'fs/promises';
 import {dirname, join, parse as parsePath} from 'path';

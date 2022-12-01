@@ -1,4 +1,4 @@
-import {awaitedForEach} from 'augment-vir';
+import {awaitedForEach} from '@augment-vir/common';
 import {assert} from 'chai';
 import {readdir, unlink} from 'fs/promises';
 import {describe, it} from 'mocha';

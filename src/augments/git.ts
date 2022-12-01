@@ -1,4 +1,4 @@
-import {runShellCommand} from 'augment-vir/dist/cjs/node-only';
+import {runShellCommand} from '@augment-vir/node-js';
 
 export async function doChangesExist(repoDirPath: string): Promise<boolean> {
     const getChangesCommand = `git status --porcelain=v1 2>/dev/null`;

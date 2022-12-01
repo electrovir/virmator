@@ -1,4 +1,4 @@
-import {getObjectTypedKeys, isObject} from 'augment-vir';
+import {getObjectTypedKeys, isObject} from '@augment-vir/common';
 import {basename} from 'path';
 import simpleGit, {SimpleGit} from 'simple-git';
 import {jsonParseOrUndefined} from '../../augments/json';

@@ -1,4 +1,4 @@
-import {isTruthy} from 'augment-vir';
+import {isTruthy} from '@augment-vir/common';
 import {UpdateConfigCallback} from '../../api/config/config-file-definition';
 
 function splitContentsIntoArrayOfLines(input: string): string[] {

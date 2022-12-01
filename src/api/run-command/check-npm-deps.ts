@@ -1,11 +1,10 @@
-import {awaitedForEach, extractErrorMessage, isTruthy} from 'augment-vir';
-import {runShellCommand} from 'augment-vir/dist/cjs/node-only';
+import {awaitedForEach, extractErrorMessage, isTruthy} from '@augment-vir/common';
+import {logColors, runShellCommand} from '@augment-vir/node-js';
 import {existsSync} from 'fs';
 import {readFile} from 'fs/promises';
 import {dirname, join} from 'path';
 import * as semver from 'semver';
 import {systemRootPath} from '../../augments/fs';
-import {Color} from '../cli-color';
 
 export type UpdateDepsInput = Readonly<{
     repoDir: string;
@@ -33,7 +32,7 @@ export async function updateDepsAsNeeded(inputs: UpdateDepsInput): Promise<void>
 
         await awaitedForEach(depsToUpdate, async (depDetails) => {
             const depToInstall = `${depDetails.npmDep}@${depDetails.version}`;
-            console.info(`${Color.Info}Installing ${depToInstall}...`);
+            console.info(`${logColors.info}Installing ${depToInstall}...`);
             await runShellCommand(`npm i -D ${depToInstall}`, {
                 cwd: inputs.repoDir,
                 rejectOnError: true,

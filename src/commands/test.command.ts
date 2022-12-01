@@ -25,7 +25,7 @@ export const testCommandDefinition = defineCommand(
             'mocha-spec-reporter-with-file-names',
             'mocha',
             'nyc',
-            'ts-node',
+            'tsx',
         ],
     } as const,
     ({commandName, packageBinName}) => {

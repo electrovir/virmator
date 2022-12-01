@@ -1,5 +1,5 @@
-import {getObjectTypedKeys, safeMatch} from 'augment-vir';
-import {Color} from '../cli-color';
+import {getObjectTypedKeys, safeMatch} from '@augment-vir/common';
+import {logColors} from '@augment-vir/node-js';
 import {CommandDescription, HelpSection} from './command-help';
 import {CommandMapping} from './command-mapping';
 import {CommandDefinition} from './define-command';
@@ -37,11 +37,11 @@ export function generateHelpMessage(
 const formatting = (<T extends Record<string, Record<HelpMessageSyntax, string>>>(input: T) =>
     input)({
     h1: {
-        [HelpMessageSyntax.Cli]: `${Color.Info}`,
+        [HelpMessageSyntax.Cli]: `${logColors.info}`,
         [HelpMessageSyntax.Markdown]: '# ',
     },
     h2: {
-        [HelpMessageSyntax.Cli]: `${Color.Bold}${Color.Info}`,
+        [HelpMessageSyntax.Cli]: `${logColors.bold}${logColors.info}`,
         [HelpMessageSyntax.Markdown]: '## ',
     },
     h3: {
@@ -49,7 +49,7 @@ const formatting = (<T extends Record<string, Record<HelpMessageSyntax, string>>
         [HelpMessageSyntax.Markdown]: '### ',
     },
     reset: {
-        [HelpMessageSyntax.Cli]: `${Color.Reset}`,
+        [HelpMessageSyntax.Cli]: `${logColors.reset}`,
         [HelpMessageSyntax.Markdown]: '',
     },
     indent: {
@@ -155,10 +155,12 @@ function sectionToString(
 
     const title = section.title ? `${sectionIndent}${header}${section.title}${separator}` : '';
     if (bullets && syntax === HelpMessageSyntax.Markdown) {
-        return `${format('bullet')}${title}${code(
+        const isBlock = section.content.includes('\n');
+
+        return `${format('bullet')}${title}${isBlock ? '\n' : ''}${code(
             section.content,
-            section.content.includes('\n'),
-            syntax === HelpMessageSyntax.Markdown && section.content.includes('\n') ? '    ' : '',
+            isBlock,
+            syntax === HelpMessageSyntax.Markdown && isBlock ? '    ' : '',
             syntax,
         )}`;
     } else {

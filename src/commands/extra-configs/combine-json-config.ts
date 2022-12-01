@@ -1,4 +1,4 @@
-import {isObject} from 'augment-vir';
+import {isObject} from '@augment-vir/common';
 import {UpdateConfigCallback} from '../../api/config/config-file-definition';
 import {deeplyCombineObjects} from '../../augments/object';
 import {formatCode} from '../../augments/prettier';

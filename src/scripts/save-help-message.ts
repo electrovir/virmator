@@ -1,6 +1,6 @@
+import {logColors} from '@augment-vir/node-js';
 import {readFile, writeFile} from 'fs/promises';
 import {virmator} from '..';
-import {Color} from '../api/cli-color';
 import {generateHelpMessage, HelpMessageSyntax} from '../api/command/command-to-help-message';
 import {formatCode} from '../augments/prettier';
 import {virmatorReadme} from '../test/virmator-test-file-paths';
@@ -40,7 +40,7 @@ async function main(args: string[]) {
 
         if (wasReadmeChanged) {
             console.info(
-                `${Color.Bold}${Color.Fail}README usage message is not up to date.${Color.Reset}\nRun ${Color.Info}npm run readme:update${Color.Reset} to update.\n`,
+                `${logColors.bold}${logColors.error}README usage message is not up to date.${logColors.reset}\nRun ${logColors.info}npm run docs:update${logColors.reset} to update.\n`,
             );
             throw new Error(`README not up to date.`);
         }

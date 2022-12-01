@@ -10,7 +10,6 @@ import {testWebCommandDefinition} from './commands/test-web.command';
 import {testCommandDefinition} from './commands/test.command';
 import {updateConfigsCommandDefinition} from './commands/update-configs.command';
 import {virmatorPackageDir} from './file-paths/package-paths';
-export * from './api/cli-color';
 export * from './api/command/command-description';
 export * from './api/command/command-executor';
 export * from './api/command/command-help';

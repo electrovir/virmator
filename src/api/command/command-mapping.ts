@@ -1,4 +1,4 @@
-import {ArrayElement} from 'augment-vir';
+import {ArrayElement} from '@augment-vir/common';
 import {CommandDefinition} from './define-command';
 
 export type CommandMapping = Record<string, CommandDefinition>;

@@ -1,7 +1,6 @@
-import {isTruthy} from 'augment-vir';
-import {interpolationSafeWindowsPath, toPosixPath} from 'augment-vir/dist/cjs/node-only';
+import {isTruthy} from '@augment-vir/common';
+import {interpolationSafeWindowsPath, logColors, toPosixPath} from '@augment-vir/node-js';
 import {relative} from 'path';
-import {Color} from '../cli-color';
 import {
     BashCommandExecutorOutput,
     CommandExecutorInputs,
@@ -33,7 +32,7 @@ export async function runCommandExecutor<DefineCommandInputsGeneric extends Defi
     commandDefinition: CommandDefinition<DefineCommandInputsGeneric>,
     commandInputs: CommandExecutorInputs<DefineCommandInputsGeneric>,
 ): Promise<boolean> {
-    console.info(`${Color.Info}running ${commandDefinition.commandName}...${Color.Reset}`);
+    console.info(`${logColors.info}running ${commandDefinition.commandName}...${logColors.reset}`);
 
     await copyAllConfigFiles({
         logging: commandInputs.logging,
@@ -48,7 +47,9 @@ export async function runCommandExecutor<DefineCommandInputsGeneric extends Defi
     } else {
         const commandString = createCommandString(executorOutput);
         console.log(
-            `${Color.Faint}${toPosixPath(relative(process.cwd(), commandString))}${Color.Reset}`,
+            `${logColors.faint}${toPosixPath(relative(process.cwd(), commandString))}${
+                logColors.reset
+            }`,
         );
         const commandResult = await runVirmatorShellCommand(commandString, {
             repoDir: commandInputs.repoDir,

@@ -1,4 +1,4 @@
-import {createSymLink} from 'augment-vir/dist/cjs/node-only';
+import {createSymLink} from '@augment-vir/node-js';
 import {join} from 'path';
 import {virmatorPackageDir} from '../file-paths/package-paths';
 

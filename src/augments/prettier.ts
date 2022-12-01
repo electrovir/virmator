@@ -6,7 +6,8 @@ export async function formatCode(text: string, filePath: string): Promise<string
     try {
         // if prettier isn't installed yet this will fail
         const {format: prettierFormat} = await import('prettier');
-        const repoPrettierRc = await import(findNearestConfig(process.cwd()));
+        const repoPrettierRc = (await import(findNearestConfig(process.cwd()))).default;
+
         const repoConfig: PrettierOptions = repoPrettierRc as PrettierOptions;
         return prettierFormat(text, {
             ...repoConfig,

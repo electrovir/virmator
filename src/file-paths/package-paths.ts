@@ -1,5 +1,5 @@
-import {extractErrorMessage} from 'augment-vir';
-import {interpolationSafeWindowsPath} from 'augment-vir/dist/cjs/node-only';
+import {extractErrorMessage} from '@augment-vir/common';
+import {interpolationSafeWindowsPath} from '@augment-vir/node-js';
 import {existsSync} from 'fs';
 import {dirname, join} from 'path';
 import {recursivelyUpwardsSearchForDir} from '../augments/fs';

@@ -1,4 +1,4 @@
-import {ArrayElement, extractErrorMessage} from 'augment-vir';
+import {ArrayElement, extractErrorMessage} from '@augment-vir/common';
 import {extractAllConfigs} from './command/command-configs';
 import {CommandDefinitionArrayToMapping, commandsToMapping} from './command/command-mapping';
 import {generateHelpMessage, HelpMessageSyntax} from './command/command-to-help-message';

@@ -82,14 +82,15 @@ Any other arguments encountered between the operation command (if provided) and 
 
     ```
     virmator format
-        virmator format
+    virmator format
     ```
 
 -   examples with extra Prettier flags:
+
     ```
     virmator format --ignore-path .prettierignore
-        virmator format --ignore-path .prettierignore
-        virmator format --ignore-path .prettierignore --file-types md json
+    virmator format --ignore-path .prettierignore
+    virmator format --ignore-path .prettierignore --file-types md json
     ```
 
 ### check

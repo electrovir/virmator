@@ -1,4 +1,4 @@
-import {getObjectTypedValues} from 'augment-vir';
+import {getObjectTypedValues} from '@augment-vir/common';
 import {ConfigFileDefinition} from '../config/config-file-definition';
 import {CommandMapping} from './command-mapping';
 

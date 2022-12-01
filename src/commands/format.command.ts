@@ -82,13 +82,13 @@ export const formatCommandDefinition = defineCommand(
                 {
                     title: 'fixes formatting for files',
                     content: `${packageBinName} ${commandName}
-    ${packageBinName} ${commandName}`,
+${packageBinName} ${commandName}`,
                 },
                 {
                     title: `examples with extra Prettier flags`,
                     content: `${packageBinName} ${commandName} --ignore-path .prettierignore
-    ${packageBinName} ${commandName} --ignore-path .prettierignore
-    ${packageBinName} ${commandName} --ignore-path .prettierignore ${filesMarkerArg} md json`,
+${packageBinName} ${commandName} --ignore-path .prettierignore
+${packageBinName} ${commandName} --ignore-path .prettierignore ${filesMarkerArg} md json`,
                 },
             ],
         };

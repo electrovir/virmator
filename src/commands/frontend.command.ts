@@ -18,7 +18,7 @@ export const frontendCommandDefinition = defineCommand(
         },
         npmDeps: [
             'vite',
-            'ansi-colors',
+            '@augment-vir/node-js',
         ],
     } as const,
     () => {

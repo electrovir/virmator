@@ -1,5 +1,5 @@
-import {awaitedForEach, getObjectTypedKeys, joinWithFinalConjunction} from 'augment-vir';
-import {runShellCommand} from 'augment-vir/dist/cjs/node-only';
+import {awaitedForEach, getObjectTypedKeys, joinWithFinalConjunction} from '@augment-vir/common';
+import {runShellCommand} from '@augment-vir/node-js';
 import {existsSync} from 'fs';
 import {writeFile} from 'fs/promises';
 import glob from 'glob';

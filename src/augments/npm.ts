@@ -1,8 +1,8 @@
-import {extractErrorMessage, RequiredAndNotNullBy} from 'augment-vir';
+import {extractErrorMessage, RequiredAndNotNullBy} from '@augment-vir/common';
 import {existsSync} from 'fs';
 import {readFile} from 'fs/promises';
 import {dirname, join} from 'path';
-import {PackageJson} from 'type-fest';
+import type {PackageJson} from 'type-fest';
 import {systemRootPath} from './fs';
 
 export type CleanPackageJson = Readonly<

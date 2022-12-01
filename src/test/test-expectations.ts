@@ -1,4 +1,4 @@
-import {extractErrorMessage, isObject, typedHasProperty} from 'augment-vir';
+import {extractErrorMessage, isObject, typedHasProperty} from '@augment-vir/common';
 import {existsSync, statSync} from 'fs';
 import {readFile, writeFile} from 'fs/promises';
 import {join} from 'path';
