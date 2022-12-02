@@ -198,6 +198,7 @@ async function bumpPackageVersion(
     newPackageJson.version = newVersion;
 
     await writeFile(packageJsonPath, JSON.stringify(newPackageJson, null, 4) + '\n');
+    await runShellCommand('npm i', {cwd: dirname(packageJsonPath), rejectOnError: true});
 }
 
 function getWorkspaceDirs(
