@@ -6,7 +6,7 @@ const oneMinuteMs = 60_000;
 /** @type {import('mocha').MochaOptions} */
 const mochaConfig = {
     ...baseOptions,
-    slow: 30_000, // ms
+    slow: oneMinuteMs,
     timeout: 20 * oneMinuteMs,
     // heavy modification of files requires parallel to be off
     parallel: false,

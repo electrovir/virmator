@@ -1,4 +1,5 @@
 *.tgz
+*.tsbuildinfo
 .DS_Store
 /Icon?
 coverage/

@@ -1,7 +1,9 @@
 {
     "compilerOptions": {
         "alwaysStrict": true,
+        "composite": true,
         "declaration": true,
+        "declarationMap": true,
         "esModuleInterop": true,
         "exactOptionalPropertyTypes": true,
         "experimentalDecorators": true,
@@ -9,7 +11,7 @@
         "isolatedModules": true,
         "module": "CommonJS",
         "moduleResolution": "Node",
-        "noEmitOnError": true,
+        "noEmitOnError": false,
         "noErrorTruncation": true,
         "noImplicitAny": true,
         "noImplicitOverride": true,

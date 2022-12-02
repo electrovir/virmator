@@ -17,6 +17,7 @@ export const testCommandDefinition = defineCommand(
             },
         },
         npmDeps: [
+            '@electrovir/nyc',
             '@istanbuljs/nyc-config-typescript',
             '@types/chai',
             '@types/mocha',
@@ -24,7 +25,6 @@ export const testCommandDefinition = defineCommand(
             'istanbul-smart-text-reporter',
             'mocha-spec-reporter-with-file-names',
             'mocha',
-            'nyc',
             'tsx',
         ],
     } as const,

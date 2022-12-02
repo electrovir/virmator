@@ -2,6 +2,8 @@ import {esbuildPlugin} from '@web/dev-server-esbuild';
 import {playwrightLauncher} from '@web/test-runner-playwright';
 import testFiles from './test-files-glob.js';
 
+const oneMinuteMs = 60_000;
+
 /** @type {import('@web/test-runner').TestRunnerConfig} */
 const webTestRunnerConfig = {
     browsers: [
@@ -9,8 +11,7 @@ const webTestRunnerConfig = {
         playwrightLauncher({product: 'firefox'}),
         playwrightLauncher({product: 'webkit'}),
     ],
-    // 2 minutes cause GitHub Actions be slow
-    browserStartTimeout: 120_000,
+    browserStartTimeout: 20 * oneMinuteMs,
     concurrentBrowsers: 3,
     coverage: true,
     files: testFiles.spec,
@@ -18,7 +19,7 @@ const webTestRunnerConfig = {
     plugins: [esbuildPlugin({ts: true})],
     testFramework: {
         config: {
-            timeout: 120_000,
+            timeout: 20 * oneMinuteMs,
         },
     },
 };

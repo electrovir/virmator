@@ -2,9 +2,16 @@
 
 function getBaseConfigWithCoveragePercent(percent) {
     return {
+        // only works with @electrovir/nyc
+        failBelow: percent,
+
+        branches: percent,
+        functions: percent,
+        lines: percent,
+        statements: percent,
+
         extends: '@istanbuljs/nyc-config-typescript',
         all: true,
-        branches: percent,
         clean: true,
         cache: false,
         instrument: true,
@@ -17,9 +24,7 @@ function getBaseConfigWithCoveragePercent(percent) {
             '**/*.type.test.ts',
             '**/*.test-helper.ts',
         ],
-        functions: percent,
         include: ['src/**/*.ts'],
-        lines: percent,
         // so we don't get error messages printed for every file
         perFile: false,
         reporter: [
@@ -28,7 +33,6 @@ function getBaseConfigWithCoveragePercent(percent) {
         ],
         skipEmpty: true,
         skipFull: true,
-        statements: percent,
         tempDir: './node_modules/.nyc-output/',
     };
 }

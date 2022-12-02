@@ -46,7 +46,7 @@ export const compileCommandDefinition = defineCommand(
         const mainCommand = await getNpmBinPath(inputs.repoDir, 'tsc');
 
         return {
-            mainCommand,
+            mainCommand: `rm -rf dist && rm -f ./*.tsbuildinfo && ${mainCommand}`,
             args: [
                 '--pretty',
                 noEmit,
