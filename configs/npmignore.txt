@@ -14,5 +14,6 @@
 /public/
 /src/
 bash-scripts/
+index.html
 test-files/
 tsconfig*.json

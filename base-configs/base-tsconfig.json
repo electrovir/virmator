@@ -25,5 +25,11 @@
         "strict": true,
         "target": "ES2019",
         "useUnknownInCatchVariables": true
+    },
+    "ts-node": {
+        "transpileOnly": true,
+        "compilerOptions": {
+            "module": "CommonJS"
+        }
     }
 }

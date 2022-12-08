@@ -10,5 +10,8 @@
         "./dist/",
         "./node_modules/",
         "./test-files/"
-    ]
+    ],
+    "ts-node": {
+        "transpileOnly": true
+    }
 }

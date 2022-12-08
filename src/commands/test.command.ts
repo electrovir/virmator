@@ -25,7 +25,7 @@ export const testCommandDefinition = defineCommand(
             'istanbul-smart-text-reporter',
             'mocha-spec-reporter-with-file-names',
             'mocha',
-            'tsx',
+            'ts-node',
         ],
     } as const,
     ({commandName, packageBinName}) => {

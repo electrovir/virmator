@@ -1,6 +1,6 @@
 {
     "name": "virmator",
-    "version": "5.0.3",
+    "version": "5.0.4",
     "description": "Handle common package configs, commands, and dependencies.",
     "keywords": [
         "automation",
@@ -30,8 +30,8 @@
     "bin": "dist/cli.js",
     "scripts": {
         "compile": "rm -rf dist && rm -f ./*.tsbuildinfo && tsc",
-        "docs:check": "npm run compile && tsx src/scripts/save-help-message.ts check && md-code --check README.md",
-        "docs:update": "npm run compile && tsx src/scripts/save-help-message.ts && md-code README.md",
+        "docs:check": "npm run compile && ts-node src/scripts/save-help-message.ts check && md-code --check README.md",
+        "docs:update": "npm run compile && ts-node src/scripts/save-help-message.ts && md-code README.md",
         "format": "npm run format:base -- --write --list-different",
         "format:base": "prettier \"./**/*.+(ts|json|html|css|md|js)\"",
         "prepublishOnly": "npm run test:all",
@@ -39,7 +39,7 @@
         "test": "bash src/scripts/run-tests.sh",
         "test:all": "npm run test && npm run spellcheck -- --no-progress && npm run test:format && npm run docs:check",
         "test:format": "npm run format:base -- --check",
-        "test:help": "tsx src/cli/cli.ts --help",
+        "test:help": "ts-node src/cli/cli.ts --help",
         "test:types": "tsc --noEmit"
     },
     "dependencies": {
@@ -78,8 +78,8 @@
         "prettier-plugin-packagejson": "^2.3.0",
         "prettier-plugin-sort-json": "^0.0.3",
         "prettier-plugin-toml": "^0.3.1",
+        "ts-node": "^10.9.1",
         "tsconfig-paths": "^4.1.1",
-        "tsx": "^3.12.1",
         "type-fest": "^3.3.0",
         "typescript": "^4.9.4",
         "vite": "^3.2.5"
