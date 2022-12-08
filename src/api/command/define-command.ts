@@ -12,6 +12,11 @@ export type CommandDefinition<
 > = SharedExecutorInputsAndCommandDefinition<DefineCommandInputsGeneric> & {
     executor: CommandExecutor<DefineCommandInputsGeneric>;
     createDescription: CreateDescriptionsCallback<DefineCommandInputsGeneric>;
+    extend: (inputs: {
+        defineCommandInputs: Readonly<DefineCommandInputsGeneric>;
+        createDescription: CreateDescriptionsCallback<DefineCommandInputsGeneric>;
+        inputExecutor: CommandExecutorDefinition<DefineCommandInputsGeneric>;
+    }) => CommandDefinition<DefineCommandInputsGeneric>;
 };
 
 export function defineCommand<DefineCommandInputsGeneric extends DefineCommandInputs>(
@@ -40,9 +45,37 @@ export function defineCommand<DefineCommandInputsGeneric extends DefineCommandIn
         });
     };
 
+    function extend(
+        inputs: Partial<{
+            defineCommandInputs: Readonly<DefineCommandInputsGeneric>;
+            createDescription: CreateDescriptionsCallback<DefineCommandInputsGeneric>;
+            inputExecutor: CommandExecutorDefinition<DefineCommandInputsGeneric>;
+        }>,
+    ) {
+        return defineCommand(
+            {
+                ...defineCommandInputs,
+                ...inputs.defineCommandInputs,
+            },
+            (callbackInputs) => {
+                return {
+                    ...createDescription(callbackInputs),
+                    ...inputs.createDescription?.(callbackInputs),
+                };
+            },
+            (callbackInputs) => {
+                return {
+                    ...inputExecutor(callbackInputs),
+                    ...inputs.inputExecutor?.(callbackInputs),
+                };
+            },
+        );
+    }
+
     return {
         ...init,
         executor,
         createDescription,
+        extend,
     };
 }
