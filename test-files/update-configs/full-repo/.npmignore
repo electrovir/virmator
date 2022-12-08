@@ -1,5 +1,6 @@
 **/*/readme-examples/
 **/*/test/
+*.d.ts.map
 *.test-helper.*
 *.test.*
 *.tgz

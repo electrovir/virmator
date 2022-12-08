@@ -5,21 +5,21 @@
             "exitCode": 1,
             "key": "outdated-dir-check-fail",
             "stderr": "README-broken.md: NOT up to date Code in Markdown file(s) is out of date. Run without the \"check\" sub-command in order to update. code-in-markdown failed.",
-            "stdout": "Installing markdown-code-example-inserter@0.1.11... running code-in-markdown... node_modules/.bin/md-code --check \"./**/*.md\" Checking that code in markdown is up to date: README-fixed.md: up to date"
+            "stdout": "Installing markdown-code-example-inserter@0.1.12... running code-in-markdown... node_modules/.bin/md-code --check \"./**/*.md\" Checking that code in markdown is up to date: README-fixed.md: up to date"
         },
         "up-to-date-single-file-check-pass": {
             "dir": "code-in-markdown",
             "exitCode": 0,
             "key": "up-to-date-single-file-check-pass",
             "stderr": "",
-            "stdout": "Installing markdown-code-example-inserter@0.1.11... running code-in-markdown... node_modules/.bin/md-code --check README-fixed.md Checking that code in markdown is up to date: README-fixed.md: up to date code-in-markdown succeeded."
+            "stdout": "Installing markdown-code-example-inserter@0.1.12... running code-in-markdown... node_modules/.bin/md-code --check README-fixed.md Checking that code in markdown is up to date: README-fixed.md: up to date code-in-markdown succeeded."
         },
         "outdated-single-file-check-fail": {
             "dir": "code-in-markdown",
             "exitCode": 1,
             "key": "outdated-single-file-check-fail",
             "stderr": "README-broken.md: NOT up to date Code in Markdown file(s) is out of date. Run without the \"check\" sub-command in order to update. code-in-markdown failed.",
-            "stdout": "Installing markdown-code-example-inserter@0.1.11... running code-in-markdown... node_modules/.bin/md-code --check README-broken.md Checking that code in markdown is up to date:"
+            "stdout": "Installing markdown-code-example-inserter@0.1.12... running code-in-markdown... node_modules/.bin/md-code --check README-broken.md Checking that code in markdown is up to date:"
         },
         "check should fail before running update": {
             "dir": "code-in-markdown",
@@ -33,56 +33,56 @@
             "exitCode": 0,
             "key": "update should pass",
             "stderr": "",
-            "stdout": "Installing markdown-code-example-inserter@0.1.11... running code-in-markdown... node_modules/.bin/md-code \"./**/*.md\" Inserting code into markdown: README-broken.md README-fixed.md code-in-markdown succeeded."
+            "stdout": "Installing markdown-code-example-inserter@0.1.12... running code-in-markdown... node_modules/.bin/md-code \"./**/*.md\" Inserting code into markdown: README-broken.md README-fixed.md code-in-markdown succeeded."
         },
         "check should pass after update": {
             "dir": "code-in-markdown",
             "exitCode": 0,
             "key": "check should pass after update",
             "stderr": "",
-            "stdout": "Installing markdown-code-example-inserter@0.1.11... running code-in-markdown... node_modules/.bin/md-code --check \"./**/*.md\" Checking that code in markdown is up to date: README-broken.md: up to date README-fixed.md: up to date code-in-markdown succeeded."
+            "stdout": "Installing markdown-code-example-inserter@0.1.12... running code-in-markdown... node_modules/.bin/md-code --check \"./**/*.md\" Checking that code in markdown is up to date: README-broken.md: up to date README-fixed.md: up to date code-in-markdown succeeded."
         },
         "check should fail after reverting": {
             "dir": "code-in-markdown",
             "exitCode": 1,
             "key": "check should fail after reverting",
             "stderr": "README-broken.md: NOT up to date Code in Markdown file(s) is out of date. Run without the \"check\" sub-command in order to update. code-in-markdown failed.",
-            "stdout": "Installing markdown-code-example-inserter@0.1.11... running code-in-markdown... node_modules/.bin/md-code --check \"./**/*.md\" Checking that code in markdown is up to date: README-fixed.md: up to date"
+            "stdout": "Installing markdown-code-example-inserter@0.1.12... running code-in-markdown... node_modules/.bin/md-code --check \"./**/*.md\" Checking that code in markdown is up to date: README-fixed.md: up to date"
         },
         "check should fail before running single file update": {
             "dir": "code-in-markdown",
             "exitCode": 1,
             "key": "check should fail before running single file update",
             "stderr": "README-broken.md: NOT up to date Code in Markdown file(s) is out of date. Run without the \"check\" sub-command in order to update. code-in-markdown failed.",
-            "stdout": "Installing markdown-code-example-inserter@0.1.11... running code-in-markdown... node_modules/.bin/md-code --check \"./**/*.md\" Checking that code in markdown is up to date: README-fixed.md: up to date"
+            "stdout": "Installing markdown-code-example-inserter@0.1.12... running code-in-markdown... node_modules/.bin/md-code --check \"./**/*.md\" Checking that code in markdown is up to date: README-fixed.md: up to date"
         },
         "single file check should fail before running update": {
             "dir": "code-in-markdown",
             "exitCode": 1,
             "key": "single file check should fail before running update",
             "stderr": "README-broken.md: NOT up to date Code in Markdown file(s) is out of date. Run without the \"check\" sub-command in order to update. code-in-markdown failed.",
-            "stdout": "Installing markdown-code-example-inserter@0.1.11... running code-in-markdown... node_modules/.bin/md-code --check README-broken.md Checking that code in markdown is up to date:"
+            "stdout": "Installing markdown-code-example-inserter@0.1.12... running code-in-markdown... node_modules/.bin/md-code --check README-broken.md Checking that code in markdown is up to date:"
         },
         "single file update should pass": {
             "dir": "code-in-markdown",
             "exitCode": 0,
             "key": "single file update should pass",
             "stderr": "",
-            "stdout": "Installing markdown-code-example-inserter@0.1.11... running code-in-markdown... node_modules/.bin/md-code README-broken.md Inserting code into markdown: README-broken.md code-in-markdown succeeded."
+            "stdout": "Installing markdown-code-example-inserter@0.1.12... running code-in-markdown... node_modules/.bin/md-code README-broken.md Inserting code into markdown: README-broken.md code-in-markdown succeeded."
         },
         "single file check should pass after update": {
             "dir": "code-in-markdown",
             "exitCode": 0,
             "key": "single file check should pass after update",
             "stderr": "",
-            "stdout": "Installing markdown-code-example-inserter@0.1.11... running code-in-markdown... node_modules/.bin/md-code --check README-broken.md Checking that code in markdown is up to date: README-broken.md: up to date code-in-markdown succeeded."
+            "stdout": "Installing markdown-code-example-inserter@0.1.12... running code-in-markdown... node_modules/.bin/md-code --check README-broken.md Checking that code in markdown is up to date: README-broken.md: up to date code-in-markdown succeeded."
         },
         "single file check should fail after reverting": {
             "dir": "code-in-markdown",
             "exitCode": 1,
             "key": "single file check should fail after reverting",
             "stderr": "README-broken.md: NOT up to date Code in Markdown file(s) is out of date. Run without the \"check\" sub-command in order to update. code-in-markdown failed.",
-            "stdout": "Installing markdown-code-example-inserter@0.1.11... running code-in-markdown... node_modules/.bin/md-code --check README-broken.md Checking that code in markdown is up to date:"
+            "stdout": "Installing markdown-code-example-inserter@0.1.12... running code-in-markdown... node_modules/.bin/md-code --check README-broken.md Checking that code in markdown is up to date:"
         }
     },
     "compile": {
@@ -91,21 +91,21 @@
             "exitCode": 1,
             "key": "compile-errors-failure",
             "stderr": "compile failed.",
-            "stdout": "Installing typescript@4.9.3... running compile... rm -rf dist && rm -f ./*.tsbuildinfo && ./test-files/compile/invalid-compile-repo/node_modules/.bin/tsc --pretty --noEmit bad-blah.ts:2:18 - error TS2448: Block-scoped variable 'derp' used before its declaration. 2 console.info(derp); ~~~~ bad-blah.ts:3:11 3 const derp = 'hello'; ~~~~ 'derp' is declared here. bad-blah.ts:2:18 - error TS2454: Variable 'derp' is used before being assigned. 2 console.info(derp); ~~~~ Found 2 errors in the same file, starting at: bad-blah.ts:2"
+            "stdout": "Installing typescript@4.9.4... running compile... rm -rf dist && rm -f ./*.tsbuildinfo && ./test-files/compile/invalid-compile-repo/node_modules/.bin/tsc --pretty --noEmit bad-blah.ts:2:18 - error TS2448: Block-scoped variable 'derp' used before its declaration. 2 console.info(derp); ~~~~ bad-blah.ts:3:11 3 const derp = 'hello'; ~~~~ 'derp' is declared here. bad-blah.ts:2:18 - error TS2454: Variable 'derp' is used before being assigned. 2 console.info(derp); ~~~~ Found 2 errors in the same file, starting at: bad-blah.ts:2"
         },
         "no-compile-errors-pass": {
             "dir": "compile/valid-compile-repo",
             "exitCode": 0,
             "key": "no-compile-errors-pass",
             "stderr": "",
-            "stdout": "Installing typescript@4.9.3... running compile... rm -rf dist && rm -f ./*.tsbuildinfo && ./test-files/compile/valid-compile-repo/node_modules/.bin/tsc --pretty --noEmit compile succeeded."
+            "stdout": "Installing typescript@4.9.4... running compile... rm -rf dist && rm -f ./*.tsbuildinfo && ./test-files/compile/valid-compile-repo/node_modules/.bin/tsc --pretty --noEmit compile succeeded."
         },
         "compile-no-errors-with-output": {
             "dir": "compile/valid-compile-repo",
             "exitCode": 0,
             "key": "compile-no-errors-with-output",
             "stderr": "",
-            "stdout": "Installing typescript@4.9.3... running compile... tsc --pretty compile succeeded."
+            "stdout": "Installing typescript@4.9.4... running compile... tsc --pretty compile succeeded."
         }
     },
     "format": {
@@ -114,21 +114,21 @@
             "exitCode": 1,
             "key": "fail on format failures in a folder",
             "stderr": "[warn] invalid-format.ts [warn] Code style issues found in the above file. Forgot to run Prettier? format failed.",
-            "stdout": "Installing prettier@2.8.0... Installing prettier-plugin-jsdoc@0.4.2... Installing prettier-plugin-multiline-arrays@1.1.1... Installing prettier-plugin-organize-imports@3.2.1... Installing prettier-plugin-packagejson@2.3.0... Installing prettier-plugin-sort-json@0.0.3... Installing prettier-plugin-toml@0.3.1... running format... Successfully copied .prettierignore Successfully copied .prettierrc.js node_modules/.bin/prettier --color \"./**/*.+(cjs|css|graphql|html|js|json|jsx|less|md|mjs|scss|toml|ts|tsx|yaml|yml)\" --check"
+            "stdout": "Installing prettier@2.8.1... Installing prettier-plugin-jsdoc@0.4.2... Installing prettier-plugin-multiline-arrays@1.1.2... Installing prettier-plugin-organize-imports@3.2.1... Installing prettier-plugin-packagejson@2.3.0... Installing prettier-plugin-sort-json@0.0.3... Installing prettier-plugin-toml@0.3.1... running format... Successfully copied .prettierignore Successfully copied .prettierrc.js node_modules/.bin/prettier --color \"./**/*.+(cjs|css|graphql|html|js|json|jsx|less|md|mjs|scss|toml|ts|tsx|yaml|yml)\" --check"
         },
         "pass format when there are zero errors": {
             "dir": "format/valid-format-repo",
             "exitCode": 0,
             "key": "pass format when there are zero errors",
             "stderr": "",
-            "stdout": "Installing prettier@2.8.0... Installing prettier-plugin-jsdoc@0.4.2... Installing prettier-plugin-multiline-arrays@1.1.1... Installing prettier-plugin-organize-imports@3.2.1... Installing prettier-plugin-packagejson@2.3.0... Installing prettier-plugin-sort-json@0.0.3... Installing prettier-plugin-toml@0.3.1... running format... Successfully copied .prettierignore Successfully copied .prettierrc.js node_modules/.bin/prettier --color \"./**/*.+(cjs|css|graphql|html|js|json|jsx|less|md|mjs|scss|toml|ts|tsx|yaml|yml)\" --check format succeeded."
+            "stdout": "Installing prettier@2.8.1... Installing prettier-plugin-jsdoc@0.4.2... Installing prettier-plugin-multiline-arrays@1.1.2... Installing prettier-plugin-organize-imports@3.2.1... Installing prettier-plugin-packagejson@2.3.0... Installing prettier-plugin-sort-json@0.0.3... Installing prettier-plugin-toml@0.3.1... running format... Successfully copied .prettierignore Successfully copied .prettierrc.js node_modules/.bin/prettier --color \"./**/*.+(cjs|css|graphql|html|js|json|jsx|less|md|mjs|scss|toml|ts|tsx|yaml|yml)\" --check format succeeded."
         },
         "format should update invalid files": {
             "dir": "format/invalid-format-repo",
             "exitCode": 0,
             "key": "format should update invalid files",
             "stderr": "",
-            "stdout": "Installing prettier@2.8.0... Installing prettier-plugin-jsdoc@0.4.2... Installing prettier-plugin-multiline-arrays@1.1.1... Installing prettier-plugin-organize-imports@3.2.1... Installing prettier-plugin-packagejson@2.3.0... Installing prettier-plugin-sort-json@0.0.3... Installing prettier-plugin-toml@0.3.1... running format... Successfully copied .prettierignore Successfully copied .prettierrc.js node_modules/.bin/prettier --color --list-different \"./**/*.+(cjs|css|graphql|html|js|json|jsx|less|md|mjs|scss|toml|ts|tsx|yaml|yml)\" --write invalid-format.ts format succeeded."
+            "stdout": "Installing prettier@2.8.1... Installing prettier-plugin-jsdoc@0.4.2... Installing prettier-plugin-multiline-arrays@1.1.2... Installing prettier-plugin-organize-imports@3.2.1... Installing prettier-plugin-packagejson@2.3.0... Installing prettier-plugin-sort-json@0.0.3... Installing prettier-plugin-toml@0.3.1... running format... Successfully copied .prettierignore Successfully copied .prettierrc.js node_modules/.bin/prettier --color --list-different \"./**/*.+(cjs|css|graphql|html|js|json|jsx|less|md|mjs|scss|toml|ts|tsx|yaml|yml)\" --write invalid-format.ts format succeeded."
         }
     },
     "spellcheck": {
@@ -137,21 +137,21 @@
             "exitCode": 1,
             "key": "typos-exist",
             "stderr": "CSpell: Files checked: 3, Issues found: 2 in 1 files spellcheck failed.",
-            "stdout": "Installing cspell@6.15.1... running spellcheck... Successfully copied cspell.config.js node_modules/.bin/cspell --config cspell.config.js --color --unique --no-progress --relative --dot \"**/*\" ./stuff.js:1:12 - Unknown word (Stff) ./stuff.js:2:25 - Unknown word (thre)"
+            "stdout": "Installing cspell@6.17.0... running spellcheck... Successfully copied cspell.config.js node_modules/.bin/cspell --config cspell.config.js --color --unique --no-progress --relative --dot \"**/*\" ./stuff.js:1:12 - Unknown word (Stff) ./stuff.js:2:25 - Unknown word (thre)"
         },
         "no-typos": {
             "dir": "spellcheck/valid-spellcheck-repo",
             "exitCode": 0,
             "key": "no-typos",
             "stderr": "CSpell: Files checked: 3, Issues found: 0 in 0 files",
-            "stdout": "Installing cspell@6.15.1... running spellcheck... Successfully copied cspell.config.js node_modules/.bin/cspell --config cspell.config.js --color --unique --no-progress --relative --dot \"**/*\" spellcheck succeeded."
+            "stdout": "Installing cspell@6.17.0... running spellcheck... Successfully copied cspell.config.js node_modules/.bin/cspell --config cspell.config.js --color --unique --no-progress --relative --dot \"**/*\" spellcheck succeeded."
         },
         "dot-files": {
             "dir": "spellcheck/hidden-stuff-spellcheck-repo",
             "exitCode": 0,
             "key": "dot-files",
             "stderr": "CSpell: Files checked: 12, Issues found: 0 in 0 files",
-            "stdout": "Installing cspell@6.15.1... running spellcheck... Successfully copied cspell.config.js node_modules/.bin/cspell --config cspell.config.js --color --unique --no-progress --relative --dot \"**/*\" spellcheck succeeded."
+            "stdout": "Installing cspell@6.17.0... running spellcheck... Successfully copied cspell.config.js node_modules/.bin/cspell --config cspell.config.js --color --unique --no-progress --relative --dot \"**/*\" spellcheck succeeded."
         }
     },
     "init": {
@@ -160,14 +160,14 @@
             "exitCode": 0,
             "key": "init with files to upgrade",
             "stderr": "",
-            "stdout": "Installing prettier@2.8.0... Installing prettier-plugin-jsdoc@0.4.2... Installing prettier-plugin-multiline-arrays@1.1.1... Installing prettier-plugin-organize-imports@3.2.1... Installing prettier-plugin-packagejson@2.3.0... Installing prettier-plugin-sort-json@0.0.3... Installing prettier-plugin-toml@0.3.1... running init... Successfully copied .gitattributes Successfully copied .gitignore Successfully copied .npmignore Successfully copied .nvmrc Successfully copied .prettierignore Successfully copied .prettierrc.js Successfully copied build-for-gh-pages.yml Successfully copied cspell.config.js Successfully copied index.css Successfully copied index.html Successfully copied mocha.config.js Successfully copied nyc.config.js Successfully copied package.json Successfully copied settings.json Successfully copied tagged-release.yml Successfully copied tests.yml Successfully copied tsconfig.json Successfully copied vite.config.ts Successfully copied web-test-runner.config.mjs init succeeded."
+            "stdout": "Installing prettier@2.8.1... Installing prettier-plugin-jsdoc@0.4.2... Installing prettier-plugin-multiline-arrays@1.1.2... Installing prettier-plugin-organize-imports@3.2.1... Installing prettier-plugin-packagejson@2.3.0... Installing prettier-plugin-sort-json@0.0.3... Installing prettier-plugin-toml@0.3.1... running init... Successfully copied .gitattributes Successfully copied .gitignore Successfully copied .npmignore Successfully copied .nvmrc Successfully copied .prettierignore Successfully copied .prettierrc.js Successfully copied build-for-gh-pages.yml Successfully copied cspell.config.js Successfully copied index.css Successfully copied index.html Successfully copied mocha.config.js Successfully copied nyc.config.js Successfully copied package.json Successfully copied settings.json Successfully copied tagged-release.yml Successfully copied tests.yml Successfully copied tsconfig.json Successfully copied vite.config.ts Successfully copied web-test-runner.config.mjs init succeeded."
         },
         "basic-init": {
             "dir": "init/empty-repo",
             "exitCode": 0,
             "key": "basic-init",
             "stderr": "",
-            "stdout": "Installing prettier@2.8.0... Installing prettier-plugin-jsdoc@0.4.2... Installing prettier-plugin-multiline-arrays@1.1.1... Installing prettier-plugin-organize-imports@3.2.1... Installing prettier-plugin-packagejson@2.3.0... Installing prettier-plugin-sort-json@0.0.3... Installing prettier-plugin-toml@0.3.1... running init... Successfully copied .gitattributes Successfully copied .gitignore Successfully copied .npmignore Successfully copied .nvmrc Successfully copied .prettierignore Successfully copied .prettierrc.js Successfully copied build-for-gh-pages.yml Successfully copied cspell.config.js Successfully copied index.css Successfully copied index.html Successfully copied mocha.config.js Successfully copied nyc.config.js Successfully copied package.json Successfully copied settings.json Successfully copied tagged-release.yml Successfully copied tests.yml Successfully copied tsconfig.json Successfully copied vite.config.ts Successfully copied web-test-runner.config.mjs init succeeded."
+            "stdout": "Installing prettier@2.8.1... Installing prettier-plugin-jsdoc@0.4.2... Installing prettier-plugin-multiline-arrays@1.1.2... Installing prettier-plugin-organize-imports@3.2.1... Installing prettier-plugin-packagejson@2.3.0... Installing prettier-plugin-sort-json@0.0.3... Installing prettier-plugin-toml@0.3.1... running init... Successfully copied .gitattributes Successfully copied .gitignore Successfully copied .npmignore Successfully copied .nvmrc Successfully copied .prettierignore Successfully copied .prettierrc.js Successfully copied build-for-gh-pages.yml Successfully copied cspell.config.js Successfully copied index.css Successfully copied index.html Successfully copied mocha.config.js Successfully copied nyc.config.js Successfully copied package.json Successfully copied settings.json Successfully copied tagged-release.yml Successfully copied tests.yml Successfully copied tsconfig.json Successfully copied vite.config.ts Successfully copied web-test-runner.config.mjs init succeeded."
         }
     },
     "test": {
