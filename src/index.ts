@@ -21,6 +21,7 @@ export * from './api/command/define-command';
 export * from './api/command/define-command-inputs';
 export * from './api/config/config-file-definition';
 export * from './api/config/config-paths';
+export * from './api/create-virmator';
 export * from './api/virmator-types';
 export * from './commands/extra-configs/combine-text-config';
 
