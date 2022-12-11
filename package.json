@@ -1,6 +1,6 @@
 {
     "name": "virmator",
-    "version": "5.0.7",
+    "version": "5.0.8",
     "description": "Handle common package configs, commands, and dependencies.",
     "keywords": [
         "automation",
@@ -58,7 +58,7 @@
         "@types/fs-extra": "^9.0.13",
         "@types/glob": "^8.0.0",
         "@types/mocha": "^10.0.1",
-        "@types/node": "^18.11.12",
+        "@types/node": "^18.11.13",
         "@types/semver": "^7.3.13",
         "@web/dev-server-esbuild": "^0.3.3",
         "@web/test-runner": "^0.15.0",
@@ -70,7 +70,7 @@
         "istanbul-smart-text-reporter": "^1.0.1",
         "markdown-code-example-inserter": "^0.1.13",
         "mocha": "^10.1.0",
-        "mocha-spec-reporter-with-file-names": "^0.0.2",
+        "mocha-spec-reporter-with-file-names": "^0.0.3",
         "prettier": "^2.8.1",
         "prettier-plugin-jsdoc": "^0.4.2",
         "prettier-plugin-multiline-arrays": "^1.1.2",
