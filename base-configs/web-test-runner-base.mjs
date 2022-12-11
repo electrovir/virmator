@@ -1,4 +1,5 @@
 import {esbuildPlugin} from '@web/dev-server-esbuild';
+import {defaultReporter} from '@web/test-runner';
 import {playwrightLauncher} from '@web/test-runner-playwright';
 import testFiles from './test-files-glob.js';
 
@@ -22,6 +23,9 @@ const webTestRunnerConfig = {
             timeout: 20 * oneMinuteMs,
         },
     },
+    reporters: [
+        defaultReporter({reportTestResults: true, reportTestProgress: false}),
+    ],
 };
 
 export default webTestRunnerConfig;

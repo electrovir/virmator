@@ -65,9 +65,6 @@ export const testWebCommandDefinition = defineCommand(
 
         return {
             mainCommand: await getNpmBinPath(inputs.repoDir, 'web-test-runner'),
-            logTransforms: {
-                stdout: testWebTransform,
-            },
             args: [
                 '--color',
                 configString,
@@ -76,8 +73,3 @@ export const testWebCommandDefinition = defineCommand(
         };
     },
 );
-
-function testWebTransform(input: string): string {
-    // remove annoying progress messages
-    return input.replace(/[^\n]+█[^\n]+\n/g, '').replace(/Running tests\.\.\./g, '');
-}
