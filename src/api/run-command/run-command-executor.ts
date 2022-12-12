@@ -46,7 +46,7 @@ export async function runCommandExecutor<DefineCommandInputsGeneric extends Defi
         return executorOutput.success;
     } else {
         const commandString = createCommandString(executorOutput);
-        console.log(
+        console.info(
             `${logColors.faint}${toPosixPath(relative(process.cwd(), commandString))}${
                 logColors.reset
             }`,

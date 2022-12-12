@@ -63,7 +63,11 @@ export const codeInMarkdownCommandDefinition = defineCommand(
         };
 
         return {
-            mainCommand: await getNpmBinPath(inputs.repoDir, 'md-code'),
+            mainCommand: await getNpmBinPath({
+                repoDir: inputs.repoDir,
+                command: 'md-code',
+                packageDirPath: inputs.packageDir,
+            }),
             logTransforms,
             args: [
                 subCommand,

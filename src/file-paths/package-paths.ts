@@ -7,16 +7,39 @@ import {recursivelyUpwardsSearchForDir} from '../augments/fs';
 export const virmatorPackageDir = dirname(dirname(__dirname));
 
 export const virmatorConfigsDir = join(virmatorPackageDir, 'configs');
+
 export const virmatorConfigs = {
-    dotVirmator: join(virmatorConfigsDir, '.virmator'),
     gitHubWorkflows: join(virmatorPackageDir, '.github', 'workflows'),
     vsCode: join(virmatorConfigsDir, '.vscode'),
     src: join(virmatorConfigsDir, 'src'),
 };
 
-export async function getNpmBinPath(repoDir: string, command: string): Promise<string> {
+export async function getNpmBinPath({
+    repoDir,
+    command,
+    packageDirPath,
+}: {
+    repoDir: string;
+    command: string;
+    packageDirPath: string;
+}): Promise<string> {
+    return (
+        (await getNpmBinPathInternal({repoDir, command, packageDirPath})) ??
+        getNpmBinPathInternal({repoDir, command, packageDirPath: virmatorPackageDir})
+    );
+}
+
+async function getNpmBinPathInternal({
+    repoDir,
+    command,
+    packageDirPath,
+}: {
+    repoDir: string;
+    command: string;
+    packageDirPath: string;
+}): Promise<string> {
     const topLevelBinPath = join('node_modules', '.bin', command);
-    const virmatorBinPath = join('node_modules', 'virmator', 'node_modules', '.bin', command);
+    const internalPackageBinPath = join(packageDirPath, 'node_modules', '.bin', command);
     const startSearchDirPath = repoDir;
 
     try {
@@ -25,7 +48,7 @@ export async function getNpmBinPath(repoDir: string, command: string): Promise<s
             (dirPath) => {
                 return (
                     existsSync(join(dirPath, topLevelBinPath)) ||
-                    existsSync(join(dirPath, virmatorBinPath))
+                    existsSync(join(dirPath, internalPackageBinPath))
                 );
             },
         );
@@ -37,10 +60,10 @@ export async function getNpmBinPath(repoDir: string, command: string): Promise<s
         }
 
         const foundTopLevelBinPath = join(nodeModulesWithValidBin, topLevelBinPath);
-        const foundVirmatorBinPath = join(nodeModulesWithValidBin, virmatorBinPath);
+        const foundInternalPackageBinPath = join(nodeModulesWithValidBin, internalPackageBinPath);
 
-        const actualBinPath = existsSync(foundVirmatorBinPath)
-            ? foundVirmatorBinPath
+        const actualBinPath = existsSync(foundInternalPackageBinPath)
+            ? foundInternalPackageBinPath
             : foundTopLevelBinPath;
 
         if (!existsSync(actualBinPath)) {

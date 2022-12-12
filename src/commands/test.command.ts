@@ -73,12 +73,20 @@ export const testCommandDefinition = defineCommand(
             : '';
 
         return {
-            mainCommand: await getNpmBinPath(inputs.repoDir, 'nyc'),
+            mainCommand: await getNpmBinPath({
+                repoDir: inputs.repoDir,
+                command: 'nyc',
+                packageDirPath: inputs.packageDir,
+            }),
             args: [
                 // force colors in nyc
                 '--colors',
                 nycConfigFlag,
-                await getNpmBinPath(inputs.repoDir, 'mocha'),
+                await getNpmBinPath({
+                    repoDir: inputs.repoDir,
+                    command: 'mocha',
+                    packageDirPath: inputs.packageDir,
+                }),
                 // force colors in mocha
                 '--colors',
                 configString,

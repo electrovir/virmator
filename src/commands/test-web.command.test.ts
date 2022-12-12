@@ -44,4 +44,11 @@ describe(testWebCommandDefinition.commandName, () => {
             expectationKey: 'passing-test-web',
         });
     });
+
+    it('should fail when coverage fails', async () => {
+        await runTestWebTestCommand({
+            dir: testTestWebPaths.coverageFailRepo,
+            expectationKey: 'fail-from-coverage-test-web',
+        });
+    });
 });

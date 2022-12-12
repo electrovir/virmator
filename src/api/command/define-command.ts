@@ -47,7 +47,7 @@ export function defineCommand<DefineCommandInputsGeneric extends DefineCommandIn
 
     function extend(
         inputs: Partial<{
-            defineCommandInputs: Readonly<DefineCommandInputsGeneric>;
+            defineCommandInputs: Partial<Readonly<DefineCommandInputsGeneric>>;
             createDescription: CreateDescriptionsCallback<DefineCommandInputsGeneric>;
             inputExecutor: CommandExecutorDefinition<DefineCommandInputsGeneric>;
         }>,

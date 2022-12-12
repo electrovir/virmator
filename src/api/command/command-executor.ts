@@ -14,6 +14,7 @@ export type CommandExecutorInputs<
     allConfigs: ReadonlyArray<ConfigFileDefinition>;
     packageDir: string;
     logging: CommandLogging;
+    packageBinName: string;
 };
 
 export type CommandExecutorDefinitionInputs<

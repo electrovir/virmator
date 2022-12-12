@@ -43,7 +43,11 @@ export const frontendCommandDefinition = defineCommand(
               })}`
             : '';
 
-        const viteBinPath = await getNpmBinPath(inputs.repoDir, 'vite');
+        const viteBinPath = await getNpmBinPath({
+            repoDir: inputs.repoDir,
+            command: 'vite',
+            packageDirPath: inputs.packageDir,
+        });
         const removeOutput = needToBuild ? 'rm -rf dist && ' : '';
         const mainCommand = `${removeOutput}${viteBinPath}`;
 

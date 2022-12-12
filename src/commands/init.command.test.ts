@@ -52,7 +52,7 @@ describe(initCommandDefinition.commandName, () => {
         });
 
         if (output.results.exitCode) {
-            console.log(output.results.stdout);
+            console.info(output.results.stdout);
             console.error(output.results.stderr);
         }
 
@@ -122,7 +122,7 @@ describe(initCommandDefinition.commandName, () => {
         });
 
         if (output.results.exitCode) {
-            console.log(output.results.stdout);
+            console.info(output.results.stdout);
             console.error(output.results.stderr);
         }
 

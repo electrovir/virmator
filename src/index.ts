@@ -24,6 +24,7 @@ export * from './api/config/config-paths';
 export * from './api/create-virmator';
 export * from './api/virmator-types';
 export * from './commands/extra-configs/combine-text-config';
+export {getNpmBinPath} from './file-paths/package-paths';
 
 export const virmator = createVirmator({
     packageBinName: 'virmator',

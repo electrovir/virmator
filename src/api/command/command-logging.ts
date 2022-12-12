@@ -11,7 +11,7 @@ export const noCommandLogging: Readonly<Required<CommandLogging>> = {
 
 export const defaultConsoleLogging: Readonly<Required<CommandLogging>> = {
     stdout: (input: string) => {
-        console.log(input.replace(/\n$/, ''));
+        console.info(input.replace(/\n$/, ''));
     },
     stderr: (input: string) => {
         console.error(input.replace(/\n$/, ''));

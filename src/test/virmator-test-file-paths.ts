@@ -59,6 +59,7 @@ const testTestWebRepos = join(testFilesDirPath, 'test-web');
 export const testTestWebPaths = {
     passRepo: join(testTestWebRepos, 'pass-test-repo'),
     failRepo: join(testTestWebRepos, 'fail-test-repo'),
+    coverageFailRepo: join(testTestWebRepos, 'fail-from-coverage-test-repo'),
 };
 
 const testInitRepos = join(testFilesDirPath, 'init');

@@ -43,7 +43,11 @@ export const compileCommandDefinition = defineCommand(
             inputs.inputSubCommands.includes(inputs.subCommands.check);
         const noEmit = shouldNotEmit ? '--noEmit' : '';
 
-        const mainCommand = await getNpmBinPath(inputs.repoDir, 'tsc');
+        const mainCommand = await getNpmBinPath({
+            repoDir: inputs.repoDir,
+            command: 'tsc',
+            packageDirPath: inputs.packageDir,
+        });
 
         return {
             mainCommand: `rm -rf dist && rm -f ./*.tsbuildinfo && ${mainCommand}`,

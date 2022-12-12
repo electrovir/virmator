@@ -8,7 +8,6 @@ const webTestRunnerConfig = {
 
 export default webTestRunnerConfig;
 
-// check if the current file is being run directly as a script
 if (import.meta.url === pathToFileURL(process.argv[1]).href) {
     console.info(JSON.stringify(webTestRunnerConfig));
 }

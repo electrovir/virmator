@@ -1,7 +1,14 @@
-import {basename, join} from 'path';
+import {runShellCommand} from '@augment-vir/node-js';
+import {TestRunnerConfig} from '@web/test-runner';
+import {writeFile} from 'fs/promises';
+import glob from 'glob-promise';
+import {basename, join, relative} from 'path';
 import {defineCommand} from '../api/command/define-command';
+import {jsonParseOrUndefined} from '../augments/json';
 import {getNpmBinPath, virmatorConfigsDir} from '../file-paths/package-paths';
 import {testCommandDefinition} from './test.command';
+
+const allFilesTestFileName = 'all-files-for-code-coverage.test.ts';
 
 export const testWebCommandDefinition = defineCommand(
     {
@@ -58,13 +65,32 @@ export const testWebCommandDefinition = defineCommand(
         };
     },
     async (inputs) => {
-        const shouldUseConfig = !inputs.filteredInputArgs.includes('--config');
-        const configString = shouldUseConfig
-            ? `--config ${inputs.configFiles.webTestRunner.copyToPathRelativeToRepoDir}`
-            : '';
+        const configFlagIndex = inputs.filteredInputArgs.indexOf('--config');
+        const shouldUseDefaultConfig = configFlagIndex === -1;
+        const configPath = shouldUseDefaultConfig
+            ? inputs.configFiles.webTestRunner.copyToPathRelativeToRepoDir
+            : inputs.filteredInputArgs[configFlagIndex + 1] ||
+              inputs.configFiles.webTestRunner.copyToPathRelativeToRepoDir;
+        const configString = shouldUseDefaultConfig ? `--config ${configPath}` : '';
+
+        const output = await runShellCommand(`node ${relative(inputs.repoDir, configPath)}`, {
+            cwd: inputs.repoDir,
+        });
+
+        const webTestRunnerConfig: Partial<TestRunnerConfig> | undefined = jsonParseOrUndefined(
+            output.stdout,
+        );
+
+        if (webTestRunnerConfig && webTestRunnerConfig.coverage) {
+            await createTestThatImportsAllFilesForCoverage(webTestRunnerConfig, inputs.repoDir);
+        }
 
         return {
-            mainCommand: await getNpmBinPath(inputs.repoDir, 'web-test-runner'),
+            mainCommand: await getNpmBinPath({
+                repoDir: inputs.repoDir,
+                command: 'web-test-runner',
+                packageDirPath: inputs.packageDir,
+            }),
             args: [
                 '--color',
                 configString,
@@ -73,3 +99,52 @@ export const testWebCommandDefinition = defineCommand(
         };
     },
 );
+
+async function createTestThatImportsAllFilesForCoverage(
+    webTestRunnerConfig: Partial<TestRunnerConfig>,
+    repoDir: string,
+) {
+    const coverageInclude = webTestRunnerConfig?.coverageConfig?.include;
+    const filesToIncludeInCoverage = coverageInclude
+        ? Array.isArray(coverageInclude)
+            ? coverageInclude
+            : [coverageInclude]
+        : [];
+
+    const allCoverageFiles = Array.from(
+        new Set(
+            (
+                await Promise.all(
+                    filesToIncludeInCoverage.map((pattern) =>
+                        glob(pattern, {
+                            cwd: repoDir,
+                            ignore: [
+                                ...(webTestRunnerConfig?.coverageConfig?.exclude ?? []),
+                                allFilesTestFileName,
+                            ],
+                        }),
+                    ),
+                )
+            ).flat(),
+        ),
+    );
+
+    if (allCoverageFiles.length) {
+        const importNames: string[] = [];
+        const allImports = allCoverageFiles
+            .map((file, index) => {
+                const importName = `import${index}`;
+                importNames.push(importName);
+                return `import * as ${importName} from './${relative('src', file).replace(
+                    /\.ts$/,
+                    '',
+                )}';`;
+            })
+            .join('\n');
+        const usedImports = importNames.map((importName) => `    ${importName},`);
+        const codeToWrite = `${allImports}\n\nconst allImports = {\n${usedImports}\n};\n`;
+        await writeFile(join(repoDir, 'src', allFilesTestFileName), codeToWrite);
+    } else {
+        throw new Error(`No files found for code coverage calculations.`);
+    }
+}

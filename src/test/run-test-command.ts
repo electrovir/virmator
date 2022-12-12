@@ -71,6 +71,10 @@ function stripFullPath(input: string): string {
     return input.replace(new RegExp(virmatorPackageDir, 'g'), '.');
 }
 
+function removeInstallationVersionLogs(input: string): string {
+    return input.replace(/Installing (@?[^@]+)@(.+?)\.\.\./g, 'Installing $1...');
+}
+
 export async function runCliCommandForTestFromDefinition<KeyGeneric extends string>(
     commandDefinition: CommandDefinition<any>,
     inputs: RequiredBy<Partial<Omit<RunCliCommandInputs<KeyGeneric>, 'configFilesToCheck'>>, 'dir'>,
@@ -138,7 +142,9 @@ async function runCliCommandForTest<KeyGeneric extends string>(
             exitCode: results.exitCode ?? 0,
             key: inputs.expectationKey,
             stderr: logTransform(stripFullPath(removeColor(results.stderr))),
-            stdout: logTransform(stripFullPath(removeColor(results.stdout))),
+            stdout: logTransform(
+                removeInstallationVersionLogs(stripFullPath(removeColor(results.stdout))),
+            ),
         };
         const expectationTopKey = getFirstPartOfPath(actualResults.dir);
         const loadedExpectations = await loadExpectations();

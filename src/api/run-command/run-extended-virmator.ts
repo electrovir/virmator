@@ -85,6 +85,7 @@ export async function runExtendedVirmator({
         filteredInputArgs,
         allConfigs,
         packageDir,
+        packageBinName,
     };
 
     const success = await runCommandExecutor(commandDefinition, commandInputs);
@@ -92,7 +93,7 @@ export async function runExtendedVirmator({
     const resultMessage = getCommandResultMessage(commandName ?? '', success);
 
     if (success) {
-        console.log(resultMessage);
+        console.info(resultMessage);
     } else {
         throw new Error(resultMessage);
     }

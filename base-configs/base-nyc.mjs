@@ -1,6 +1,4 @@
-'use strict';
-
-function getBaseConfigWithCoveragePercent(percent) {
+export function getBaseConfigWithCoveragePercent(percent = 0) {
     return {
         // only works with @electrovir/nyc
         failBelow: percent,
@@ -36,5 +34,3 @@ function getBaseConfigWithCoveragePercent(percent) {
         tempDir: './node_modules/.nyc-output/',
     };
 }
-
-module.exports = {getBaseConfigWithCoveragePercent};
