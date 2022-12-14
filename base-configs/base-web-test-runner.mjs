@@ -1,14 +1,11 @@
 import {esbuildPlugin} from '@web/dev-server-esbuild';
 import {defaultReporter} from '@web/test-runner';
 import {playwrightLauncher} from '@web/test-runner-playwright';
-import {getBaseConfigWithCoveragePercent} from './base-nyc.mjs';
 import testFiles from './test-files-glob.js';
 
 const oneMinuteMs = 60_000;
 
 export function getWebTestRunnerConfigWithCoveragePercent(percent = 0) {
-    const nycConfig = getBaseConfigWithCoveragePercent(percent);
-
     /** @type {import('@web/test-runner').TestRunnerConfig} */
     const webTestRunnerConfig = {
         browsers: [
@@ -31,11 +28,24 @@ export function getWebTestRunnerConfigWithCoveragePercent(percent = 0) {
             },
         },
         coverageConfig: {
-            ...nycConfig,
+            include: ['src/**/*.ts'],
+            exclude: [
+                '**/*.test.ts',
+                '**/*.example.ts',
+                '**/*.type.test.ts',
+                '**/*.test-helper.ts',
+            ],
             threshold: {
-                ...nycConfig,
+                statements: percent,
+                branches: percent,
+                functions: percent,
+                lines: percent,
             },
-            reporters: nycConfig.reporter,
+            report: true,
+            reporters: [
+                'html',
+                'istanbul-smart-text-reporter',
+            ],
         },
     };
 
