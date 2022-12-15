@@ -142,7 +142,9 @@ async function createTestThatImportsAllFilesForCoverage(
             })
             .join('\n');
         const usedImports = importNames.map((importName) => `    ${importName},`);
-        const codeToWrite = `${allImports}\n\nconst allImports = {\n${usedImports}\n};\n`;
+        const codeToWrite = `${allImports}\n\nconst allImports = {\n${usedImports.join(
+            '\n',
+        )}\n};\n`;
         await writeFile(join(repoDir, 'src', allFilesTestFileName), codeToWrite);
     } else {
         throw new Error(`No files found for code coverage calculations.`);
