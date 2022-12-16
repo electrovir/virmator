@@ -124,11 +124,12 @@ force overwrite files even if they already exist.
 
 ## publish
 
-Publish an npm package. Includes workspace support.
+Publish an npm package. Includes workspace support. Add test commands to run before publish as arguments.
 
 ### Examples
 
 -   publish a package: `virmator publish`
+-   publish a package and run tests beforehand: `virmator publish npm test`
 
 ## spellcheck
 

@@ -1,6 +1,6 @@
 {
     "name": "virmator",
-    "version": "5.2.1",
+    "version": "5.2.2",
     "description": "Handle common package configs, commands, and dependencies.",
     "keywords": [
         "automation",
@@ -59,7 +59,7 @@
         "@types/fs-extra": "^9.0.13",
         "@types/glob": "^8.0.0",
         "@types/mocha": "^10.0.1",
-        "@types/node": "^18.11.13",
+        "@types/node": "^18.11.15",
         "@types/semver": "^7.3.13",
         "@web/dev-server-esbuild": "^0.3.3",
         "@web/test-runner": "^0.15.0",
@@ -81,7 +81,7 @@
         "prettier-plugin-toml": "^0.3.1",
         "ts-node": "^10.9.1",
         "tsconfig-paths": "^4.1.1",
-        "type-fest": "^3.3.0",
+        "type-fest": "^3.4.0",
         "typescript": "^4.9.4",
         "vite": "^4.0.1"
     },

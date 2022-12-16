@@ -1,3 +1,4 @@
+*.d.ts.map
 *.test-helper.ts
 *.test.d.ts
 *.test.js

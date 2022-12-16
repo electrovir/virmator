@@ -10,6 +10,8 @@ import {askQuestionUntilConditionMet} from '../augments/console';
 import {doChangesExist} from '../augments/git';
 import {CleanPackageJson, readPackageJson, readTopLevelPackageJson} from '../augments/npm';
 
+const inVirmatorEnvKey = 'VIRMATOR';
+
 export const publishCommandDefinition = defineCommand(
     {
         commandName: 'publish',
@@ -22,7 +24,7 @@ export const publishCommandDefinition = defineCommand(
             sections: [
                 {
                     title: '',
-                    content: `Publish an npm package. Includes workspace support.`,
+                    content: `Publish an npm package. Includes workspace support. Add test commands to run before publish as arguments.`,
                 },
             ],
             examples: [
@@ -30,10 +32,26 @@ export const publishCommandDefinition = defineCommand(
                     title: 'publish a package',
                     content: `${packageBinName} ${commandName}`,
                 },
+                {
+                    title: 'publish a package and run tests beforehand',
+                    content: `${packageBinName} ${commandName} npm test`,
+                },
             ],
         };
     },
     async (inputs) => {
+        if (process.env[inVirmatorEnvKey]) {
+            return {
+                success: true,
+            };
+        }
+
+        await runShellCommand(inputs.filteredInputArgs.join(' '), {
+            hookUpToConsole: true,
+            cwd: inputs.repoDir,
+            rejectOnError: true,
+        });
+
         const {packageJson, path: packageJsonPath} = await readTopLevelPackageJson(inputs.repoDir);
 
         if (await doChangesExist(dirname(packageJsonPath))) {
@@ -119,7 +137,7 @@ async function publishPackages(workspaceDirPaths: ReadonlyArray<string>, package
             }
         });
     } else {
-        await runShellCommand(`npm publish`, {
+        await runShellCommand(`${inVirmatorEnvKey}=true npm publish`, {
             rejectOnError: true,
             cwd: packagePath,
             hookUpToConsole: true,
