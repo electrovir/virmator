@@ -1,6 +1,6 @@
 {
     "name": "virmator",
-    "version": "5.2.6",
+    "version": "5.2.7",
     "description": "Handle common package configs, commands, and dependencies.",
     "keywords": [
         "automation",
@@ -68,7 +68,7 @@
         "chai": "^4.3.7",
         "cspell": "^6.17.0",
         "fs-extra": "^11.1.0",
-        "istanbul-smart-text-reporter": "^1.0.1",
+        "istanbul-smart-text-reporter": "^1.1.0",
         "markdown-code-example-inserter": "^0.1.13",
         "mocha": "^10.2.0",
         "mocha-spec-reporter-with-file-names": "^0.0.3",
