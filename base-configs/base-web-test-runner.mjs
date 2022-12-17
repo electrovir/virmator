@@ -4,19 +4,24 @@ import {playwrightLauncher} from '@web/test-runner-playwright';
 import testFiles from './test-files-glob.js';
 
 const oneMinuteMs = 60_000;
+const minutesTwenty = 20 * oneMinuteMs;
 
 export function getWebTestRunnerConfigWithCoveragePercent(percent = 0) {
     /** @type {import('@web/test-runner').TestRunnerConfig} */
     const webTestRunnerConfig = {
         browsers: [
-            playwrightLauncher({product: 'chromium'}),
-            playwrightLauncher({product: 'firefox'}),
+            ...(process.argv.includes('--only-one-browser')
+                ? []
+                : [
+                      playwrightLauncher({product: 'chromium'}),
+                      playwrightLauncher({product: 'firefox'}),
+                  ]),
             playwrightLauncher({product: 'webkit'}),
         ],
         reporters: [
             defaultReporter({reportTestResults: true, reportTestProgress: false}),
         ],
-        browserStartTimeout: 20 * oneMinuteMs,
+        browserStartTimeout: minutesTwenty,
         concurrentBrowsers: 3,
         coverage: true,
         files: testFiles.spec,
@@ -24,7 +29,7 @@ export function getWebTestRunnerConfigWithCoveragePercent(percent = 0) {
         plugins: [esbuildPlugin({ts: true})],
         testFramework: {
             config: {
-                timeout: 20 * oneMinuteMs,
+                timeout: minutesTwenty,
             },
         },
         coverageConfig: {
