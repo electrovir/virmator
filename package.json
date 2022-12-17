@@ -1,6 +1,6 @@
 {
     "name": "virmator",
-    "version": "5.2.3",
+    "version": "5.2.4",
     "description": "Handle common package configs, commands, and dependencies.",
     "keywords": [
         "automation",
@@ -43,8 +43,8 @@
         "test:types": "tsc --noEmit"
     },
     "dependencies": {
-        "@augment-vir/common": "^6.1.5",
-        "@augment-vir/node-js": "^6.1.5",
+        "@augment-vir/common": "^6.1.6",
+        "@augment-vir/node-js": "^6.1.6",
         "ansi-colors": "^4.1.3",
         "glob": "^8.0.3",
         "glob-promise": "^5.0.0",
@@ -59,7 +59,7 @@
         "@types/fs-extra": "^9.0.13",
         "@types/glob": "^8.0.0",
         "@types/mocha": "^10.0.1",
-        "@types/node": "^18.11.15",
+        "@types/node": "^18.11.16",
         "@types/semver": "^7.3.13",
         "@web/dev-server-esbuild": "^0.3.3",
         "@web/test-runner": "^0.15.0",
