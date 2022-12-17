@@ -25,7 +25,7 @@ export type CommandDefinition<DefineCommandInputsGeneric extends DefineCommandIn
               extend: ExtendCallback<DefineCommandInputsGeneric>;
           };
 
-type AnyCommandDefinition = DefineCommandInputs & {
+export type AnyCommandDefinition = DefineCommandInputs & {
     allAvailableSubCommands: ReadonlyArray<string>;
     subCommands: Record<string, string>;
     executor: CommandExecutor<any>;
