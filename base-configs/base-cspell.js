@@ -62,6 +62,7 @@ const baseConfig = {
         'prettierignore',
         'prettierrc',
         'preupgrade',
+        'promisable',
         'protobuf',
         'pushstate',
         'replacestate',

@@ -1,6 +1,6 @@
 {
     "name": "virmator",
-    "version": "5.2.4",
+    "version": "5.2.5",
     "description": "Handle common package configs, commands, and dependencies.",
     "keywords": [
         "automation",
@@ -52,7 +52,7 @@
         "simple-git": "^3.15.1"
     },
     "devDependencies": {
-        "@electrovir/nyc": "^15.1.0",
+        "@electrovir/nyc": "15.1.0-fix0",
         "@istanbuljs/nyc-config-typescript": "^1.0.2",
         "@open-wc/testing": "^3.1.7",
         "@types/chai": "^4.3.4",

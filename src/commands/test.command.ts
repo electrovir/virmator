@@ -75,7 +75,7 @@ export const testCommandDefinition = defineCommand(
         return {
             mainCommand: await getNpmBinPath({
                 repoDir: inputs.repoDir,
-                command: 'nyc',
+                command: 'electrovir-nyc',
                 packageDirPath: inputs.packageDir,
             }),
             args: [
