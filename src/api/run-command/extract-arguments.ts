@@ -16,9 +16,12 @@ export function getRelevantArgs(allArgs: string[], binName: string) {
     return allArgs.slice(sliceIndexStart + 1);
 }
 
-export type ExtractSubCommandsOutput<T> = {subCommands: T[]; filteredArgs: string[]};
+export type ExtractSubCommandsOutput<T extends string> = {
+    subCommands: T[];
+    filteredArgs: string[];
+};
 
-export function extractSubCommands<T>(
+export function extractSubCommands<T extends string = string>(
     allArgs: ReadonlyArray<string>,
     availableSubCommands: ReadonlyArray<T>,
 ): ExtractSubCommandsOutput<T> {

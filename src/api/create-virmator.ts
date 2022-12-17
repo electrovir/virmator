@@ -10,9 +10,7 @@ import {ExtendedVirmator, ExtendVirmatorInputs} from './virmator-types';
  * Creates a wrapped instance of virmator from which all its CLI commands can be called. Arguments
  * can be passed in to add to virmator default configs or overwrite them.
  */
-export function createVirmator<
-    CommandDefinitionsGeneric extends ReadonlyArray<CommandDefinition<any>>,
->(
+export function createVirmator<CommandDefinitionsGeneric extends ReadonlyArray<CommandDefinition>>(
     inputs: ExtendVirmatorInputs<CommandDefinitionsGeneric>,
 ): ExtendedVirmator<CommandDefinitionArrayToMapping<CommandDefinitionsGeneric>> {
     const commandDefinitions = inputs.commandDefinitions ?? [];

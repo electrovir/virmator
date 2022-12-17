@@ -15,7 +15,7 @@ export type ExtendedVirmator<CommandMappingGeneric extends Readonly<CommandMappi
     cliHelpMessage: string;
     markdownHelpMessage: string;
     commandMapping: CommandMappingGeneric;
-    extend: <CommandDefinitionsGeneric extends ReadonlyArray<CommandDefinition<any>>>(
+    extend: <CommandDefinitionsGeneric extends ReadonlyArray<CommandDefinition>>(
         inputs: ExtendVirmatorInputs<CommandDefinitionsGeneric>,
     ) => ExtendedVirmator<CommandDefinitionArrayToMapping<CommandDefinitionsGeneric>>;
     allConfigs: ReadonlyArray<ConfigFileDefinition>;

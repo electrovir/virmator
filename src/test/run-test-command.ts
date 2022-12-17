@@ -76,7 +76,7 @@ function removeInstallationVersionLogs(input: string): string {
 }
 
 export async function runCliCommandForTestFromDefinition<KeyGeneric extends string>(
-    commandDefinition: CommandDefinition<any>,
+    commandDefinition: CommandDefinition,
     inputs: RequiredBy<Partial<Omit<RunCliCommandInputs<KeyGeneric>, 'configFilesToCheck'>>, 'dir'>,
 ) {
     const fullInputs: RunCliCommandInputs<KeyGeneric> = {

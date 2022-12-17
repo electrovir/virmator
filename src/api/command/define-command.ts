@@ -1,4 +1,5 @@
 import {getObjectTypedKeys, mapObjectValues} from '@augment-vir/common';
+import {IsAny} from 'type-fest/source/internal';
 import {CreateDescriptionsCallback} from './command-description';
 import {CommandExecutor, CommandExecutorDefinition} from './command-executor';
 import {
@@ -7,16 +8,29 @@ import {
     SubCommandsMap,
 } from './define-command-inputs';
 
-export type CommandDefinition<
-    DefineCommandInputsGeneric extends DefineCommandInputs = DefineCommandInputs<string>,
-> = SharedExecutorInputsAndCommandDefinition<DefineCommandInputsGeneric> & {
-    executor: CommandExecutor<DefineCommandInputsGeneric>;
+export type ExtendCallback<
+    DefineCommandInputsGeneric extends DefineCommandInputs = DefineCommandInputs<any>,
+> = (inputs: {
+    defineCommandInputs: Readonly<DefineCommandInputsGeneric>;
     createDescription: CreateDescriptionsCallback<DefineCommandInputsGeneric>;
-    extend: (inputs: {
-        defineCommandInputs: Readonly<DefineCommandInputsGeneric>;
-        createDescription: CreateDescriptionsCallback<DefineCommandInputsGeneric>;
-        inputExecutor: CommandExecutorDefinition<DefineCommandInputsGeneric>;
-    }) => CommandDefinition<DefineCommandInputsGeneric>;
+    inputExecutor: CommandExecutorDefinition<DefineCommandInputsGeneric>;
+}) => CommandDefinition<DefineCommandInputsGeneric>;
+
+export type CommandDefinition<DefineCommandInputsGeneric extends DefineCommandInputs = any> =
+    IsAny<DefineCommandInputsGeneric> extends true
+        ? AnyCommandDefinition
+        : SharedExecutorInputsAndCommandDefinition<DefineCommandInputsGeneric> & {
+              executor: CommandExecutor<DefineCommandInputsGeneric>;
+              createDescription: CreateDescriptionsCallback<DefineCommandInputsGeneric>;
+              extend: ExtendCallback<DefineCommandInputsGeneric>;
+          };
+
+type AnyCommandDefinition = DefineCommandInputs & {
+    allAvailableSubCommands: ReadonlyArray<string>;
+    subCommands: Record<string, string>;
+    executor: CommandExecutor<any>;
+    createDescription: CreateDescriptionsCallback<any>;
+    extend: ExtendCallback<any>;
 };
 
 export function defineCommand<DefineCommandInputsGeneric extends DefineCommandInputs>(
@@ -36,7 +50,7 @@ export function defineCommand<DefineCommandInputsGeneric extends DefineCommandIn
         ...defineCommandInputs,
         allAvailableSubCommands,
         subCommands,
-    };
+    } as SharedExecutorInputsAndCommandDefinition<DefineCommandInputsGeneric>;
 
     const executor: CommandExecutor<DefineCommandInputsGeneric> = (executorInputs) => {
         return inputExecutor({

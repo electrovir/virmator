@@ -5,11 +5,12 @@ import {readFile} from 'fs/promises';
 import {dirname, join} from 'path';
 import * as semver from 'semver';
 import {systemRootPath} from '../../augments/fs';
+import {DefineCommandInputs} from '../command/define-command-inputs';
 
 export type UpdateDepsInput = Readonly<{
     repoDir: string;
     packageDir: string;
-    npmDeps: ReadonlyArray<string>;
+    npmDeps: DefineCommandInputs['npmDeps'];
     packageBinName: string;
 }>;
 
