@@ -81,7 +81,11 @@ async function getVersionsToUpgradeTo({
             );
         }
 
-        if (!currentRepoVersion || semver.gt(packageDepVersion, currentRepoVersion)) {
+        if (
+            !currentRepoVersion ||
+            semver.gt(packageDepVersion, currentRepoVersion) ||
+            (packageDepVersions[npmDep].match(/^\d/) && packageDepVersion !== currentRepoVersion)
+        ) {
             return packageDepVersion;
         } else {
             return undefined;
