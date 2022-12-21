@@ -3,7 +3,7 @@
 set -e;
 
 scriptDir="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )";
-repoRootDir=$(dirname "$(dirname "$scriptDir")");
+repoRootDir="$(dirname "$scriptDir")";
 
 npm install;
 npm run compile;

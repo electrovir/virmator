@@ -2,7 +2,7 @@
 
 function getBaseConfigWithCoveragePercent(percent = 0) {
     return {
-        // only works with @electrovir/nyc
+        // only works with @electrovir/c8
         failBelow: percent,
 
         branches: percent,
@@ -10,7 +10,6 @@ function getBaseConfigWithCoveragePercent(percent = 0) {
         lines: percent,
         statements: percent,
 
-        extends: '@istanbuljs/nyc-config-typescript',
         all: true,
         clean: true,
         cache: false,
@@ -33,7 +32,7 @@ function getBaseConfigWithCoveragePercent(percent = 0) {
         ],
         skipEmpty: true,
         skipFull: true,
-        tempDir: './node_modules/.nyc-output/',
+        tempDir: './node_modules/.c8-output/',
     };
 }
 
