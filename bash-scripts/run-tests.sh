@@ -10,6 +10,7 @@ npm run compile;
 originalTarOutput="${repoRootDir}/$(npm pack 2>&1 | tail -1)";
 export TAR_TO_INSTALL;
 TAR_TO_INSTALL="${repoRootDir}/virmator.tgz";
+export IGNORE_VIRMATOR_STACK_TRACE="true";
 mv "$originalTarOutput" "$TAR_TO_INSTALL";
 
 # allow mocha to fail without exiting the script

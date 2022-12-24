@@ -52,8 +52,8 @@ export function defineCommand<DefineCommandInputsGeneric extends DefineCommandIn
         subCommands,
     } as SharedExecutorInputsAndCommandDefinition<DefineCommandInputsGeneric>;
 
-    const executor: CommandExecutor<DefineCommandInputsGeneric> = (executorInputs) => {
-        return inputExecutor({
+    const executor: CommandExecutor<DefineCommandInputsGeneric> = async (executorInputs) => {
+        return await inputExecutor({
             ...executorInputs,
             ...init,
         });
@@ -77,10 +77,10 @@ export function defineCommand<DefineCommandInputsGeneric extends DefineCommandIn
                     ...inputs.createDescription?.(callbackInputs),
                 };
             },
-            (callbackInputs) => {
+            async (callbackInputs) => {
                 return {
-                    ...inputExecutor(callbackInputs),
-                    ...inputs.inputExecutor?.(callbackInputs),
+                    ...(await inputExecutor(callbackInputs)),
+                    ...(await inputs.inputExecutor?.(callbackInputs)),
                 };
             },
         );
