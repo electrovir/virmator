@@ -32,7 +32,6 @@ export type SuccessOnlyExecutorOutput = {
     success: boolean;
 };
 export type BashCommandExecutorOutput = {
-    mainCommand: string;
     logTransforms?: CommandLogTransforms;
     args: (string | DetailedArg)[];
 };

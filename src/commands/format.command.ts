@@ -119,12 +119,12 @@ ${packageBinName} ${commandName} --ignore-path .prettierignore ${filesMarkerArg}
         };
 
         return {
-            mainCommand: await getNpmBinPath({
-                repoDir: inputs.repoDir,
-                command: 'prettier',
-                packageDirPath: inputs.packageDir,
-            }),
             args: [
+                await getNpmBinPath({
+                    repoDir: inputs.repoDir,
+                    command: 'prettier',
+                    packageDirPath: inputs.packageDir,
+                }),
                 '--color',
                 listDifferentFlag,
                 ...extraPrettierFlags,

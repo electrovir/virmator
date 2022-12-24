@@ -79,7 +79,10 @@ describe(testCommandDefinition.commandName, () => {
 
     it('should run all tests', async () => {
         const output = await runTestTestCommand({
-            args: runInSerialArgs,
+            args: [
+                testCommandDefinition.subCommands.coverage,
+                ...runInSerialArgs,
+            ],
             dir: testTestPaths.multiRepo,
             expectationKey: 'all-tests',
         });
@@ -89,5 +92,18 @@ describe(testCommandDefinition.commandName, () => {
         assert.include(output.results.stdout, ' valid.test.ts');
         assert.include(output.results.stdout, '1) should have a failing test');
         assert.include(output.results.stdout, '1 failing');
+    });
+
+    it('should fail when coverage is incomplete', async () => {
+        const output = await runTestTestCommand({
+            args: [
+                testCommandDefinition.subCommands.coverage,
+                ...runInSerialArgs,
+            ],
+            dir: testTestPaths.validRepo,
+            expectationKey: 'incomplete-coverage',
+        });
+
+        assert.strictEqual(output.results.exitCode, 1);
     });
 });

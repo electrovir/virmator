@@ -72,8 +72,8 @@ export const frontendCommandDefinition = defineCommand(
             : [];
 
         return {
-            mainCommand,
             args: [
+                mainCommand,
                 '--force',
                 configString,
                 ...subCommandArgs,

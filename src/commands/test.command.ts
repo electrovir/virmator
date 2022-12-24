@@ -5,7 +5,10 @@ import {getNpmBinPath, virmatorConfigsDir} from '../file-paths/package-paths';
 export const testCommandDefinition = defineCommand(
     {
         commandName: 'test',
-        subCommandDescriptions: {},
+        subCommandDescriptions: {
+            coverage:
+                'run tests with code coverage calculations. This will often result in incorrect stack traces on errors, so this is only recommended after having first gotten all tests to pass without coverage calculations.',
+        },
         configFiles: {
             mochaConfig: {
                 copyFromInternalPath: join(virmatorConfigsDir, 'configs', 'mocha.config.js'),
@@ -67,21 +70,27 @@ export const testCommandDefinition = defineCommand(
             ? `--config '${inputs.configFiles.mochaConfig.copyToPathRelativeToRepoDir}'`
             : '';
 
+        const includeCoverage = inputs.inputSubCommands.includes(inputs.subCommands.coverage);
+
         const useDefaultNycConfigPath = !inputs.filteredInputArgs.includes('--nycrc-path');
         const nycConfigFlag = useDefaultNycConfigPath
             ? `--nycrc-path '${inputs.configFiles.nycConfig.copyToPathRelativeToRepoDir}'`
             : '';
 
         return {
-            mainCommand: await getNpmBinPath({
-                repoDir: inputs.repoDir,
-                command: 'electrovir-nyc',
-                packageDirPath: inputs.packageDir,
-            }),
             args: [
-                // force colors in nyc
-                '--colors',
-                nycConfigFlag,
+                ...(includeCoverage
+                    ? [
+                          await getNpmBinPath({
+                              repoDir: inputs.repoDir,
+                              command: 'electrovir-nyc',
+                              packageDirPath: inputs.packageDir,
+                          }),
+                          // force colors in nyc
+                          '--colors',
+                          nycConfigFlag,
+                      ]
+                    : []),
                 await getNpmBinPath({
                     repoDir: inputs.repoDir,
                     command: 'mocha',

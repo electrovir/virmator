@@ -86,12 +86,12 @@ export const testWebCommandDefinition = defineCommand(
         }
 
         return {
-            mainCommand: await getNpmBinPath({
-                repoDir: inputs.repoDir,
-                command: 'web-test-runner',
-                packageDirPath: inputs.packageDir,
-            }),
             args: [
+                await getNpmBinPath({
+                    repoDir: inputs.repoDir,
+                    command: 'web-test-runner',
+                    packageDirPath: inputs.packageDir,
+                }),
                 '--color',
                 configString,
                 ...inputs.filteredInputArgs,

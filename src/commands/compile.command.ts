@@ -50,8 +50,8 @@ export const compileCommandDefinition = defineCommand(
         });
 
         return {
-            mainCommand: `rm -rf dist && rm -f ./*.tsbuildinfo && ${mainCommand}`,
             args: [
+                `rm -rf dist && rm -f ./*.tsbuildinfo && ${mainCommand}`,
                 '--pretty',
                 noEmit,
                 ...inputs.filteredInputArgs.map((arg) => `"${arg}"`),

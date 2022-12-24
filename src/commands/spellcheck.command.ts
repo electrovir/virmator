@@ -38,12 +38,12 @@ export const spellcheckCommandDefinition = defineCommand(
             : `--config ${inputs.configFiles.cspell.copyToPathRelativeToRepoDir}`;
 
         return {
-            mainCommand: await getNpmBinPath({
-                repoDir: inputs.repoDir,
-                command: 'cspell',
-                packageDirPath: inputs.packageDir,
-            }),
             args: [
+                await getNpmBinPath({
+                    repoDir: inputs.repoDir,
+                    command: 'cspell',
+                    packageDirPath: inputs.packageDir,
+                }),
                 configArg,
                 '--color',
                 '--unique',

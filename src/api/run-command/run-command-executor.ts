@@ -23,7 +23,7 @@ export function createCommandString(executorOutput: BashCommandExecutorOutput): 
 
         return interpolationSafeWindowsPath(arg);
     });
-    const commandString = `${executorOutput.mainCommand} ${args.filter(isTruthy).join(' ')}`;
+    const commandString = `${args.filter(isTruthy).join(' ')}`;
 
     return commandString;
 }
