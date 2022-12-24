@@ -11,13 +11,14 @@ export const testCommandDefinition = defineCommand(
                 copyFromInternalPath: join(virmatorConfigsDir, 'configs', 'mocha.config.js'),
                 copyToPathRelativeToRepoDir: join('configs', 'mocha.config.js'),
             },
-            c8Config: {
-                copyFromInternalPath: join(virmatorConfigsDir, 'configs', 'c8.config.js'),
-                copyToPathRelativeToRepoDir: join('configs', 'c8.config.js'),
+            nycConfig: {
+                copyFromInternalPath: join(virmatorConfigsDir, 'configs', 'nyc.config.js'),
+                copyToPathRelativeToRepoDir: join('configs', 'nyc.config.js'),
             },
         },
         npmDeps: [
-            '@electrovir/c8',
+            '@electrovir/nyc',
+            '@istanbuljs/nyc-config-typescript',
             '@types/chai',
             '@types/mocha',
             'chai',
@@ -25,7 +26,6 @@ export const testCommandDefinition = defineCommand(
             'mocha-spec-reporter-with-file-names',
             'mocha',
             'ts-node',
-            'typescript',
         ],
     } as const,
     ({commandName, packageBinName}) => {
@@ -67,18 +67,21 @@ export const testCommandDefinition = defineCommand(
             ? `--config '${inputs.configFiles.mochaConfig.copyToPathRelativeToRepoDir}'`
             : '';
 
-        const c8ConfigFlag = `--config '${inputs.configFiles.c8Config.copyToPathRelativeToRepoDir}'`;
+        const useDefaultNycConfigPath = !inputs.filteredInputArgs.includes('--nycrc-path');
+        const nycConfigFlag = useDefaultNycConfigPath
+            ? `--nycrc-path '${inputs.configFiles.nycConfig.copyToPathRelativeToRepoDir}'`
+            : '';
 
         return {
             mainCommand: await getNpmBinPath({
                 repoDir: inputs.repoDir,
-                command: 'vir-c8',
+                command: 'electrovir-nyc',
                 packageDirPath: inputs.packageDir,
             }),
             args: [
-                // force colors in c8
+                // force colors in nyc
                 '--colors',
-                c8ConfigFlag,
+                nycConfigFlag,
                 await getNpmBinPath({
                     repoDir: inputs.repoDir,
                     command: 'mocha',
