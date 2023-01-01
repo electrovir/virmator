@@ -149,6 +149,10 @@ Note that the below single file examples only work because the base Mocha config
 -   Test a single file: `virmator test ./path/to/single/file.js`
 -   Test multiple files: `virmator test "./**/single-file.js"`
 
+### coverage
+
+run tests with code coverage calculations. This will often result in incorrect stack traces on errors, so this is only recommended after having first gotten all tests to pass without coverage calculations.
+
 ## test-web
 
 Runs tests within browsers rather than inside of Node.js. Test files fed into this command cannot be mixed with test files run by the "virmator test" command, as the run-time environment is quite different (Node.js vs browser). However, just like the test command, this command will all ".test.ts" files in the current directory (recursively) that are not ".type.test.ts" files. To override this behavior, override the "files" property in web-test-runner.config.mjs.

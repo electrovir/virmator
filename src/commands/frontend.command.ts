@@ -58,16 +58,14 @@ export const frontendCommandDefinition = defineCommand(
                   '&&',
                   'cp dist/index.html dist/404.html',
               ]
-            : [];
+            : inputs.filteredInputArgs;
 
-        const hostString = inputs.filteredInputArgs.includes('--host') ? '' : `--host`;
-        const previewCommandArgs = inputs.inputSubCommands.includes('preview')
+        const previewCommandArgs = inputs.inputSubCommands.includes(inputs.subCommands.preview)
             ? [
                   '&&',
                   viteBinPath,
                   'preview',
                   ...inputs.filteredInputArgs,
-                  hostString,
               ]
             : [];
 

@@ -50,7 +50,7 @@
         "glob-promise": "^6.0.0",
         "semver": "^7.3.8",
         "simple-git": "^3.15.1",
-        "type-fest": "^3.4.0"
+        "type-fest": "^3.5.0"
     },
     "devDependencies": {
         "@electrovir/nyc": "15.1.0-fix0",
@@ -60,16 +60,16 @@
         "@types/fs-extra": "^9.0.13",
         "@types/glob": "^8.0.0",
         "@types/mocha": "^10.0.1",
-        "@types/node": "^18.11.16",
+        "@types/node": "^18.11.18",
         "@types/semver": "^7.3.13",
         "@web/dev-server-esbuild": "^0.3.3",
         "@web/test-runner": "^0.15.0",
         "@web/test-runner-commands": "^0.6.5",
         "@web/test-runner-playwright": "^0.9.0",
         "chai": "^4.3.7",
-        "cspell": "^6.17.0",
+        "cspell": "^6.18.1",
         "fs-extra": "^11.1.0",
-        "istanbul-smart-text-reporter": "^1.1.0",
+        "istanbul-smart-text-reporter": "^1.1.1",
         "markdown-code-example-inserter": "^0.1.13",
         "mocha": "^10.2.0",
         "mocha-spec-reporter-with-file-names": "^0.0.3",
@@ -78,13 +78,13 @@
         "prettier-plugin-multiline-arrays": "^1.1.2",
         "prettier-plugin-organize-imports": "^3.2.1",
         "prettier-plugin-packagejson": "^2.3.0",
-        "prettier-plugin-sort-json": "^0.0.3",
+        "prettier-plugin-sort-json": "^1.0.0",
         "prettier-plugin-toml": "^0.3.1",
         "test-established-expectations": "^0.0.0",
         "ts-node": "^10.9.1",
         "tsconfig-paths": "^4.1.1",
         "typescript": "^4.9.4",
-        "vite": "^4.0.1"
+        "vite": "^4.0.3"
     },
     "engines": {
         "node": ">=16",
