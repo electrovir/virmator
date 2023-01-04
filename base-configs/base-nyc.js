@@ -13,7 +13,7 @@ function getBaseConfigWithCoveragePercent(percent = 0) {
         extends: '@istanbuljs/nyc-config-typescript',
         all: true,
         clean: true,
-        cache: false,
+        cache: true,
         instrument: true,
         // use the reporter (istanbul-smart-text-reporter) to fail instead of printing errors for
         // every message
