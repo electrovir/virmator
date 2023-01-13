@@ -1,9 +1,15 @@
-import {awaitedForEach, extractErrorMessage, isTruthy} from '@augment-vir/common';
-import {logColors, runShellCommand} from '@augment-vir/node-js';
+import {
+    awaitedForEach,
+    extractErrorMessage,
+    isTruthy,
+    RequiredAndNotNullBy,
+} from '@augment-vir/common';
+import {logColors, readJson, runShellCommand} from '@augment-vir/node-js';
 import {existsSync} from 'fs';
 import {readFile} from 'fs/promises';
 import {dirname, join} from 'path';
 import * as semver from 'semver';
+import {PackageJson} from 'type-fest';
 import {systemRootPath} from '../../augments/fs';
 import {DefineCommandInputs} from '../command/define-command-inputs';
 
@@ -44,10 +50,18 @@ export async function updateDepsAsNeeded(inputs: UpdateDepsInput): Promise<void>
     }
 }
 
+function cleanDepVersion(input: string | undefined): string | undefined {
+    if (input === '*') {
+        return '*';
+    }
+
+    return input ? semver.clean(input) ?? semver.minVersion(input)?.raw ?? undefined : undefined;
+}
+
 async function getVersionsToUpgradeTo({
     repoDir,
     packageDir,
-    npmDeps,
+    npmDeps: neededNpmDeps,
     packageBinName,
 }: UpdateDepsInput): Promise<(string | undefined)[]> {
     const packageName = (
@@ -57,8 +71,7 @@ async function getVersionsToUpgradeTo({
         })
     ).stdout.trim();
 
-    const listedDepsJson = await findDepsListWithPackageName(repoDir, packageName);
-    const currentRepoDepVersions = parseCurrentDeps(listedDepsJson, packageName);
+    const currentRepoDepVersions = await getDeps(repoDir, packageName);
 
     const virmatorPackageJson = JSON.parse(
         (await readFile(join(packageDir, 'package.json'))).toString(),
@@ -68,93 +81,50 @@ async function getVersionsToUpgradeTo({
         ...virmatorPackageJson.dependencies,
     };
 
-    return npmDeps.map((npmDep) => {
-        const currentRepoVersion = currentRepoDepVersions[npmDep];
-        const packageDepVersion = packageDepVersions[npmDep]
-            ? semver.clean(packageDepVersions[npmDep]) ??
-              semver.minVersion(packageDepVersions[npmDep])?.raw ??
-              undefined
-            : undefined;
+    return neededNpmDeps.map((npmDep) => {
+        const currentRepoVersion = cleanDepVersion(currentRepoDepVersions[npmDep]);
+        const virmatorDepVersion = cleanDepVersion(packageDepVersions[npmDep]);
 
-        if (!packageDepVersion) {
+        if (!virmatorDepVersion) {
             throw new Error(
                 `No npm dep version listed for "${npmDep}" in ${packageBinName}'s dependencies.`,
             );
         }
 
         if (
-            !currentRepoVersion ||
-            semver.gt(packageDepVersion, currentRepoVersion) ||
-            (packageDepVersions[npmDep].match(/^\d/) && packageDepVersion !== currentRepoVersion)
+            currentRepoVersion !== '*' &&
+            (!currentRepoVersion ||
+                semver.gt(virmatorDepVersion, currentRepoVersion) ||
+                (packageDepVersions[npmDep].match(/^\d/) &&
+                    virmatorDepVersion !== currentRepoVersion))
         ) {
-            return packageDepVersion;
+            return virmatorDepVersion;
         } else {
             return undefined;
         }
     });
 }
 
-async function findDepsListWithPackageName(repoDir: string, packageName: string): Promise<object> {
+async function getDeps(
+    repoDir: string,
+    packageName: string,
+): Promise<Readonly<Record<string, string>>> {
     if (repoDir === systemRootPath) {
         return {};
     }
-    if (!existsSync(join(repoDir, 'package.json'))) {
-        return findDepsListWithPackageName(dirname(repoDir), packageName);
+
+    const packageJsonPath = join(repoDir, 'package.json');
+
+    if (!existsSync(packageJsonPath)) {
+        return getDeps(dirname(repoDir), packageName);
     }
 
-    const listedDeps = await runShellCommand(`npm list --depth=0 -json`, {
-        cwd: repoDir,
-        rejectOnError: true,
-    });
-    const output = JSON.parse(listedDeps.stdout);
+    const packageJson: PackageJson = await readJson(packageJsonPath);
 
-    if (output.name === packageName || packageName in output.dependencies) {
-        return output;
-    } else {
-        return findDepsListWithPackageName(dirname(repoDir), packageName);
-    }
-}
+    const allDeps = {
+        ...(packageJson.dependencies ?? {}),
+        ...(packageJson.devDependencies ?? {}),
+    };
 
-type TopLevelListOutput = ListOutput & {name: string};
-
-type ListOutput = {
-    version: string;
-    resolved: string;
-    dependencies?: Record<string, Omit<ListOutput, 'name'>>;
-};
-
-function parseCurrentDeps(
-    objectInput: object,
-    packageName: string,
-): Readonly<Record<string, string>> {
-    const parsedListOutput = objectInput as TopLevelListOutput;
-    const deps = parsedListOutput.dependencies;
-
-    return readDeps(deps, packageName);
-}
-
-function readDeps(rawDeps: ListOutput['dependencies'], packageName: string) {
-    if (!rawDeps) {
-        return {};
-    }
-    const depsAndVersions: Record<string, string> = {};
-
-    const nestedDeps = rawDeps[packageName]?.dependencies;
-    const deps = nestedDeps ?? rawDeps;
-
-    Object.keys(deps).forEach((depName) => {
-        const depValue = deps[depName];
-
-        if (
-            depValue &&
-            // ignore sub packages
-            !depValue.dependencies &&
-            // just a quick check that .version also exists
-            !!depValue.version
-        ) {
-            depsAndVersions[depName] = depValue.version;
-        }
-    });
-
-    return depsAndVersions;
+    return allDeps as RequiredAndNotNullBy<typeof allDeps, string>;
 }

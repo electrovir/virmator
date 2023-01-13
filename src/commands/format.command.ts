@@ -2,6 +2,7 @@ import {join} from 'path';
 import {CommandLogTransforms} from '../api/command/command-logging';
 import {defineCommand} from '../api/command/define-command';
 import {getNpmBinPath, virmatorConfigsDir} from '../file-paths/package-paths';
+import {combineTextConfig} from './extra-configs/combine-text-config';
 
 const defaultFormatExtensions = [
     'cjs',
@@ -38,6 +39,7 @@ export const formatCommandDefinition = defineCommand(
             prettierIgnore: {
                 copyFromInternalPath: join(virmatorConfigsDir, '.prettierignore'),
                 copyToPathRelativeToRepoDir: '.prettierignore',
+                updateExistingConfigFileCallback: combineTextConfig,
             },
         },
         npmDeps: [

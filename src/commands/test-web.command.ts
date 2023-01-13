@@ -31,6 +31,7 @@ export const testWebCommandDefinition = defineCommand(
             '@web/test-runner-commands',
             '@web/test-runner-playwright',
             '@web/test-runner',
+            'istanbul-smart-text-reporter',
         ],
     } as const,
     ({commandName, packageBinName, configFiles}) => {
