@@ -13,7 +13,9 @@ const allFilesTestFileName = 'all-files-for-code-coverage.test.ts';
 export const testWebCommandDefinition = defineCommand(
     {
         commandName: 'test-web',
-        subCommandDescriptions: {},
+        subCommandDescriptions: {
+            coverage: 'run web tests with code coverage calculations',
+        },
         configFiles: {
             webTestRunner: {
                 copyFromInternalPath: join(
@@ -95,6 +97,10 @@ export const testWebCommandDefinition = defineCommand(
                 }),
                 '--color',
                 configString,
+                inputs.inputSubCommands.includes(inputs.subCommands.coverage) &&
+                !inputs.filteredInputArgs.includes('--covereage')
+                    ? '--coverage'
+                    : '',
                 ...inputs.filteredInputArgs,
             ],
         };

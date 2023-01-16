@@ -42,6 +42,7 @@ const baseConfig = {
         'globbing',
         'globstar',
         'inconsolata',
+        'jsonify',
         'labelledby',
         'lexend',
         'lfsr',

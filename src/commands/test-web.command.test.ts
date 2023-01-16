@@ -2,6 +2,7 @@ import {remove} from 'fs-extra';
 import {rm} from 'fs/promises';
 import {describe, it} from 'mocha';
 import {join} from 'path';
+import {SetOptional} from 'type-fest';
 import {runCliCommandForTestFromDefinition, RunCliCommandInputs} from '../test/run-test-command';
 import {testTestWebPaths} from '../test/virmator-test-file-paths';
 import {testWebCommandDefinition} from './test-web.command';
@@ -18,7 +19,10 @@ async function removeCoverageDirectory(dir: string) {
 }
 
 async function runTestWebTestCommand<KeyGeneric extends string>(
-    inputs: Required<Pick<RunCliCommandInputs<KeyGeneric>, 'dir' | 'expectationKey'>>,
+    inputs: SetOptional<
+        Required<Pick<RunCliCommandInputs<KeyGeneric>, 'dir' | 'expectationKey' | 'args'>>,
+        'args'
+    >,
 ) {
     await removeCoverageDirectory(inputs.dir);
     await runCliCommandForTestFromDefinition(testWebCommandDefinition, {
@@ -49,6 +53,14 @@ describe(testWebCommandDefinition.commandName, () => {
         await runTestWebTestCommand({
             dir: testTestWebPaths.coverageFailRepo,
             expectationKey: 'fail-from-coverage-test-web',
+            args: [testWebCommandDefinition.subCommands.coverage],
+        });
+    });
+
+    it('should pass when coverage fails but coverage is not being tested', async () => {
+        await runTestWebTestCommand({
+            dir: testTestWebPaths.coverageFailRepo,
+            expectationKey: 'pass-from-no-coverage-test-web',
         });
     });
 });

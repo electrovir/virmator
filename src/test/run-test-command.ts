@@ -91,6 +91,7 @@ export async function runCliCommandForTestFromDefinition<KeyGeneric extends stri
             return toPosixPath(collapseWhiteSpace(fromInputs));
         },
     };
+
     return await runCliCommandForTest(fullInputs);
 }
 

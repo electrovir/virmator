@@ -227,7 +227,14 @@
             "exitCode": 1,
             "key": "fail-from-coverage-test-web",
             "stderr": "test-web failed.",
-            "stdout": "Installing @open-wc/testing... Installing @types/mocha... Installing @web/dev-server-esbuild... Installing @web/test-runner-commands... Installing @web/test-runner-playwright... Installing @web/test-runner... Installing istanbul-smart-text-reporter... running test-web... node_modules/.bin/web-test-runner --color --config configs/web-test-runner.config.mjs Running 2 test files... ----------------|---------|----------|---------|---------|------------------- File | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s ----------------|---------|----------|---------|---------|------------------- All files | 14.28 | 100 | 0 | 14.28 | source-file.ts | 14.28 | 100 | 0 | 14.28 | 2-7 ----------------|---------|----------|---------|---------|-------------------"
+            "stdout": "Installing @open-wc/testing... Installing @types/mocha... Installing @web/dev-server-esbuild... Installing @web/test-runner-commands... Installing @web/test-runner-playwright... Installing @web/test-runner... Installing istanbul-smart-text-reporter... running test-web... node_modules/.bin/web-test-runner --color --config configs/web-test-runner.config.mjs --coverage Running 2 test files... ----------------|---------|----------|---------|---------|------------------- File | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s ----------------|---------|----------|---------|---------|------------------- All files | 14.28 | 100 | 0 | 14.28 | source-file.ts | 14.28 | 100 | 0 | 14.28 | 2-7 ----------------|---------|----------|---------|---------|-------------------"
+        },
+        "pass-from-no-coverage-test-web": {
+            "dir": "test-web/fail-from-coverage-test-repo",
+            "exitCode": 0,
+            "key": "pass-from-no-coverage-test-web",
+            "stderr": "",
+            "stdout": "Installing @open-wc/testing... Installing @types/mocha... Installing @web/dev-server-esbuild... Installing @web/test-runner-commands... Installing @web/test-runner-playwright... Installing @web/test-runner... Installing istanbul-smart-text-reporter... running test-web... node_modules/.bin/web-test-runner --color --config configs/web-test-runner.config.mjs Running 2 test files... test-web succeeded."
         }
     },
     "update-configs": {

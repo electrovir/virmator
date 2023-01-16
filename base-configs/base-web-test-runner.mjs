@@ -23,7 +23,8 @@ export function getWebTestRunnerConfigWithCoveragePercent(percent = 0) {
         ],
         browserStartTimeout: minutesTwenty,
         concurrentBrowsers: 3,
-        coverage: true,
+        // this can be overridden by the --coverage flag
+        coverage: false,
         files: testFiles.spec,
         nodeResolve: true,
         plugins: [esbuildPlugin({ts: true})],

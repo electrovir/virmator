@@ -164,6 +164,10 @@ By default this command runs all tests three times: in Chromium (Chrome), Firefo
 -   Test all .test.ts and .test.tsx files: `virmator test-web`
 -   Test a specific file: `virmator test-web path/to/file.test.ts`
 
+### coverage
+
+run web tests with code coverage calculations
+
 ## update-configs
 
 Update all existing configuration files that virmator is able to update. (Like base config files.)
