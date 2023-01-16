@@ -98,7 +98,7 @@ export const testWebCommandDefinition = defineCommand(
                 '--color',
                 configString,
                 inputs.inputSubCommands.includes(inputs.subCommands.coverage) &&
-                !inputs.filteredInputArgs.includes('--covereage')
+                !inputs.filteredInputArgs.includes('--coverage')
                     ? '--coverage'
                     : '',
                 ...inputs.filteredInputArgs,
