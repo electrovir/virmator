@@ -106,7 +106,9 @@ ${packageBinName} ${commandName} --ignore-path .prettierignore ${filesMarkerArg}
         const fileExtensions = formatArgs.fileExtensions.length
             ? formatArgs.fileExtensions
             : defaultFormatExtensions;
-        const fileExtensionsString = `\"./**/*.+(${fileExtensions.join('|')})\"`;
+        const filesToFormat = formatArgs.specificFilesToFormat.length
+            ? formatArgs.specificFilesToFormat.join(' ')
+            : `\"./**/*.+(${fileExtensions.join('|')})\"`;
         const listDifferentFlag = shouldCheckOnly ? '' : '--list-different';
 
         const extraPrettierFlags = formatArgs.prettierFlags.length ? formatArgs.prettierFlags : '';
@@ -130,7 +132,7 @@ ${packageBinName} ${commandName} --ignore-path .prettierignore ${filesMarkerArg}
                 '--color',
                 listDifferentFlag,
                 ...extraPrettierFlags,
-                fileExtensionsString,
+                filesToFormat,
                 operationString,
             ],
             logTransforms,
@@ -141,6 +143,7 @@ ${packageBinName} ${commandName} --ignore-path .prettierignore ${filesMarkerArg}
 type FormatArgs = {
     prettierFlags: string[];
     fileExtensions: string[];
+    specificFilesToFormat: string[];
 };
 
 function extractFormatArgs(args: string[]): FormatArgs {
@@ -148,14 +151,17 @@ function extractFormatArgs(args: string[]): FormatArgs {
     const formatArgs: FormatArgs = {
         prettierFlags: [],
         fileExtensions: [],
+        specificFilesToFormat: [],
     };
     args.forEach((arg) => {
         if (foundFileTypesFlag) {
             formatArgs.fileExtensions.push(arg);
         } else if (arg === filesMarkerArg) {
             foundFileTypesFlag = true;
-        } else {
+        } else if (arg.startsWith('-')) {
             formatArgs.prettierFlags.push(arg);
+        } else {
+            formatArgs.specificFilesToFormat.push(arg);
         }
     });
 

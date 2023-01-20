@@ -32,6 +32,19 @@ describe(formatCommandDefinition.commandName, () => {
         assertNoFileChanges(output, formatConfigNames);
     });
 
+    it('should pass when checking the format of an individually good file', async () => {
+        const output = await runFormatTest({
+            args: [
+                formatCommandDefinition.subCommands.check,
+                testFormatPaths.goodFormatFile,
+            ],
+            dir: testFormatPaths.invalidRepo,
+            expectationKey: 'pass on individually good file',
+        });
+        assertNewFilesWereCreated(output, formatConfigNames);
+        assertNoFileChanges(output, formatConfigNames);
+    });
+
     it('should pass when formatting is all perfect', async () => {
         const output = await runFormatTest({
             args: [
@@ -46,7 +59,7 @@ describe(formatCommandDefinition.commandName, () => {
 
     it('should update formatting', async () => {
         const originalInvalidFileContents = (
-            await readFile(testFormatPaths.invalidSourceFile)
+            await readFile(testFormatPaths.badFormatFile)
         ).toString();
 
         try {
@@ -65,9 +78,9 @@ describe(formatCommandDefinition.commandName, () => {
         } catch (error) {
             throw error;
         } finally {
-            await writeFile(testFormatPaths.invalidSourceFile, originalInvalidFileContents);
+            await writeFile(testFormatPaths.badFormatFile, originalInvalidFileContents);
             const afterCleanUpFileContents = (
-                await readFile(testFormatPaths.invalidSourceFile)
+                await readFile(testFormatPaths.badFormatFile)
             ).toString();
             assert.strictEqual(afterCleanUpFileContents, originalInvalidFileContents);
         }

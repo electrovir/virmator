@@ -129,6 +129,13 @@
             "key": "format should update invalid files",
             "stderr": "",
             "stdout": "Installing prettier... Installing prettier-plugin-jsdoc... Installing prettier-plugin-multiline-arrays... Installing prettier-plugin-organize-imports... Installing prettier-plugin-packagejson... Installing prettier-plugin-sort-json... Installing prettier-plugin-toml... running format... Successfully copied .prettierignore Successfully copied .prettierrc.js node_modules/.bin/prettier --color --list-different \"./**/*.+(cjs|css|graphql|html|js|json|jsx|less|md|mjs|scss|toml|ts|tsx|yaml|yml)\" --write invalid-format.ts format succeeded."
+        },
+        "pass on individually good file": {
+            "dir": "format/invalid-format-repo",
+            "exitCode": 0,
+            "key": "pass on individually good file",
+            "stderr": "",
+            "stdout": "Installing prettier... Installing prettier-plugin-jsdoc... Installing prettier-plugin-multiline-arrays... Installing prettier-plugin-organize-imports... Installing prettier-plugin-packagejson... Installing prettier-plugin-sort-json... Installing prettier-plugin-toml... running format... Successfully copied .prettierignore Successfully copied .prettierrc.js node_modules/.bin/prettier --color ./test-files/format/invalid-format-repo/valid-format.ts --check format succeeded."
         }
     },
     "spellcheck": {

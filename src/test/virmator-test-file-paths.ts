@@ -24,7 +24,8 @@ const invalidFormatRepo = join(formatTestRepos, 'invalid-format-repo');
 export const testFormatPaths = {
     validRepo: join(formatTestRepos, 'valid-format-repo'),
     invalidRepo: invalidFormatRepo,
-    invalidSourceFile: join(invalidFormatRepo, 'invalid-format.ts'),
+    badFormatFile: join(invalidFormatRepo, 'invalid-format.ts'),
+    goodFormatFile: join(invalidFormatRepo, 'valid-format.ts'),
 };
 
 const compileTestRepos = join(testFilesDirPath, 'compile');
