@@ -20,6 +20,13 @@ function findClosestPackagePath(dirPath, packageName) {
     }
 }
 
+function getPluginPathFromName(pluginName) {
+    return path.posix.resolve(
+        posixDirname,
+        toPosixPath(findClosestPackagePath(__dirname, pluginName)),
+    );
+}
+
 const plugins = [
     'prettier-plugin-toml',
     'prettier-plugin-sort-json',
@@ -27,11 +34,9 @@ const plugins = [
     'prettier-plugin-multiline-arrays',
     'prettier-plugin-organize-imports',
     'prettier-plugin-jsdoc',
+    'prettier-plugin-interpolated-html-tags',
 ].map((pluginName) => {
-    return path.posix.resolve(
-        posixDirname,
-        toPosixPath(findClosestPackagePath(__dirname, pluginName)),
-    );
+    return getPluginPathFromName(pluginName);
 });
 
 /**
@@ -40,7 +45,7 @@ const plugins = [
  * @typedef {import('prettier').Options} PrettierOptions
  * @type {PrettierOptions & MultilineOptions}
  */
-const prettierConfig = {
+const basePrettierConfig = {
     arrowParens: 'always',
     bracketSameLine: false,
     bracketSpacing: false,
@@ -55,4 +60,8 @@ const prettierConfig = {
     trailingComma: 'all',
 };
 
-module.exports = prettierConfig;
+module.exports = {
+    basePrettierConfig,
+    /** Export this in case consumers want to add more plugins */
+    getPluginPathFromName,
+};

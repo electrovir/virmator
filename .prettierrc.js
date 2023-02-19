@@ -1,4 +1,4 @@
-const baseConfig = require('./base-configs/base-prettierrc.js');
+const {basePrettierConfig} = require('./base-configs/base-prettierrc.js');
 
 /**
  * @typedef {import('prettier-plugin-multiline-arrays').MultilineArrayOptions} MultilineOptions
@@ -7,7 +7,7 @@ const baseConfig = require('./base-configs/base-prettierrc.js');
  * @type {PrettierOptions & MultilineOptions}
  */
 const prettierConfig = {
-    ...baseConfig,
+    ...basePrettierConfig,
 };
 
 module.exports = prettierConfig;

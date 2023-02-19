@@ -114,28 +114,28 @@
             "exitCode": 1,
             "key": "fail on format failures in a folder",
             "stderr": "[warn] invalid-format.ts [warn] Code style issues found in the above file. Forgot to run Prettier? format failed.",
-            "stdout": "Installing prettier... Installing prettier-plugin-jsdoc... Installing prettier-plugin-multiline-arrays... Installing prettier-plugin-organize-imports... Installing prettier-plugin-packagejson... Installing prettier-plugin-sort-json... Installing prettier-plugin-toml... running format... Successfully copied .prettierignore Successfully copied .prettierrc.js node_modules/.bin/prettier --color \"./**/*.+(cjs|css|graphql|html|js|json|jsx|less|md|mjs|scss|toml|ts|tsx|yaml|yml)\" --check"
+            "stdout": "Installing prettier... Installing prettier-plugin-jsdoc... Installing prettier-plugin-multiline-arrays... Installing prettier-plugin-organize-imports... Installing prettier-plugin-packagejson... Installing prettier-plugin-sort-json... Installing prettier-plugin-toml... Installing prettier-plugin-interpolated-html-tags... running format... Successfully copied .prettierignore Successfully copied .prettierrc.js node_modules/.bin/prettier --color \"./**/*.+(cjs|css|graphql|html|js|json|jsx|less|md|mjs|scss|toml|ts|tsx|yaml|yml)\" --check"
         },
         "pass format when there are zero errors": {
             "dir": "format/valid-format-repo",
             "exitCode": 0,
             "key": "pass format when there are zero errors",
             "stderr": "",
-            "stdout": "Installing prettier... Installing prettier-plugin-jsdoc... Installing prettier-plugin-multiline-arrays... Installing prettier-plugin-organize-imports... Installing prettier-plugin-packagejson... Installing prettier-plugin-sort-json... Installing prettier-plugin-toml... running format... Successfully copied .prettierignore Successfully copied .prettierrc.js node_modules/.bin/prettier --color \"./**/*.+(cjs|css|graphql|html|js|json|jsx|less|md|mjs|scss|toml|ts|tsx|yaml|yml)\" --check format succeeded."
+            "stdout": "Installing prettier... Installing prettier-plugin-jsdoc... Installing prettier-plugin-multiline-arrays... Installing prettier-plugin-organize-imports... Installing prettier-plugin-packagejson... Installing prettier-plugin-sort-json... Installing prettier-plugin-toml... Installing prettier-plugin-interpolated-html-tags... running format... Successfully copied .prettierignore Successfully copied .prettierrc.js node_modules/.bin/prettier --color \"./**/*.+(cjs|css|graphql|html|js|json|jsx|less|md|mjs|scss|toml|ts|tsx|yaml|yml)\" --check format succeeded."
         },
         "format should update invalid files": {
             "dir": "format/invalid-format-repo",
             "exitCode": 0,
             "key": "format should update invalid files",
             "stderr": "",
-            "stdout": "Installing prettier... Installing prettier-plugin-jsdoc... Installing prettier-plugin-multiline-arrays... Installing prettier-plugin-organize-imports... Installing prettier-plugin-packagejson... Installing prettier-plugin-sort-json... Installing prettier-plugin-toml... running format... Successfully copied .prettierignore Successfully copied .prettierrc.js node_modules/.bin/prettier --color --list-different \"./**/*.+(cjs|css|graphql|html|js|json|jsx|less|md|mjs|scss|toml|ts|tsx|yaml|yml)\" --write invalid-format.ts format succeeded."
+            "stdout": "Installing prettier... Installing prettier-plugin-jsdoc... Installing prettier-plugin-multiline-arrays... Installing prettier-plugin-organize-imports... Installing prettier-plugin-packagejson... Installing prettier-plugin-sort-json... Installing prettier-plugin-toml... Installing prettier-plugin-interpolated-html-tags... running format... Successfully copied .prettierignore Successfully copied .prettierrc.js node_modules/.bin/prettier --color --list-different \"./**/*.+(cjs|css|graphql|html|js|json|jsx|less|md|mjs|scss|toml|ts|tsx|yaml|yml)\" --write invalid-format.ts format succeeded."
         },
         "pass on individually good file": {
             "dir": "format/invalid-format-repo",
             "exitCode": 0,
             "key": "pass on individually good file",
             "stderr": "",
-            "stdout": "Installing prettier... Installing prettier-plugin-jsdoc... Installing prettier-plugin-multiline-arrays... Installing prettier-plugin-organize-imports... Installing prettier-plugin-packagejson... Installing prettier-plugin-sort-json... Installing prettier-plugin-toml... running format... Successfully copied .prettierignore Successfully copied .prettierrc.js node_modules/.bin/prettier --color ./test-files/format/invalid-format-repo/valid-format.ts --check format succeeded."
+            "stdout": "Installing prettier... Installing prettier-plugin-jsdoc... Installing prettier-plugin-multiline-arrays... Installing prettier-plugin-organize-imports... Installing prettier-plugin-packagejson... Installing prettier-plugin-sort-json... Installing prettier-plugin-toml... Installing prettier-plugin-interpolated-html-tags... running format... Successfully copied .prettierignore Successfully copied .prettierrc.js node_modules/.bin/prettier --color ./test-files/format/invalid-format-repo/valid-format.ts --check format succeeded."
         }
     },
     "spellcheck": {
@@ -167,14 +167,14 @@
             "exitCode": 0,
             "key": "init with files to upgrade",
             "stderr": "",
-            "stdout": "Installing prettier... Installing prettier-plugin-jsdoc... Installing prettier-plugin-multiline-arrays... Installing prettier-plugin-organize-imports... Installing prettier-plugin-packagejson... Installing prettier-plugin-sort-json... Installing prettier-plugin-toml... running init... Successfully copied .gitattributes Successfully copied .gitignore Successfully copied .npmignore Successfully copied .nvmrc Successfully copied .prettierignore Successfully copied .prettierrc.js Successfully copied build-for-gh-pages.yml Successfully copied cspell.config.js Successfully copied index.css Successfully copied index.html Successfully copied mocha.config.js Successfully copied nyc.config.js Successfully copied package.json Successfully copied settings.json Successfully copied tagged-release.yml Successfully copied tests.yml Successfully copied tsconfig.json Successfully copied vite.config.ts Successfully copied web-test-runner.config.mjs init succeeded."
+            "stdout": "Installing prettier... Installing prettier-plugin-jsdoc... Installing prettier-plugin-multiline-arrays... Installing prettier-plugin-organize-imports... Installing prettier-plugin-packagejson... Installing prettier-plugin-sort-json... Installing prettier-plugin-toml... Installing prettier-plugin-interpolated-html-tags... running init... Successfully copied .gitattributes Successfully copied .gitignore Successfully copied .npmignore Successfully copied .nvmrc Successfully copied .prettierignore Successfully copied .prettierrc.js Successfully copied build-for-gh-pages.yml Successfully copied cspell.config.js Successfully copied index.css Successfully copied index.html Successfully copied mocha.config.js Successfully copied nyc.config.js Successfully copied package.json Successfully copied settings.json Successfully copied tagged-release.yml Successfully copied tests.yml Successfully copied tsconfig.json Successfully copied vite.config.ts Successfully copied web-test-runner.config.mjs init succeeded."
         },
         "basic-init": {
             "dir": "init/empty-repo",
             "exitCode": 0,
             "key": "basic-init",
             "stderr": "",
-            "stdout": "Installing prettier... Installing prettier-plugin-jsdoc... Installing prettier-plugin-multiline-arrays... Installing prettier-plugin-organize-imports... Installing prettier-plugin-packagejson... Installing prettier-plugin-sort-json... Installing prettier-plugin-toml... running init... Successfully copied .gitattributes Successfully copied .gitignore Successfully copied .npmignore Successfully copied .nvmrc Successfully copied .prettierignore Successfully copied .prettierrc.js Successfully copied build-for-gh-pages.yml Successfully copied cspell.config.js Successfully copied index.css Successfully copied index.html Successfully copied mocha.config.js Successfully copied nyc.config.js Successfully copied package.json Successfully copied settings.json Successfully copied tagged-release.yml Successfully copied tests.yml Successfully copied tsconfig.json Successfully copied vite.config.ts Successfully copied web-test-runner.config.mjs init succeeded."
+            "stdout": "Installing prettier... Installing prettier-plugin-jsdoc... Installing prettier-plugin-multiline-arrays... Installing prettier-plugin-organize-imports... Installing prettier-plugin-packagejson... Installing prettier-plugin-sort-json... Installing prettier-plugin-toml... Installing prettier-plugin-interpolated-html-tags... running init... Successfully copied .gitattributes Successfully copied .gitignore Successfully copied .npmignore Successfully copied .nvmrc Successfully copied .prettierignore Successfully copied .prettierrc.js Successfully copied build-for-gh-pages.yml Successfully copied cspell.config.js Successfully copied index.css Successfully copied index.html Successfully copied mocha.config.js Successfully copied nyc.config.js Successfully copied package.json Successfully copied settings.json Successfully copied tagged-release.yml Successfully copied tests.yml Successfully copied tsconfig.json Successfully copied vite.config.ts Successfully copied web-test-runner.config.mjs init succeeded."
         }
     },
     "test": {

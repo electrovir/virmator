@@ -50,6 +50,7 @@ export const formatCommandDefinition = defineCommand(
             'prettier-plugin-packagejson',
             'prettier-plugin-sort-json',
             'prettier-plugin-toml',
+            'prettier-plugin-interpolated-html-tags',
         ],
     } as const,
     ({commandName, subCommands, packageBinName}) => {

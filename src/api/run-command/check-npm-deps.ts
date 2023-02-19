@@ -119,11 +119,11 @@ async function getDeps(
         return getDeps(dirname(repoDir), packageName);
     }
 
-    const packageJson: PackageJson = await readJson(packageJsonPath);
+    const packageJson: PackageJson | undefined = await readJson(packageJsonPath);
 
     const allDeps = {
-        ...(packageJson.dependencies ?? {}),
-        ...(packageJson.devDependencies ?? {}),
+        ...(packageJson?.dependencies ?? {}),
+        ...(packageJson?.devDependencies ?? {}),
     };
 
     return allDeps as RequiredAndNotNullBy<typeof allDeps, string>;
