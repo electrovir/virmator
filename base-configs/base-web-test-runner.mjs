@@ -1,12 +1,47 @@
 import {esbuildPlugin} from '@web/dev-server-esbuild';
 import {defaultReporter} from '@web/test-runner';
 import {playwrightLauncher} from '@web/test-runner-playwright';
+import {visualRegressionPlugin} from '@web/test-runner-visual-regression/plugin';
+import {join, relative} from 'path';
 import testFiles from './test-files-glob.js';
 
 const oneMinuteMs = 60_000;
 const minutesTwenty = 20 * oneMinuteMs;
 
-export function getWebTestRunnerConfigWithCoveragePercent(percent = 0) {
+function getTestFileName(args, repoDir, type) {
+    const screenshotDir = relative(repoDir, args.testFile.replace(/\.[jt]sx?$/, ''));
+    const extension = `${type ? `${type}.` : ''}png`;
+    const screenshotName = `${
+        args.name
+    }.${process.platform.toLowerCase()}.${args.browser.toLowerCase()}.${extension}`;
+    const dirs = [
+        screenshotDir,
+        args.name,
+        type === 'diff' ? 'failure-diff' : '',
+    ].filter((a) => a);
+    return join(...dirs, screenshotName);
+}
+
+export function getWebTestRunnerConfigWithCoveragePercent(percent = 0, repoDir = '') {
+    const screenshotsPlugins = repoDir
+        ? [
+              visualRegressionPlugin({
+                  update: false,
+                  baseDir: join(repoDir, 'test-screenshots'),
+                  getBaselineName: (args) => {
+                      return getTestFileName(args, repoDir, '');
+                  },
+                  getDiffName: (args) => {
+                      return getTestFileName(args, repoDir, 'diff');
+                  },
+                  getFailedName: (args) => {
+                      return getTestFileName(args, repoDir, '');
+                  },
+                  saveDiff: () => {},
+              }),
+          ]
+        : [];
+
     /** @type {import('@web/test-runner').TestRunnerConfig} */
     const webTestRunnerConfig = {
         browsers: [
@@ -27,7 +62,10 @@ export function getWebTestRunnerConfigWithCoveragePercent(percent = 0) {
         coverage: false,
         files: testFiles.spec,
         nodeResolve: true,
-        plugins: [esbuildPlugin({ts: true})],
+        plugins: [
+            esbuildPlugin({ts: true}),
+            ...screenshotsPlugins,
+        ],
         testFramework: {
             config: {
                 timeout: minutesTwenty,
