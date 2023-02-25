@@ -257,7 +257,7 @@
             "exitCode": 0,
             "key": "not-updating-any-configs",
             "stderr": "",
-            "stdout": "running update-configs... Successfully updated settings.json update-configs succeeded."
+            "stdout": "running update-configs... update-configs succeeded."
         }
     }
 }

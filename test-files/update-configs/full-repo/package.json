@@ -31,8 +31,5 @@
         "test:spelling": "virmator spellcheck",
         "test:types": "tsc --noEmit",
         "test:web": "virmator test-web"
-    },
-    "devDependencies": {
-        "virmator": "file:../../../virmator.tgz"
     }
 }

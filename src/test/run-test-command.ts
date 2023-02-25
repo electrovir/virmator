@@ -6,11 +6,12 @@ import {
     RequiredBy,
     typedHasProperty,
 } from '@augment-vir/common';
-import {runShellCommand, ShellOutput, toPosixPath} from '@augment-vir/node-js';
+import {toPosixPath} from '@augment-vir/node-js';
 import {assert, config} from 'chai';
 import {existsSync} from 'fs';
 import {readdir, rm, unlink, writeFile} from 'fs/promises';
 import {basename, join, relative} from 'path';
+import {runPackageCli} from 'test-as-package';
 import {CommandLogTransform, identityCommandLogTransform} from '../api/command/command-logging';
 import {CommandDefinition} from '../api/command/define-command';
 import {ConfigFileDefinition} from '../api/config/config-file-definition';
@@ -46,13 +47,6 @@ async function initDirectory(dir: string, keepFiles: ReadonlyArray<string> = [])
         const packageJsonPath = join(dir, 'package.json');
         await writeFile(packageJsonPath, JSON.stringify({name: basename(dir)}, null, 4) + '\n');
     }
-}
-
-async function runTestCommand({args, dir}: {args: string[]; dir: string}): Promise<ShellOutput> {
-    const command = `npx virmator ${args.join(' ')}`;
-    const results = await runShellCommand(command, {cwd: dir});
-
-    return results;
 }
 
 const runKeys = new Set<string>();
@@ -112,14 +106,9 @@ async function runCliCommandForTest<KeyGeneric extends string>(
     });
     const beforeTimestamp: number = Date.now();
 
-    await runShellCommand(`npm i -D ${process.env.TAR_TO_INSTALL}`, {
+    const results = await runPackageCli({
+        commandArgs: inputs.args,
         cwd: inputs.dir,
-        rejectOnError: true,
-    });
-
-    const results = await runTestCommand({
-        args: inputs.args,
-        dir: inputs.dir,
     });
 
     inputs.configFilesToCheck.forEach((configFile) => {
