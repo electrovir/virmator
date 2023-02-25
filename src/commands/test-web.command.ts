@@ -32,6 +32,7 @@ export const testWebCommandDefinition = defineCommand(
             '@web/dev-server-esbuild',
             '@web/test-runner-commands',
             '@web/test-runner-playwright',
+            '@web/test-runner-visual-regression',
             '@web/test-runner',
             'istanbul-smart-text-reporter',
         ],

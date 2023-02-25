@@ -2,12 +2,15 @@ import {dirname} from 'path';
 import {fileURLToPath, pathToFileURL} from 'url';
 import {getWebTestRunnerConfigWithCoveragePercent} from 'virmator/base-configs/base-web-test-runner.mjs';
 
+const baseConfig = getWebTestRunnerConfigWithCoveragePercent({
+    coveragePercent: 100,
+    packageRootDirPath: dirname(dirname(fileURLToPath(import.meta.url))),
+    extraScreenshotOptions: {},
+});
+
 /** @type {import('@web/test-runner').TestRunnerConfig} */
 const webTestRunnerConfig = {
-    ...getWebTestRunnerConfigWithCoveragePercent(
-        100,
-        dirname(dirname(fileURLToPath(import.meta.url))),
-    ),
+    ...baseConfig,
 };
 
 export default webTestRunnerConfig;

@@ -18,30 +18,45 @@ function getTestFileName(args, repoDir, type) {
         screenshotDir,
         args.name,
         type === 'diff' ? 'failure-diff' : '',
-    ].filter((a) => a);
+    ].filter((a) => !!a);
     return join(...dirs, screenshotName);
 }
 
-export function getWebTestRunnerConfigWithCoveragePercent(percent = 0, repoDir = '') {
-    const screenshotsPlugins = repoDir
-        ? [
-              visualRegressionPlugin({
-                  update: false,
-                  baseDir: join(repoDir, 'test-screenshots'),
-                  getBaselineName: (args) => {
-                      return getTestFileName(args, repoDir, '');
-                  },
-                  getDiffName: (args) => {
-                      return getTestFileName(args, repoDir, 'diff');
-                  },
-                  getFailedName: (args) => {
-                      return getTestFileName(args, repoDir, '');
-                  },
-                  saveDiff: () => {},
-              }),
-          ]
-        : [];
+function createScreenshotsPlugin(extraOptions, repoDir) {
+    if (!repoDir) {
+        return [];
+    }
+    const defaultOptions = {
+        update: false,
+        getBaselineName: (args) => {
+            return getTestFileName(args, repoDir, '');
+        },
+        getDiffName: (args) => {
+            return getTestFileName(args, repoDir, 'diff');
+        },
+        getFailedName: (args) => {
+            return getTestFileName(args, repoDir, '');
+        },
+        saveDiff: () => {},
 
+        failureThreshold: 0.5,
+        failureThresholdType: 'percent',
+    };
+
+    return [
+        visualRegressionPlugin({
+            baseDir: join(repoDir, 'test-screenshots'),
+            ...defaultOptions,
+            ...extraOptions,
+        }),
+    ];
+}
+
+export function getWebTestRunnerConfigWithCoveragePercent({
+    coveragePercent = 0,
+    packageRootDirPath = '',
+    extraScreenshotOptions,
+}) {
     /** @type {import('@web/test-runner').TestRunnerConfig} */
     const webTestRunnerConfig = {
         browsers: [
@@ -64,7 +79,7 @@ export function getWebTestRunnerConfigWithCoveragePercent(percent = 0, repoDir =
         nodeResolve: true,
         plugins: [
             esbuildPlugin({ts: true}),
-            ...screenshotsPlugins,
+            ...createScreenshotsPlugin(extraScreenshotOptions, packageRootDirPath),
         ],
         testFramework: {
             config: {
@@ -80,10 +95,10 @@ export function getWebTestRunnerConfigWithCoveragePercent(percent = 0, repoDir =
                 '**/*.test-helper.ts',
             ],
             threshold: {
-                statements: percent,
-                branches: percent,
-                functions: percent,
-                lines: percent,
+                statements: coveragePercent,
+                branches: coveragePercent,
+                functions: coveragePercent,
+                lines: coveragePercent,
             },
             report: true,
             reporters: [

@@ -7,15 +7,15 @@ import {runCliCommandForTestFromDefinition, RunCliCommandInputs} from '../test/r
 import {testTestWebPaths} from '../test/virmator-test-file-paths';
 import {testWebCommandDefinition} from './test-web.command';
 
-async function removeCoverageDirectory(dir: string) {
-    await rm(join(dir, 'coverage'), {
+async function removeDirectory(rootDir: string, directory: string) {
+    await rm(join(rootDir, directory), {
         force: true,
         recursive: true,
         maxRetries: 3,
         retryDelay: 100,
     });
     // try... again? Cause Windows sucks.
-    await remove(join(dir, 'coverage'));
+    await remove(join(rootDir, directory));
 }
 
 async function runTestWebTestCommand<KeyGeneric extends string>(
@@ -24,14 +24,19 @@ async function runTestWebTestCommand<KeyGeneric extends string>(
         'args'
     >,
 ) {
-    await removeCoverageDirectory(inputs.dir);
-    await runCliCommandForTestFromDefinition(testWebCommandDefinition, {
-        ...inputs,
-        logTransform: (input) => {
-            return input.replace(/(Finished running tests in )[\d\.]+m?s/g, '$1');
-        },
-    });
-    await removeCoverageDirectory(inputs.dir);
+    await removeDirectory(inputs.dir, 'coverage');
+    await removeDirectory(inputs.dir, 'configs');
+    try {
+        await runCliCommandForTestFromDefinition(testWebCommandDefinition, {
+            ...inputs,
+            logTransform: (input) => {
+                return input.replace(/(Finished running tests in )[\d\.]+m?s/g, '$1');
+            },
+        });
+    } finally {
+        await removeDirectory(inputs.dir, 'configs');
+        await removeDirectory(inputs.dir, 'coverage');
+    }
 }
 
 describe(testWebCommandDefinition.commandName, () => {
