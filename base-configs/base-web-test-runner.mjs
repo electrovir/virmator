@@ -39,7 +39,7 @@ function createScreenshotsPlugin(extraOptions, repoDir) {
         },
         saveDiff: () => {},
 
-        failureThreshold: 0.5,
+        failureThreshold: 0,
         failureThresholdType: 'percent',
     };
 
