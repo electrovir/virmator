@@ -16,7 +16,6 @@ function getTestFileName(args, repoDir, type) {
     }.${process.platform.toLowerCase()}.${args.browser.toLowerCase()}.${extension}`;
     const dirs = [
         screenshotDir,
-        args.name,
         type === 'diff' ? 'failure-diff' : '',
     ].filter((a) => !!a);
     return join(...dirs, screenshotName);
