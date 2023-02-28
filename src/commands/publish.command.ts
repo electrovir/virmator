@@ -46,13 +46,18 @@ export const publishCommandDefinition = defineCommand(
             };
         }
 
+        const {packageJson, path: packageJsonPath} = await readTopLevelPackageJson(inputs.repoDir);
+        const workspaceDirs = getWorkspaceDirs(packageJson, packageJsonPath);
+        if (await isCurrentVersionPublished(packageJson, workspaceDirs)) {
+            await bumpPackageVersion(packageJson, packageJsonPath);
+        }
+        await updateWorkspaceVersions(packageJsonPath, workspaceDirs);
+
         await runShellCommand(inputs.filteredInputArgs.join(' '), {
             hookUpToConsole: true,
             cwd: inputs.repoDir,
             rejectOnError: true,
         });
-
-        const {packageJson, path: packageJsonPath} = await readTopLevelPackageJson(inputs.repoDir);
 
         if (await doChangesExist(dirname(packageJsonPath))) {
             throw new Error(
@@ -60,12 +65,6 @@ export const publishCommandDefinition = defineCommand(
             );
         }
 
-        const workspaceDirs = getWorkspaceDirs(packageJson, packageJsonPath);
-        await updateWorkspaceVersions(packageJsonPath, workspaceDirs);
-        if (await isCurrentVersionPublished(packageJson, workspaceDirs)) {
-            await bumpPackageVersion(packageJson, packageJsonPath);
-        }
-        await updateWorkspaceVersions(packageJsonPath, workspaceDirs);
         await runShellCommand(`npm i`, {
             rejectOnError: true,
             cwd: dirname(packageJsonPath),
