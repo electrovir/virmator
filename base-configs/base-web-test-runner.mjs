@@ -1,5 +1,5 @@
 import {esbuildPlugin} from '@web/dev-server-esbuild';
-import {defaultReporter, summaryReport} from '@web/test-runner';
+import {defaultReporter, summaryReporter} from '@web/test-runner';
 import {playwrightLauncher} from '@web/test-runner-playwright';
 import {visualRegressionPlugin} from '@web/test-runner-visual-regression/plugin';
 import {join, relative} from 'path';
@@ -69,7 +69,7 @@ export function getWebTestRunnerConfigWithCoveragePercent({
         ],
         reporters: [
             defaultReporter({reportTestResults: true, reportTestProgress: false}),
-            summaryReport(),
+            summaryReporter(),
         ],
         browserStartTimeout: minutesTwenty,
         concurrentBrowsers: 3,
