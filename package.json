@@ -35,6 +35,7 @@
         "format": "npm run format:base -- --write --list-different",
         "format:base": "prettier \"./**/*.+(ts|json|html|css|md|js)\"",
         "prepublishOnly": "npm run test:all",
+        "publish": "virmator publish \"npm run test:all\"",
         "spellcheck": "cspell \"{*,.*,**/{.*,*}/**/{.*,*}}\" --exclude \"test-files/spellcheck/invalid-spellcheck-repo/**/*\" --exclude \"extender-configs\"",
         "test": "IGNORE_VIRMATOR_STACK_TRACE=true test-as-package mocha --config mocha.config.js",
         "test:all": "npm run test && npm run spellcheck -- --no-progress && npm run test:format && npm run docs:check",
@@ -87,6 +88,7 @@
         "ts-node": "^10.9.1",
         "tsconfig-paths": "^4.1.2",
         "typescript": "^4.9.5",
+        "virmator": "^6.1.1",
         "vite": "^4.1.4"
     },
     "engines": {
