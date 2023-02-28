@@ -7,5 +7,7 @@ module.exports = {
         './test-files/spellcheck/bad',
         './test-files/expected-output.json',
     ],
-    words: [...baseConfig.words],
+    words: [
+        ...baseConfig.words,
+    ],
 };

@@ -50,6 +50,7 @@ const baseConfig = {
         'labelledby',
         'lexend',
         'lfsr',
+        'localforage',
         'locationchange',
         'marvinpinto',
         'mmultiline',
