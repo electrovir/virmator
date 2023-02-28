@@ -41,23 +41,13 @@ export const publishCommandDefinition = defineCommand(
     },
     async (inputs) => {
         if (process.env[inVirmatorEnvKey]) {
+            // exit early if we've already published but npm is running the script again
             return {
                 success: true,
             };
         }
-
         const {packageJson, path: packageJsonPath} = await readTopLevelPackageJson(inputs.repoDir);
         const workspaceDirs = getWorkspaceDirs(packageJson, packageJsonPath);
-        if (await isCurrentVersionPublished(packageJson, workspaceDirs)) {
-            await bumpPackageVersion(packageJson, packageJsonPath);
-        }
-        await updateWorkspaceVersions(packageJsonPath, workspaceDirs);
-
-        await runShellCommand(inputs.filteredInputArgs.join(' '), {
-            hookUpToConsole: true,
-            cwd: inputs.repoDir,
-            rejectOnError: true,
-        });
 
         if (await doChangesExist(dirname(packageJsonPath))) {
             throw new Error(
@@ -65,9 +55,20 @@ export const publishCommandDefinition = defineCommand(
             );
         }
 
+        if (await isCurrentVersionPublished(packageJson, workspaceDirs)) {
+            await bumpPackageVersion(packageJson, packageJsonPath);
+        }
+        await updateWorkspaceVersions(packageJsonPath, workspaceDirs);
+
         await runShellCommand(`npm i`, {
             rejectOnError: true,
             cwd: dirname(packageJsonPath),
+        });
+
+        await runShellCommand(inputs.filteredInputArgs.join(' '), {
+            hookUpToConsole: true,
+            cwd: inputs.repoDir,
+            rejectOnError: true,
         });
 
         await publishPackages(workspaceDirs, packageJsonPath);
