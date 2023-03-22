@@ -1,10 +1,10 @@
 import {ArrayElement, extractErrorMessage} from '@augment-vir/common';
 import {extractAllConfigs} from './command/command-configs';
 import {CommandDefinitionArrayToMapping, commandsToMapping} from './command/command-mapping';
-import {generateHelpMessage, HelpMessageSyntax} from './command/command-to-help-message';
+import {HelpMessageSyntax, generateHelpMessage} from './command/command-to-help-message';
 import {CommandDefinition} from './command/define-command';
 import {runExtendedVirmator} from './run-command/run-extended-virmator';
-import {ExtendedVirmator, ExtendVirmatorInputs} from './virmator-types';
+import {ExtendVirmatorInputs, ExtendedVirmator} from './virmator-types';
 
 /**
  * Creates a wrapped instance of virmator from which all its CLI commands can be called. Arguments

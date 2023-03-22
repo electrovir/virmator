@@ -1,7 +1,7 @@
 import {assert} from 'chai';
 import {readFile, writeFile} from 'fs/promises';
 import {describe, it} from 'mocha';
-import {runCliCommandForTestFromDefinition, RunCliCommandInputs} from '../test/run-test-command';
+import {RunCliCommandInputs, runCliCommandForTestFromDefinition} from '../test/run-test-command';
 import {testCodeInMarkdownDirPath, testCodeInMarkdownPaths} from '../test/virmator-test-file-paths';
 import {codeInMarkdownCommandDefinition} from './code-in-markdown.command';
 

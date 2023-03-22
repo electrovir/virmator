@@ -2,7 +2,7 @@ import {assert} from 'chai';
 import {remove} from 'fs-extra';
 import {describe, it} from 'mocha';
 import {join} from 'path';
-import {runCliCommandForTestFromDefinition, RunCliCommandInputs} from '../test/run-test-command';
+import {RunCliCommandInputs, runCliCommandForTestFromDefinition} from '../test/run-test-command';
 import {testTestPaths} from '../test/virmator-test-file-paths';
 import {testCommandDefinition} from './test.command';
 

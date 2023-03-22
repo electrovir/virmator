@@ -3,7 +3,7 @@ import {rm} from 'fs/promises';
 import {describe, it} from 'mocha';
 import {join} from 'path';
 import {SetOptional} from 'type-fest';
-import {runCliCommandForTestFromDefinition, RunCliCommandInputs} from '../test/run-test-command';
+import {RunCliCommandInputs, runCliCommandForTestFromDefinition} from '../test/run-test-command';
 import {testTestWebPaths} from '../test/virmator-test-file-paths';
 import {testWebCommandDefinition} from './test-web.command';
 

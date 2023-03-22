@@ -4,7 +4,7 @@ import {existsSync} from 'fs';
 import {writeFile} from 'fs/promises';
 import glob from 'glob';
 import {basename, dirname, join} from 'path';
-import {inc, ReleaseType} from 'semver';
+import {ReleaseType, inc} from 'semver';
 import {defineCommand} from '../api/command/define-command';
 import {askQuestionUntilConditionMet} from '../augments/console';
 import {doChangesExist} from '../augments/git';

@@ -1,7 +1,7 @@
 import {assert} from 'chai';
 import {describe, it} from 'mocha';
 import {readAllDirContents, writeFiles} from '../augments/fs';
-import {runCliCommandForTestFromDefinition, RunCliCommandInputs} from '../test/run-test-command';
+import {RunCliCommandInputs, runCliCommandForTestFromDefinition} from '../test/run-test-command';
 import {testUpdateConfigsPaths} from '../test/virmator-test-file-paths';
 import {updateConfigsCommandDefinition} from './update-configs.command';
 

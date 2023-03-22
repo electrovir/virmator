@@ -3,7 +3,7 @@ import {readFile, writeFile} from 'fs/promises';
 import {describe, it} from 'mocha';
 import {basename} from 'path';
 import {assertNewFilesWereCreated, assertNoFileChanges} from '../test/file-change-tests';
-import {runCliCommandForTestFromDefinition, RunCliCommandInputs} from '../test/run-test-command';
+import {RunCliCommandInputs, runCliCommandForTestFromDefinition} from '../test/run-test-command';
 import {testFormatPaths} from '../test/virmator-test-file-paths';
 import {formatCommandDefinition} from './format.command';
 

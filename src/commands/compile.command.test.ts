@@ -3,7 +3,7 @@ import {assert} from 'chai';
 import {readdir, unlink} from 'fs/promises';
 import {describe, it} from 'mocha';
 import {join} from 'path';
-import {runCliCommandForTestFromDefinition, RunCliCommandInputs} from '../test/run-test-command';
+import {RunCliCommandInputs, runCliCommandForTestFromDefinition} from '../test/run-test-command';
 import {testCompilePaths} from '../test/virmator-test-file-paths';
 import {compileCommandDefinition} from './compile.command';
 

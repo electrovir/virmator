@@ -8,7 +8,7 @@ import {
 } from '../command/command-executor';
 import {CommandDefinition} from '../command/define-command';
 import {DefineCommandInputs} from '../command/define-command-inputs';
-import {copyAllConfigFiles, CopyConfigOperation} from '../config/copy-config';
+import {CopyConfigOperation, copyAllConfigFiles} from '../config/copy-config';
 import {runVirmatorShellCommand} from './run-shell-command';
 
 export function createCommandString(executorOutput: BashCommandExecutorOutput): string {

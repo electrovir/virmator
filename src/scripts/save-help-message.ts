@@ -1,7 +1,7 @@
 import {logColors} from '@augment-vir/node-js';
 import {readFile, writeFile} from 'fs/promises';
 import {virmator} from '..';
-import {generateHelpMessage, HelpMessageSyntax} from '../api/command/command-to-help-message';
+import {HelpMessageSyntax, generateHelpMessage} from '../api/command/command-to-help-message';
 import {formatCode} from '../augments/prettier';
 import {virmatorReadme} from '../test/virmator-test-file-paths';
 
