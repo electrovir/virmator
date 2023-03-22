@@ -19,6 +19,7 @@ const baseConfig = {
     words: [
         'accum',
         'argb',
+        'autocorrect',
         'autofix',
         'autofixable',
         'autofixing',
@@ -44,6 +45,7 @@ const baseConfig = {
         'globbing',
         'globstar',
         'iframe',
+        'iframes',
         'inconsolata',
         'jsonifiable',
         'jsonify',
