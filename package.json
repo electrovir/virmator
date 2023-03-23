@@ -1,6 +1,6 @@
 {
     "name": "virmator",
-    "version": "6.2.1",
+    "version": "6.2.2",
     "description": "Handle common package configs, commands, and dependencies.",
     "keywords": [
         "automation",

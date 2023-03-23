@@ -6,7 +6,7 @@ import {
     RequiredBy,
     typedHasProperty,
 } from '@augment-vir/common';
-import {toPosixPath} from '@augment-vir/node-js';
+import {ShellOutput, toPosixPath} from '@augment-vir/node-js';
 import {assert, config} from 'chai';
 import {existsSync} from 'fs';
 import {readdir, rm, unlink, writeFile} from 'fs/promises';
@@ -15,7 +15,7 @@ import {runPackageCli} from 'test-as-package';
 import {CommandLogTransform, identityCommandLogTransform} from '../api/command/command-logging';
 import {CommandDefinition} from '../api/command/define-command';
 import {ConfigFileDefinition} from '../api/config/config-file-definition';
-import {readAllDirContents} from '../augments/fs';
+import {DirContents, readAllDirContents} from '../augments/fs';
 import {filterToDifferentValues} from '../augments/object';
 import {getFirstPartOfPath} from '../augments/path';
 import {NonEmptyString} from '../augments/string';
@@ -80,7 +80,7 @@ export async function runCliCommandForTestFromDefinition<KeyGeneric extends stri
             commandDefinition.commandName,
             ...(inputs.args ?? []),
         ],
-        logTransform: (input) => {
+        logTransform: (input): string => {
             const fromInputs = inputs.logTransform?.(input) ?? input;
             return toPosixPath(collapseWhiteSpace(fromInputs));
         },
@@ -89,9 +89,20 @@ export async function runCliCommandForTestFromDefinition<KeyGeneric extends stri
     return await runCliCommandForTest(fullInputs);
 }
 
+export type TestCommandOutput = {
+    results: ShellOutput;
+    dirFileNamesBefore: string[];
+    dirFileNamesAfter: string[];
+    dirFileContentsBefore: DirContents;
+    dirFileContentsAfter: DirContents;
+    changedFiles: Partial<DirContents>;
+    newFiles: string[];
+    durationMs: number;
+};
+
 async function runCliCommandForTest<KeyGeneric extends string>(
     inputs: RunCliCommandInputs<KeyGeneric>,
-) {
+): Promise<TestCommandOutput> {
     const configFilesExistedBeforeTest = inputs.configFilesToCheck.reduce((accum, configFile) => {
         if (existsSync(join(inputs.dir, configFile.copyToPathRelativeToRepoDir))) {
             accum[configFile.copyToPathRelativeToRepoDir] = true;
