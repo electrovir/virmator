@@ -1,7 +1,6 @@
 import {
     awaitedForEach,
     collapseWhiteSpace,
-    extractErrorMessage,
     removeColor,
     RequiredBy,
     typedHasProperty,
@@ -12,6 +11,7 @@ import {existsSync} from 'fs';
 import {readdir, rm, unlink, writeFile} from 'fs/promises';
 import {basename, join, relative} from 'path';
 import {runPackageCli} from 'test-as-package';
+import {assertExpectation} from 'test-established-expectations';
 import {CommandLogTransform, identityCommandLogTransform} from '../api/command/command-logging';
 import {CommandDefinition} from '../api/command/define-command';
 import {ConfigFileDefinition} from '../api/config/config-file-definition';
@@ -20,13 +20,8 @@ import {filterToDifferentValues} from '../augments/object';
 import {getFirstPartOfPath} from '../augments/path';
 import {NonEmptyString} from '../augments/string';
 import {virmatorPackageDir} from '../file-paths/package-paths';
-import {
-    expectationToKeyPath,
-    loadExpectations,
-    saveExpectations,
-    TestExpectation,
-} from './test-expectations';
-import {testExpectationsFilePath, testFilesDirPath} from './virmator-test-file-paths';
+import {TestExpectation} from './test-expectations';
+import {testFilesDirPath} from './virmator-test-file-paths';
 
 config.truncateThreshold = 0;
 
@@ -48,8 +43,6 @@ async function initDirectory(dir: string, keepFiles: ReadonlyArray<string> = [])
         await writeFile(packageJsonPath, JSON.stringify({name: basename(dir)}, null, 4) + '\n');
     }
 }
-
-const runKeys = new Set<string>();
 
 export type RunCliCommandInputs<KeyGeneric extends string> = {
     args: string[];
@@ -81,8 +74,8 @@ export async function runCliCommandForTestFromDefinition<KeyGeneric extends stri
             ...(inputs.args ?? []),
         ],
         logTransform: (input): string => {
-            const fromInputs = inputs.logTransform?.(input) ?? input;
-            return toPosixPath(collapseWhiteSpace(fromInputs));
+            const posixTransformed = toPosixPath(collapseWhiteSpace(input));
+            return inputs.logTransform?.(posixTransformed) ?? posixTransformed;
         },
     };
 
@@ -142,49 +135,23 @@ async function runCliCommandForTest<KeyGeneric extends string>(
             dir: relative(testFilesDirPath, inputs.dir),
             exitCode: results.exitCode ?? 0,
             key: inputs.expectationKey,
-            stderr: logTransform(stripFullPath(removeColor(results.stderr))),
-            stdout: logTransform(
-                removeInstallationVersionLogs(stripFullPath(removeColor(results.stdout))),
+            stderr: collapseWhiteSpace(logTransform(stripFullPath(removeColor(results.stderr)))),
+            stdout: collapseWhiteSpace(
+                logTransform(
+                    removeInstallationVersionLogs(stripFullPath(removeColor(results.stdout))),
+                ),
             ),
         };
         const expectationTopKey = getFirstPartOfPath(actualResults.dir);
-        const loadedExpectations = await loadExpectations();
 
-        try {
-            if (runKeys.has(actualResults.key)) {
-                throw new Error(`Duplicate key exists: ${expectationToKeyPath(actualResults)}`);
-            } else {
-                runKeys.add(actualResults.key);
-            }
-            const dirExpectations = loadedExpectations[expectationTopKey];
-            if (!dirExpectations) {
-                throw new Error(`Missing ${actualResults.dir} key in expectations file.`);
-            }
-            const expectations = dirExpectations[actualResults.key];
-            if (!expectations) {
-                throw new Error(
-                    `Missing ${expectationToKeyPath(actualResults)} in expectations file.`,
-                );
-            }
-
-            assert.deepStrictEqual(actualResults, expectations);
-        } catch (error) {
-            throw new Error(
-                `${expectationToKeyPath(actualResults)} comparison failed. Check ${relative(
-                    virmatorPackageDir,
-                    testExpectationsFilePath,
-                )}: ${extractErrorMessage(error)}`,
-            );
-        } finally {
-            await initDirectory(inputs.dir, inputs.keepFiles);
-            await saveExpectations({
-                ...loadedExpectations,
-                [expectationTopKey]: {
-                    ...loadedExpectations[expectationTopKey],
-                    [actualResults.key]: actualResults,
-                },
-            });
-        }
+        await assertExpectation({
+            key: {
+                topKey: expectationTopKey,
+                subKey: actualResults.key,
+            },
+            result: actualResults,
+        });
+        await initDirectory(inputs.dir, inputs.keepFiles);
     }
 
     const afterTimestamp: number = Date.now();

@@ -5,7 +5,7 @@ module.exports = {
     ignorePaths: [
         ...baseConfig.ignorePaths,
         './test-files/spellcheck/bad',
-        './test-files/expected-output.json',
+        './test-files/test-expectations.json',
     ],
     words: [
         ...baseConfig.words,

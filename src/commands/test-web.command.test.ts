@@ -30,7 +30,12 @@ async function runTestWebTestCommand<KeyGeneric extends string>(
         await runCliCommandForTestFromDefinition(testWebCommandDefinition, {
             ...inputs,
             logTransform: (input) => {
-                return input.replace(/(Finished running tests in )[\d\.]+m?s/g, '$1');
+                return input
+                    .replace(/(Finished running tests in )[\d\.]+m?s/g, '$1')
+                    .replace(
+                        '----------------|---------|----------|---------|---------|------------------- File | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s ----------------|---------|----------|---------|---------|------------------- All files | 14.28 | 100 | 0 | 14.28 | source-file.ts | 14.28 | 100 | 0 | 14.28 | 2-7 ----------------|---------|----------|---------|---------|-------------------',
+                        '',
+                    );
             },
         });
     } finally {
