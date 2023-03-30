@@ -1,12 +1,9 @@
 {
     "compilerOptions": {
         "alwaysStrict": true,
-        "composite": true,
         "declaration": true,
-        "declarationMap": true,
         "esModuleInterop": true,
         "exactOptionalPropertyTypes": true,
-        "experimentalDecorators": true,
         "forceConsistentCasingInFileNames": true,
         "isolatedModules": true,
         "module": "CommonJS",

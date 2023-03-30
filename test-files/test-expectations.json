@@ -91,14 +91,14 @@
             "exitCode": 1,
             "key": "compile-errors-failure",
             "stderr": "compile failed.",
-            "stdout": "Installing typescript... running compile... rm -rf dist && rm -f ./*.tsbuildinfo && ./test-files/compile/invalid-compile-repo/node_modules/.bin/tsc --noEmit bad-blah.ts:2:18 - error TS2448: Block-scoped variable 'derp' used before its declaration. 2 console.info(derp); ~~~~ bad-blah.ts:3:11 3 const derp = 'hello'; ~~~~ 'derp' is declared here. bad-blah.ts:2:18 - error TS2454: Variable 'derp' is used before being assigned. 2 console.info(derp); ~~~~ Found 2 errors in the same file, starting at: bad-blah.ts:2"
+            "stdout": "Installing typescript... running compile... rm -rf dist && ./test-files/compile/invalid-compile-repo/node_modules/.bin/tsc --noEmit bad-blah.ts:2:18 - error TS2448: Block-scoped variable 'derp' used before its declaration. 2 console.info(derp); ~~~~ bad-blah.ts:3:11 3 const derp = 'hello'; ~~~~ 'derp' is declared here. bad-blah.ts:2:18 - error TS2454: Variable 'derp' is used before being assigned. 2 console.info(derp); ~~~~ Found 2 errors in the same file, starting at: bad-blah.ts:2"
         },
         "no-compile-errors-pass": {
             "dir": "compile/valid-compile-repo",
             "exitCode": 0,
             "key": "no-compile-errors-pass",
             "stderr": "",
-            "stdout": "Installing typescript... running compile... rm -rf dist && rm -f ./*.tsbuildinfo && ./test-files/compile/valid-compile-repo/node_modules/.bin/tsc --noEmit compile succeeded."
+            "stdout": "Installing typescript... running compile... rm -rf dist && ./test-files/compile/valid-compile-repo/node_modules/.bin/tsc --noEmit compile succeeded."
         },
         "compile-no-errors-with-output": {
             "dir": "compile/valid-compile-repo",

@@ -29,7 +29,7 @@
     "types": "dist/index.d.ts",
     "bin": "dist/cli.js",
     "scripts": {
-        "compile": "rm -rf dist && rm -f ./*.tsbuildinfo && tsc",
+        "compile": "rm -rf dist && tsc",
         "docs:check": "npm run compile && ts-node src/scripts/save-help-message.ts check && md-code --check README.md",
         "docs:update": "npm run compile && ts-node src/scripts/save-help-message.ts && md-code README.md",
         "format": "npm run format:base -- --write --list-different",
