@@ -1,4 +1,4 @@
-import {ArrayElement, extractErrorMessage} from '@augment-vir/common';
+import {ArrayElement} from '@augment-vir/common';
 import {extractAllConfigs} from './command/command-configs';
 import {CommandDefinitionArrayToMapping, commandsToMapping} from './command/command-mapping';
 import {HelpMessageSyntax, generateHelpMessage} from './command/command-to-help-message';
@@ -51,8 +51,6 @@ export function createVirmator<CommandDefinitionsGeneric extends ReadonlyArray<C
         } catch (error) {
             if (process.env.INCLUDE_VIRMATOR_STACK_TRACE) {
                 console.error(error);
-            } else {
-                console.error(extractErrorMessage(error));
             }
             process.exit(1);
         }
