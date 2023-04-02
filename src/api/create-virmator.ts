@@ -49,10 +49,10 @@ export function createVirmator<CommandDefinitionsGeneric extends ReadonlyArray<C
         try {
             await run(process.argv, process.cwd());
         } catch (error) {
-            if (process.env.IGNORE_VIRMATOR_STACK_TRACE) {
-                console.error(extractErrorMessage(error));
-            } else {
+            if (process.env.INCLUDE_VIRMATOR_STACK_TRACE) {
                 console.error(error);
+            } else {
+                console.error(extractErrorMessage(error));
             }
             process.exit(1);
         }

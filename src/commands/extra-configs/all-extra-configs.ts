@@ -20,6 +20,14 @@ export const nonCommandConfigs: ReadonlyArray<ConfigFileDefinition> = [
         copyToPathRelativeToRepoDir: '.ncurc.js',
     },
     {
+        copyFromInternalPath: join(virmatorConfigsDir, 'LICENSE-MIT'),
+        copyToPathRelativeToRepoDir: 'LICENSE-MIT',
+    },
+    {
+        copyFromInternalPath: join(virmatorConfigsDir, 'LICENSE-CC0'),
+        copyToPathRelativeToRepoDir: 'LICENSE-CC0',
+    },
+    {
         copyFromInternalPath: join(virmatorConfigsDir, 'gitignore.txt'),
         updateExistingConfigFileCallback: combineTextConfig,
         copyToPathRelativeToRepoDir: '.gitignore',
