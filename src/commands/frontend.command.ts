@@ -19,6 +19,7 @@ export const frontendCommandDefinition = defineCommand(
         npmDeps: [
             'vite',
             '@augment-vir/node-js',
+            'vite-tsconfig-paths',
         ],
     } as const,
     () => {

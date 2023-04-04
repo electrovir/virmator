@@ -1,6 +1,6 @@
 {
     "name": "virmator",
-    "version": "6.3.3",
+    "version": "6.3.4",
     "description": "Handle common package configs, commands, and dependencies.",
     "keywords": [
         "automation",
@@ -87,8 +87,9 @@
         "ts-node": "^10.9.1",
         "tsconfig-paths": "^4.2.0",
         "typescript": "^5.0.3",
-        "virmator": "^6.3.2",
-        "vite": "^4.2.1"
+        "virmator": "^6.3.3",
+        "vite": "^4.2.1",
+        "vite-tsconfig-paths": "^4.0.8"
     },
     "engines": {
         "node": ">=16",
