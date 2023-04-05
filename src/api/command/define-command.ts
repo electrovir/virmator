@@ -1,5 +1,5 @@
 import {getObjectTypedKeys, mapObjectValues} from '@augment-vir/common';
-import {IsAny} from 'type-fest/source/internal';
+import {IsAny} from 'type-fest';
 import {CreateDescriptionsCallback} from './command-description';
 import {CommandExecutor, CommandExecutorDefinition} from './command-executor';
 import {
