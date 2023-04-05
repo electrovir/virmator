@@ -17,9 +17,7 @@ export const upgradeDepsCommandDefinition = defineCommand(
                 copyToPathRelativeToRepoDir: join('configs', 'ncu.config.ts'),
             },
         },
-        npmDeps: [
-            'npm-check-updates',
-        ],
+        npmDeps: [],
     } as const,
     ({commandName, packageBinName}) => {
         return {
