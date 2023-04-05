@@ -86,6 +86,7 @@ const baseConfig = {
         'nycrc',
         'openlogin',
         'opentype',
+        'outfile',
         'packagejson',
         'parens',
         'pdfs',

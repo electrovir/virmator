@@ -75,4 +75,9 @@ export const testUpdateConfigsPaths = {
     fullRepo: join(testUpdateConfigsRepos, 'full-repo'),
 };
 
+const testUpgradeDepsRepos = join(testFilesDirPath, 'upgrade-deps');
+export const testUpgradeDepsPaths = {
+    notUptoDateRepo: join(testUpgradeDepsRepos, 'not-up-to-date'),
+};
+
 export const virmatorReadme = join(virmatorPackageDir, 'README.md');

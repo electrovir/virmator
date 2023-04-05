@@ -171,3 +171,11 @@ run web tests with code coverage calculations
 ## update-configs
 
 Update all existing configuration files that virmator is able to update. (Like base config files.)
+
+## upgrade-deps
+
+Upgrade all packages using npm-check-updates and config/ncu.config.ts.
+
+### Examples
+
+-   Run command: `virmator upgrade-deps`

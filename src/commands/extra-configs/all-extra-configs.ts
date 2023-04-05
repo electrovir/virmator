@@ -16,10 +16,6 @@ export const nonCommandConfigs: ReadonlyArray<ConfigFileDefinition> = [
         updateExistingConfigFileCallback: (newContents) => newContents,
     },
     {
-        copyFromInternalPath: join(virmatorConfigsDir, '.ncurc.js'),
-        copyToPathRelativeToRepoDir: '.ncurc.js',
-    },
-    {
         copyFromInternalPath: join(virmatorConfigsDir, 'LICENSE-MIT'),
         copyToPathRelativeToRepoDir: 'LICENSE-MIT',
     },

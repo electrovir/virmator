@@ -9,6 +9,7 @@ import {spellcheckCommandDefinition} from './commands/spellcheck.command';
 import {testWebCommandDefinition} from './commands/test-web.command';
 import {testCommandDefinition} from './commands/test.command';
 import {updateConfigsCommandDefinition} from './commands/update-configs.command';
+import {upgradeDepsCommandDefinition} from './commands/upgrade-deps.command';
 import {virmatorPackageDir} from './file-paths/package-paths';
 export * from './api/command/command-description';
 export * from './api/command/command-executor';
@@ -40,5 +41,6 @@ export const virmator = createVirmator({
         testCommandDefinition,
         testWebCommandDefinition,
         updateConfigsCommandDefinition,
+        upgradeDepsCommandDefinition,
     ],
 });
