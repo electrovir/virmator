@@ -1,8 +1,6 @@
 import {extractErrorMessage} from '@augment-vir/common';
 import {randomString, readPackageJson} from '@augment-vir/node-js';
-import {build} from 'esbuild';
 import {unlink} from 'fs/promises';
-import {run as ncu} from 'npm-check-updates';
 import {join} from 'path';
 import {defineCommand} from '../api/command/define-command';
 import {virmatorConfigsDir} from './../file-paths/package-paths';
@@ -17,7 +15,10 @@ export const upgradeDepsCommandDefinition = defineCommand(
                 copyToPathRelativeToRepoDir: join('configs', 'ncu.config.ts'),
             },
         },
-        npmDeps: [],
+        npmDeps: [
+            'esbuild',
+            'npm-check-updates',
+        ],
     } as const,
     ({commandName, packageBinName}) => {
         return {
@@ -43,7 +44,9 @@ export const upgradeDepsCommandDefinition = defineCommand(
                 inputs.repoDir,
                 inputs.configFiles.ncuConfig.copyToPathRelativeToRepoDir,
             );
-            await build({
+            await (
+                await import('esbuild')
+            ).build({
                 entryPoints: [configPath],
                 outfile: tempFilePath,
                 write: true,
@@ -59,7 +62,9 @@ export const upgradeDepsCommandDefinition = defineCommand(
 
             const config = loadedConfig.ncuConfig;
 
-            await ncu(
+            await (
+                await import('npm-check-updates')
+            ).run(
                 {
                     ...config,
                     cwd: inputs.repoDir,
