@@ -35,6 +35,10 @@ async function runTestWebTestCommand<KeyGeneric extends string>(
                     .replace(
                         '----------------|---------|----------|---------|---------|------------------- File | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s ----------------|---------|----------|---------|---------|------------------- All files | 14.28 | 100 | 0 | 14.28 | source-file.ts | 14.28 | 100 | 0 | 14.28 | 2-7 ----------------|---------|----------|---------|---------|-------------------',
                         '',
+                    )
+                    .replace(
+                        /expected - actual -false \+true at [^\.]+\./,
+                        'expected - actual -false +true at X.',
                     );
             },
         });

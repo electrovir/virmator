@@ -12,6 +12,12 @@ async function runUpgradeDepsTestCommand<KeyGeneric extends string>(
 ) {
     return await runCliCommandForTestFromDefinition(upgradeDepsCommandDefinition, {
         ...inputs,
+        logTransform(input) {
+            return input.replace(
+                /element-vir \^1\.0\.0 → \^[\d\.]+ /,
+                'element-vir ^1.0.0 → ^X.X.X ',
+            );
+        },
     });
 }
 
