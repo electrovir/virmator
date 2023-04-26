@@ -95,7 +95,6 @@ export async function runExtendedVirmator({
     if (success) {
         console.info(resultMessage);
     } else {
-        console.error(resultMessage);
         throw new Error(resultMessage);
     }
 }
