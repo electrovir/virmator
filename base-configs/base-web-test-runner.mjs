@@ -51,10 +51,15 @@ function createScreenshotsPlugin(extraOptions, repoDir) {
     ];
 }
 
+export function createPlaywrightBrowserContextWithTimezoneId({browser, timezoneId = 'GMT'}) {
+    return browser.newContext({timezoneId});
+}
+
 export function getWebTestRunnerConfigWithCoveragePercent({
     coveragePercent = 0,
     packageRootDirPath = '',
     extraScreenshotOptions,
+    timezoneId = 'GMT',
 }) {
     /** @type {import('@web/test-runner').TestRunnerConfig} */
     const webTestRunnerConfig = {
@@ -62,14 +67,26 @@ export function getWebTestRunnerConfigWithCoveragePercent({
             ...(process.argv.includes('--only-one-browser')
                 ? []
                 : [
-                      playwrightLauncher({product: 'chromium'}),
-                      playwrightLauncher({product: 'firefox'}),
+                      playwrightLauncher({
+                          product: 'chromium',
+                          createPlaywrightBrowserContext: (browser) =>
+                              createPlaywrightBrowserContextWithTimezoneId({browser, timezoneId}),
+                      }),
+                      playwrightLauncher({
+                          product: 'firefox',
+                          createPlaywrightBrowserContext: (browser) =>
+                              createPlaywrightBrowserContextWithTimezoneId({browser, timezoneId}),
+                      }),
                   ]),
-            playwrightLauncher({product: 'webkit'}),
+            playwrightLauncher({
+                product: 'webkit',
+                createPlaywrightBrowserContext: (browser) =>
+                    createPlaywrightBrowserContextWithTimezoneId({browser, timezoneId}),
+            }),
         ],
         reporters: [
-            defaultReporter({reportTestResults: true, reportTestProgress: false}),
             summaryReporter(),
+            defaultReporter({reportTestResults: true, reportTestProgress: false}),
         ],
         browserStartTimeout: minutesTwenty,
         concurrentBrowsers: 3,
