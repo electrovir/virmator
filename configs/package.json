@@ -11,7 +11,7 @@
         "publish": "virmator publish \"npm run compile && npm run test:all\"",
         "start": "npm install && virmator frontend",
         "test": "virmator test",
-        "test:all": "npm run test:types && npm run test:coverage && npm run test:spelling && npm run test:format && npm run test:docs",
+        "test:all": "concurrently --kill-others-on-fail \"npm run test:types\" \"npm run test:coverage\" \"npm run test:spelling\" \"npm run test:format\" \"npm run test:docs\"",
         "test:coverage": "npm run test coverage",
         "test:docs": "virmator code-in-markdown check",
         "test:format": "virmator format check",
