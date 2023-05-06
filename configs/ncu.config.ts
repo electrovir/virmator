@@ -7,6 +7,7 @@ export const ncuConfig: RunOptions = {
     // exclude these
     reject: [
         'glob',
+        '@types/node',
     ],
     // include only these
     filter: [],
