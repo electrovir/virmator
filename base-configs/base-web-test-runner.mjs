@@ -69,18 +69,18 @@ export function getWebTestRunnerConfigWithCoveragePercent({
                 : [
                       playwrightLauncher({
                           product: 'chromium',
-                          createPlaywrightBrowserContext: (browser) =>
+                          createBrowserContext: ({browser}) =>
                               createPlaywrightBrowserContextWithTimezoneId({browser, timezoneId}),
                       }),
                       playwrightLauncher({
                           product: 'firefox',
-                          createPlaywrightBrowserContext: (browser) =>
+                          createBrowserContext: ({browser}) =>
                               createPlaywrightBrowserContextWithTimezoneId({browser, timezoneId}),
                       }),
                   ]),
             playwrightLauncher({
                 product: 'webkit',
-                createPlaywrightBrowserContext: (browser) =>
+                createBrowserContext: ({browser}) =>
                     createPlaywrightBrowserContextWithTimezoneId({browser, timezoneId}),
             }),
         ],
