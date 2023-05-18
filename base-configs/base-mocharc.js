@@ -13,6 +13,7 @@ const mochaConfig = {
     fullTrace: true,
     timeout: 20 * oneMinuteMs,
     reporter: SpecReporterWithFileNames.pathToThisReporter,
+    watchFiles: ['src/**/*.ts'],
     ...testFiles,
 };
 
