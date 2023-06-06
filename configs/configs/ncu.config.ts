@@ -5,7 +5,10 @@ export const ncuConfig: RunOptions = {
     upgrade: true,
     root: true,
     // exclude these
-    reject: [],
+    reject: [
+        // TypeScript 5.1.x is really messed up
+        'typescript',
+    ],
     // include only these
     filter: [],
 };
