@@ -49,8 +49,10 @@ export const frontendCommandDefinition = defineCommand(
             command: 'vite',
             packageDirPath: inputs.packageDir,
         });
-        const removeOutput = needToBuild ? 'rm -rf dist && ' : '';
-        const mainCommand = `${removeOutput}${viteBinPath}`;
+        const dirToDelete = needToBuild ? 'dist' : 'node_modules/.vite';
+        const removeCommand = `node -e "require('fs').rmSync(${dirToDelete})" &&`;
+
+        const mainCommand = `${removeCommand}${viteBinPath}`;
 
         const subCommandArgs = needToBuild
             ? [
