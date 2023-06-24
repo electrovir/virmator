@@ -52,7 +52,7 @@ export const upgradeDepsCommandDefinition = defineCommand(
                 write: true,
                 target: ['node18'],
                 platform: 'node',
-                bundle: true,
+                bundle: false,
                 format: 'cjs',
             });
 

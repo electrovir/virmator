@@ -1,4 +1,7 @@
-import {join} from 'path';
+import {isTruthy} from '@augment-vir/common';
+import {randomString} from '@augment-vir/node-js';
+import {unlink} from 'fs/promises';
+import {dirname, join} from 'path';
 import {defineCommand} from '../api/command/define-command';
 import {getCopyToPath} from '../api/config/config-paths';
 import {getNpmBinPath, virmatorConfigsDir, virmatorPackageDir} from '../file-paths/package-paths';
@@ -20,6 +23,7 @@ export const frontendCommandDefinition = defineCommand(
             'vite',
             '@augment-vir/node-js',
             'vite-tsconfig-paths',
+            'esbuild',
         ],
     } as const,
     () => {
@@ -34,52 +38,85 @@ export const frontendCommandDefinition = defineCommand(
         };
     },
     async (inputs) => {
-        const needToBuild = !!inputs.inputSubCommands.length;
-        const useDefaultConfigArgs = !inputs.filteredInputArgs.includes('--config');
-        const configString = useDefaultConfigArgs
-            ? `--config ${getCopyToPath({
-                  repoDir: inputs.repoDir,
-                  configFileDefinition: inputs.configFiles.vite,
-                  packageDir: virmatorPackageDir,
-              })}`
-            : '';
-
-        const viteBinPath = await getNpmBinPath({
+        const viteConfigPath = getCopyToPath({
             repoDir: inputs.repoDir,
-            command: 'vite',
-            packageDirPath: inputs.packageDir,
+            configFileDefinition: inputs.configFiles.vite,
+            packageDir: virmatorPackageDir,
         });
-        const dirToDelete = needToBuild ? 'dist' : 'node_modules/.vite';
-        const removeCommand = `node -e "require('fs').rmSync('${dirToDelete}', {recursive: true, force: true})" &&`;
+        const tempFilePath = join(
+            dirname(viteConfigPath),
+            `config-output-${Date.now()}-${randomString()}.cjs`,
+        );
 
-        const mainCommand = `${removeCommand}${viteBinPath}`;
+        try {
+            const needToBuild = !!inputs.inputSubCommands.length;
+            const useDefaultConfigArgs = !inputs.filteredInputArgs.includes('--config');
+            const configString = useDefaultConfigArgs ? `--config ${viteConfigPath}` : '';
 
-        const subCommandArgs = needToBuild
-            ? [
-                  'build',
-                  ...inputs.filteredInputArgs,
-                  '&&',
-                  'cp dist/index.html dist/404.html',
-              ]
-            : inputs.filteredInputArgs;
+            await (
+                await import('esbuild')
+            ).build({
+                entryPoints: [viteConfigPath],
+                outfile: tempFilePath,
+                write: true,
+                target: ['node18'],
+                platform: 'node',
+                bundle: false,
+                format: 'cjs',
+            });
 
-        const previewCommandArgs = inputs.inputSubCommands.includes(inputs.subCommands.preview)
-            ? [
-                  '&&',
-                  viteBinPath,
-                  'preview',
-                  ...inputs.filteredInputArgs,
-              ]
-            : [];
+            const viteConfigValues = require(tempFilePath).default;
 
-        return {
-            args: [
-                mainCommand,
-                '--force',
-                configString,
-                ...subCommandArgs,
-                ...previewCommandArgs,
-            ],
-        };
+            const buildOutputPath = viteConfigValues?.build?.outDir || 'dist';
+
+            const viteBinPath = await getNpmBinPath({
+                repoDir: inputs.repoDir,
+                command: 'vite',
+                packageDirPath: inputs.packageDir,
+            });
+            const removeCommand = needToBuild
+                ? `node -e "require('fs').rmSync('node_modules/.vite', {recursive: true, force: true})"`
+                : '';
+
+            const mainCommand = [
+                removeCommand,
+                viteBinPath,
+            ]
+                .filter(isTruthy)
+                .join(' && ');
+
+            const indexPath = join(buildOutputPath, 'index.html');
+            const dist404Path = join(buildOutputPath, '404.html');
+
+            const subCommandArgs = needToBuild
+                ? [
+                      'build',
+                      ...inputs.filteredInputArgs,
+                      '&&',
+                      `node -e "require('fs').copyFileSync('${indexPath}', '${dist404Path}')"`,
+                  ]
+                : inputs.filteredInputArgs;
+
+            const previewCommandArgs = inputs.inputSubCommands.includes(inputs.subCommands.preview)
+                ? [
+                      '&&',
+                      viteBinPath,
+                      'preview',
+                      ...inputs.filteredInputArgs,
+                  ]
+                : [];
+
+            return {
+                args: [
+                    mainCommand,
+                    '--force',
+                    configString,
+                    ...subCommandArgs,
+                    ...previewCommandArgs,
+                ],
+            };
+        } finally {
+            await unlink(tempFilePath);
+        }
     },
 );
