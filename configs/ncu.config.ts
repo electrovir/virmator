@@ -7,8 +7,6 @@ export const ncuConfig: RunOptions = {
     // exclude these
     reject: [
         'glob',
-        // TypeScript 5.1.x is really messed up
-        'typescript',
     ],
     // include only these
     filter: [],
