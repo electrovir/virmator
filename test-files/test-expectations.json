@@ -266,7 +266,7 @@
             "exitCode": 0,
             "key": "upgrades-deps",
             "stderr": "",
-            "stdout": "Installing esbuild... Installing npm-check-updates... running upgrade-deps... Successfully copied ncu.config.ts Upgrading ./test-files/upgrade-deps/not-up-to-date/package.json element-vir ^1.0.0 → ^X.X.X esbuild ^0.17.19 → ^0.18.1 Run npm install to install new versions. upgrade-deps succeeded."
+            "stdout": "Installing esbuild... Installing npm-check-updates... running upgrade-deps... Successfully copied ncu.config.ts Upgrading ./test-files/upgrade-deps/not-up-to-date/package.json element-vir ^1.0.0 → ^X.X.X Run npm install to install new versions. upgrade-deps succeeded."
         }
     }
 }
