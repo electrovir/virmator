@@ -1,8 +1,8 @@
 {
     "compilerOptions": {
         "moduleResolution": "node",
+        "pretty": true,
         "strict": true,
-        "target": "es6",
-        "pretty": true
+        "target": "es6"
     }
 }

@@ -24,9 +24,9 @@
         "useUnknownInCatchVariables": true
     },
     "ts-node": {
-        "transpileOnly": true,
         "compilerOptions": {
             "module": "CommonJS"
-        }
+        },
+        "transpileOnly": true
     }
 }

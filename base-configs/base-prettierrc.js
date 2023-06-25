@@ -52,6 +52,7 @@ const basePrettierConfig = {
     endOfLine: 'lf',
     htmlWhitespaceSensitivity: 'ignore',
     jsonRecursiveSort: true,
+    multilineArraysWrapThreshold: 1,
     plugins,
     pluginSearchDirs: false,
     printWidth: 100,

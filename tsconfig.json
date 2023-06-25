@@ -1,5 +1,4 @@
 {
-    "extends": "./base-configs/base-tsconfig.json",
     "compilerOptions": {
         "outDir": "./dist",
         "rootDir": "./src"
@@ -11,6 +10,7 @@
         "./node_modules/",
         "./test-files/"
     ],
+    "extends": "./base-configs/base-tsconfig.json",
     "ts-node": {
         "transpileOnly": true
     }

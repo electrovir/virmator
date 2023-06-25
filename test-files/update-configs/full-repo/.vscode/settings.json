@@ -1,7 +1,4 @@
 {
-    "[ruby]": {
-        "editor.defaultFormatter": "esbenp.prettier-vscode"
-    },
     "[css]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
@@ -26,6 +23,9 @@
     "[markdown]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
+    "[ruby]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
     "[scss]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
@@ -39,7 +39,9 @@
         "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
     "editor.formatOnSave": true,
-    "editor.rulers": [100],
+    "editor.rulers": [
+        100
+    ],
     "editor.wordWrapColumn": 100,
     "files.associations": {
         "*.svg": "html"
