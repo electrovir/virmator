@@ -69,7 +69,7 @@ export const frontendCommandDefinition = defineCommand(
             const viteConfigValues: UserConfig = require(tempFilePath).default;
 
             const root = viteConfigValues.root
-                ? join(process.cwd(), viteConfigValues.root)
+                ? resolve(process.cwd(), viteConfigValues.root)
                 : process.cwd();
 
             const buildOutputPath = resolve(root, viteConfigValues?.build?.outDir || 'dist');
