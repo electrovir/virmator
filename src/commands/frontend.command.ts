@@ -1,7 +1,8 @@
 import {isTruthy} from '@augment-vir/common';
 import {randomString} from '@augment-vir/node-js';
 import {unlink} from 'fs/promises';
-import {dirname, join} from 'path';
+import {dirname, join, resolve} from 'path';
+import type {UserConfig} from 'vite';
 import {defineCommand} from '../api/command/define-command';
 import {getCopyToPath} from '../api/config/config-paths';
 import {getNpmBinPath, virmatorConfigsDir, virmatorPackageDir} from '../file-paths/package-paths';
@@ -65,9 +66,13 @@ export const frontendCommandDefinition = defineCommand(
                 format: 'cjs',
             });
 
-            const viteConfigValues = require(tempFilePath).default;
+            const viteConfigValues: UserConfig = require(tempFilePath).default;
 
-            const buildOutputPath = viteConfigValues?.build?.outDir || 'dist';
+            const root = viteConfigValues.root
+                ? join(process.cwd(), viteConfigValues.root)
+                : process.cwd();
+
+            const buildOutputPath = resolve(root, viteConfigValues?.build?.outDir || 'dist');
 
             const viteBinPath = await getNpmBinPath({
                 repoDir: inputs.repoDir,
