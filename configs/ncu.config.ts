@@ -7,6 +7,8 @@ export const ncuConfig: RunOptions = {
     // exclude these
     reject: [
         'glob',
+        /** Not ready for v3. */
+        'prettier',
     ],
     // include only these
     filter: [],
