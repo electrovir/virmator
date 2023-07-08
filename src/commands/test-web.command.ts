@@ -4,6 +4,7 @@ import {writeFile} from 'fs/promises';
 import glob from 'glob-promise';
 import {basename, join, relative} from 'path';
 import {defineCommand} from '../api/command/define-command';
+import {NpmDepTypeEnum} from '../api/command/define-command-inputs';
 import {jsonParseOrUndefined} from '../augments/json';
 import {getNpmBinPath, virmatorConfigsDir} from '../file-paths/package-paths';
 import {testCommandDefinition} from './test.command';
@@ -27,14 +28,14 @@ export const testWebCommandDefinition = defineCommand(
             },
         },
         npmDeps: [
-            '@open-wc/testing',
-            '@types/mocha',
-            '@web/dev-server-esbuild',
-            '@web/test-runner-commands',
-            '@web/test-runner-playwright',
-            '@web/test-runner-visual-regression',
-            '@web/test-runner',
-            'istanbul-smart-text-reporter',
+            {name: '@open-wc/testing', type: NpmDepTypeEnum.Dev},
+            {name: '@types/mocha', type: NpmDepTypeEnum.Dev},
+            {name: '@web/dev-server-esbuild', type: NpmDepTypeEnum.Dev},
+            {name: '@web/test-runner-commands', type: NpmDepTypeEnum.Dev},
+            {name: '@web/test-runner-playwright', type: NpmDepTypeEnum.Dev},
+            {name: '@web/test-runner-visual-regression', type: NpmDepTypeEnum.Dev},
+            {name: '@web/test-runner', type: NpmDepTypeEnum.Dev},
+            {name: 'istanbul-smart-text-reporter', type: NpmDepTypeEnum.Dev},
         ],
     } as const,
     ({commandName, packageBinName, configFiles}) => {

@@ -4,6 +4,7 @@ import {unlink} from 'fs/promises';
 import {dirname, join, resolve} from 'path';
 import type {UserConfig} from 'vite';
 import {defineCommand} from '../api/command/define-command';
+import {NpmDepTypeEnum} from '../api/command/define-command-inputs';
 import {getCopyToPath} from '../api/config/config-paths';
 import {getNpmBinPath, virmatorConfigsDir, virmatorPackageDir} from '../file-paths/package-paths';
 
@@ -21,10 +22,12 @@ export const frontendCommandDefinition = defineCommand(
             },
         },
         npmDeps: [
-            'vite',
-            '@augment-vir/node-js',
-            'vite-tsconfig-paths',
-            'esbuild',
+            {name: '@augment-vir/node-js', type: NpmDepTypeEnum.Dev},
+            {name: 'element-vir', type: NpmDepTypeEnum.Regular},
+            {name: 'esbuild', type: NpmDepTypeEnum.Dev},
+            {name: 'typescript', type: NpmDepTypeEnum.Dev},
+            {name: 'vite-tsconfig-paths', type: NpmDepTypeEnum.Dev},
+            {name: 'vite', type: NpmDepTypeEnum.Dev},
         ],
     } as const,
     () => {

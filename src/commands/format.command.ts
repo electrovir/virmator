@@ -1,6 +1,7 @@
 import {join} from 'path';
 import {CommandLogTransforms} from '../api/command/command-logging';
 import {defineCommand} from '../api/command/define-command';
+import {NpmDepTypeEnum} from '../api/command/define-command-inputs';
 import {getNpmBinPath, virmatorConfigsDir} from '../file-paths/package-paths';
 import {combineTextConfig} from './extra-configs/combine-text-config';
 
@@ -43,14 +44,14 @@ export const formatCommandDefinition = defineCommand(
             },
         },
         npmDeps: [
-            'prettier',
-            'prettier-plugin-jsdoc',
-            'prettier-plugin-multiline-arrays',
-            'prettier-plugin-organize-imports',
-            'prettier-plugin-packagejson',
-            'prettier-plugin-sort-json',
-            'prettier-plugin-toml',
-            'prettier-plugin-interpolated-html-tags',
+            {name: 'prettier', type: NpmDepTypeEnum.Dev},
+            {name: 'prettier-plugin-jsdoc', type: NpmDepTypeEnum.Dev},
+            {name: 'prettier-plugin-multiline-arrays', type: NpmDepTypeEnum.Dev},
+            {name: 'prettier-plugin-organize-imports', type: NpmDepTypeEnum.Dev},
+            {name: 'prettier-plugin-packagejson', type: NpmDepTypeEnum.Dev},
+            {name: 'prettier-plugin-sort-json', type: NpmDepTypeEnum.Dev},
+            {name: 'prettier-plugin-toml', type: NpmDepTypeEnum.Dev},
+            {name: 'prettier-plugin-interpolated-html-tags', type: NpmDepTypeEnum.Dev},
         ],
     } as const,
     ({commandName, subCommands, packageBinName}) => {

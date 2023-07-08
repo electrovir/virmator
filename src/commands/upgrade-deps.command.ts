@@ -3,6 +3,7 @@ import {randomString, readPackageJson} from '@augment-vir/node-js';
 import {unlink} from 'fs/promises';
 import {join} from 'path';
 import {defineCommand} from '../api/command/define-command';
+import {NpmDepTypeEnum} from '../api/command/define-command-inputs';
 import {virmatorConfigsDir} from './../file-paths/package-paths';
 
 export const upgradeDepsCommandDefinition = defineCommand(
@@ -16,8 +17,8 @@ export const upgradeDepsCommandDefinition = defineCommand(
             },
         },
         npmDeps: [
-            'esbuild',
-            'npm-check-updates',
+            {name: 'esbuild', type: NpmDepTypeEnum.Dev},
+            {name: 'npm-check-updates', type: NpmDepTypeEnum.Dev},
         ],
     } as const,
     ({commandName, packageBinName}) => {

@@ -1,5 +1,6 @@
 import {join} from 'path';
 import {defineCommand} from '../api/command/define-command';
+import {NpmDepTypeEnum} from '../api/command/define-command-inputs';
 import {getNpmBinPath, virmatorConfigsDir} from '../file-paths/package-paths';
 
 export const compileCommandDefinition = defineCommand(
@@ -14,7 +15,9 @@ export const compileCommandDefinition = defineCommand(
                 copyToPathRelativeToRepoDir: 'tsconfig.json',
             },
         },
-        npmDeps: ['typescript'],
+        npmDeps: [
+            {name: 'typescript', type: NpmDepTypeEnum.Dev},
+        ],
     } as const,
     ({commandName, packageBinName}) => {
         return {

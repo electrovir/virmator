@@ -1,5 +1,6 @@
 import {join} from 'path';
 import {defineCommand} from '../api/command/define-command';
+import {NpmDepTypeEnum} from '../api/command/define-command-inputs';
 import {getNpmBinPath, virmatorConfigsDir} from '../file-paths/package-paths';
 
 function spellcheckLogTransform(log: string): string {
@@ -16,7 +17,9 @@ export const spellcheckCommandDefinition = defineCommand(
                 copyToPathRelativeToRepoDir: 'cspell.config.js',
             },
         },
-        npmDeps: ['cspell'],
+        npmDeps: [
+            {name: 'cspell', type: NpmDepTypeEnum.Dev},
+        ],
     } as const,
     () => {
         return {

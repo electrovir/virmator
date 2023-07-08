@@ -1,5 +1,6 @@
 import {CommandLogTransforms} from '../api/command/command-logging';
 import {defineCommand} from '../api/command/define-command';
+import {NpmDepTypeEnum} from '../api/command/define-command-inputs';
 import {getNpmBinPath} from '../file-paths/package-paths';
 
 export const codeInMarkdownCommandDefinition = defineCommand(
@@ -9,7 +10,9 @@ export const codeInMarkdownCommandDefinition = defineCommand(
             check: 'Check that markdown files have their examples inserted and are up-to-date.',
         },
         configFiles: {},
-        npmDeps: ['markdown-code-example-inserter'],
+        npmDeps: [
+            {name: 'markdown-code-example-inserter', type: NpmDepTypeEnum.Dev},
+        ],
     } as const,
     ({commandName, packageBinName}) => {
         return {

@@ -1,5 +1,6 @@
 import {join} from 'path';
 import {defineCommand} from '../api/command/define-command';
+import {NpmDepTypeEnum} from '../api/command/define-command-inputs';
 import {getNpmBinPath, virmatorConfigsDir} from '../file-paths/package-paths';
 
 export const testCommandDefinition = defineCommand(
@@ -20,15 +21,15 @@ export const testCommandDefinition = defineCommand(
             },
         },
         npmDeps: [
-            '@electrovir/nyc',
-            '@istanbuljs/nyc-config-typescript',
-            '@types/chai',
-            '@types/mocha',
-            'chai',
-            'istanbul-smart-text-reporter',
-            'mocha-spec-reporter-with-file-names',
-            'mocha',
-            'ts-node',
+            {name: '@electrovir/nyc', type: NpmDepTypeEnum.Dev},
+            {name: '@istanbuljs/nyc-config-typescript', type: NpmDepTypeEnum.Dev},
+            {name: '@types/chai', type: NpmDepTypeEnum.Dev},
+            {name: '@types/mocha', type: NpmDepTypeEnum.Dev},
+            {name: 'chai', type: NpmDepTypeEnum.Dev},
+            {name: 'istanbul-smart-text-reporter', type: NpmDepTypeEnum.Dev},
+            {name: 'mocha-spec-reporter-with-file-names', type: NpmDepTypeEnum.Dev},
+            {name: 'mocha', type: NpmDepTypeEnum.Dev},
+            {name: 'ts-node', type: NpmDepTypeEnum.Dev},
         ],
     } as const,
     ({commandName, packageBinName}) => {

@@ -1,10 +1,17 @@
 import {ConfigFileDefinition} from '../config/config-file-definition';
 
+export enum NpmDepTypeEnum {
+    Regular = 'regular',
+    Dev = 'dev',
+}
+
+export type NpmDep = {name: string; type: NpmDepTypeEnum};
+
 export type DefineCommandInputs<CommandName extends string = string> = Readonly<{
     commandName: CommandName;
     subCommandDescriptions: Readonly<Record<string, string>> | Readonly<{}>;
     configFiles: Readonly<Record<string, Readonly<ConfigFileDefinition>>> | Readonly<{}>;
-    npmDeps: ReadonlyArray<string>;
+    npmDeps: ReadonlyArray<NpmDep>;
 }>;
 
 export type SharedExecutorInputsAndCommandDefinition<

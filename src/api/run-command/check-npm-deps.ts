@@ -11,7 +11,7 @@ import {dirname, join} from 'path';
 import * as semver from 'semver';
 import {PackageJson} from 'type-fest';
 import {systemRootPath} from '../../augments/fs';
-import {DefineCommandInputs} from '../command/define-command-inputs';
+import {DefineCommandInputs, NpmDep, NpmDepTypeEnum} from '../command/define-command-inputs';
 
 export type UpdateDepsInput = Readonly<{
     repoDir: string;
@@ -23,27 +23,18 @@ export type UpdateDepsInput = Readonly<{
 export async function updateDepsAsNeeded(inputs: UpdateDepsInput): Promise<void> {
     try {
         const upgradeVersions = await getVersionsToUpgradeTo(inputs);
-        const depsToUpdate = inputs.npmDeps
-            .map((npmDep, index) => {
-                const version = upgradeVersions[index];
-                if (version) {
-                    return {
-                        npmDep,
-                        version,
-                    };
-                } else {
-                    return undefined;
-                }
-            })
-            .filter(isTruthy);
+        const depsToUpdate = upgradeVersions.filter(isTruthy);
 
         await awaitedForEach(depsToUpdate, async (depDetails) => {
-            const depToInstall = `${depDetails.npmDep}@${depDetails.version}`;
+            const depToInstall = `${depDetails.name}@${depDetails.version}`;
             console.info(`${logColors.info}Installing ${depToInstall}...`);
-            await runShellCommand(`npm i -D ${depToInstall}`, {
-                cwd: inputs.repoDir,
-                rejectOnError: true,
-            });
+            await runShellCommand(
+                `npm i ${depDetails.type === NpmDepTypeEnum.Dev ? '-D' : ''} ${depToInstall}`,
+                {
+                    cwd: inputs.repoDir,
+                    rejectOnError: true,
+                },
+            );
         });
     } catch (error) {
         throw new Error(`Failed to update deps: ${extractErrorMessage(error)}`);
@@ -63,7 +54,7 @@ async function getVersionsToUpgradeTo({
     packageDir,
     npmDeps: neededNpmDeps,
     packageBinName,
-}: UpdateDepsInput): Promise<(string | undefined)[]> {
+}: UpdateDepsInput): Promise<((NpmDep & {version: string}) | undefined)[]> {
     const packageName = (
         await runShellCommand(`cut -d "=" -f 2 <<< $(npm run env | grep "npm_package_name")`, {
             cwd: repoDir,
@@ -82,12 +73,12 @@ async function getVersionsToUpgradeTo({
     };
 
     return neededNpmDeps.map((npmDep) => {
-        const currentRepoVersion = cleanDepVersion(currentRepoDepVersions[npmDep]);
-        const virmatorDepVersion = cleanDepVersion(packageDepVersions[npmDep]);
+        const currentRepoVersion = cleanDepVersion(currentRepoDepVersions[npmDep.name]);
+        const virmatorDepVersion = cleanDepVersion(packageDepVersions[npmDep.name]);
 
         if (!virmatorDepVersion) {
             throw new Error(
-                `No npm dep version listed for "${npmDep}" in ${packageBinName}'s dependencies.`,
+                `No npm dep version listed for "${npmDep.name}" in ${packageBinName}'s dependencies.`,
             );
         }
 
@@ -95,10 +86,13 @@ async function getVersionsToUpgradeTo({
             currentRepoVersion !== '*' &&
             (!currentRepoVersion ||
                 semver.gt(virmatorDepVersion, currentRepoVersion) ||
-                (packageDepVersions[npmDep].match(/^\d/) &&
+                (packageDepVersions[npmDep.name].match(/^\d/) &&
                     virmatorDepVersion !== currentRepoVersion))
         ) {
-            return virmatorDepVersion;
+            return {
+                ...npmDep,
+                version: virmatorDepVersion,
+            };
         } else {
             return undefined;
         }
