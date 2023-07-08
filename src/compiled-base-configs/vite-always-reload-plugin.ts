@@ -34,24 +34,17 @@ export function alwaysReloadPlugin(
         exclusions: string[];
         /** Inclusions apply after exclusions so they will override exclusions. */
         inclusions: string[];
-        root: string;
     }> = {},
 ): PluginOption {
     return {
         name: 'alwaysReloadPlugin',
         apply: 'serve',
         config: () => ({server: {watch: {disableGlobbing: false}}}),
-        configureServer({watcher, ws, config: {logger}}) {
-            const {root = process.cwd(), inclusions = [], exclusions = []} = config;
+        configureServer({watcher, ws, config: {logger, publicDir = '', root = process.cwd()}}) {
+            const {inclusions = [], exclusions = []} = config;
             let callingAlready = false;
-            let loggedAlready = false;
 
-            const reloadCallback = (path: string) => {
-                if (!loggedAlready) {
-                    loggedAlready = true;
-                    // log watched stuff so that we can make sure it's not watching too much
-                    // console.info({watched: watcher.getWatched()});
-                }
+            function reloadCallback(path: string) {
                 // prevent duplicate calls cause the watcher is very eager to call callbacks multiple times in a row
                 if (!callingAlready) {
                     callingAlready = true;
@@ -60,33 +53,48 @@ export function alwaysReloadPlugin(
                         path: '*',
                     });
                     logger.info(
-                        `${logColors.success}page reload ${logColors.faint}${relative(root, path)}${
-                            logColors.reset
-                        }`,
-                        {clear: true, timestamp: true},
+                        `${logColors.success}page reload ${logColors.faint}${relative(
+                            process.cwd(),
+                            path,
+                        )}${logColors.reset}`,
+                        {
+                            clear: true,
+                            timestamp: true,
+                        },
                     );
                     /**
-                     * Debounce reloads calls so that they don't get spammed. If you're saving
-                     * faster than this, then what the heck are you doing anyway?
+                     * Debounce reloads calls so that they don't get spammed. If you're actually
+                     * intentionally saving faster than this, then what the heck are you doing?
                      */
                     setTimeout(() => {
                         callingAlready = false;
                     }, 100);
                 }
-            };
+            }
+
+            watcher.add(root);
 
             if (exclusions.length) {
                 watcher.unwatch(mapToActualPaths(exclusions));
-                // ignore macOS file system metadata stuff
             }
+            // ignore macOS file system metadata stuff
             watcher.unwatch('./**/.DS_Store');
             if (inclusions.length) {
-                watcher.add(inclusions);
+                watcher.add(mapToActualPaths(inclusions));
             }
+            if (publicDir) {
+                watcher.add(publicDir);
+            }
+
+            watcher.removeAllListeners();
+
             if (!watcher.listeners('change').includes(reloadCallback)) {
                 watcher.on('change', reloadCallback);
                 watcher.on('add', reloadCallback);
+                watcher.on('unlink', reloadCallback);
             }
+            // // for debugging. Note that this isn't actually reliable, test the actual reloads.
+            // console.info({watched: watcher.getWatched()});
         },
     };
 }
