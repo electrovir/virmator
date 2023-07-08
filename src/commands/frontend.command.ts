@@ -1,4 +1,4 @@
-import {isTruthy} from '@augment-vir/common';
+import {MaybePromise, isTruthy} from '@augment-vir/common';
 import {randomString} from '@augment-vir/node-js';
 import {unlink} from 'fs/promises';
 import {dirname, join, resolve} from 'path';
@@ -69,13 +69,18 @@ export const frontendCommandDefinition = defineCommand(
                 format: 'cjs',
             });
 
-            const viteConfigValues: UserConfig = require(tempFilePath).default;
+            /**
+             * Disable console logs the first time we require this, as logs will also print when
+             * Vite loads the config again.
+             */
+            const oldWrite = process.stdout.write;
+            process.stdout.write = () => false;
+            const viteConfig = await (require(tempFilePath).default as MaybePromise<UserConfig>);
+            process.stdout.write = oldWrite;
 
-            const root = viteConfigValues.root
-                ? resolve(process.cwd(), viteConfigValues.root)
-                : process.cwd();
+            const root = viteConfig.root ? resolve(process.cwd(), viteConfig.root) : process.cwd();
 
-            const buildOutputPath = resolve(root, viteConfigValues?.build?.outDir || 'dist');
+            const buildOutputPath = resolve(root, viteConfig?.build?.outDir || 'dist');
 
             const viteBinPath = await getNpmBinPath({
                 repoDir: inputs.repoDir,

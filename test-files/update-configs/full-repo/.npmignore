@@ -10,8 +10,8 @@
 /coverage/
 /cspell.config.js
 /graphics/
-/public/
 /src/
+/www-static/
 bash-scripts/
 index.html
 test-files/

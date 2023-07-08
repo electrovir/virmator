@@ -10,8 +10,8 @@
 /cspell.config.js
 /graphics/
 /Icon?
-/public/
 /src/
+/www-static/
 bash-scripts/
 index.html
 test-files/

@@ -66,11 +66,21 @@ export const nonCommandConfigs: ReadonlyArray<ConfigFileDefinition> = [
         copyToPathRelativeToRepoDir: join('.github', 'workflows', 'tests.yml'),
     },
     {
-        copyFromInternalPath: join(virmatorConfigsDir, 'public', 'index.css'),
-        copyToPathRelativeToRepoDir: join('public', 'index.css'),
+        copyFromInternalPath: join(virmatorConfigsDir, 'www-static', 'index.css'),
+        copyToPathRelativeToRepoDir: join('www-static', 'index.css'),
     },
     {
-        copyFromInternalPath: join(virmatorConfigsDir, 'index.html'),
-        copyToPathRelativeToRepoDir: join('index.html'),
+        copyFromInternalPath: join(virmatorConfigsDir, 'src', 'index.html'),
+        copyToPathRelativeToRepoDir: join('src', 'index.html'),
+    },
+    {
+        copyFromInternalPath: join(
+            virmatorConfigsDir,
+            'src',
+            'ui',
+            'elements',
+            'vir-app.element.ts',
+        ),
+        copyToPathRelativeToRepoDir: join('src', 'ui', 'elements', 'vir-app.element.ts'),
     },
 ];
