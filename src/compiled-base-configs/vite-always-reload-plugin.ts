@@ -1,7 +1,7 @@
 import {logColors} from '@augment-vir/node-js';
 import {existsSync, lstatSync, readlinkSync} from 'fs';
 import {relative} from 'path';
-import {PluginOption} from 'vite';
+import {LogOptions, PluginOption} from 'vite';
 
 /**
  * Include actual paths and symlinked target paths if they exist.
@@ -40,9 +40,26 @@ export function alwaysReloadPlugin(
         name: 'alwaysReloadPlugin',
         apply: 'serve',
         config: () => ({server: {watch: {disableGlobbing: false}}}),
+        handleHotUpdate() {
+            return [];
+        },
         configureServer({watcher, ws, config: {logger, publicDir = '', root = process.cwd()}}) {
             const {inclusions = [], exclusions = []} = config;
             let callingAlready = false;
+
+            const oldInfoLog = logger.info;
+
+            function customInfoLog(message: string, options: LogOptions) {
+                /**
+                 * Ignore vite's built-in extra page reload logging as this will duplicate our
+                 * messages.
+                 */
+                if (message.startsWith('page reload')) {
+                    return;
+                }
+                oldInfoLog(message, options);
+            }
+            logger.info = customInfoLog;
 
             function reloadCallback(path: string) {
                 // prevent duplicate calls cause the watcher is very eager to call callbacks multiple times in a row
@@ -85,8 +102,6 @@ export function alwaysReloadPlugin(
             if (publicDir) {
                 watcher.add(publicDir);
             }
-
-            watcher.removeAllListeners();
 
             if (!watcher.listeners('change').includes(reloadCallback)) {
                 watcher.on('change', reloadCallback);
