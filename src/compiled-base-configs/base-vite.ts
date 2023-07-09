@@ -37,17 +37,12 @@ export type BaseConfigOptions = {
 };
 
 export function createBaseConfig({forGitHubPages}: BaseConfigOptions): UserConfig {
-    const githubPagesConfig = forGitHubPages
-        ? {
-              base: process.env.CI
-                  ? /** So GitHub Pages will work. */ basename(findGitRepoRoot())
-                  : '',
-          }
-        : {};
+    const basePath: string =
+        forGitHubPages && process.env.CI ? `/${basename(findGitRepoRoot())}` : '/';
 
     return {
         clearScreen: false,
-        ...githubPagesConfig,
+        base: basePath,
         publicDir: staticDir,
         root: srcDir,
         plugins: [
@@ -87,11 +82,7 @@ export async function combineConfigs(
             logColors.reset
         }`,
     );
-    log.faint(
-        `base path:  ${logColors.info}${relative(process.cwd(), fullConfig.base || '')}${
-            logColors.reset
-        }`,
-    );
+    log.faint(`base path:  ${logColors.info}${fullConfig.base}${logColors.reset}`);
 
     return fullConfig;
 }

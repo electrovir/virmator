@@ -1,6 +1,6 @@
 {
     "name": "virmator",
-    "version": "7.0.2",
+    "version": "7.0.3",
     "description": "Handle common package configs, commands, and dependencies.",
     "keywords": [
         "automation",
@@ -51,7 +51,7 @@
         "glob-promise": "^6.0.3",
         "semver": "^7.5.4",
         "simple-git": "^3.19.1",
-        "type-fest": "^3.12.0"
+        "type-fest": "^3.13.0"
     },
     "devDependencies": {
         "@electrovir/nyc": "15.1.0-fix0",
@@ -91,7 +91,7 @@
         "ts-node": "^10.9.1",
         "tsconfig-paths": "^4.2.0",
         "typescript": "^5.1.6",
-        "virmator": "^6.7.1",
+        "virmator": "^7.0.2",
         "vite": "^4.4.2",
         "vite-tsconfig-paths": "^4.2.0"
     },
