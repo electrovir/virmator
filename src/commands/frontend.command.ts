@@ -52,6 +52,7 @@ export const frontendCommandDefinition = defineCommand(
             `config-output-${Date.now()}-${randomString()}.cjs`,
         );
 
+        const oldWrite = process.stdout.write;
         try {
             const needToBuild = !!inputs.inputSubCommands.length;
             const useDefaultConfigArgs = !inputs.filteredInputArgs.includes('--config');
@@ -73,7 +74,6 @@ export const frontendCommandDefinition = defineCommand(
              * Disable console logs the first time we require this, as logs will also print when
              * Vite loads the config again.
              */
-            const oldWrite = process.stdout.write;
             process.stdout.write = () => false;
             const viteConfig = await (require(tempFilePath).default as MaybePromise<UserConfig>);
             process.stdout.write = oldWrite;
@@ -129,6 +129,7 @@ export const frontendCommandDefinition = defineCommand(
                 ],
             };
         } finally {
+            process.stdout.write = oldWrite;
             await unlink(tempFilePath);
         }
     },
