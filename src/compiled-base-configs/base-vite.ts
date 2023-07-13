@@ -1,9 +1,8 @@
-import {MaybePromise} from '@augment-vir/common';
 import {log, logColors} from '@augment-vir/node-js';
 import {existsSync} from 'fs';
 import {basename, dirname, join, relative} from 'path';
 import {alwaysReloadPlugin} from 'virmator/dist/compiled-base-configs/vite-always-reload-plugin';
-import {ConfigEnv, UserConfig, UserConfigExport} from 'vite';
+import {UserConfig, UserConfigExport} from 'vite';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
 export const basePlugins = [
@@ -57,15 +56,10 @@ export function createBaseConfig({forGitHubPages}: BaseConfigOptions): UserConfi
 
 export async function combineConfigs(
     baseConfigOptions: BaseConfigOptions,
-    overrideConfigInput: MaybePromise<UserConfig>,
+    overrideCallback: ((baseConfig: UserConfig) => UserConfig | Promise<UserConfig>) | undefined,
 ): Promise<UserConfig> {
     const baseConfig = createBaseConfig(baseConfigOptions);
-    const overrideConfig = await overrideConfigInput;
-
-    const fullConfig = {
-        ...baseConfig,
-        ...overrideConfig,
-    };
+    const fullConfig = overrideCallback ? await overrideCallback(baseConfig) : baseConfig;
 
     log.faint(
         `public dir: ${logColors.info}${relative(process.cwd(), fullConfig.publicDir || '')}${
@@ -89,13 +83,7 @@ export async function combineConfigs(
 
 export function defineConfig(
     baseConfigOptions: BaseConfigOptions,
-    configOverride: UserConfigExport,
+    overrideCallback: ((baseConfig: UserConfig) => UserConfig | Promise<UserConfig>) | undefined,
 ): UserConfigExport {
-    if (typeof configOverride === 'function') {
-        return (envConfig: ConfigEnv) => {
-            return combineConfigs(baseConfigOptions, configOverride(envConfig));
-        };
-    } else {
-        return combineConfigs(baseConfigOptions, configOverride);
-    }
+    return combineConfigs(baseConfigOptions, overrideCallback);
 }
