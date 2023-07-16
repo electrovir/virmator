@@ -177,6 +177,7 @@ const baseConfig = {
         'Qostanay',
         'Qyzylorda',
         'referrerpolicy',
+        'regen',
         'rehype',
         'replacestate',
         'repos',

@@ -23,7 +23,6 @@ export const frontendCommandDefinition = defineCommand(
         },
         npmDeps: [
             {name: '@augment-vir/node-js', type: NpmDepTypeEnum.Dev},
-            {name: 'element-vir', type: NpmDepTypeEnum.Regular},
             {name: 'esbuild', type: NpmDepTypeEnum.Dev},
             {name: 'typescript', type: NpmDepTypeEnum.Dev},
             {name: 'vite-tsconfig-paths', type: NpmDepTypeEnum.Dev},

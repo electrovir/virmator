@@ -1,7 +1,21 @@
 import {awaitedForEach} from '@augment-vir/common';
 import {existsSync} from 'fs';
-import {readdir, readFile, stat, writeFile} from 'fs/promises';
+import {remove} from 'fs-extra';
+import {readdir, readFile, rm, stat, writeFile} from 'fs/promises';
 import {dirname, join, parse as parsePath} from 'path';
+
+export async function removeDirectory(dirPath: string) {
+    await rm(dirPath, {
+        force: true,
+        recursive: true,
+        maxRetries: 3,
+        retryDelay: 100,
+    });
+    if (existsSync(dirPath)) {
+        // try... again? Cause Windows sucks.
+        await remove(dirPath);
+    }
+}
 
 export interface DirContents {
     [key: string]: string | DirContents;

@@ -131,6 +131,10 @@ Publish an npm package. Includes workspace support. Add test commands to run bef
 -   publish a package: `virmator publish`
 -   publish a package and run tests beforehand: `virmator publish npm test`
 
+## regen-deps
+
+Regenerates all npm deps.
+
 ## spellcheck
 
 Spellcheck code with cspell. By default this spellchecks every file in the entire repo (except for those ignored in the config file), including .dot files. If any arguments are passed to this command, the default cspell args that this command applies are ignored, you'll have to supply them via your args.

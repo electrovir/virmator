@@ -1,22 +1,10 @@
-import {remove} from 'fs-extra';
-import {rm} from 'fs/promises';
 import {describe, it} from 'mocha';
 import {join} from 'path';
 import {SetOptional} from 'type-fest';
+import {removeDirectory} from '../augments/fs';
 import {RunCliCommandInputs, runCliCommandForTestFromDefinition} from '../test/run-test-command';
 import {testTestWebPaths} from '../test/virmator-test-file-paths';
 import {testWebCommandDefinition} from './test-web.command';
-
-async function removeDirectory(rootDir: string, directory: string) {
-    await rm(join(rootDir, directory), {
-        force: true,
-        recursive: true,
-        maxRetries: 3,
-        retryDelay: 100,
-    });
-    // try... again? Cause Windows sucks.
-    await remove(join(rootDir, directory));
-}
 
 async function runTestWebTestCommand<KeyGeneric extends string>(
     inputs: SetOptional<
@@ -24,8 +12,8 @@ async function runTestWebTestCommand<KeyGeneric extends string>(
         'args'
     >,
 ) {
-    await removeDirectory(inputs.dir, 'coverage');
-    await removeDirectory(inputs.dir, 'configs');
+    await removeDirectory(join(inputs.dir, 'coverage'));
+    await removeDirectory(join(inputs.dir, 'configs'));
     try {
         await runCliCommandForTestFromDefinition(testWebCommandDefinition, {
             ...inputs,
@@ -43,8 +31,8 @@ async function runTestWebTestCommand<KeyGeneric extends string>(
             },
         });
     } finally {
-        await removeDirectory(inputs.dir, 'configs');
-        await removeDirectory(inputs.dir, 'coverage');
+        await removeDirectory(join(inputs.dir, 'configs'));
+        await removeDirectory(join(inputs.dir, 'coverage'));
     }
 }
 
