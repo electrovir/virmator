@@ -25,7 +25,7 @@ export const regenDepsCommandDefinition = defineCommand(
         const nodeModulesPaths = new Set(
             allChildNodeModules
                 .filter((path) => path.includes('node_modules'))
-                .map((path) => path.replace(/[\\\/]node_modules[\\\/].+$/, '')),
+                .map((path) => path.replace(/([\\\/]|^)node_modules[\\\/].+$/, '$1node_modules')),
         );
 
         await Promise.all(
