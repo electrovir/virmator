@@ -11,10 +11,10 @@ export const noCommandLogging: Readonly<Required<CommandLogging>> = {
 
 export const defaultConsoleLogging: Readonly<Required<CommandLogging>> = {
     stdout: (input: string) => {
-        console.info(input.replace(/\n$/, ''));
+        process.stdout.write(input.replace(/\n$/, '') + '\n');
     },
     stderr: (input: string) => {
-        console.error(input.replace(/\n$/, ''));
+        process.stderr.write(input.replace(/\n$/, '') + '\n');
     },
 };
 
