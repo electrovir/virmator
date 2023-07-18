@@ -40,13 +40,17 @@ export const regenDepsCommandDefinition = defineCommand(
 
         const removePackageLock = existsSync(packageLockPath);
 
+        const logLines = [
+            'Removing node_modules:',
+            ...nodeModulesPaths.map((nodeModulesPath) => `    ${nodeModulesPath}`),
+            removePackageLock ? '\nRemoving package-lock.json' : '',
+        ].filter(isTruthy);
+
         inputs.logging.stdout(
             toLogString({
                 args: [
-                    'Removing node_modules:',
-                    ...nodeModulesPaths.map((nodeModulesPath) => `    ${nodeModulesPath}`),
-                    removePackageLock ? 'Removing package-lock.json' : '',
-                ].filter(isTruthy),
+                    logLines.join('\n'),
+                ],
                 colors: ColorKey.faint,
             }),
         );
