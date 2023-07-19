@@ -4,7 +4,7 @@
     "types": "dist/index.d.ts",
     "scripts": {
         "build": "virmator frontend build",
-        "compile": "rm -rf dist && virmator compile",
+        "compile": "virmator compile",
         "docs:update": "virmator code-in-markdown",
         "format": "virmator format",
         "preview": "virmator frontend preview",

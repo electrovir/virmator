@@ -1,6 +1,6 @@
 {
     "name": "virmator",
-    "version": "7.2.4",
+    "version": "7.2.5",
     "description": "Handle common package configs, commands, and dependencies.",
     "keywords": [
         "automation",
@@ -67,10 +67,10 @@
         "@web/test-runner": "^0.17.0",
         "@web/test-runner-commands": "^0.8.0",
         "@web/test-runner-playwright": "^0.10.1",
-        "@web/test-runner-visual-regression": "^0.8.1",
+        "@web/test-runner-visual-regression": "^0.8.2",
         "chai": "^4.3.7",
         "cspell": "^6.31.2",
-        "element-vir": "^14.1.0",
+        "element-vir": "^14.2.0",
         "esbuild": "^0.18.14",
         "fs-extra": "^11.1.1",
         "istanbul-smart-text-reporter": "^1.1.2",
@@ -91,7 +91,7 @@
         "ts-node": "^10.9.1",
         "tsconfig-paths": "^4.2.0",
         "typescript": "^5.1.6",
-        "virmator": "^7.2.3",
+        "virmator": "^7.2.4",
         "vite": "^4.4.4",
         "vite-tsconfig-paths": "^4.2.0"
     },

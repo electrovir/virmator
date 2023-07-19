@@ -9,6 +9,8 @@ export const ncuConfig: RunOptions = {
         'glob',
         /** Not ready for v3. */
         'prettier',
+        /** The latest update requires Prettier v3. */
+        'prettier-plugin-jsdoc',
     ],
     // include only these
     filter: [],
