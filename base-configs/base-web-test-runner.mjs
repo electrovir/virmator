@@ -123,6 +123,11 @@ export function getWebTestRunnerConfigWithCoveragePercent({
                 'istanbul-smart-text-reporter',
             ],
         },
+        filterBrowserLogs({args}) {
+            const fullLog = args.join(' ');
+            /** Remove lit in dev mode logs cause they're not helpful at all in testing. */
+            return !fullLog.includes('Lit is in dev mode.');
+        },
     };
 
     return webTestRunnerConfig;
