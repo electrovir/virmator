@@ -161,6 +161,7 @@ const baseConfig = {
         'Port_Moresby',
         'Porto_Velho',
         'postpack',
+        'postpublish',
         'postupgrade',
         'preinstall',
         'premajor',

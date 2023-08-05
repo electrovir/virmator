@@ -7,5 +7,7 @@ export const baseNcuConfig = {
         'prettier',
         /** The latest update requires Prettier v3. */
         'prettier-plugin-jsdoc',
+        /** The latest update requires Prettier v3. */
+        'prettier-plugin-toml',
     ],
 } as const satisfies ReadonlyDeep<RunOptions>;
