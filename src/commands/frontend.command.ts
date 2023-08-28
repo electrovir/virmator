@@ -63,7 +63,7 @@ export const frontendCommandDefinition = defineCommand(
                 entryPoints: [viteConfigPath],
                 outfile: tempFilePath,
                 write: true,
-                target: ['node18'],
+                target: ['node20'],
                 platform: 'node',
                 bundle: false,
                 format: 'cjs',

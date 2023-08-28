@@ -51,7 +51,7 @@ export const upgradeDepsCommandDefinition = defineCommand(
                 entryPoints: [configPath],
                 outfile: tempFilePath,
                 write: true,
-                target: ['node18'],
+                target: ['node20'],
                 platform: 'node',
                 bundle: false,
                 format: 'cjs',
