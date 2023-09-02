@@ -4,7 +4,7 @@ import {
     isTruthy,
     RequiredAndNotNullBy,
 } from '@augment-vir/common';
-import {logColors, readJson, runShellCommand} from '@augment-vir/node-js';
+import {log, readJson, runShellCommand} from '@augment-vir/node-js';
 import {existsSync} from 'fs';
 import {readFile} from 'fs/promises';
 import {dirname, join} from 'path';
@@ -26,8 +26,8 @@ export async function updateDepsAsNeeded(inputs: UpdateDepsInput): Promise<void>
         const depsToUpdate = upgradeVersions.filter(isTruthy);
 
         await awaitedForEach(depsToUpdate, async (depDetails) => {
-            const depToInstall = `${depDetails.name}@${depDetails.version}`;
-            console.info(`${logColors.info}Installing ${depToInstall}...`);
+            const depToInstall = `${depDetails.name}@${depDetails.exactVersion}`;
+            log.info(`Installing ${depToInstall}...`);
             await runShellCommand(
                 `npm i ${depDetails.type === NpmDepTypeEnum.Dev ? '-D' : ''} ${depToInstall}`,
                 {
@@ -54,7 +54,9 @@ async function getVersionsToUpgradeTo({
     packageDir,
     npmDeps: neededNpmDeps,
     packageBinName,
-}: UpdateDepsInput): Promise<((NpmDep & {version: string}) | undefined)[]> {
+}: UpdateDepsInput): Promise<
+    ((NpmDep & {cleanVersion: string; exactVersion: string}) | undefined)[]
+> {
     const packageName = (
         await runShellCommand(`cut -d "=" -f 2 <<< $(npm run env | grep "npm_package_name")`, {
             cwd: repoDir,
@@ -67,36 +69,40 @@ async function getVersionsToUpgradeTo({
     const virmatorPackageJson = JSON.parse(
         (await readFile(join(packageDir, 'package.json'))).toString(),
     );
-    const packageDepVersions = {
+    const packageDepVersions: Record<string, string> = {
         ...virmatorPackageJson.devDependencies,
         ...virmatorPackageJson.dependencies,
     };
 
-    return neededNpmDeps.map((npmDep) => {
-        const currentRepoVersion = cleanDepVersion(currentRepoDepVersions[npmDep.name]);
-        const virmatorDepVersion = cleanDepVersion(packageDepVersions[npmDep.name]);
+    return neededNpmDeps.map(
+        (npmDep): (NpmDep & {cleanVersion: string; exactVersion: string}) | undefined => {
+            const currentRepoVersion = cleanDepVersion(currentRepoDepVersions[npmDep.name]);
+            const virmatorDepVersion = packageDepVersions[npmDep.name];
+            const cleanVirmatorDepVersion = cleanDepVersion(virmatorDepVersion);
 
-        if (!virmatorDepVersion) {
-            throw new Error(
-                `No npm dep version listed for "${npmDep.name}" in ${packageBinName}'s dependencies.`,
-            );
-        }
+            if (!cleanVirmatorDepVersion || !virmatorDepVersion) {
+                throw new Error(
+                    `No npm dep version listed for "${npmDep.name}" in ${packageBinName}'s dependencies.`,
+                );
+            }
 
-        if (
-            currentRepoVersion !== '*' &&
-            (!currentRepoVersion ||
-                semver.gt(virmatorDepVersion, currentRepoVersion) ||
-                (packageDepVersions[npmDep.name].match(/^\d/) &&
-                    virmatorDepVersion !== currentRepoVersion))
-        ) {
-            return {
-                ...npmDep,
-                version: virmatorDepVersion,
-            };
-        } else {
-            return undefined;
-        }
-    });
+            if (
+                currentRepoVersion !== '*' &&
+                (!currentRepoVersion ||
+                    semver.gt(cleanVirmatorDepVersion, currentRepoVersion) ||
+                    (virmatorDepVersion.match(/^\d/) &&
+                        cleanVirmatorDepVersion !== currentRepoVersion))
+            ) {
+                return {
+                    ...npmDep,
+                    cleanVersion: cleanVirmatorDepVersion,
+                    exactVersion: virmatorDepVersion,
+                };
+            } else {
+                return undefined;
+            }
+        },
+    );
 }
 
 async function getDeps(
