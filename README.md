@@ -28,25 +28,6 @@ Below is full documentation for the cli, which is generated via the cli's `help`
 
 # Available commands
 
-## code-in-markdown
-
-Insert code snippets into markdown files. This uses the markdown-code-example-inserter package to expand code link comments inside of markdown files to actual markdown code blocks. See that package's README for more details but the basics are that you need a comment that looks like the following in your markdown file for this to do anything: `<!-- example-link: path/to/file.ts -->`
-
-By default this command parses all markdown files in the repo (ignoring node_modules). Specific markdown files can be parsed by giving virmator extra parameters.
-
-To check if files are up-to-date (rather than actually updating them), use the "check" sub-command.
-
-### Examples
-
--   default experience (usually all you need): `virmator code-in-markdown`
--   checking if files are up-to-date: `virmator code-in-markdown check`
--   override files to check to a single file: `virmator code-in-markdown only/this/one/file.md`
--   override files to check to a group of files: `virmator code-in-markdown "only/this/dir/*.md"`
-
-### check
-
-Check that markdown files have their examples inserted and are up-to-date.
-
 ## compile
 
 compile typescript files
@@ -60,6 +41,25 @@ Pass any extra tsc flags to this command.
 ### check
 
 Run type checking without emitting compiled files.
+
+## docs
+
+This also inserts code snippets into markdown files. This uses the markdown-code-example-inserter package to expand code link comments inside of markdown files to actual markdown code blocks. See that package's README for more details but the basics are that you need a comment that looks like the following in your markdown file for this to do anything: `<!-- example-link: path/to/file.ts -->`
+
+By default this command parses all markdown files in the repo (ignoring node_modules). Specific markdown files can be parsed by giving virmator extra parameters.
+
+To check if files are up-to-date (rather than actually updating them), use the "check" sub-command.
+
+### Examples
+
+-   default experience (usually all you need): `virmator docs`
+-   checking if files are up-to-date: `virmator docs check`
+-   override files to check to a single file: `virmator docs only/this/one/file.md`
+-   override files to check to a group of files: `virmator docs "only/this/dir/*.md"`
+
+### check
+
+Check that documentation is up-to-date.
 
 ## format
 

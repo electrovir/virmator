@@ -3,15 +3,22 @@ import {defineCommand} from '../api/command/define-command';
 import {NpmDepTypeEnum} from '../api/command/define-command-inputs';
 import {getNpmBinPath} from '../file-paths/package-paths';
 
-export const codeInMarkdownCommandDefinition = defineCommand(
+export const docsCommandDefinition = defineCommand(
     {
-        commandName: 'code-in-markdown',
+        commandName: 'docs',
         subCommandDescriptions: {
-            check: 'Check that markdown files have their examples inserted and are up-to-date.',
+            check: 'Check that documentation is up-to-date.',
         },
         configFiles: {},
         npmDeps: [
-            {name: 'markdown-code-example-inserter', type: NpmDepTypeEnum.Dev},
+            {
+                name: 'markdown-code-example-inserter',
+                type: NpmDepTypeEnum.Dev,
+            },
+            {
+                name: 'typedoc',
+                type: NpmDepTypeEnum.Dev,
+            },
         ],
     } as const,
     ({commandName, packageBinName}) => {
@@ -19,7 +26,7 @@ export const codeInMarkdownCommandDefinition = defineCommand(
             sections: [
                 {
                     title: '',
-                    content: `Insert code snippets into markdown files. This uses the markdown-code-example-inserter package to expand code link comments inside of markdown files to actual markdown code blocks. See that package's README for more details but the basics are that you need a comment that looks like the following in your markdown file for this to do anything: \`<!-- example-link: path/to/file.ts -->\``,
+                    content: `This also inserts code snippets into markdown files. This uses the markdown-code-example-inserter package to expand code link comments inside of markdown files to actual markdown code blocks. See that package's README for more details but the basics are that you need a comment that looks like the following in your markdown file for this to do anything: \`<!-- example-link: path/to/file.ts -->\``,
                 },
                 {
                     title: '',
@@ -51,7 +58,11 @@ export const codeInMarkdownCommandDefinition = defineCommand(
         };
     },
     async (inputs) => {
-        const args: string[] = inputs.filteredInputArgs.length
+        const containsManualMarkdownArgs = inputs.filteredInputArgs.some((arg) =>
+            arg.match(/.md['"]^/),
+        );
+
+        const args: string[] = containsManualMarkdownArgs
             ? inputs.filteredInputArgs
             : [`\"./**/*.md\"`];
         const subCommand = inputs.inputSubCommands.includes(inputs.subCommands.check)

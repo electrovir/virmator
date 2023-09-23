@@ -1,90 +1,4 @@
 {
-    "code-in-markdown": {
-        "check should fail after reverting": {
-            "dir": "code-in-markdown",
-            "exitCode": 1,
-            "key": "check should fail after reverting",
-            "stderr": "README-broken.md: NOT up to date Code in Markdown file(s) is out of date. Run without the \"check\" sub-command in order to update. code-in-markdown failed.",
-            "stdout": "Installing markdown-code-example-inserter... running code-in-markdown... node_modules/.bin/md-code --check \"./**/*.md\" Checking that code in markdown is up to date: README-fixed.md: up to date"
-        },
-        "check should fail before running single file update": {
-            "dir": "code-in-markdown",
-            "exitCode": 1,
-            "key": "check should fail before running single file update",
-            "stderr": "README-broken.md: NOT up to date Code in Markdown file(s) is out of date. Run without the \"check\" sub-command in order to update. code-in-markdown failed.",
-            "stdout": "Installing markdown-code-example-inserter... running code-in-markdown... node_modules/.bin/md-code --check \"./**/*.md\" Checking that code in markdown is up to date: README-fixed.md: up to date"
-        },
-        "check should fail before running update": {
-            "dir": "code-in-markdown",
-            "exitCode": 1,
-            "key": "check should fail before running update",
-            "stderr": "    README-broken.md: NOT up to date\nCode in Markdown file(s) is out of date. Run without the \"check\" sub-command in order to update.\ncode-in-markdown failed.\n",
-            "stdout": "Installing markdown-code-example-inserter...\nrunning code-in-markdown...\nnode_modules/.bin/md-code --check README-broken.md\nChecking that code in markdown is up to date:\n"
-        },
-        "check should pass after update": {
-            "dir": "code-in-markdown",
-            "exitCode": 0,
-            "key": "check should pass after update",
-            "stderr": "",
-            "stdout": "Installing markdown-code-example-inserter... running code-in-markdown... node_modules/.bin/md-code --check \"./**/*.md\" Checking that code in markdown is up to date: README-broken.md: up to date README-fixed.md: up to date code-in-markdown succeeded."
-        },
-        "outdated-dir-check-fail": {
-            "dir": "code-in-markdown",
-            "exitCode": 1,
-            "key": "outdated-dir-check-fail",
-            "stderr": "README-broken.md: NOT up to date Code in Markdown file(s) is out of date. Run without the \"check\" sub-command in order to update. code-in-markdown failed.",
-            "stdout": "Installing markdown-code-example-inserter... running code-in-markdown... node_modules/.bin/md-code --check \"./**/*.md\" Checking that code in markdown is up to date: README-fixed.md: up to date"
-        },
-        "outdated-single-file-check-fail": {
-            "dir": "code-in-markdown",
-            "exitCode": 1,
-            "key": "outdated-single-file-check-fail",
-            "stderr": "README-broken.md: NOT up to date Code in Markdown file(s) is out of date. Run without the \"check\" sub-command in order to update. code-in-markdown failed.",
-            "stdout": "Installing markdown-code-example-inserter... running code-in-markdown... node_modules/.bin/md-code --check README-broken.md Checking that code in markdown is up to date:"
-        },
-        "single file check should fail after reverting": {
-            "dir": "code-in-markdown",
-            "exitCode": 1,
-            "key": "single file check should fail after reverting",
-            "stderr": "README-broken.md: NOT up to date Code in Markdown file(s) is out of date. Run without the \"check\" sub-command in order to update. code-in-markdown failed.",
-            "stdout": "Installing markdown-code-example-inserter... running code-in-markdown... node_modules/.bin/md-code --check README-broken.md Checking that code in markdown is up to date:"
-        },
-        "single file check should fail before running update": {
-            "dir": "code-in-markdown",
-            "exitCode": 1,
-            "key": "single file check should fail before running update",
-            "stderr": "README-broken.md: NOT up to date Code in Markdown file(s) is out of date. Run without the \"check\" sub-command in order to update. code-in-markdown failed.",
-            "stdout": "Installing markdown-code-example-inserter... running code-in-markdown... node_modules/.bin/md-code --check README-broken.md Checking that code in markdown is up to date:"
-        },
-        "single file check should pass after update": {
-            "dir": "code-in-markdown",
-            "exitCode": 0,
-            "key": "single file check should pass after update",
-            "stderr": "",
-            "stdout": "Installing markdown-code-example-inserter... running code-in-markdown... node_modules/.bin/md-code --check README-broken.md Checking that code in markdown is up to date: README-broken.md: up to date code-in-markdown succeeded."
-        },
-        "single file update should pass": {
-            "dir": "code-in-markdown",
-            "exitCode": 0,
-            "key": "single file update should pass",
-            "stderr": "",
-            "stdout": "Installing markdown-code-example-inserter... running code-in-markdown... node_modules/.bin/md-code README-broken.md Inserting code into markdown: README-broken.md code-in-markdown succeeded."
-        },
-        "up-to-date-single-file-check-pass": {
-            "dir": "code-in-markdown",
-            "exitCode": 0,
-            "key": "up-to-date-single-file-check-pass",
-            "stderr": "",
-            "stdout": "Installing markdown-code-example-inserter... running code-in-markdown... node_modules/.bin/md-code --check README-fixed.md Checking that code in markdown is up to date: README-fixed.md: up to date code-in-markdown succeeded."
-        },
-        "update should pass": {
-            "dir": "code-in-markdown",
-            "exitCode": 0,
-            "key": "update should pass",
-            "stderr": "",
-            "stdout": "Installing markdown-code-example-inserter... running code-in-markdown... node_modules/.bin/md-code \"./**/*.md\" Inserting code into markdown: README-broken.md README-fixed.md code-in-markdown succeeded."
-        }
-    },
     "compile": {
         "compile-errors-failure": {
             "dir": "compile/invalid-compile-repo",
@@ -106,6 +20,92 @@
             "key": "no-compile-errors-pass",
             "stderr": "",
             "stdout": "Installing typescript... running compile... rm -rf dist && ./test-files/compile/valid-compile-repo/node_modules/.bin/tsc --noEmit compile succeeded."
+        }
+    },
+    "docs": {
+        "check should fail after reverting": {
+            "dir": "docs",
+            "exitCode": 1,
+            "key": "check should fail after reverting",
+            "stderr": "README-broken.md: NOT up to date Code in Markdown file(s) is out of date. Run without the \"check\" sub-command in order to update. docs failed.",
+            "stdout": "Installing markdown-code-example-inserter... Installing typedoc... running docs... node_modules/.bin/md-code --check \"./**/*.md\" Checking that code in markdown is up to date: README-fixed.md: up to date"
+        },
+        "check should fail before running single file update": {
+            "dir": "docs",
+            "exitCode": 1,
+            "key": "check should fail before running single file update",
+            "stderr": "README-broken.md: NOT up to date Code in Markdown file(s) is out of date. Run without the \"check\" sub-command in order to update. docs failed.",
+            "stdout": "Installing markdown-code-example-inserter... Installing typedoc... running docs... node_modules/.bin/md-code --check \"./**/*.md\" Checking that code in markdown is up to date: README-fixed.md: up to date"
+        },
+        "check should fail before running update": {
+            "dir": "docs",
+            "exitCode": 1,
+            "key": "check should fail before running update",
+            "stderr": "    README-broken.md: NOT up to date\nCode in Markdown file(s) is out of date. Run without the \"check\" sub-command in order to update.\ndocs failed.\n",
+            "stdout": "Installing markdown-code-example-inserter...\nrunning docs...\nnode_modules/.bin/md-code --check README-broken.md\nChecking that code in markdown is up to date:\n"
+        },
+        "check should pass after update": {
+            "dir": "docs",
+            "exitCode": 0,
+            "key": "check should pass after update",
+            "stderr": "",
+            "stdout": "Installing markdown-code-example-inserter... Installing typedoc... running docs... node_modules/.bin/md-code --check \"./**/*.md\" Checking that code in markdown is up to date: README-broken.md: up to date README-fixed.md: up to date docs succeeded."
+        },
+        "outdated-dir-check-fail": {
+            "dir": "docs",
+            "exitCode": 1,
+            "key": "outdated-dir-check-fail",
+            "stderr": "README-broken.md: NOT up to date Code in Markdown file(s) is out of date. Run without the \"check\" sub-command in order to update. docs failed.",
+            "stdout": "Installing markdown-code-example-inserter... Installing typedoc... running docs... node_modules/.bin/md-code --check \"./**/*.md\" Checking that code in markdown is up to date: README-fixed.md: up to date"
+        },
+        "outdated-single-file-check-fail": {
+            "dir": "docs",
+            "exitCode": 1,
+            "key": "outdated-single-file-check-fail",
+            "stderr": "README-broken.md: NOT up to date Code in Markdown file(s) is out of date. Run without the \"check\" sub-command in order to update. docs failed.",
+            "stdout": "Installing markdown-code-example-inserter... Installing typedoc... running docs... node_modules/.bin/md-code --check README-broken.md Checking that code in markdown is up to date:"
+        },
+        "single file check should fail after reverting": {
+            "dir": "docs",
+            "exitCode": 1,
+            "key": "single file check should fail after reverting",
+            "stderr": "README-broken.md: NOT up to date Code in Markdown file(s) is out of date. Run without the \"check\" sub-command in order to update. docs failed.",
+            "stdout": "Installing markdown-code-example-inserter... Installing typedoc... running docs... node_modules/.bin/md-code --check README-broken.md Checking that code in markdown is up to date:"
+        },
+        "single file check should fail before running update": {
+            "dir": "docs",
+            "exitCode": 1,
+            "key": "single file check should fail before running update",
+            "stderr": "README-broken.md: NOT up to date Code in Markdown file(s) is out of date. Run without the \"check\" sub-command in order to update. docs failed.",
+            "stdout": "Installing markdown-code-example-inserter... Installing typedoc... running docs... node_modules/.bin/md-code --check README-broken.md Checking that code in markdown is up to date:"
+        },
+        "single file check should pass after update": {
+            "dir": "docs",
+            "exitCode": 0,
+            "key": "single file check should pass after update",
+            "stderr": "",
+            "stdout": "Installing markdown-code-example-inserter... Installing typedoc... running docs... node_modules/.bin/md-code --check README-broken.md Checking that code in markdown is up to date: README-broken.md: up to date docs succeeded."
+        },
+        "single file update should pass": {
+            "dir": "docs",
+            "exitCode": 0,
+            "key": "single file update should pass",
+            "stderr": "",
+            "stdout": "Installing markdown-code-example-inserter... Installing typedoc... running docs... node_modules/.bin/md-code README-broken.md Inserting code into markdown: README-broken.md docs succeeded."
+        },
+        "up-to-date-single-file-check-pass": {
+            "dir": "docs",
+            "exitCode": 0,
+            "key": "up-to-date-single-file-check-pass",
+            "stderr": "",
+            "stdout": "Installing markdown-code-example-inserter... Installing typedoc... running docs... node_modules/.bin/md-code --check README-fixed.md Checking that code in markdown is up to date: README-fixed.md: up to date docs succeeded."
+        },
+        "update should pass": {
+            "dir": "docs",
+            "exitCode": 0,
+            "key": "update should pass",
+            "stderr": "",
+            "stdout": "Installing markdown-code-example-inserter... Installing typedoc... running docs... node_modules/.bin/md-code \"./**/*.md\" Inserting code into markdown: README-broken.md README-fixed.md docs succeeded."
         }
     },
     "format": {

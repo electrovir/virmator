@@ -13,10 +13,10 @@ export const testFilesDirPath = join(virmatorPackageDir, 'test-files');
 
 export const testExpectationsFilePath = join(testFilesDirPath, 'expected-output.json');
 
-export const testCodeInMarkdownDirPath = join(testFilesDirPath, 'code-in-markdown');
-export const testCodeInMarkdownPaths = {
-    fixedReadme: join(testCodeInMarkdownDirPath, 'README-fixed.md'),
-    brokenReadme: join(testCodeInMarkdownDirPath, 'README-broken.md'),
+export const testDocsDirPath = join(testFilesDirPath, 'docs');
+export const testDocsPaths = {
+    fixedReadme: join(testDocsDirPath, 'README-fixed.md'),
+    brokenReadme: join(testDocsDirPath, 'README-broken.md'),
 };
 
 const formatTestRepos = join(testFilesDirPath, 'format');

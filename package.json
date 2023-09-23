@@ -90,6 +90,7 @@
         "test-established-expectations": "^0.5.0",
         "ts-node": "^10.9.1",
         "tsconfig-paths": "^4.2.0",
+        "typedoc": "^0.25.1",
         "typescript": "^5.2.2",
         "virmator": "^7.4.0",
         "vite": "^4.4.9",

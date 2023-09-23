@@ -1,6 +1,6 @@
 import {createVirmator} from './api/create-virmator';
-import {codeInMarkdownCommandDefinition} from './commands/code-in-markdown.command';
 import {compileCommandDefinition} from './commands/compile.command';
+import {docsCommandDefinition} from './commands/docs.command';
 import {formatCommandDefinition} from './commands/format.command';
 import {frontendCommandDefinition} from './commands/frontend.command';
 import {initCommandDefinition} from './commands/init.command';
@@ -32,7 +32,7 @@ export const virmator = createVirmator({
     packageBinName: 'virmator',
     packageRootDir: virmatorPackageDir,
     commandDefinitions: [
-        codeInMarkdownCommandDefinition,
+        docsCommandDefinition,
         compileCommandDefinition,
         formatCommandDefinition,
         frontendCommandDefinition,
