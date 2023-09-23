@@ -1,6 +1,5 @@
 import {join} from 'path';
-import type {TypeDocOptions} from 'typedoc';
-import {Configuration} from 'typedoc';
+import type * as TypeDoc from 'typedoc';
 import {CommandLogTransforms} from '../api/command/command-logging';
 import {defineCommand} from '../api/command/define-command';
 import {NpmDepTypeEnum} from '../api/command/define-command-inputs';
@@ -14,7 +13,7 @@ export const docsCommandDefinition = defineCommand(
             check: 'Check that documentation is up-to-date.',
         },
         configFiles: {
-            typedocConfig: {
+            typeDocConfig: {
                 copyFromInternalPath: join(virmatorConfigsDir, 'configs', 'typedoc.config.ts'),
                 copyToPathRelativeToRepoDir: join('configs', 'typedoc.config.ts'),
             },
@@ -75,11 +74,11 @@ export const docsCommandDefinition = defineCommand(
         subCommands,
         packageBinName,
     }) => {
-        const typedocConfigPath = join(
+        const typeDocConfigPath = join(
             repoDir,
-            configFiles.typedocConfig.copyToPathRelativeToRepoDir,
+            configFiles.typeDocConfig.copyToPathRelativeToRepoDir,
         );
-        return await withTypescriptConfigFile(typedocConfigPath, async (loadedConfig) => {
+        return await withTypescriptConfigFile(typeDocConfigPath, async (loadedConfig) => {
             const containsManualMarkdownArgs = filteredInputArgs.some((arg) =>
                 arg.match(/\.md['"]?$/),
             );
@@ -98,11 +97,12 @@ export const docsCommandDefinition = defineCommand(
                     ),
             };
 
-            const options: TypeDocOptions = loadedConfig.typedocConfig;
+            const options: TypeDoc.TypeDocOptions = loadedConfig.typeDocConfig;
 
-            const checkTypeDocOptions: Partial<Pick<TypeDocOptions, 'emit'>> = isCheckingOnly
-                ? {emit: Configuration.EmitStrategy.none}
-                : {};
+            const typeDoc = await import('typedoc');
+
+            const checkTypeDocOptions: Partial<Pick<TypeDoc.TypeDocOptions, 'emit'>> =
+                isCheckingOnly ? {emit: typeDoc.Configuration.EmitStrategy.none} : {};
 
             if (
                 !(await runTypeDoc(
@@ -111,6 +111,7 @@ export const docsCommandDefinition = defineCommand(
                         ...checkTypeDocOptions,
                     },
                     packageBinName,
+                    typeDoc,
                 ))
             ) {
                 return {success: false};
@@ -133,15 +134,14 @@ export const docsCommandDefinition = defineCommand(
 );
 
 async function runTypeDoc(
-    options: Partial<TypeDocOptions>,
+    options: Partial<TypeDoc.TypeDocOptions>,
     packageBinName: string,
+    typeDoc: typeof TypeDoc,
 ): Promise<boolean> {
-    const typedoc = await import('typedoc');
-
-    const app = await typedoc.Application.bootstrapWithPlugins(options, [
-        new typedoc.TypeDocReader(),
-        new typedoc.PackageJsonReader(),
-        new typedoc.TSConfigReader(),
+    const app = await typeDoc.Application.bootstrapWithPlugins(options, [
+        new typeDoc.TypeDocReader(),
+        new typeDoc.PackageJsonReader(),
+        new typeDoc.TSConfigReader(),
     ]);
     if (app.options.getValue('version')) {
         console.log(app.toString());
