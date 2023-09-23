@@ -1,6 +1,7 @@
 /Icon?
-dist/
 coverage/
+dist/
+docs-dist/
 node_modules/
 package-lock.json
 test-files/format/

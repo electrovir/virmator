@@ -10,6 +10,7 @@ const baseConfig = {
         '**/build/',
         '**/coverage/',
         '**/dist/',
+        '**/docs-dist/',
         '**/graphics/',
         '**/node_modules/',
         'package-lock.json',

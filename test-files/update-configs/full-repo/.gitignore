@@ -3,6 +3,7 @@
 /Icon?
 coverage/
 dist/
+docs-dist/
 graphics/
 node_modules/
 src/all-files-for-code-coverage.test.ts
