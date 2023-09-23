@@ -1,9 +1,8 @@
-import {extractErrorMessage} from '@augment-vir/common';
-import {randomString, readPackageJson} from '@augment-vir/node-js';
-import {unlink} from 'fs/promises';
+import {readPackageJson} from '@augment-vir/node-js';
 import {join} from 'path';
 import {defineCommand} from '../api/command/define-command';
 import {NpmDepTypeEnum} from '../api/command/define-command-inputs';
+import {withTypescriptConfigFile} from '../augments/typescript-config-file';
 import {virmatorConfigsDir} from './../file-paths/package-paths';
 
 export const upgradeDepsCommandDefinition = defineCommand(
@@ -38,28 +37,10 @@ export const upgradeDepsCommandDefinition = defineCommand(
             ],
         };
     },
-    async (inputs) => {
-        const tempFilePath = join(__dirname, `config-output-${Date.now()}-${randomString()}.cjs`);
-        try {
-            const configPath = join(
-                inputs.repoDir,
-                inputs.configFiles.ncuConfig.copyToPathRelativeToRepoDir,
-            );
-            await (
-                await import('esbuild')
-            ).build({
-                entryPoints: [configPath],
-                outfile: tempFilePath,
-                write: true,
-                target: ['node20'],
-                platform: 'node',
-                bundle: false,
-                format: 'cjs',
-            });
-
-            const repoPackageJson = await readPackageJson(inputs.repoDir);
-
-            const loadedConfig = require(tempFilePath);
+    async ({repoDir, configFiles}) => {
+        const ncuConfigPath = join(repoDir, configFiles.ncuConfig.copyToPathRelativeToRepoDir);
+        return await withTypescriptConfigFile(ncuConfigPath, async (loadedConfig) => {
+            const repoPackageJson = await readPackageJson(repoDir);
 
             const config = loadedConfig.ncuConfig;
 
@@ -68,7 +49,7 @@ export const upgradeDepsCommandDefinition = defineCommand(
             ).run(
                 {
                     ...config,
-                    cwd: inputs.repoDir,
+                    cwd: repoDir,
                     json: false,
                     workspaces: !!repoPackageJson.workspaces,
                     format: [],
@@ -79,13 +60,6 @@ export const upgradeDepsCommandDefinition = defineCommand(
             );
 
             return {success: true};
-        } catch (error) {
-            console.error(extractErrorMessage(error));
-            return {success: false};
-        } finally {
-            try {
-                await unlink(tempFilePath);
-            } catch (error) {}
-        }
+        });
     },
 );

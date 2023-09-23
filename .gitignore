@@ -3,5 +3,6 @@
 /Icon?
 coverage/
 dist/
+docs-dist/
 graphics/
 node_modules/
