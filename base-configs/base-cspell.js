@@ -131,6 +131,7 @@ const baseConfig = {
         'mmultiline',
         'mocharc',
         'monospace',
+        'mpath',
         'msapplication',
         'mstile',
         'ncurc',
