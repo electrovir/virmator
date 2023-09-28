@@ -40,7 +40,7 @@ async function main(args: string[]) {
 
         if (wasReadmeChanged) {
             console.info(
-                `${logColors.bold}${logColors.error}README usage message is not up to date.${logColors.reset}\nRun ${logColors.info}npm run docs:update${logColors.reset} to update.\n`,
+                `${logColors.bold}${logColors.error}README usage message is not up to date.${logColors.reset}\nRun ${logColors.info}npm run docs${logColors.reset} to update.\n`,
             );
             throw new Error(`README not up to date.`);
         }

@@ -5,7 +5,7 @@
     "scripts": {
         "build": "virmator frontend build",
         "compile": "virmator compile",
-        "docs:update": "virmator docs",
+        "docs": "virmator docs",
         "format": "virmator format",
         "preview": "virmator frontend preview",
         "publish": "virmator publish \"npm run compile && npm run test:all\"",
