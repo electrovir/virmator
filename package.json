@@ -1,6 +1,6 @@
 {
     "name": "virmator",
-    "version": "8.0.1",
+    "version": "8.0.3",
     "description": "Handle common package configs, commands, and dependencies.",
     "keywords": [
         "automation",
@@ -30,8 +30,8 @@
     "bin": "dist/cli.js",
     "scripts": {
         "compile": "rm -rf dist && tsc",
+        "docs": "npm run compile && ts-node src/scripts/save-help-message.ts && md-code README.md",
         "docs:check": "npm run compile && ts-node src/scripts/save-help-message.ts check && md-code --check README.md",
-        "docs:update": "npm run compile && ts-node src/scripts/save-help-message.ts && md-code README.md",
         "format": "npm run format:base -- --write --list-different",
         "format:base": "prettier \"./**/*.+(ts|json|html|css|md|js)\"",
         "publish": "virmator publish \"npm run test:all\"",
