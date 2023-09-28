@@ -2,23 +2,16 @@ import type {TypeDocOptions} from 'typedoc';
 
 export const defaultDocumentationRequirements: TypeDocOptions['requiredToBeDocumented'] = [
     'Accessor',
-    'CallSignature',
     'Class',
     'Constructor',
-    'ConstructorSignature',
     'Enum',
     'Function',
-    'GetSignature',
-    'IndexSignature',
     'Interface',
     'Method',
     'Module',
     'Namespace',
-    'Parameter',
     'Reference',
-    'SetSignature',
     'TypeAlias',
-    'TypeLiteral',
     'Variable',
 ];
 
