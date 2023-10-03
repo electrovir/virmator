@@ -3,7 +3,6 @@ import type {TypeDocOptions} from 'typedoc';
 export const defaultDocumentationRequirements: TypeDocOptions['requiredToBeDocumented'] = [
     'Accessor',
     'Class',
-    'Constructor',
     'Enum',
     'Function',
     'Interface',
@@ -18,6 +17,7 @@ export const defaultDocumentationRequirements: TypeDocOptions['requiredToBeDocum
 export const baseTypedocConfig: Partial<TypeDocOptions> = {
     cacheBust: true,
     cleanOutputDir: true,
+    excludeExternals: true,
     githubPages: true,
     includeVersion: true,
     searchInComments: true,
