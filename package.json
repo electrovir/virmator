@@ -70,6 +70,7 @@
         "@web/test-runner-visual-regression": "^0.8.2",
         "chai": "^4.3.10",
         "cspell": "^7.3.7",
+        "dependency-cruiser": "^14.1.1",
         "element-vir": "^16.4.1",
         "esbuild": "^0.19.4",
         "fs-extra": "^11.1.1",

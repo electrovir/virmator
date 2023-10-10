@@ -1,3 +1,4 @@
+import {MaybePromise} from '@augment-vir/common';
 import {ConfigFileDefinition} from '../config/config-file-definition';
 import {CommandLogging, CommandLogTransforms} from './command-logging';
 import {
@@ -34,6 +35,7 @@ export type SuccessOnlyExecutorOutput = {
 export type BashCommandExecutorOutput = {
     logTransforms?: CommandLogTransforms;
     args: (string | DetailedArg)[];
+    postExecute?: () => MaybePromise<void>;
 };
 
 export function isCompletedExecutor(

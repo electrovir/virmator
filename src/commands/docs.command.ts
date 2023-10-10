@@ -144,13 +144,13 @@ async function runTypeDoc(
         new typeDoc.TSConfigReader(),
     ]);
     if (app.options.getValue('version')) {
-        console.log(app.toString());
+        console.info(app.toString());
         return true;
     } else if (app.options.getValue('help')) {
-        console.log(app.options.getHelp());
+        console.info(app.options.getHelp());
         return true;
     } else if (app.options.getValue('showConfig')) {
-        console.log(app.options.getRawValues());
+        console.info(app.options.getRawValues());
         return true;
     } else if (app.logger.hasErrors()) {
         return false;

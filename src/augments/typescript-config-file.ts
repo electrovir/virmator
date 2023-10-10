@@ -6,22 +6,9 @@ export async function withTypescriptConfigFile<T>(
     configPath: string,
     callback: (config: any) => Promise<T>,
 ): Promise<T> {
-    const tempFilePath = join(
-        dirname(configPath),
-        `config-output-${Date.now()}-${randomString()}.cjs`,
-    );
+    const tempFilePath = createOutfilePath(configPath);
     try {
-        await (
-            await import('esbuild')
-        ).build({
-            entryPoints: [configPath],
-            outfile: tempFilePath,
-            write: true,
-            target: ['node20'],
-            platform: 'node',
-            bundle: false,
-            format: 'cjs',
-        });
+        compileTs({inputPath: configPath, outputPath: tempFilePath});
 
         const loadedConfig = require(tempFilePath);
 
@@ -31,4 +18,32 @@ export async function withTypescriptConfigFile<T>(
             await unlink(tempFilePath);
         } catch (error) {}
     }
+}
+
+function createOutfilePath(inputFilePath: string): string {
+    return join(dirname(inputFilePath), `config-output-${Date.now()}-${randomString()}.cjs`);
+}
+
+export async function compileTs({
+    inputPath,
+    outputPath,
+}: {
+    inputPath: string;
+    outputPath?: string | undefined;
+}): Promise<string> {
+    const outfile = outputPath || createOutfilePath(inputPath);
+
+    await (
+        await import('esbuild')
+    ).build({
+        entryPoints: [inputPath],
+        outfile,
+        write: true,
+        target: ['node20'],
+        platform: 'node',
+        bundle: false,
+        format: 'cjs',
+    });
+
+    return outfile;
 }

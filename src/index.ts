@@ -1,4 +1,5 @@
 import {createVirmator} from './api/create-virmator';
+import {checkDepsCommandDefinition} from './commands/check-deps.command';
 import {compileCommandDefinition} from './commands/compile.command';
 import {docsCommandDefinition} from './commands/docs.command';
 import {formatCommandDefinition} from './commands/format.command';
@@ -34,6 +35,7 @@ export const virmator = createVirmator({
     commandDefinitions: [
         docsCommandDefinition,
         compileCommandDefinition,
+        checkDepsCommandDefinition,
         formatCommandDefinition,
         frontendCommandDefinition,
         initCommandDefinition,

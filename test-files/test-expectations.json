@@ -268,5 +268,35 @@
             "stderr": "",
             "stdout": "Installing esbuild... Installing npm-check-updates... running upgrade-deps... Successfully copied ncu.config.ts Upgrading ./test-files/upgrade-deps/not-up-to-date/package.json element-vir ^1.0.0 → ^X.X.X Run npm install to install new versions. upgrade-deps succeeded."
         }
+    },
+    "check-deps": {
+        "circular-deps-fail": {
+            "dir": "check-deps/circular",
+            "exitCode": 1,
+            "key": "circular-deps-fail",
+            "stderr": "check-deps failed.",
+            "stdout": "Installing dependency-cruiser... running check-deps... Successfully copied dep-cruiser.config.ts node_modules/.bin/depcruise --config ./test-files/check-deps/circular/configs/dep-cruiser.config.cjs ./test-files/check-deps/circular/src error no-circular: src/one.ts → src/two.ts → src/one.ts ✘ 1 dependency violations (1 errors, 0 warnings). 2 modules, 2 dependencies cruised."
+        },
+        "npn-npm-dep-fail": {
+            "dir": "check-deps/non-npm-dep",
+            "exitCode": 1,
+            "key": "npn-npm-dep-fail",
+            "stderr": "check-deps failed.",
+            "stdout": "Installing dependency-cruiser... running check-deps... Successfully copied dep-cruiser.config.ts node_modules/.bin/depcruise --config ./test-files/check-deps/non-npm-dep/configs/dep-cruiser.config.cjs ./test-files/check-deps/non-npm-dep/src error no-non-package-json: src/index.ts → ../../../node_modules/@augment-vir/common/dist/cjs/index.js ✘ 1 dependency violations (1 errors, 0 warnings). 2 modules, 1 dependencies cruised."
+        },
+        "valid": {
+            "dir": "check-deps/valid",
+            "exitCode": 0,
+            "key": "valid",
+            "stderr": "",
+            "stdout": "Installing dependency-cruiser... running check-deps... Successfully copied dep-cruiser.config.ts node_modules/.bin/depcruise --config ./test-files/check-deps/valid/configs/dep-cruiser.config.cjs ./test-files/check-deps/valid/src ✔ no dependency violations found (1 modules, 0 dependencies cruised) check-deps succeeded."
+        },
+        "orphan-fail": {
+            "dir": "check-deps/orphan",
+            "exitCode": 1,
+            "key": "orphan-fail",
+            "stderr": "check-deps failed.",
+            "stdout": "Installing dependency-cruiser... running check-deps... Successfully copied dep-cruiser.config.ts node_modules/.bin/depcruise --config ./test-files/check-deps/orphan/configs/dep-cruiser.config.cjs ./test-files/check-deps/orphan/src error no-orphans: src/one.ts ✘ 1 dependency violations (1 errors, 0 warnings). 2 modules, 0 dependencies cruised."
+        }
     }
 }

@@ -19,6 +19,14 @@ export const testDocsPaths = {
     brokenReadme: join(testDocsDirPath, 'README-broken.md'),
 };
 
+export const testCheckDepsDirPath = join(testFilesDirPath, 'check-deps');
+export const testCheckDepsPaths = {
+    circular: join(testCheckDepsDirPath, 'circular'),
+    nonNpmDep: join(testCheckDepsDirPath, 'non-npm-dep'),
+    orphan: join(testCheckDepsDirPath, 'orphan'),
+    valid: join(testCheckDepsDirPath, 'valid'),
+};
+
 const formatTestRepos = join(testFilesDirPath, 'format');
 const invalidFormatRepo = join(formatTestRepos, 'invalid-format-repo');
 export const testFormatPaths = {

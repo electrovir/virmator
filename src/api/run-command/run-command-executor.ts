@@ -42,6 +42,7 @@ export async function runCommandExecutor<DefineCommandInputsGeneric extends Defi
         repoDir: commandInputs.repoDir,
     });
     const executorOutput = await commandDefinition.executor(commandInputs);
+
     if (isCompletedExecutor(executorOutput)) {
         return executorOutput.success;
     } else {
@@ -56,6 +57,7 @@ export async function runCommandExecutor<DefineCommandInputsGeneric extends Defi
             logging: commandInputs.logging,
             logTransforms: executorOutput.logTransforms,
         });
+        await executorOutput.postExecute?.();
 
         return commandResult.exitCode === 0;
     }
