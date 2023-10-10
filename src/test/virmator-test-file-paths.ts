@@ -19,12 +19,13 @@ export const testDocsPaths = {
     brokenReadme: join(testDocsDirPath, 'README-broken.md'),
 };
 
-export const testCheckDepsDirPath = join(testFilesDirPath, 'check-deps');
-export const testCheckDepsPaths = {
-    circular: join(testCheckDepsDirPath, 'circular'),
-    nonNpmDep: join(testCheckDepsDirPath, 'non-npm-dep'),
-    orphan: join(testCheckDepsDirPath, 'orphan'),
-    valid: join(testCheckDepsDirPath, 'valid'),
+export const testDepsDirPath = join(testFilesDirPath, 'deps');
+export const testDepsPaths = {
+    circular: join(testDepsDirPath, 'circular'),
+    nonNpmDep: join(testDepsDirPath, 'non-npm-dep'),
+    orphan: join(testDepsDirPath, 'orphan'),
+    valid: join(testDepsDirPath, 'valid'),
+    notUptoDateRepo: join(testDepsDirPath, 'not-up-to-date'),
 };
 
 const formatTestRepos = join(testFilesDirPath, 'format');
@@ -81,11 +82,6 @@ const testUpdateConfigsRepos = join(testFilesDirPath, 'update-configs');
 export const testUpdateConfigsPaths = {
     partialRepo: join(testUpdateConfigsRepos, 'partial-repo'),
     fullRepo: join(testUpdateConfigsRepos, 'full-repo'),
-};
-
-const testUpgradeDepsRepos = join(testFilesDirPath, 'upgrade-deps');
-export const testUpgradeDepsPaths = {
-    notUptoDateRepo: join(testUpgradeDepsRepos, 'not-up-to-date'),
 };
 
 export const virmatorReadme = join(virmatorPackageDir, 'README.md');

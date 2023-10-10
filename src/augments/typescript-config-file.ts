@@ -1,6 +1,5 @@
-import {randomString} from '@augment-vir/node-js';
+import {addSuffix, removeSuffix} from '@augment-vir/common';
 import {unlink} from 'fs/promises';
-import {dirname, join} from 'path';
 
 export async function withTypescriptConfigFile<T>(
     configPath: string,
@@ -8,7 +7,7 @@ export async function withTypescriptConfigFile<T>(
 ): Promise<T> {
     const tempFilePath = createOutfilePath(configPath);
     try {
-        compileTs({inputPath: configPath, outputPath: tempFilePath});
+        await compileTs({inputPath: configPath, outputPath: tempFilePath});
 
         const loadedConfig = require(tempFilePath);
 
@@ -21,7 +20,7 @@ export async function withTypescriptConfigFile<T>(
 }
 
 function createOutfilePath(inputFilePath: string): string {
-    return join(dirname(inputFilePath), `config-output-${Date.now()}-${randomString()}.cjs`);
+    return addSuffix({value: removeSuffix({value: inputFilePath, suffix: '.ts'}), suffix: '.cjs'});
 }
 
 export async function compileTs({

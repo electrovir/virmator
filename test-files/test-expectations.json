@@ -22,6 +22,57 @@
             "stdout": "Installing typescript... running compile... rm -rf dist && ./test-files/compile/valid-compile-repo/node_modules/.bin/tsc --noEmit compile succeeded."
         }
     },
+    "deps": {
+        "circular-deps-fail": {
+            "dir": "deps/circular",
+            "exitCode": 1,
+            "key": "circular-deps-fail",
+            "stderr": "deps failed.",
+            "stdout": "Installing esbuild... Installing npm-check-updates... Installing dependency-cruiser... running deps... Successfully copied dep-cruiser.config.ts Successfully copied ncu.config.ts node_modules/.bin/depcruise --config ./test-files/deps/circular/configs/dep-cruiser.config.cjs ./test-files/deps/circular/src error no-circular: src/one.ts → src/two.ts → src/one.ts ✘ 1 dependency violations (1 errors, 0 warnings). 2 modules, 2 dependencies cruised."
+        },
+        "multi-sub-command-fail": {
+            "dir": "deps/valid",
+            "exitCode": 1,
+            "key": "multi-sub-command-fail",
+            "stderr": "Too many sub commands given to 'deps' command, only one is allowed from: check,upgrade",
+            "stdout": "Installing esbuild... Installing npm-check-updates... Installing dependency-cruiser... running deps... Successfully copied dep-cruiser.config.ts Successfully copied ncu.config.ts"
+        },
+        "no-sub-command-fail": {
+            "dir": "deps/valid",
+            "exitCode": 1,
+            "key": "no-sub-command-fail",
+            "stderr": "Missing sub command for 'deps' command: expected one of check,upgrade",
+            "stdout": "Installing esbuild... Installing npm-check-updates... Installing dependency-cruiser... running deps... Successfully copied dep-cruiser.config.ts Successfully copied ncu.config.ts"
+        },
+        "npn-npm-dep-fail": {
+            "dir": "deps/non-npm-dep",
+            "exitCode": 1,
+            "key": "npn-npm-dep-fail",
+            "stderr": "deps failed.",
+            "stdout": "Installing esbuild... Installing npm-check-updates... Installing dependency-cruiser... running deps... Successfully copied dep-cruiser.config.ts Successfully copied ncu.config.ts node_modules/.bin/depcruise --config ./test-files/deps/non-npm-dep/configs/dep-cruiser.config.cjs ./test-files/deps/non-npm-dep/src error no-non-package-json: src/index.ts → ../../../node_modules/@augment-vir/common/dist/cjs/index.js ✘ 1 dependency violations (1 errors, 0 warnings). 2 modules, 1 dependencies cruised."
+        },
+        "orphan-fail": {
+            "dir": "deps/orphan",
+            "exitCode": 1,
+            "key": "orphan-fail",
+            "stderr": "deps failed.",
+            "stdout": "Installing esbuild... Installing npm-check-updates... Installing dependency-cruiser... running deps... Successfully copied dep-cruiser.config.ts Successfully copied ncu.config.ts node_modules/.bin/depcruise --config ./test-files/deps/orphan/configs/dep-cruiser.config.cjs ./test-files/deps/orphan/src error no-orphans: src/one.ts ✘ 1 dependency violations (1 errors, 0 warnings). 2 modules, 0 dependencies cruised."
+        },
+        "upgrades-deps": {
+            "dir": "deps/not-up-to-date",
+            "exitCode": 0,
+            "key": "upgrades-deps",
+            "stderr": "",
+            "stdout": "Installing esbuild... Installing npm-check-updates... Installing dependency-cruiser... running deps... Successfully copied dep-cruiser.config.ts Successfully copied ncu.config.ts Upgrading ./test-files/deps/not-up-to-date/package.json element-vir ^1.0.0 → ^X.X.X Run npm install to install new versions. deps succeeded."
+        },
+        "valid": {
+            "dir": "deps/valid",
+            "exitCode": 0,
+            "key": "valid",
+            "stderr": "",
+            "stdout": "Installing esbuild... Installing npm-check-updates... Installing dependency-cruiser... running deps... Successfully copied dep-cruiser.config.ts Successfully copied ncu.config.ts node_modules/.bin/depcruise --config ./test-files/deps/valid/configs/dep-cruiser.config.cjs ./test-files/deps/valid/src ✔ no dependency violations found (1 modules, 0 dependencies cruised) deps succeeded."
+        }
+    },
     "docs": {
         "check should fail after reverting": {
             "dir": "docs",
@@ -258,45 +309,6 @@
             "key": "updating-configs",
             "stderr": "",
             "stdout": "running update-configs... Successfully updated .gitignore Successfully updated .npmignore Successfully updated package.json Successfully updated settings.json update-configs succeeded."
-        }
-    },
-    "upgrade-deps": {
-        "upgrades-deps": {
-            "dir": "upgrade-deps/not-up-to-date",
-            "exitCode": 0,
-            "key": "upgrades-deps",
-            "stderr": "",
-            "stdout": "Installing esbuild... Installing npm-check-updates... running upgrade-deps... Successfully copied ncu.config.ts Upgrading ./test-files/upgrade-deps/not-up-to-date/package.json element-vir ^1.0.0 → ^X.X.X Run npm install to install new versions. upgrade-deps succeeded."
-        }
-    },
-    "check-deps": {
-        "circular-deps-fail": {
-            "dir": "check-deps/circular",
-            "exitCode": 1,
-            "key": "circular-deps-fail",
-            "stderr": "check-deps failed.",
-            "stdout": "Installing dependency-cruiser... running check-deps... Successfully copied dep-cruiser.config.ts node_modules/.bin/depcruise --config ./test-files/check-deps/circular/configs/dep-cruiser.config.cjs ./test-files/check-deps/circular/src error no-circular: src/one.ts → src/two.ts → src/one.ts ✘ 1 dependency violations (1 errors, 0 warnings). 2 modules, 2 dependencies cruised."
-        },
-        "npn-npm-dep-fail": {
-            "dir": "check-deps/non-npm-dep",
-            "exitCode": 1,
-            "key": "npn-npm-dep-fail",
-            "stderr": "check-deps failed.",
-            "stdout": "Installing dependency-cruiser... running check-deps... Successfully copied dep-cruiser.config.ts node_modules/.bin/depcruise --config ./test-files/check-deps/non-npm-dep/configs/dep-cruiser.config.cjs ./test-files/check-deps/non-npm-dep/src error no-non-package-json: src/index.ts → ../../../node_modules/@augment-vir/common/dist/cjs/index.js ✘ 1 dependency violations (1 errors, 0 warnings). 2 modules, 1 dependencies cruised."
-        },
-        "valid": {
-            "dir": "check-deps/valid",
-            "exitCode": 0,
-            "key": "valid",
-            "stderr": "",
-            "stdout": "Installing dependency-cruiser... running check-deps... Successfully copied dep-cruiser.config.ts node_modules/.bin/depcruise --config ./test-files/check-deps/valid/configs/dep-cruiser.config.cjs ./test-files/check-deps/valid/src ✔ no dependency violations found (1 modules, 0 dependencies cruised) check-deps succeeded."
-        },
-        "orphan-fail": {
-            "dir": "check-deps/orphan",
-            "exitCode": 1,
-            "key": "orphan-fail",
-            "stderr": "check-deps failed.",
-            "stdout": "Installing dependency-cruiser... running check-deps... Successfully copied dep-cruiser.config.ts node_modules/.bin/depcruise --config ./test-files/check-deps/orphan/configs/dep-cruiser.config.cjs ./test-files/check-deps/orphan/src error no-orphans: src/one.ts ✘ 1 dependency violations (1 errors, 0 warnings). 2 modules, 0 dependencies cruised."
         }
     }
 }

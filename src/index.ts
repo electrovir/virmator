@@ -1,6 +1,6 @@
 import {createVirmator} from './api/create-virmator';
-import {checkDepsCommandDefinition} from './commands/check-deps.command';
 import {compileCommandDefinition} from './commands/compile.command';
+import {depsCommandDefinition} from './commands/deps.command';
 import {docsCommandDefinition} from './commands/docs.command';
 import {formatCommandDefinition} from './commands/format.command';
 import {frontendCommandDefinition} from './commands/frontend.command';
@@ -11,7 +11,6 @@ import {spellcheckCommandDefinition} from './commands/spellcheck.command';
 import {testWebCommandDefinition} from './commands/test-web.command';
 import {testCommandDefinition} from './commands/test.command';
 import {updateConfigsCommandDefinition} from './commands/update-configs.command';
-import {upgradeDepsCommandDefinition} from './commands/upgrade-deps.command';
 import {virmatorPackageDir} from './file-paths/package-paths';
 export * from './api/command/command-description';
 export * from './api/command/command-executor';
@@ -33,9 +32,9 @@ export const virmator = createVirmator({
     packageBinName: 'virmator',
     packageRootDir: virmatorPackageDir,
     commandDefinitions: [
-        docsCommandDefinition,
         compileCommandDefinition,
-        checkDepsCommandDefinition,
+        depsCommandDefinition,
+        docsCommandDefinition,
         formatCommandDefinition,
         frontendCommandDefinition,
         initCommandDefinition,
@@ -45,6 +44,5 @@ export const virmator = createVirmator({
         testCommandDefinition,
         testWebCommandDefinition,
         updateConfigsCommandDefinition,
-        upgradeDepsCommandDefinition,
     ],
 });
