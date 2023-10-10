@@ -42,6 +42,41 @@ Pass any extra tsc flags to this command.
 
 Run type checking without emitting compiled files.
 
+## deps
+
+Either upgrade or check dependencies
+
+### check:
+
+Check that dependencies are all good via a default set of rules in configs/dep-cruiser.config.ts and dependency-cruiser.
+
+### upgrade:
+
+Upgrade all packages using npm-check-updates and configs/ncu.config.ts.
+
+### regen:
+
+Regenerate all npm deps and package-lock.json
+
+### Examples
+
+-   Upgrade deps: `virmator deps upgrade`
+-   Check deps: `virmator deps check`
+-   Check deps for a specific file: `virmator deps check ./src/my-file.ts`
+-   Regen deps: `virmator deps regen`
+
+### check
+
+validate dependencies
+
+### upgrade
+
+upgrade npm dependencies
+
+### regen
+
+regenerate npm dependencies
+
 ## docs
 
 This also inserts code snippets into markdown files. This uses the markdown-code-example-inserter package to expand code link comments inside of markdown files to actual markdown code blocks. See that package's README for more details but the basics are that you need a comment that looks like the following in your markdown file for this to do anything: `<!-- example-link: path/to/file.ts -->`
@@ -131,10 +166,6 @@ Publish an npm package. Includes workspace support. Add test commands to run bef
 -   publish a package: `virmator publish`
 -   publish a package and run tests beforehand: `virmator publish npm test`
 
-## regen-deps
-
-Regenerates all npm deps.
-
 ## spellcheck
 
 Spellcheck code with cspell. By default this spellchecks every file in the entire repo (except for those ignored in the config file), including .dot files. If any arguments are passed to this command, the default cspell args that this command applies are ignored, you'll have to supply them via your args.
@@ -175,11 +206,3 @@ run web tests with code coverage calculations
 ## update-configs
 
 Update all existing configuration files that virmator is able to update. (Like base config files.)
-
-## upgrade-deps
-
-Upgrade all packages using npm-check-updates and config/ncu.config.ts.
-
-### Examples
-
--   Run command: `virmator upgrade-deps`

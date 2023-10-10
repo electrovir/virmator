@@ -1,9 +1,11 @@
-import {isLengthAtLeast} from '@augment-vir/common';
-import {readPackageJson} from '@augment-vir/node-js';
+import {isLengthAtLeast, isTruthy} from '@augment-vir/common';
+import {ColorKey, readDirRecursive, readPackageJson, toLogString} from '@augment-vir/node-js';
+import {existsSync} from 'fs';
 import {unlink} from 'fs/promises';
 import {join} from 'path';
 import {defineCommand} from '../api/command/define-command';
 import {NpmDepTypeEnum} from '../api/command/define-command-inputs';
+import {removeDirectory} from '../augments/fs';
 import {compileTs, withTypescriptConfigFile} from '../augments/typescript-config-file';
 import {getNpmBinPath, virmatorConfigsDir} from '../file-paths/package-paths';
 
@@ -13,6 +15,7 @@ export const depsCommandDefinition = defineCommand(
         subCommandDescriptions: {
             check: 'validate dependencies',
             upgrade: 'upgrade npm dependencies',
+            regen: 'regenerate npm dependencies',
         },
         configFiles: {
             depCruiserConfig: {
@@ -45,6 +48,10 @@ export const depsCommandDefinition = defineCommand(
                     title: 'upgrade',
                     content: `Upgrade all packages using npm-check-updates and ${configFiles.ncuConfig.copyToPathRelativeToRepoDir}.`,
                 },
+                {
+                    title: 'regen',
+                    content: 'Regenerate all npm deps and package-lock.json',
+                },
             ],
 
             examples: [
@@ -60,6 +67,10 @@ export const depsCommandDefinition = defineCommand(
                     title: 'Check deps for a specific file',
                     content: `${packageBinName} ${commandName} ${subCommands.check} ./src/my-file.ts`,
                 },
+                {
+                    title: 'Regen deps',
+                    content: `${packageBinName} ${commandName} ${subCommands.regen}`,
+                },
             ],
         };
     },
@@ -72,6 +83,7 @@ export const depsCommandDefinition = defineCommand(
         packageDir,
         configFiles,
         filteredInputArgs,
+        logging,
     }) => {
         const subCommandsErrorString = allAvailableSubCommands.join(',');
 
@@ -134,6 +146,71 @@ export const depsCommandDefinition = defineCommand(
 
                 return {success: true};
             });
+        } else if (inputSubCommands[0] === subCommands.regen) {
+            const allChildNodeModules = await readDirRecursive(repoDir);
+            const nodeModulesPaths = Array.from(
+                new Set(
+                    allChildNodeModules
+                        .filter((path) => path.includes('node_modules'))
+                        .map((path) =>
+                            path.replace(/([\\\/]|^)node_modules[\\\/].+$/, '$1node_modules'),
+                        ),
+                ),
+            );
+
+            const packageLockPath = join(repoDir, 'package-lock.json');
+
+            const removePackageLock = existsSync(packageLockPath);
+
+            const logLines = [
+                'Removing node_modules:',
+                ...nodeModulesPaths.map((nodeModulesPath) => `    ${nodeModulesPath}`),
+                removePackageLock ? '\nRemoving package-lock.json' : '',
+            ].filter(isTruthy);
+
+            logging.stdout(
+                toLogString({
+                    args: [
+                        logLines.join('\n'),
+                    ],
+                    colors: ColorKey.faint,
+                }),
+            );
+
+            let errorsHappened = false;
+
+            if (removePackageLock) {
+                try {
+                    await unlink(packageLockPath);
+                } catch (error) {
+                    errorsHappened = true;
+                    logging.stderr('Failed to remove package-lock.json.');
+                }
+            }
+
+            await Promise.all(
+                nodeModulesPaths.map(async (nodeModulesPath) => {
+                    try {
+                        await removeDirectory(nodeModulesPath);
+                    } catch (error) {
+                        errorsHappened = true;
+                        logging.stderr('Failed to remove package-lock.json.');
+                    }
+                }),
+            );
+
+            if (errorsHappened) {
+                return {
+                    success: false,
+                };
+            }
+
+            return {
+                args: [
+                    'npm',
+                    'i',
+                ],
+            };
         } else {
             throw new Error(
                 `Invalid sub command for '${commandName}' given: got '${inputSubCommands[0]}' but expected one of ${subCommandsErrorString}`,

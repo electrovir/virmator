@@ -1,5 +1,4 @@
-import {MaybePromise, isTruthy} from '@augment-vir/common';
-import {randomString} from '@augment-vir/node-js';
+import {MaybePromise, isTruthy, randomString} from '@augment-vir/common';
 import {unlink} from 'fs/promises';
 import {dirname, join, resolve} from 'path';
 import type {UserConfig} from 'vite';
