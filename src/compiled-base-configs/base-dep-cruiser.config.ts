@@ -1,11 +1,21 @@
-import type {IConfiguration} from 'dependency-cruiser';
+import type {IConfiguration, IForbiddenRuleType} from 'dependency-cruiser';
 
 export function generateDepCruiserConfig({
     fileExceptions,
     omitRules,
 }: {
-    fileExceptions: Record<string, string[]>;
-    omitRules: string[];
+    fileExceptions: Readonly<
+        Record<
+            string,
+            Readonly<
+                Partial<{
+                    to: ReadonlyArray<string> | undefined;
+                    from: ReadonlyArray<string> | undefined;
+                }>
+            >
+        >
+    >;
+    omitRules: ReadonlyArray<string>;
 }) {
     const forbiddenRules = [
         /* rules from the 'recommended' preset: */
@@ -170,18 +180,37 @@ export function generateDepCruiserConfig({
             ruleName,
             fileExceptions,
         ]) => {
-            const rule = forbiddenRules.find((rule) => rule.name === ruleName);
+            const rule: IForbiddenRuleType | undefined = forbiddenRules.find(
+                (rule) => rule.name === ruleName,
+            );
 
             if (!rule) {
                 throw new Error(`Rule name not used: '${ruleName}'`);
             }
 
-            const pathNot = rule.from.pathNot ?? [];
+            const fromPathNot: string[] = rule.from.pathNot
+                ? Array.isArray(rule.from.pathNot)
+                    ? rule.from.pathNot
+                    : [rule.from.pathNot]
+                : [];
+            const toPathNot: string[] = rule.to.pathNot
+                ? Array.isArray(rule.to.pathNot)
+                    ? rule.to.pathNot
+                    : [rule.to.pathNot]
+                : [];
 
-            pathNot.push(...fileExceptions);
+            if (fileExceptions.from?.length) {
+                fromPathNot.push(...fileExceptions.from);
+            }
+            if (fileExceptions.to?.length) {
+                toPathNot.push(...fileExceptions.to);
+            }
 
             if (!rule.from.pathNot) {
-                (rule.from as {pathNot: string[]}).pathNot = pathNot;
+                (rule.from as {pathNot: string[]}).pathNot = fromPathNot;
+            }
+            if (!rule.to.pathNot) {
+                (rule.to as {pathNot: string[]}).pathNot = toPathNot;
             }
         },
     );

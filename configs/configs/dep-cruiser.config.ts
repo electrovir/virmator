@@ -4,9 +4,11 @@ import {generateDepCruiserConfig} from 'virmator/dist/compiled-base-configs/base
 const depCruiserConfig: IConfiguration = generateDepCruiserConfig({
     fileExceptions: {
         // enter file exceptions by rule name here
-        'no-orphans': [
-            'src/index.ts',
-        ],
+        'no-orphans': {
+            from: [
+                'src/index.ts',
+            ],
+        },
     },
     omitRules: [
         // enter rule names here to omit
