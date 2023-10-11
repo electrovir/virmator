@@ -111,6 +111,10 @@ export const depsCommandDefinition = defineCommand(
 
             const npmWorkspaces = await getNpmPackages(repoDir);
 
+            const otherFlags = filteredInputArgs.filter(
+                (arg) => arg.startsWith('-') && arg !== '--serial',
+            );
+
             const nonFlagInputs = filteredInputArgs.filter((arg) => !arg.startsWith('-'));
 
             const serial = filteredInputArgs.some((arg) => arg === '--serial');
@@ -132,6 +136,7 @@ export const depsCommandDefinition = defineCommand(
                     '--config',
                     compiledConfigPath,
                     ...pathsToCheck,
+                    ...otherFlags,
                 ].filter(isTruthy),
                 async postExecute() {
                     await unlink(compiledConfigPath);

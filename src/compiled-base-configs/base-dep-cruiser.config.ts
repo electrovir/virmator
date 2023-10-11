@@ -101,6 +101,9 @@ export function generateDepCruiserConfig({
                     'npm-no-pkg',
                     'npm-unknown',
                 ],
+                pathNot: [
+                    '^src/',
+                ],
             },
         },
         {
@@ -127,10 +130,14 @@ export function generateDepCruiserConfig({
                 // as it's pretty common to have a type import be a type only import
                 // _and_ (e.g.) a devDependency - don't consider type-only dependency
                 // types for this rule
-                // dependencyTypesNot: ['type-only'],
+                dependencyTypesNot: [
+                    'type-only',
+                ],
+                pathNot: [
+                    '^src/',
+                ],
             },
         },
-
         /* rules you might want to tweak for your specific situation: */
         {
             name: 'not-to-spec',
