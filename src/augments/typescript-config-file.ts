@@ -1,5 +1,5 @@
-import {addSuffix, removeSuffix} from '@augment-vir/common';
 import {unlink} from 'fs/promises';
+import {basename, dirname, join} from 'path';
 
 export async function withTypescriptConfigFile<T>(
     configPath: string,
@@ -20,7 +20,13 @@ export async function withTypescriptConfigFile<T>(
 }
 
 function createOutfilePath(inputFilePath: string): string {
-    return addSuffix({value: removeSuffix({value: inputFilePath, suffix: '.ts'}), suffix: '.cjs'});
+    return join(
+        dirname(inputFilePath),
+        [
+            'generated-config',
+            basename(inputFilePath).replace(/\.ts$/, '.cjs'),
+        ].join('-'),
+    );
 }
 
 export async function compileTs({

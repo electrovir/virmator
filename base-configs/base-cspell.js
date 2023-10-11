@@ -10,6 +10,7 @@ const baseConfig = {
         '**/build/',
         '**/coverage/',
         '**/dist/',
+        'generated-config-*',
         '**/docs-dist/',
         '**/graphics/',
         '**/node_modules/',
