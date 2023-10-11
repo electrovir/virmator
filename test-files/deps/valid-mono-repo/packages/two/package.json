@@ -1,0 +1,6 @@
+{
+    "name": "valid-two",
+    "dependencies": {
+        "valid-one": "*"
+    }
+}

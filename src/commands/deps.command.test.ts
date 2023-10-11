@@ -1,5 +1,9 @@
+import {getObjectTypedKeys, mapObjectValues} from '@augment-vir/common';
+import {runShellCommand} from '@augment-vir/node-js';
 import {assert} from 'chai';
+import {readFile, writeFile} from 'fs/promises';
 import {describe, it} from 'mocha';
+import {join} from 'path';
 import {writeFiles} from '../augments/fs';
 import {RunCliCommandInputs, runCliCommandForTestFromDefinition} from '../test/run-test-command';
 import {testDepsPaths} from '../test/virmator-test-file-paths';
@@ -47,6 +51,40 @@ describe(depsCommandDefinition.commandName, () => {
             dir: testDepsPaths.valid,
             expectationKey: 'valid',
         });
+    });
+    it('succeeds checks in a mono-repo', async () => {
+        const paths = {
+            packageLock: join(testDepsPaths.validMonoRepo, 'package-lock.json'),
+            packageJson: join(testDepsPaths.validMonoRepo, 'package.json'),
+        } as const;
+
+        const contents = await mapObjectValues(paths, async (key, path): Promise<string> => {
+            return (await readFile(path)).toString();
+        });
+
+        await runShellCommand(`npm i`, {cwd: testDepsPaths.validMonoRepo});
+        await runDepsTest({
+            args: [
+                depsCommandDefinition.subCommands.check,
+                /** Force serial so that the test output ordering is deterministic. */
+                '--serial',
+            ],
+            dir: testDepsPaths.validMonoRepo,
+            expectationKey: 'valid-mono-repo',
+            keepFiles: [
+                'node_modules',
+                'package-lock.json',
+                'package.json',
+            ],
+        });
+
+        await Promise.all(
+            getObjectTypedKeys(paths).map(async (name) => {
+                const path = paths[name];
+                const originalContents = contents[name];
+                await writeFile(path, originalContents);
+            }),
+        );
     });
     it('fails if two sub commands are given', async () => {
         await runDepsTest({

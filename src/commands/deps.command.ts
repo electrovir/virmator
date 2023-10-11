@@ -2,6 +2,7 @@ import {isLengthAtLeast, isTruthy} from '@augment-vir/common';
 import {ColorKey, readDirRecursive, readPackageJson, toLogString} from '@augment-vir/node-js';
 import {existsSync} from 'fs';
 import {unlink} from 'fs/promises';
+import {getNpmPackages} from 'mono-vir';
 import {join} from 'path';
 import {defineCommand} from '../api/command/define-command';
 import {NpmDepTypeEnum} from '../api/command/define-command-inputs';
@@ -101,9 +102,6 @@ export const depsCommandDefinition = defineCommand(
                 configFiles.depCruiserConfig.copyToPathRelativeToRepoDir,
             );
             const compiledConfigPath = await compileTs({inputPath: depCruiserConfigPath});
-            const pathsToCheck: string[] = filteredInputArgs.length
-                ? filteredInputArgs
-                : [join(repoDir, 'src')];
 
             const depCruiseCommand = await getNpmBinPath({
                 repoDir: repoDir,
@@ -111,13 +109,30 @@ export const depsCommandDefinition = defineCommand(
                 packageDirPath: packageDir,
             });
 
+            const npmWorkspaces = await getNpmPackages(repoDir);
+
+            const nonFlagInputs = filteredInputArgs.filter((arg) => !arg.startsWith('-'));
+
+            const serial = filteredInputArgs.some((arg) => arg === '--serial');
+
+            const pathsToCheck: string[] = nonFlagInputs.length ? nonFlagInputs : ['src'];
+
+            const monoVirCommands =
+                npmWorkspaces.length && !nonFlagInputs.length
+                    ? [
+                          'mono-vir',
+                          serial ? 'for-each' : 'for-each-async',
+                      ]
+                    : [];
+
             return {
                 args: [
+                    ...monoVirCommands,
                     depCruiseCommand,
                     '--config',
                     compiledConfigPath,
                     ...pathsToCheck,
-                ],
+                ].filter(isTruthy),
                 async postExecute() {
                     await unlink(compiledConfigPath);
                 },

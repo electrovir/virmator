@@ -25,6 +25,7 @@ export const testDepsPaths = {
     nonNpmDep: join(testDepsDirPath, 'non-npm-dep'),
     orphan: join(testDepsDirPath, 'orphan'),
     valid: join(testDepsDirPath, 'valid'),
+    validMonoRepo: join(testDepsDirPath, 'valid-mono-repo'),
     notUptoDateRepo: join(testDepsDirPath, 'not-up-to-date'),
 };
 
