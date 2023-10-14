@@ -10,11 +10,12 @@ const baseConfig = {
         '**/build/',
         '**/coverage/',
         '**/dist/',
-        'generated-config-*',
         '**/docs-dist/',
         '**/graphics/',
         '**/node_modules/',
+        'generated-config-*',
         'package-lock.json',
+        'tsconfig.tsbuildinfo',
     ],
     version: '0.2',
     words: [

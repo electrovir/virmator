@@ -17,4 +17,6 @@ docs-dist/
 generated-config-*
 index.html
 test-files/
+ts.out/
+tsconfig.tsbuildinfo
 tsconfig*.json

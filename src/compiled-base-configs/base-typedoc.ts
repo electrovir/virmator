@@ -18,6 +18,7 @@ export const baseTypedocConfig: Partial<TypeDocOptions> = {
     cacheBust: true,
     cleanOutputDir: true,
     excludeExternals: true,
+    excludePrivate: true,
     githubPages: true,
     includeVersion: true,
     searchInComments: true,
