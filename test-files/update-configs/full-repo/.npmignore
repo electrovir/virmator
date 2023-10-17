@@ -17,6 +17,8 @@ docs-dist/
 generated-config-*
 index.html
 test-files/
+ts.out/
 tsconfig*.json
+tsconfig.tsbuildinfo
 
 ./something-that-doesn't-exist/
