@@ -2,8 +2,8 @@
 .DS_Store
 /Icon?
 coverage/
-dist/
 dist-docs/
+dist/
 generated-config-*
 graphics/
 node_modules/
