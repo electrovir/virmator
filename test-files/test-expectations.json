@@ -149,7 +149,7 @@
             "exitCode": 0,
             "key": "single file update should pass",
             "stderr": "",
-            "stdout": "Installing markdown-code-example-inserter... Installing typedoc... running docs... Successfully copied typedoc.config.ts [info] Documentation generated at ./docs-dist node_modules/.bin/md-code README-broken.md Inserting code into markdown: README-broken.md docs succeeded."
+            "stdout": "Installing markdown-code-example-inserter... Installing typedoc... running docs... Successfully copied typedoc.config.ts [info] Documentation generated at ./dist-docs node_modules/.bin/md-code README-broken.md Inserting code into markdown: README-broken.md docs succeeded."
         },
         "up-to-date-single-file-check-pass": {
             "dir": "docs",
@@ -163,7 +163,7 @@
             "exitCode": 0,
             "key": "update should pass",
             "stderr": "",
-            "stdout": "Installing markdown-code-example-inserter... Installing typedoc... running docs... Successfully copied typedoc.config.ts [info] Documentation generated at ./docs-dist node_modules/.bin/md-code \"./**/*.md\" Inserting code into markdown: README-broken.md README-fixed.md docs succeeded."
+            "stdout": "Installing markdown-code-example-inserter... Installing typedoc... running docs... Successfully copied typedoc.config.ts [info] Documentation generated at ./dist-docs node_modules/.bin/md-code \"./**/*.md\" Inserting code into markdown: README-broken.md README-fixed.md docs succeeded."
         }
     },
     "format": {

@@ -13,7 +13,7 @@
 /src/
 /www-static/
 bash-scripts/
-docs-dist/
+dist-docs/
 generated-config-*
 index.html
 test-files/

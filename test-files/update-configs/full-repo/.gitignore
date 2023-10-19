@@ -3,7 +3,7 @@
 /Icon?
 coverage/
 dist/
-docs-dist/
+dist-docs/
 generated-config-*
 graphics/
 node_modules/
