@@ -1,9 +1,10 @@
 .DS_Store
+.not-committed
 *.tgz
 /Icon?
 coverage/
-dist/
 dist-docs/
+dist/
 generated-config-*
 graphics/
 node_modules/
