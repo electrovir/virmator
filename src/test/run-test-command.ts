@@ -96,12 +96,15 @@ export type TestCommandOutput = {
 async function runCliCommandForTest<KeyGeneric extends string>(
     inputs: RunCliCommandInputs<KeyGeneric>,
 ): Promise<TestCommandOutput> {
-    const configFilesExistedBeforeTest = inputs.configFilesToCheck.reduce((accum, configFile) => {
-        if (existsSync(join(inputs.dir, configFile.copyToPathRelativeToRepoDir))) {
-            accum[configFile.copyToPathRelativeToRepoDir] = true;
-        }
-        return accum;
-    }, {} as Record<string, boolean>);
+    const configFilesExistedBeforeTest = inputs.configFilesToCheck.reduce(
+        (accum, configFile) => {
+            if (existsSync(join(inputs.dir, configFile.copyToPathRelativeToRepoDir))) {
+                accum[configFile.copyToPathRelativeToRepoDir] = true;
+            }
+            return accum;
+        },
+        {} as Record<string, boolean>,
+    );
     await initDirectory(inputs.dir, inputs.keepFiles);
     const dirFileNamesBefore = (await readdir(inputs.dir)).sort();
     const dirFileContentsBefore = await readAllDirContents({

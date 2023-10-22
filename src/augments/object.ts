@@ -20,17 +20,20 @@ export function deeplyCombineObjects<
     originalObject: OriginalObjectGeneric,
     overwriteObject: OverwriteObjectGeneric,
 ): Overwrite<OriginalObjectGeneric, OverwriteObjectGeneric> {
-    return getObjectTypedKeys(overwriteObject).reduce((accum, currentKey) => {
-        const currentNewValue = overwriteObject[currentKey];
-        const currentOldValue =
-            typedHasProperty(originalObject, currentKey) && originalObject[currentKey];
-        if (isObject(currentOldValue) && isObject(currentNewValue)) {
-            accum[currentKey] = deeplyCombineObjects(currentOldValue, currentNewValue) as any;
-        } else {
-            accum[currentKey] = currentNewValue as any;
-        }
-        return accum;
-    }, originalObject as unknown as Overwrite<OriginalObjectGeneric, OverwriteObjectGeneric>);
+    return getObjectTypedKeys(overwriteObject).reduce(
+        (accum, currentKey) => {
+            const currentNewValue = overwriteObject[currentKey];
+            const currentOldValue =
+                typedHasProperty(originalObject, currentKey) && originalObject[currentKey];
+            if (isObject(currentOldValue) && isObject(currentNewValue)) {
+                accum[currentKey] = deeplyCombineObjects(currentOldValue, currentNewValue) as any;
+            } else {
+                accum[currentKey] = currentNewValue as any;
+            }
+            return accum;
+        },
+        originalObject as unknown as Overwrite<OriginalObjectGeneric, OverwriteObjectGeneric>,
+    );
 }
 
 export function filterToDifferentValues<T extends object>(

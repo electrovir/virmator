@@ -1,5 +1,6 @@
 *.tgz
 .DS_Store
+.not-committed
 /Icon?
 coverage/
 dist-docs/
