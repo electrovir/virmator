@@ -27,18 +27,6 @@ function getPluginPathFromName(pluginName) {
     );
 }
 
-const plugins = [
-    'prettier-plugin-toml',
-    'prettier-plugin-sort-json',
-    'prettier-plugin-packagejson',
-    'prettier-plugin-multiline-arrays',
-    'prettier-plugin-organize-imports',
-    'prettier-plugin-jsdoc',
-    'prettier-plugin-interpolated-html-tags',
-].map((pluginName) => {
-    return getPluginPathFromName(pluginName);
-});
-
 /**
  * @typedef {import('prettier-plugin-multiline-arrays').MultilineArrayOptions} MultilineOptions
  *
@@ -53,8 +41,15 @@ const basePrettierConfig = {
     htmlWhitespaceSensitivity: 'ignore',
     jsonRecursiveSort: true,
     multilineArraysWrapThreshold: 1,
-    plugins,
-    pluginSearchDirs: false,
+    plugins: [
+        'prettier-plugin-toml',
+        'prettier-plugin-sort-json',
+        'prettier-plugin-packagejson',
+        'prettier-plugin-multiline-arrays',
+        'prettier-plugin-organize-imports',
+        'prettier-plugin-jsdoc',
+        'prettier-plugin-interpolated-html-tags',
+    ],
     printWidth: 100,
     singleQuote: true,
     tabWidth: 4,
