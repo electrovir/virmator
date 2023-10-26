@@ -1,5 +1,5 @@
 .*
-.not-committed
+.not-committed/
 *.d.ts.map
 *.test-helper.*
 *.test.*

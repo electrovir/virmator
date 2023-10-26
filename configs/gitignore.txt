@@ -1,5 +1,5 @@
 .DS_Store
-.not-committed
+.not-committed/
 *.tgz
 /Icon?
 coverage/

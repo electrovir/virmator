@@ -5,7 +5,7 @@
 *.test.*
 *.tgz
 .*
-.not-committed
+.not-committed/
 /Icon?
 /configs/
 /coverage/
