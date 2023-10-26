@@ -7,9 +7,10 @@
         "./configs",
         "./coverage",
         "./dist",
+        "./dist-*",
         "./node_modules",
         "./test-files",
         "./ts.out"
     ],
-    "extends": "virmator/base-configs/base-tsconfig.json"
+    "extends": "virmator/base-configs/tsconfig.base.json"
 }

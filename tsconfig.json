@@ -10,7 +10,7 @@
         "./node_modules/",
         "./test-files/"
     ],
-    "extends": "./base-configs/base-tsconfig.json",
+    "extends": "./base-configs/tsconfig.base.json",
     "ts-node": {
         "transpileOnly": true
     }
