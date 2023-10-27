@@ -10,12 +10,7 @@ export const basePlugins = [
     tsconfigPaths(),
 ] as const;
 
-export const currentDir = process.cwd();
-export const srcDir = join(currentDir, 'src');
-export const staticDir = join(currentDir, 'www-static');
-export const outDir = join(currentDir, 'dist');
-
-export function findGitRepoRoot(dir = currentDir): string {
+export function findGitRepoRoot(dir: string): string {
     if (existsSync(join(dir, '.git'))) {
         return dir;
     }
@@ -33,57 +28,98 @@ export function findGitRepoRoot(dir = currentDir): string {
 export type BaseConfigOptions = {
     /** If your prod deploy is going to be GitHub pages, set this to true. */
     forGitHubPages: boolean;
+    /**
+     * Path to the package directory that owns this vite config. Should most likely be left empty or
+     * set to resolve(__dirname, '..').
+     */
+    packageDirPath?: string;
+    /** Disables printing of server directory paths. */
+    disableStartupLogs?: boolean;
 };
 
-export function createBaseConfig({forGitHubPages}: BaseConfigOptions): UserConfig {
+export type ConfigPaths = {
+    srcDir: string;
+    staticDir: string;
+    outDir: string;
+    cwd: string;
+};
+
+export type OverrideCallback = (
+    baseConfig: Readonly<UserConfig>,
+    basePaths: Readonly<ConfigPaths>,
+) => UserConfig | Promise<UserConfig>;
+
+export function createBaseConfig({forGitHubPages, packageDirPath}: BaseConfigOptions): {
+    baseConfig: UserConfig;
+    basePaths: ConfigPaths;
+} {
+    const cwd = packageDirPath || process.cwd();
+
     const basePath: string =
-        forGitHubPages && process.env.CI ? `/${basename(findGitRepoRoot())}` : '/';
+        forGitHubPages && process.env.CI ? `/${basename(findGitRepoRoot(cwd))}` : '/';
+
+    const srcDir = join(cwd, 'src');
+    const staticDir = join(cwd, 'www-static');
+    const outDir = join(cwd, 'dist');
 
     return {
-        clearScreen: false,
-        base: basePath,
-        publicDir: staticDir,
-        root: srcDir,
-        plugins: [
-            ...basePlugins,
-        ],
-        build: {
+        baseConfig: {
+            clearScreen: false,
+            base: basePath,
+            publicDir: staticDir,
+            root: srcDir,
+            plugins: [
+                ...basePlugins,
+            ],
+            build: {
+                outDir,
+                emptyOutDir: true,
+            },
+        },
+        basePaths: {
+            cwd,
             outDir,
-            emptyOutDir: true,
+            srcDir,
+            staticDir,
         },
     };
 }
 
 export async function combineConfigs(
     baseConfigOptions: BaseConfigOptions,
-    overrideCallback: ((baseConfig: UserConfig) => UserConfig | Promise<UserConfig>) | undefined,
+    overrideCallback: OverrideCallback | undefined,
 ): Promise<UserConfig> {
-    const baseConfig = createBaseConfig(baseConfigOptions);
-    const fullConfig = overrideCallback ? await overrideCallback(baseConfig) : baseConfig;
+    const {baseConfig, basePaths} = createBaseConfig(baseConfigOptions);
+    const fullConfig = overrideCallback
+        ? await overrideCallback(baseConfig, basePaths)
+        : baseConfig;
 
-    log.faint(
-        `public dir: ${logColors.info}${relative(process.cwd(), fullConfig.publicDir || '')}${
-            logColors.reset
-        }`,
-    );
-    log.faint(
-        `root dir:   ${logColors.info}${relative(process.cwd(), fullConfig.root || '')}${
-            logColors.reset
-        }`,
-    );
-    log.faint(
-        `out dir:    ${logColors.info}${relative(process.cwd(), fullConfig.build?.outDir || '')}${
-            logColors.reset
-        }`,
-    );
-    log.faint(`base path:  ${logColors.info}${fullConfig.base}${logColors.reset}`);
+    if (!baseConfigOptions.disableStartupLogs) {
+        log.faint(
+            `public dir: ${logColors.info}${relative(process.cwd(), fullConfig.publicDir || '')}${
+                logColors.reset
+            }`,
+        );
+        log.faint(
+            `root dir:   ${logColors.info}${relative(process.cwd(), fullConfig.root || '')}${
+                logColors.reset
+            }`,
+        );
+        log.faint(
+            `out dir:    ${logColors.info}${relative(
+                process.cwd(),
+                fullConfig.build?.outDir || '',
+            )}${logColors.reset}`,
+        );
+        log.faint(`base path:  ${logColors.info}${fullConfig.base}${logColors.reset}`);
+    }
 
     return fullConfig;
 }
 
 export function defineConfig(
     baseConfigOptions: BaseConfigOptions,
-    overrideCallback: ((baseConfig: UserConfig) => UserConfig | Promise<UserConfig>) | undefined,
+    overrideCallback: OverrideCallback | undefined,
 ): UserConfigExport {
     return combineConfigs(baseConfigOptions, overrideCallback);
 }
