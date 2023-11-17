@@ -39,8 +39,8 @@ export async function readAllDirContents({
             return isFile
                 ? (await readFile(filePath)).toString()
                 : recursive
-                ? await readAllDirContents({dir: filePath, recursive})
-                : '';
+                  ? await readAllDirContents({dir: filePath, recursive})
+                  : '';
         }),
     );
 
