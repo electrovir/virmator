@@ -3,7 +3,7 @@
 *.tgz
 /Icon?
 coverage/
-dist-docs/
+dist-*/
 dist/
 generated-config-*
 graphics/

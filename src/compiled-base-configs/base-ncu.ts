@@ -8,5 +8,7 @@ export const baseNcuConfig = {
     reject: [
         /** Version > 16.13 throws chalk init errors. */
         'npm-check-updates',
+        /** Note ready for Vite v5 */
+        'vite',
     ],
 } as const satisfies ReadonlyDeep<RunOptions>;
