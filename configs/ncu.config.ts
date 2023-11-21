@@ -5,8 +5,7 @@ export const ncuConfig: RunOptions = {
     ...baseNcuConfig,
     // exclude these
     reject: [
-        'npm-check-updates',
-        'vite',
+        ...baseNcuConfig.reject,
         'glob',
     ],
     // include only these
