@@ -1,4 +1,5 @@
 import {MaybePromise, isTruthy, randomString} from '@augment-vir/common';
+import {interpolationSafeWindowsPath} from '@augment-vir/node-js';
 import {unlink} from 'fs/promises';
 import {dirname, join, resolve} from 'path';
 import type {UserConfig} from 'vite';
@@ -104,7 +105,9 @@ export const frontendCommandDefinition = defineCommand(
                       'build',
                       ...inputs.filteredInputArgs,
                       '&&',
-                      `node -e "require('fs').copyFileSync('${indexPath}', '${dist404Path}')"`,
+                      `node -e "require('fs').copyFileSync('${interpolationSafeWindowsPath(
+                          indexPath,
+                      )}', '${interpolationSafeWindowsPath(dist404Path)}')"`,
                   ]
                 : inputs.filteredInputArgs;
 
