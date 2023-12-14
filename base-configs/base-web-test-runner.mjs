@@ -2,6 +2,7 @@ import {esbuildPlugin} from '@web/dev-server-esbuild';
 import {defaultReporter, summaryReporter} from '@web/test-runner';
 import {playwrightLauncher} from '@web/test-runner-playwright';
 import {visualRegressionPlugin} from '@web/test-runner-visual-regression/plugin';
+import {cpus} from 'os';
 import {join, relative} from 'path';
 import testFiles from './test-files-glob.js';
 
@@ -89,7 +90,10 @@ export function getWebTestRunnerConfigWithCoveragePercent({
             defaultReporter({reportTestResults: true, reportTestProgress: false}),
         ],
         browserStartTimeout: minutesTwenty,
-        concurrentBrowsers: 3,
+        /** Reduce concurrency in CI environments to improve stability. */
+        concurrentBrowsers: process.env.ci ? 1 : 3,
+        /** Reduce concurrency in CI environments to improve stability. */
+        concurrency: process.env.ci ? 1 : cpus().length - 1,
         // this can be overridden by the --coverage flag
         coverage: false,
         files: testFiles.spec,
