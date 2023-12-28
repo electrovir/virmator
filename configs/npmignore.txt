@@ -10,7 +10,7 @@
 **/*/test/
 /configs/
 /coverage/
-/cspell.config.js
+/cspell.config.cjs
 /graphics/
 /Icon?
 /src/

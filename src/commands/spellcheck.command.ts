@@ -13,8 +13,8 @@ export const spellcheckCommandDefinition = defineCommand(
         subCommandDescriptions: {},
         configFiles: {
             cspell: {
-                copyFromInternalPath: join(virmatorConfigsDir, 'cspell.config.js'),
-                copyToPathRelativeToRepoDir: 'cspell.config.js',
+                copyFromInternalPath: join(virmatorConfigsDir, 'cspell.config.cjs'),
+                copyToPathRelativeToRepoDir: 'cspell.config.cjs',
             },
         },
         npmDeps: [
