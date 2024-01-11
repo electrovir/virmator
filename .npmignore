@@ -8,10 +8,10 @@
 /.*
 /*.tgz
 /Icon?
+/src/
 /tsconfig.json
 coverage/
 graphics/
-src/
 src/scripts/
 test-files/
 test.d.ts

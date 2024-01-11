@@ -10,5 +10,7 @@ export const baseNcuConfig = {
         'npm-check-updates',
         /** Note ready for Vite v5 */
         'vite',
+        /** V5 requires "type":"module" */
+        'chai',
     ],
 } as const satisfies ReadonlyDeep<RunOptions>;
