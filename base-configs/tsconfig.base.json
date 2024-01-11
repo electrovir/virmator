@@ -20,6 +20,7 @@
         "skipLibCheck": true,
         "strict": true,
         "target": "ES2021",
+        "useDefineForClassFields": true,
         "useUnknownInCatchVariables": true
     },
     "ts-node": {
