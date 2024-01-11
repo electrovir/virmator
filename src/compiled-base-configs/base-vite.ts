@@ -1,9 +1,9 @@
 import {log, logColors} from '@augment-vir/node-js';
 import {existsSync} from 'fs';
 import {basename, dirname, join, relative} from 'path';
-import {alwaysReloadPlugin} from 'virmator/dist/compiled-base-configs/vite-always-reload-plugin';
 import {UserConfig, UserConfigExport} from 'vite';
 import tsconfigPaths from 'vite-tsconfig-paths';
+import {alwaysReloadPlugin} from './vite-always-reload-plugin';
 
 export const basePlugins = [
     alwaysReloadPlugin(),
