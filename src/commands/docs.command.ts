@@ -1,3 +1,4 @@
+import {readPackageJson} from '@augment-vir/node-js';
 import {join} from 'path';
 import type * as TypeDoc from 'typedoc';
 import {CommandLogTransforms} from '../api/command/command-logging';
@@ -73,7 +74,16 @@ export const docsCommandDefinition = defineCommand(
         inputSubCommands,
         subCommands,
         packageBinName,
+        logging,
     }) => {
+        const packageJson = await readPackageJson(repoDir);
+        if (packageJson.private) {
+            logging.stdout('Package is private. Skipping doc check.');
+            return {
+                success: true,
+            };
+        }
+
         const typeDocConfigPath = join(
             repoDir,
             configFiles.typeDocConfig.copyToPathRelativeToRepoDir,
