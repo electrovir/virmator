@@ -48,7 +48,7 @@ export const frontendCommandDefinition = defineCommand(
         });
         const tempFilePath = join(
             dirname(viteConfigPath),
-            `config-output-${Date.now()}-${randomString()}.cjs`,
+            `generated-config-${Date.now()}-${randomString()}.cjs`,
         );
 
         const oldWrite = process.stdout.write;
