@@ -12,7 +12,5 @@ export const baseNcuConfig = {
         'vite',
         /** V5 requires "type":"module" */
         'chai',
-        /** 3.2.3 breaks tsconfig.json formatting. */
-        'prettier',
     ],
 } as const satisfies ReadonlyDeep<RunOptions>;
