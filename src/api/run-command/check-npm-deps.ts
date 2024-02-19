@@ -76,29 +76,33 @@ async function getVersionsToUpgradeTo({
 
     return neededNpmDeps.map(
         (npmDep): (NpmDep & {cleanVersion: string; exactVersion: string}) | undefined => {
-            const currentRepoVersion = cleanDepVersion(currentRepoDepVersions[npmDep.name]);
-            const virmatorDepVersion = packageDepVersions[npmDep.name];
-            const cleanVirmatorDepVersion = cleanDepVersion(virmatorDepVersion);
+            try {
+                const currentRepoVersion = cleanDepVersion(currentRepoDepVersions[npmDep.name]);
+                const virmatorDepVersion = packageDepVersions[npmDep.name];
+                const cleanVirmatorDepVersion = cleanDepVersion(virmatorDepVersion);
 
-            if (!cleanVirmatorDepVersion || !virmatorDepVersion) {
-                throw new Error(
-                    `No npm dep version listed for "${npmDep.name}" in ${packageBinName}'s dependencies.`,
-                );
-            }
+                if (!cleanVirmatorDepVersion || !virmatorDepVersion) {
+                    throw new Error(
+                        `No npm dep version listed for "${npmDep.name}" in ${packageBinName}'s dependencies.`,
+                    );
+                }
 
-            if (
-                currentRepoVersion !== '*' &&
-                (!currentRepoVersion ||
-                    semver.gt(cleanVirmatorDepVersion, currentRepoVersion) ||
-                    (virmatorDepVersion.match(/^\d/) &&
-                        cleanVirmatorDepVersion !== currentRepoVersion))
-            ) {
-                return {
-                    ...npmDep,
-                    cleanVersion: cleanVirmatorDepVersion,
-                    exactVersion: virmatorDepVersion,
-                };
-            } else {
+                if (
+                    currentRepoVersion !== '*' &&
+                    (!currentRepoVersion ||
+                        semver.gt(cleanVirmatorDepVersion, currentRepoVersion) ||
+                        (virmatorDepVersion.match(/^\d/) &&
+                            cleanVirmatorDepVersion !== currentRepoVersion))
+                ) {
+                    return {
+                        ...npmDep,
+                        cleanVersion: cleanVirmatorDepVersion,
+                        exactVersion: virmatorDepVersion,
+                    };
+                } else {
+                    return undefined;
+                }
+            } catch (error) {
                 return undefined;
             }
         },
