@@ -3,6 +3,7 @@ import {ColorKey, readDirRecursive, readPackageJson, toLogString} from '@augment
 import {existsSync} from 'fs';
 import {unlink} from 'fs/promises';
 import {getNpmPackages} from 'mono-vir';
+import {RunOptions} from 'npm-check-updates';
 import {join} from 'path';
 import {defineCommand} from '../api/command/define-command';
 import {NpmDepTypeEnum} from '../api/command/define-command-inputs';
@@ -147,7 +148,7 @@ export const depsCommandDefinition = defineCommand(
             return await withTypescriptConfigFile(ncuConfigPath, async (loadedConfig) => {
                 const repoPackageJson = await readPackageJson(repoDir);
 
-                const config = loadedConfig.ncuConfig;
+                const config = loadedConfig.ncuConfig as RunOptions;
 
                 await (
                     await import('npm-check-updates')
@@ -155,7 +156,6 @@ export const depsCommandDefinition = defineCommand(
                     {
                         ...config,
                         cwd: repoDir,
-                        json: false,
                         workspaces: !!repoPackageJson.workspaces,
                         format: [],
                     },
