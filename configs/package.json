@@ -9,7 +9,7 @@
         "format": "virmator format",
         "preview": "virmator frontend preview",
         "publish": "virmator publish \"npm run compile && npm run test:all\"",
-        "start": "npm install && virmator frontend",
+        "start": "virmator frontend",
         "test": "virmator test",
         "test:all": "concurrently --colors --kill-others-on-fail -c auto --names types,tests,spelling,format,docs,deps \"npm run test:types\" \"npm run test:coverage\" \"npm run test:spelling\" \"npm run test:format\" \"npm run test:docs\" \"npm run test:deps\"",
         "test:coverage": "npm run test coverage",
