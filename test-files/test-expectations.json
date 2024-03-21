@@ -217,21 +217,21 @@
             "dir": "spellcheck/hidden-stuff-spellcheck-repo",
             "exitCode": 0,
             "key": "dot-files",
-            "stderr": "CSpell: Files checked: 12, Issues found: 0 in 0 files",
+            "stderr": "CSpell: Files checked: 12, Issues found: 0 in 0 files.",
             "stdout": "Installing cspell... running spellcheck... Successfully copied cspell.config.cjs node_modules/.bin/cspell --config cspell.config.cjs --color --unique --no-progress --relative --dot \"**/*\" spellcheck succeeded."
         },
         "no-typos": {
             "dir": "spellcheck/valid-spellcheck-repo",
             "exitCode": 0,
             "key": "no-typos",
-            "stderr": "CSpell: Files checked: 3, Issues found: 0 in 0 files",
+            "stderr": "CSpell: Files checked: 3, Issues found: 0 in 0 files.",
             "stdout": "Installing cspell... running spellcheck... Successfully copied cspell.config.cjs node_modules/.bin/cspell --config cspell.config.cjs --color --unique --no-progress --relative --dot \"**/*\" spellcheck succeeded."
         },
         "typos-exist": {
             "dir": "spellcheck/invalid-spellcheck-repo",
             "exitCode": 1,
             "key": "typos-exist",
-            "stderr": "CSpell: Files checked: 3, Issues found: 2 in 1 files spellcheck failed.",
+            "stderr": "CSpell: Files checked: 3, Issues found: 2 in 1 file. spellcheck failed.",
             "stdout": "Installing cspell... running spellcheck... Successfully copied cspell.config.cjs node_modules/.bin/cspell --config cspell.config.cjs --color --unique --no-progress --relative --dot \"**/*\" ./stuff.js:1:12 - Unknown word (Stff) ./stuff.js:2:25 - Unknown word (thre)"
         }
     },
