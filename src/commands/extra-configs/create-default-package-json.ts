@@ -95,7 +95,7 @@ function createGitUrls(ref: string) {
         ...bugsObject,
         repository: {
             type: 'git',
-            url: repoPath,
+            url: `git+${repoPath}.git`,
         },
         author: {
             name: username,

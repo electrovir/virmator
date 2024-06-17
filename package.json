@@ -18,7 +18,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/electrovir/virmator"
+        "url": "git+https://github.com/electrovir/virmator.git"
     },
     "license": "MIT",
     "author": {
