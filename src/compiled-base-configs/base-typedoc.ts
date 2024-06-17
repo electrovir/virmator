@@ -31,4 +31,7 @@ export const baseTypedocConfig: Partial<TypeDocOptions> = {
         notDocumented: true,
     },
     requiredToBeDocumented: defaultDocumentationRequirements,
+    navigation: {
+        includeCategories: true,
+    },
 };
