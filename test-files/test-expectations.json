@@ -171,7 +171,7 @@
             "dir": "format/invalid-format-repo",
             "exitCode": 1,
             "key": "fail on format failures in a folder",
-            "stderr": "[warn] invalid-format.ts [warn] Code style issues found in the above file. Run Prettier to fix. format failed.",
+            "stderr": "[warn] invalid-format.ts [warn] Code style issues found in the above file. Run Prettier with --write to fix. format failed.",
             "stdout": "Installing prettier... Installing prettier-plugin-jsdoc... Installing prettier-plugin-multiline-arrays... Installing prettier-plugin-organize-imports... Installing prettier-plugin-packagejson... Installing prettier-plugin-sort-json... Installing prettier-plugin-toml... Installing prettier-plugin-interpolated-html-tags... running format... Successfully copied .prettierignore Successfully copied .prettierrc.js node_modules/.bin/prettier --color --cache --cache-strategy content \"./**/*.+(cjs|css|graphql|html|js|json|jsx|less|md|mjs|scss|toml|ts|tsx|yaml|yml)\" --check"
         },
         "format should update invalid files": {
