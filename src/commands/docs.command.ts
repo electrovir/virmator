@@ -157,7 +157,7 @@ async function runTypeDoc(
         console.info(app.toString());
         return true;
     } else if (app.options.getValue('help')) {
-        console.info(app.options.getHelp());
+        console.info(app.options.getHelp);
         return true;
     } else if (app.options.getValue('showConfig')) {
         console.info(app.options.getRawValues());
