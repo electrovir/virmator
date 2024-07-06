@@ -35,7 +35,7 @@
         "format": "npm run format:base -- --write --list-different",
         "format:base": "prettier \"./**/*.+(ts|json|html|css|md|js)\" --config .prettierrc.js",
         "publish": "npm run compile && npm ci && virmator publish \"npm run test:all\"",
-        "test": "npm run compile && test-as-package mocha --config mocha.config.js",
+        "test": "npm run compile && test-as-package mocha --config mocha.config.cjs",
         "test:all": "npm ci && concurrently --color --kill-others-on-fail -c auto --names tests,spelling,format,docs \"npm run compile && npm run test\" \"npm run test:spelling -- --no-progress\" \"npm run test:format\" \"npm run docs:check\"",
         "test:format": "npm run format:base -- --check",
         "test:help": "ts-node src/cli/cli.ts --help",

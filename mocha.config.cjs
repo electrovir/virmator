@@ -1,4 +1,4 @@
-const baseOptions = require('./base-configs/base-mocharc.js');
+const baseOptions = require('./base-configs/base-mocharc.cjs');
 const SpecReporterWithFileNames = require('mocha-spec-reporter-with-file-names');
 
 const oneMinuteMs = 60_000;

@@ -52,7 +52,7 @@ function cleanDepVersion(input: string | undefined): string | undefined {
 async function getVersionsToUpgradeTo({
     repoDir,
     packageDir,
-    npmDeps: neededNpmDeps,
+    npmDeps,
     packageBinName,
 }: UpdateDepsInput): Promise<
     ((NpmDep & {cleanVersion: string; exactVersion: string}) | undefined)[]
@@ -74,7 +74,7 @@ async function getVersionsToUpgradeTo({
         ...virmatorPackageJson.dependencies,
     };
 
-    return neededNpmDeps.map(
+    return npmDeps.map(
         (npmDep): (NpmDep & {cleanVersion: string; exactVersion: string}) | undefined => {
             try {
                 const currentRepoVersion = cleanDepVersion(currentRepoDepVersions[npmDep.name]);

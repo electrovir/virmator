@@ -96,6 +96,7 @@ const baseConfig = {
         'fleek',
         'fontawesome',
         'fontsource',
+        'gamepad',
         'gitattributes',
         'globbing',
         'globby',

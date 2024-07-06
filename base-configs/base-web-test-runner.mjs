@@ -7,7 +7,6 @@ import {join, relative} from 'path';
 import testFiles from './test-files-glob.js';
 
 const oneMinuteMs = 60_000;
-const minutesTwenty = 20 * oneMinuteMs;
 
 function getTestFileName(args, repoDir, type) {
     const screenshotDir = relative(repoDir, args.testFile.replace(/\.[jt]sx?$/, ''));
@@ -89,7 +88,7 @@ export function getWebTestRunnerConfigWithCoveragePercent({
             summaryReporter(),
             defaultReporter({reportTestResults: true, reportTestProgress: false}),
         ],
-        browserStartTimeout: minutesTwenty,
+        browserStartTimeout: process.env.CI ? 10 * oneMinuteMs : oneMinuteMs,
         /** Reduce concurrency in CI environments to improve stability. */
         concurrentBrowsers: process.env.ci ? 1 : 3,
         /** Reduce concurrency in CI environments to improve stability. */
@@ -104,7 +103,7 @@ export function getWebTestRunnerConfigWithCoveragePercent({
         ],
         testFramework: {
             config: {
-                timeout: minutesTwenty,
+                timeout: process.env.CI ? 20 * oneMinuteMs : 5 * oneMinuteMs,
             },
         },
         coverageConfig: {

@@ -28,7 +28,7 @@ describe(updateConfigsCommandDefinition.commandName, () => {
             output.dirFileContentsBefore,
             {
                 '.gitignore': "./something-that-doesn't-exist/",
-                '.mocharc.js': '',
+                '.mocharc.cjs': '',
                 '.npmignore': "./something-that-doesn't-exist/",
                 '.vscode': {
                     'settings.json':
