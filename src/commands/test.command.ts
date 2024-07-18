@@ -37,7 +37,7 @@ export const testCommandDefinition = defineCommand(
             sections: [
                 {
                     title: '',
-                    content: `Test all .test.ts files with Mocha and Chai.  By default this command tests all ".test.ts" files in the current directory (recursively) that are not ".type.test.ts" files. To override this behavior, override the "spec" property in .mocharc.js.`,
+                    content: `Test all .test.ts files with Mocha and Chai.  By default this command tests all ".test.ts" files in the current directory (recursively) that are not ".type.test.ts" files. To override this behavior, override the "spec" property in .mocharc.cjs.`,
                 },
                 {
                     title: '',
@@ -84,7 +84,7 @@ export const testCommandDefinition = defineCommand(
                     ? [
                           await getNpmBinPath({
                               repoDir: inputs.repoDir,
-                              command: 'electrovir-nyc',
+                              command: 'vir-nyc',
                               packageDirPath: inputs.packageDir,
                           }),
                           // force colors in nyc

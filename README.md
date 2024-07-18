@@ -172,7 +172,7 @@ Spellcheck code with cspell. By default this spellchecks every file in the entir
 
 ## test
 
-Test all .test.ts files with Mocha and Chai. By default this command tests all ".test.ts" files in the current directory (recursively) that are not ".type.test.ts" files. To override this behavior, override the "spec" property in .mocharc.js.
+Test all .test.ts files with Mocha and Chai. By default this command tests all ".test.ts" files in the current directory (recursively) that are not ".type.test.ts" files. To override this behavior, override the "spec" property in .mocharc.cjs.
 
 This command is meant to run Node.js tests. For running web-based testing, see the test-web command.
 

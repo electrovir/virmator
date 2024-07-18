@@ -46,7 +46,7 @@ function cleanDepVersion(input: string | undefined): string | undefined {
         return '*';
     }
 
-    return input ? semver.clean(input) ?? semver.minVersion(input)?.raw ?? undefined : undefined;
+    return input ? (semver.clean(input) ?? semver.minVersion(input)?.raw ?? undefined) : undefined;
 }
 
 async function getVersionsToUpgradeTo({
