@@ -84,7 +84,7 @@ export const testCommandDefinition = defineCommand(
                     ? [
                           await getNpmBinPath({
                               repoDir: inputs.repoDir,
-                              command: 'vir-nyc',
+                              command: 'electrovir-nyc',
                               packageDirPath: inputs.packageDir,
                           }),
                           // force colors in nyc
