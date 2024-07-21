@@ -1,1 +1,0 @@
--   add lint command (using ESLint)

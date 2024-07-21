@@ -1,6 +1,0 @@
-{
-    "name": "valid-mono-repo",
-    "workspaces": [
-        "packages/*"
-    ]
-}
