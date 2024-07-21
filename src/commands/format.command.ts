@@ -33,9 +33,9 @@ export const formatCommandDefinition = defineCommand(
             check: 'check formatting without overwriting files.',
         },
         configFiles: {
-            prettierrc: {
-                copyFromInternalPath: join(virmatorConfigsDir, '.prettierrc.js'),
-                copyToPathRelativeToRepoDir: '.prettierrc.js',
+            prettier: {
+                copyFromInternalPath: join(virmatorConfigsDir, 'prettier.config.mjs'),
+                copyToPathRelativeToRepoDir: 'prettier.config.mjs',
             },
             prettierIgnore: {
                 copyFromInternalPath: join(virmatorConfigsDir, '.prettierignore'),

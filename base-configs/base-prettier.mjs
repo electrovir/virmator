@@ -4,7 +4,7 @@
  * @typedef {import('prettier').Options} PrettierOptions
  * @type {PrettierOptions & MultilineOptions}
  */
-const basePrettierConfig = {
+export const basePrettierConfig = {
     arrowParens: 'always',
     bracketSameLine: false,
     bracketSpacing: false,
@@ -25,8 +25,4 @@ const basePrettierConfig = {
     singleQuote: true,
     tabWidth: 4,
     trailingComma: 'all',
-};
-
-module.exports = {
-    basePrettierConfig,
 };

@@ -138,17 +138,27 @@ export function generateDepCruiserConfig({
                 ],
             },
         },
-        /* rules you might want to tweak for your specific situation: */
         {
-            name: 'not-to-spec',
+            name: 'not-to-test',
             comment:
-                'This module depends on a spec (test) file. The sole responsibility of a spec file is to test code. ' +
-                "If there's something in a spec that's of use to other modules, it doesn't have that single " +
+                'This module depends on a test file. The sole responsibility of a test file is to test code. ' +
+                "If there's something in a test that's of use to other modules, it doesn't have that single " +
                 'responsibility anymore. Factor it out into (e.g.) a separate utility/ helper or a mock.',
             severity: 'error',
             from: {},
             to: {
                 path: '\\.test\\.ts$',
+            },
+        },
+        {
+            name: 'not-from-mock',
+            comment: `This non-test file depends on a mock file. Do not do this.`,
+            severity: 'error',
+            from: {
+                pathNot: '\\.test\\.ts$',
+            },
+            to: {
+                path: '\\.mock\\.ts$',
             },
         },
         {
@@ -160,7 +170,7 @@ export function generateDepCruiserConfig({
             from: {
                 path: '^(packages)',
                 pathNot: [
-                    '\\.(spec|test)\\.(js|mjs|cjs|ts|ls|coffee|litcoffee|coffee\\.md)$',
+                    '\\.test\\.ts$',
                 ],
             },
             to: {

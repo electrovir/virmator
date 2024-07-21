@@ -6,9 +6,9 @@ export async function formatCode(text: string, filePath: string): Promise<string
     try {
         // if prettier isn't installed yet this will fail
         const {format: prettierFormat} = await import('prettier');
-        const repoPrettierRc = (await import(findNearestConfig(process.cwd()))).default;
+        const repoPrettierConfig = (await import(findNearestConfig(process.cwd()))).default;
 
-        const repoConfig: PrettierOptions = repoPrettierRc as PrettierOptions;
+        const repoConfig: PrettierOptions = repoPrettierConfig as PrettierOptions;
         return prettierFormat(text, {
             ...repoConfig,
             filepath: filePath,
@@ -19,7 +19,7 @@ export async function formatCode(text: string, filePath: string): Promise<string
 }
 
 function findNearestConfig(dir: string): string {
-    const currentDirConfig = join(dir, '.prettierrc.js');
+    const currentDirConfig = join(dir, 'prettier.config.mjs');
     if (existsSync(currentDirConfig)) {
         return currentDirConfig;
     } else {

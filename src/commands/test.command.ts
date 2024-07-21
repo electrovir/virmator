@@ -16,8 +16,8 @@ export const testCommandDefinition = defineCommand(
                 copyToPathRelativeToRepoDir: join('configs', 'mocha.config.cjs'),
             },
             nycConfig: {
-                copyFromInternalPath: join(virmatorConfigsDir, 'configs', 'nyc.config.js'),
-                copyToPathRelativeToRepoDir: join('configs', 'nyc.config.js'),
+                copyFromInternalPath: join(virmatorConfigsDir, 'configs', 'nyc.config.cjs'),
+                copyToPathRelativeToRepoDir: join('configs', 'nyc.config.cjs'),
             },
         },
         npmDeps: [

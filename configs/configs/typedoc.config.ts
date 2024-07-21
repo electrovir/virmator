@@ -12,7 +12,7 @@ export const typeDocConfig: Partial<TypeDocOptions> = {
         indexTsFile,
     ],
     intentionallyNotExported: [],
-    defaultCategory: 'Internal',
+    defaultCategory: 'MISSING CATEGORY',
     categoryOrder: [
         'Main',
         'Internal',

@@ -4,21 +4,23 @@ on:
     push:
         branches:
             - dev
+permissions:
+    contents: write
 
 jobs:
     build-for-gh-pages:
         runs-on: 'ubuntu-latest'
 
         steps:
-            - uses: actions/checkout@v4.1.1
-            - uses: actions/setup-node@v4.0.2
+            - uses: actions/checkout@v4.1.7
+            - uses: actions/setup-node@v4.0.3
               with:
                   node-version-file: '.nvmrc'
             - name: build
               run: |
                   npm ci
                   npm run docs
-            - uses: JamesIves/github-pages-deploy-action@v4.5.0
+            - uses: JamesIves/github-pages-deploy-action@v4.6.3
               with:
                   branch: 'gh-pages'
                   folder: 'dist-docs'

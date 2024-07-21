@@ -19,14 +19,8 @@
         "skipDefaultLibCheck": true,
         "skipLibCheck": true,
         "strict": true,
-        "target": "ES2021",
+        "target": "ES2022",
         "useDefineForClassFields": true,
         "useUnknownInCatchVariables": true
-    },
-    "ts-node": {
-        "compilerOptions": {
-            "module": "CommonJS"
-        },
-        "transpileOnly": true
     }
 }

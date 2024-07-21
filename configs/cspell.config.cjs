@@ -1,4 +1,4 @@
-const {baseConfig} = require('virmator/base-configs/base-cspell.js');
+const {baseConfig} = require('virmator/base-configs/base-cspell.cjs');
 
 module.exports = {
     ...baseConfig,
