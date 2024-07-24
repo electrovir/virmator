@@ -1,0 +1,39 @@
+{
+    "name": "@virmator/mono-repo-root",
+    "version": "13.0.0",
+    "private": true,
+    "type": "module",
+    "workspaces": [
+        "packages/*"
+    ],
+    "scripts": {
+        "build": "virmator frontend build",
+        "compile": "virmator compile",
+        "docs": "virmator docs",
+        "format": "virmator format",
+        "preview": "virmator frontend preview",
+        "publish": "virmator publish \"npm run compile && npm run test:all\"",
+        "start": "virmator frontend",
+        "test": "virmator test",
+        "test:all": "concurrently --colors --kill-others-on-fail -c auto --names types,tests,spelling,format,docs,deps \"npm run test:types\" \"npm run test:coverage\" \"npm run test:spelling\" \"npm run test:format\" \"npm run test:docs\" \"npm run test:deps\"",
+        "test:coverage": "npm run test coverage",
+        "test:deps": "virmator deps check",
+        "test:docs": "virmator docs check",
+        "test:format": "virmator format check",
+        "test:spelling": "virmator spellcheck",
+        "test:types": "tsc --noEmit",
+        "test:web": "virmator test-web"
+    },
+    "devDependencies": {
+        "npm-check-updates": "^16.14.20",
+        "prettier": "^3.3.3",
+        "prettier-plugin-interpolated-html-tags": "^1.0.5",
+        "prettier-plugin-jsdoc": "^1.3.0",
+        "prettier-plugin-multiline-arrays": "^3.0.6",
+        "prettier-plugin-organize-imports": "^4.0.0",
+        "prettier-plugin-packagejson": "^2.5.1",
+        "prettier-plugin-sort-json": "^4.0.0",
+        "prettier-plugin-toml": "^2.0.1",
+        "virmator": "^12.0.4"
+    }
+}

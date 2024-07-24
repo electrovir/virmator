@@ -1,0 +1,25 @@
+{
+    "compilerOptions": {
+        "composite": true,
+        "outDir": "./dist",
+        "rootDir": "./src"
+    },
+    "exclude": [
+        "./configs",
+        "./coverage",
+        "./dist",
+        "./dist-*",
+        "./node_modules",
+        "./test-files",
+        "./ts.out"
+    ],
+    "extends": "./configs/tsconfig.base.json",
+    "references": [
+        {
+            "path": "../core"
+        },
+        {
+            "path": "../plugin-testing"
+        }
+    ]
+}

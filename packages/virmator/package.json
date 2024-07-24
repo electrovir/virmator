@@ -1,0 +1,42 @@
+{
+    "name": "virmator",
+    "version": "13.0.0",
+    "description": "Handle common package configs, commands, and dependencies.",
+    "keywords": [
+        "automation",
+        "config",
+        "configs",
+        "formatting",
+        "publish",
+        "spellcheck",
+        "template",
+        "vir"
+    ],
+    "homepage": "https://github.com/electrovir/virmator",
+    "bugs": {
+        "url": "https://github.com/electrovir/virmator/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/electrovir/virmator.git"
+    },
+    "license": "(MIT or CC0 1.0)",
+    "author": {
+        "name": "electrovir",
+        "url": "https://github.com/electrovir"
+    },
+    "type": "module",
+    "main": "dist/index.js",
+    "module": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "bin": "dist/cli.js",
+    "dependencies": {
+        "@augment-vir/node-js": "^29.3.0",
+        "@virmator/compile": "^13.0.0",
+        "@virmator/core": "^13.0.0",
+        "type-fest": "^4.23.0"
+    },
+    "devDependencies": {
+        "@types/node": "^20.14.12"
+    }
+}

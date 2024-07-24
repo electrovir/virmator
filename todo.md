@@ -1,0 +1,5 @@
+-   get minimal setup for running and testing a single plugin
+-   port each command from virmator v12 into a plugin
+-   add properties per config file:
+    -   env: web or node
+    -   package location: mono-root or package

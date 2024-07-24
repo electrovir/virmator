@@ -1,0 +1,59 @@
+exports[`TS Compile > compiles a valid project 1`] = `
+{
+  "logs": {
+    "stdout": [
+      [
+        "Deleting dist...\\n"
+      ],
+      [
+        "Compiling...\\n"
+      ],
+      [
+        "> /node_modules/.bin/tsc\\n"
+      ],
+      [
+        "compile finished.\\n"
+      ]
+    ]
+  },
+  "contentsDiff": {
+    "dist": {
+      "a.js": "\\"use strict\\";\\nObject.defineProperty(exports, \\"__esModule\\", { value: true });\\nexports.value = void 0;\\nexports.value = {\\n    here: 'yo',\\n    there: 0,\\n};\\n"
+    }
+  }
+}
+`;
+
+exports[`TS Compile > rejects an invalid project 1`] = `
+{
+  "logs": {
+    "stdout": [
+      [
+        "Deleting dist...\\n"
+      ],
+      [
+        "Compiling...\\n"
+      ],
+      [
+        "> /node_modules/.bin/tsc\\n"
+      ],
+      [
+        "src/a.ts(12,5): error TS2353: Object literal may only specify known properties, and 'no' does not exist in type 'A'.\\n\\n"
+      ]
+    ],
+    "stderr": [
+      [
+        "compile failed.\\n"
+      ]
+    ]
+  },
+  "contentsDiff": {
+    "dist": {
+      "a.js": "\\"use strict\\";\\nObject.defineProperty(exports, \\"__esModule\\", { value: true });\\nexports.value2 = exports.value = void 0;\\nexports.value = {\\n    here: 'yo',\\n    there: 0,\\n};\\nexports.value2 = {\\n    no: 'bad',\\n};\\n"
+    }
+  },
+  "error": {
+    "name": "VirmatorSilentError"
+  }
+}
+`;

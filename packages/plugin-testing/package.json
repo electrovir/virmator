@@ -1,0 +1,46 @@
+{
+    "name": "@virmator/plugin-testing",
+    "version": "13.0.0",
+    "description": "Testing for virmator plugins.",
+    "keywords": [
+        "virmator",
+        "plugin",
+        "test"
+    ],
+    "homepage": "https://github.com/electrovir/virmator",
+    "bugs": {
+        "url": "https://github.com/electrovir/virmator/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/electrovir/virmator.git"
+    },
+    "license": "(MIT or CC0 1.0)",
+    "author": {
+        "name": "electrovir",
+        "url": "https://github.com/electrovir"
+    },
+    "type": "module",
+    "main": "src/index.ts",
+    "module": "src/index.ts",
+    "types": "src/index.ts",
+    "scripts": {
+        "test": "tsx --test --test-reporter spec 'src/**/*.test.ts'"
+    },
+    "dependencies": {
+        "@augment-vir/common": "^29.3.0",
+        "@augment-vir/node-js": "^29.3.0",
+        "@virmator/core": "^13.0.0",
+        "cli-args-vir": "^0.0.3",
+        "run-time-assertions": "^1.5.2",
+        "type-fest": "^4.23.0"
+    },
+    "devDependencies": {
+        "@types/node": "^20.14.12",
+        "tsx": "^4.16.2",
+        "typescript": "^5.5.4"
+    },
+    "publishConfig": {
+        "access": "public"
+    }
+}
