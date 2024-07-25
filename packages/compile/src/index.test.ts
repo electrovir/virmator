@@ -5,9 +5,9 @@ import {testFilesDir} from './file-paths.mock';
 import {virmatorCompilePlugin} from './index';
 
 describe(virmatorCompilePlugin.name, () => {
-    it('compiles a valid project', async (t) => {
+    it('compiles a valid project', async (context) => {
         await testPlugin(
-            t,
+            context,
             virmatorCompilePlugin,
             'compile',
             join(testFilesDir, 'successful-compile'),

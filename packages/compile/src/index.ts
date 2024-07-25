@@ -1,5 +1,7 @@
 import {defineVirmatorPlugin, getNpmBinPath, NpmDepType} from '@virmator/core';
-import {rm} from 'fs/promises';
+import {PackageLocation, VirmatorEnv} from '@virmator/core/src/plugin/plugin-env';
+import {rm} from 'node:fs/promises';
+import {join} from 'node:path';
 
 export const virmatorCompilePlugin = defineVirmatorPlugin(
     import.meta.dirname,
@@ -25,6 +27,33 @@ export const virmatorCompilePlugin = defineVirmatorPlugin(
                             content: 'virmator compile --noEmit',
                         },
                     ],
+                },
+                configFiles: {
+                    tsconfigPackage: {
+                        copyToPath: 'tsconfig.json',
+                        internalPath: join('configs', 'tsconfig.package.json'),
+                        env: [
+                            VirmatorEnv.Node,
+                            VirmatorEnv.Web,
+                        ],
+                        location: [
+                            PackageLocation.MonoRoot,
+                            PackageLocation.Package,
+                        ],
+                        required: false,
+                    },
+                    tsconfigMono: {
+                        copyToPath: join('configs', 'tsconfig.json'),
+                        internalPath: join('configs', 'tsconfig.mono.json'),
+                        env: [
+                            VirmatorEnv.Node,
+                            VirmatorEnv.Web,
+                        ],
+                        location: [
+                            PackageLocation.MonoRoot,
+                        ],
+                        required: false,
+                    },
                 },
             },
         },

@@ -11,6 +11,13 @@ export type VirmatorPluginConfigFile = {
      * repo or npm workspace.
      */
     copyToPath: string;
+    /** The environments in which this config should be used. */
     env: VirmatorEnv[];
+    /** The package locations for which this config should be used. */
     location: PackageLocation[];
+    /**
+     * If set to `true`, this config will be copied over every time the command is run, if the
+     * config doesn't exist, unless `'--no-configs'` was set.
+     */
+    required: boolean;
 };

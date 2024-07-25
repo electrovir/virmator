@@ -27,7 +27,7 @@ export type TestPluginResult = {
 };
 
 export async function testPlugin(
-    t: TestContext,
+    context: TestContext,
     plugin: Readonly<VirmatorPlugin>,
     cliCommand: string,
     cwd: string,
@@ -78,5 +78,5 @@ export async function testPlugin(
     await resetDirContents(cwd, contentsBefore);
 
     // @ts-expect-error: `TestContext.assert` isn't in `@types/node` yet
-    t.assert.snapshot(result);
+    context.assert.snapshot(result);
 }

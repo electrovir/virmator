@@ -26,6 +26,9 @@
     "types": "dist/index.d.ts",
     "scripts": {
         "test": "tsx --test --experimental-test-snapshots --test-reporter spec 'src/**/*.test.ts'",
+        "test:all": "concurrently --colors --kill-others-on-fail -c auto --names tests \"npm run test:coverage\"",
+        "test:coverage": "c8 --config configs/c8.config.json npm test",
+        "test:types": "tsc -b -f --pretty",
         "test:update": "tsx --test --experimental-test-snapshots --test-update-snapshots --test-reporter spec 'src/**/*.test.ts'"
     },
     "dependencies": {
@@ -35,6 +38,8 @@
     },
     "devDependencies": {
         "@types/node": "^20.14.12",
+        "c8": "^10.1.2",
+        "concurrently": "^8.2.2",
         "tsx": "^4.16.2"
     },
     "publishConfig": {

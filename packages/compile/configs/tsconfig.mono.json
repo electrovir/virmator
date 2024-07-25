@@ -1,0 +1,3 @@
+{
+    "extends": "@virmator/core/configs/tsconfig.base.json"
+}
