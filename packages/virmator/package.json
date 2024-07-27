@@ -34,6 +34,7 @@
         "@augment-vir/node-js": "^29.3.0",
         "@virmator/compile": "^13.0.0",
         "@virmator/core": "^13.0.0",
+        "@virmator/spellcheck": "^13.0.0",
         "type-fest": "^4.23.0"
     },
     "devDependencies": {

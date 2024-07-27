@@ -2,7 +2,7 @@ import {isTruthy} from '@augment-vir/common';
 import {defineVirmatorPlugin, getNpmBinPath, NpmDepType} from '@virmator/core';
 import {PackageType, VirmatorEnv} from '@virmator/core/src/plugin/plugin-env';
 import mri from 'mri';
-import {join, resolve} from 'node:path';
+import {join, relative} from 'node:path';
 import {isRunTimeType} from 'run-time-assertions';
 
 export const virmatorSpellcheckPlugin = defineVirmatorPlugin(
@@ -40,6 +40,7 @@ export const virmatorSpellcheckPlugin = defineVirmatorPlugin(
                         ],
                         packageType: [
                             PackageType.MonoRoot,
+                            PackageType.TopPackage,
                         ],
                         required: true,
                     },
@@ -47,10 +48,20 @@ export const virmatorSpellcheckPlugin = defineVirmatorPlugin(
             },
         },
         npmDeps: {
-            cspell: NpmDepType.Dev,
+            cspell: {
+                env: [
+                    VirmatorEnv.Node,
+                    VirmatorEnv.Web,
+                ],
+                packageType: [
+                    PackageType.MonoRoot,
+                    PackageType.TopPackage,
+                ],
+                type: NpmDepType.Dev,
+            },
         },
     },
-    async ({cliInputs, cwd, log, configs, runShellCommand}) => {
+    async ({cliInputs, cwd, package: {cwdPackagePath}, configs, runShellCommand}) => {
         const commandPath = await getNpmBinPath({command: 'cspell', cwd});
 
         const args = mri(cliInputs.filteredArgs, {
@@ -61,12 +72,12 @@ export const virmatorSpellcheckPlugin = defineVirmatorPlugin(
 
         const configPath = isRunTimeType(args.config, 'string')
             ? args.config
-            : resolve(cwd, configs.spellcheck.cspell.fullCopyToPath);
-        const filesArg = args['file-list'] || args.file ? '' : '.';
+            : relative(cwd, join(cwdPackagePath, configs.spellcheck.cspell.copyToPath));
+        const filesArg =
+            args['file-list'] || args.file ? '' : args._.length ? `--file ${args._}` : '.';
 
         const fullCommand = [
             commandPath,
-            filesArg,
             '--config',
             configPath,
             '--dot',
@@ -76,6 +87,7 @@ export const virmatorSpellcheckPlugin = defineVirmatorPlugin(
             '--cache-strategy',
             args['--cache-strategy'] || 'content',
             ...cliInputs.filteredArgs,
+            filesArg,
         ].filter(isTruthy);
 
         await runShellCommand(fullCommand.join(' '));

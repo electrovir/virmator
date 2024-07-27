@@ -14,6 +14,7 @@ import {
 } from '@augment-vir/node-js';
 import concurrently, {CloseEvent, ConcurrentlyCommandInput} from 'concurrently';
 import {getRelativePosixPackagePathsInDependencyOrder} from 'mono-vir';
+import {existsSync} from 'node:fs';
 import {cpus} from 'node:os';
 import {join, resolve} from 'node:path';
 import {isRunTimeType} from 'run-time-assertions';
@@ -133,11 +134,19 @@ async function determinePackageType(cwdPackagePath: string): Promise<PackageType
                 () => findClosestPackageDir(resolve(cwdPackagePath, '..')),
                 {fallbackValue: undefined},
             );
+
             if (parentPackageDir) {
-                return PackageType.MonoPackage;
-            } else {
-                return PackageType.TopPackage;
+                const parentPackages = await getMonoRepoPackages(parentPackageDir);
+
+                if (
+                    parentPackages.find((monoPackage) => {
+                        return join(parentPackageDir, monoPackage.relativePath) === cwdPackagePath;
+                    })
+                ) {
+                    return PackageType.MonoPackage;
+                }
             }
+            return PackageType.TopPackage;
         }
     } catch (error) {
         console.error(error);
@@ -154,15 +163,14 @@ async function getMonoRepoPackages(cwdPackagePath: string): Promise<MonoRepoPack
         },
     );
 
-    if (!relativePackagePathsInOrder.length) {
-        console.warn(`why no package ${cwdPackagePath}`);
-    }
-
     return await Promise.all(
         relativePackagePathsInOrder.map(async (packagePath): Promise<MonoRepoPackage> => {
-            const packageJson = await readPackageJson(join(cwdPackagePath, packagePath));
+            const packageJsonPath = join(cwdPackagePath, packagePath);
+            const packageJson = existsSync(packageJsonPath)
+                ? await readPackageJson(packageJsonPath)
+                : undefined;
             return {
-                packageName: packageJson.name || packagePath,
+                packageName: packageJson?.name || packagePath,
                 relativePath: packagePath,
             };
         }),

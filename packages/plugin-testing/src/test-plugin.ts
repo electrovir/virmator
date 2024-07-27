@@ -62,7 +62,7 @@ export async function testPlugin(
     plugin: Readonly<VirmatorPlugin>,
     cliCommand: string,
     cwd: string,
-    logTransform: LogTransform = (arg) => arg,
+    logTransform: LogTransform = (type, arg) => arg,
 ): Promise<void> {
     const logs: TestPluginResult['logs'] = {};
     const logger: Logger = createLogger({
