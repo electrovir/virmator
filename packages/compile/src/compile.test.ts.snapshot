@@ -1,0 +1,124 @@
+exports[`TS Compile > compiles a valid project 1`] = `
+{
+  "logs": {
+    "stdout": [
+      [
+        "Deleting dist...\\n"
+      ],
+      [
+        "Compiling...\\n"
+      ],
+      [
+        "> /node_modules/.bin/tsc --pretty\\n"
+      ],
+      [
+        "compile finished.\\n"
+      ]
+    ]
+  },
+  "contentsDiff": {
+    "dist": {
+      "a.js": "\\"use strict\\";\\nObject.defineProperty(exports, \\"__esModule\\", { value: true });\\nexports.value = void 0;\\nexports.value = {\\n    here: 'yo',\\n    there: 0,\\n};\\n"
+    }
+  }
+}
+`;
+
+exports[`TS Compile > rejects an invalid project 1`] = `
+{
+  "logs": {
+    "stdout": [
+      [
+        "Deleting dist...\\n"
+      ],
+      [
+        "Compiling...\\n"
+      ],
+      [
+        "> /node_modules/.bin/tsc --pretty\\n"
+      ],
+      [
+        "src/a.ts:12:5 - error TS2353: Object literal may only specify known properties, and 'no' does not exist in type 'A'.\\n\\n12     no: 'bad',\\n       ~~\\n\\n\\n"
+      ],
+      [
+        "\\nFound 1 error in src/a.ts:12\\n\\n\\n"
+      ]
+    ],
+    "stderr": [
+      [
+        "compile failed.\\n"
+      ]
+    ]
+  },
+  "contentsDiff": {
+    "dist": {
+      "a.js": "\\"use strict\\";\\nObject.defineProperty(exports, \\"__esModule\\", { value: true });\\nexports.value2 = exports.value = void 0;\\nexports.value = {\\n    here: 'yo',\\n    there: 0,\\n};\\nexports.value2 = {\\n    no: 'bad',\\n};\\n"
+    }
+  },
+  "error": {
+    "name": "VirmatorSilentError"
+  }
+}
+`;
+
+exports[`TS Compile > works in a mono-repo 1`] = `
+{
+  "logs": {
+    "stdout": [
+      [
+        "Copied tsconfig.base.json\\n"
+      ],
+      [
+        "[a] Copied tsconfig.json\\n"
+      ],
+      [
+        "[a] Deleting dist...\\n"
+      ],
+      [
+        "[a] Compiling...\\n"
+      ],
+      [
+        "[a] > /node_modules/.bin/tsc -b -f --pretty\\n"
+      ],
+      [
+        "[b] Copied tsconfig.json\\n"
+      ],
+      [
+        "[b] Deleting dist...\\n"
+      ],
+      [
+        "[b] Compiling...\\n"
+      ],
+      [
+        "[b] > /node_modules/.bin/tsc -b -f --pretty\\n"
+      ],
+      [
+        "[a] /node_modules/.bin/tsc -b -f --pretty exited with code 0\\n"
+      ],
+      [
+        "[b] /node_modules/.bin/tsc -b -f --pretty exited with code 0\\n"
+      ],
+      [
+        "compile finished.\\n"
+      ]
+    ]
+  },
+  "contentsDiff": {
+    "packages": {
+      "a": {
+        "tsconfig.json": "{\\n    \\"compilerOptions\\": {\\n        \\"outDir\\": \\"./dist/\\",\\n        \\"rootDir\\": \\"./src/\\"\\n    },\\n    \\"exclude\\": [\\n        \\"./configs/\\",\\n        \\"./coverage/\\",\\n        \\"./dist/\\",\\n        \\"./dist-*/\\",\\n        \\"./node_modules/\\",\\n        \\"./test-files/\\"\\n    ],\\n    \\"extends\\": \\"../../configs/tsconfig.base.json\\"\\n}\\n"
+      },
+      "b": {
+        "dist": {
+          "b.d.ts": "export type B = {\\n    here: string;\\n    there: number;\\n};\\nexport declare const value: B;\\n",
+          "b.js": "export const value = {\\n    here: 'yo',\\n    there: 0,\\n};\\n"
+        },
+        "tsconfig.json": "{\\n    \\"compilerOptions\\": {\\n        \\"outDir\\": \\"./dist/\\",\\n        \\"rootDir\\": \\"./src/\\"\\n    },\\n    \\"exclude\\": [\\n        \\"./configs/\\",\\n        \\"./coverage/\\",\\n        \\"./dist/\\",\\n        \\"./dist-*/\\",\\n        \\"./node_modules/\\",\\n        \\"./test-files/\\"\\n    ],\\n    \\"extends\\": \\"../../configs/tsconfig.base.json\\"\\n}\\n"
+      }
+    },
+    "configs": {
+      "tsconfig.base.json": "{\\n    \\"extends\\": \\"@virmator/compile/configs/tsconfig.base.json\\"\\n}\\n"
+    }
+  }
+}
+`;

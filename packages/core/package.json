@@ -37,7 +37,10 @@
         "type-fest": "^4.23.0"
     },
     "devDependencies": {
-        "@types/node": "^20.14.12"
+        "@augment-vir/testing": "^29.3.0",
+        "@types/node": "^20.14.12",
+        "concurrently": "^8.2.2",
+        "mono-vir": "^1.0.1"
     },
     "publishConfig": {
         "access": "public"

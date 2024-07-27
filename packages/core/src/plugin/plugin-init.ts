@@ -1,4 +1,5 @@
-import {VirmatorPluginConfigFile} from './plugin-config-file';
+import {VirmatorPluginConfigFile} from './plugin-configs';
+import {PackageType, VirmatorEnv} from './plugin-env';
 
 export type PluginCommandDoc = Readonly<{
     title?: string;
@@ -45,5 +46,14 @@ export type VirmatorPluginInit<
     name: string;
     cliCommands: Commands;
     /** Dependencies that this plugin needs to be installed in the host repo. */
-    npmDeps: Readonly<Record<string, NpmDepType>>;
+    npmDeps: Readonly<
+        Record<
+            string,
+            {
+                type: NpmDepType;
+                packageType: ReadonlyArray<PackageType>;
+                env: ReadonlyArray<VirmatorEnv>;
+            }
+        >
+    >;
 }>;

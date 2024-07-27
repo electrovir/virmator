@@ -21,9 +21,9 @@
         "url": "https://github.com/electrovir"
     },
     "type": "module",
-    "main": "dist/index.js",
-    "module": "dist/index.js",
-    "types": "dist/index.d.ts",
+    "main": "src/compile.ts",
+    "module": "src/compile.ts",
+    "types": "src/compile.ts",
     "scripts": {
         "test": "tsx --test --experimental-test-snapshots --test-reporter spec 'src/**/*.test.ts'",
         "test:all": "concurrently --colors --kill-others-on-fail -c auto --names tests \"npm run test:coverage\"",
@@ -32,15 +32,22 @@
         "test:update": "tsx --test --experimental-test-snapshots --test-update-snapshots --test-reporter spec 'src/**/*.test.ts'"
     },
     "dependencies": {
+        "@augment-vir/common": "^29.3.0",
         "@augment-vir/node-js": "^29.3.0",
         "@virmator/core": "^13.0.0",
-        "@virmator/plugin-testing": "^13.0.0"
+        "@virmator/plugin-testing": "^13.0.0",
+        "run-time-assertions": "^1.5.2"
     },
     "devDependencies": {
         "@types/node": "^20.14.12",
         "c8": "^10.1.2",
         "concurrently": "^8.2.2",
-        "tsx": "^4.16.2"
+        "mono-vir": "^1.0.1",
+        "tsx": "^4.16.2",
+        "typescript": "^5.5.4"
+    },
+    "peerDependencies": {
+        "typescript": "*"
     },
     "publishConfig": {
         "access": "public"

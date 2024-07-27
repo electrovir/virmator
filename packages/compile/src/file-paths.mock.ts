@@ -1,5 +1,8 @@
 import {join, resolve} from 'node:path';
 
-const packageDir = resolve(import.meta.dirname, '..');
+export const compilePackageDir = resolve(import.meta.dirname, '..');
 
-export const testFilesDir = join(packageDir, 'test-files');
+const monoRepoDir = resolve(compilePackageDir, '..', '..');
+export const monoRepoTestFilesDir = join(monoRepoDir, 'test-files', 'compile');
+
+export const testFilesDir = join(compilePackageDir, 'test-files');

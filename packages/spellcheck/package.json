@@ -1,0 +1,52 @@
+{
+    "name": "@virmator/spellcheck",
+    "version": "13.0.0",
+    "description": "Default spellcheck plugin for virmator",
+    "keywords": [
+        "virmator",
+        "spellcheck",
+        "cspell"
+    ],
+    "homepage": "https://github.com/electrovir/virmator",
+    "bugs": {
+        "url": "https://github.com/electrovir/virmator/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/electrovir/virmator.git"
+    },
+    "license": "(MIT or CC0 1.0)",
+    "author": {
+        "name": "electrovir",
+        "url": "https://github.com/electrovir"
+    },
+    "type": "module",
+    "main": "src/spellcheck.ts",
+    "module": "src/spellcheck.ts",
+    "types": "src/spellcheck.ts",
+    "scripts": {
+        "test": "tsx --test --experimental-test-snapshots --test-reporter spec 'src/**/*.test.ts'",
+        "test:all": "concurrently --colors --kill-others-on-fail -c auto --names tests \"npm run test:coverage\"",
+        "test:coverage": "c8 --config configs/c8.config.json npm test",
+        "test:types": "tsc -b -f --pretty",
+        "test:update": "tsx --test --experimental-test-snapshots --test-update-snapshots --test-reporter spec 'src/**/*.test.ts'"
+    },
+    "dependencies": {
+        "@augment-vir/common": "^29.3.0",
+        "@augment-vir/node-js": "^29.3.0",
+        "@virmator/core": "^13.0.0",
+        "@virmator/plugin-testing": "^13.0.0",
+        "mri": "^1.2.0",
+        "run-time-assertions": "^1.5.2"
+    },
+    "devDependencies": {
+        "@types/node": "^20.14.12",
+        "c8": "^10.1.2",
+        "concurrently": "^8.2.2",
+        "cspell": "^8.12.1",
+        "tsx": "^4.16.2"
+    },
+    "publishConfig": {
+        "access": "public"
+    }
+}

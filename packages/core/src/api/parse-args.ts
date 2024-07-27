@@ -17,7 +17,7 @@ import {SetVirmatorFlags, virmatorFlags} from './virmator-flags';
 
 export type ParsedArgs = {
     virmatorFlags: SetVirmatorFlags;
-    commands: string[];
+    commands: [string, ...string[]];
     filteredCommandArgs: string[];
     plugin: Readonly<VirmatorPlugin> | undefined;
     topLevelCommands: ReadonlyArray<string>;
@@ -56,6 +56,12 @@ export function mapPluginsByCommand(
                 commandName,
                 command,
             ]) => {
+                if (!isRunTimeType(commandName, 'string')) {
+                    throw new Error(
+                        `Command '${String(commandName)}' in plugin '${plugin.name}' must be string.`,
+                    );
+                }
+
                 const existingPlugin = mappedPlugins[commandName]?.plugin;
 
                 if (existingPlugin) {
@@ -157,7 +163,7 @@ export function parseCliArgs({
             } else {
                 const commandPlugin = mappedPlugins[arg];
                 if (commandPlugin) {
-                    parsedArgs.commands.push(arg);
+                    (parsedArgs.commands as string[]).push(arg);
                     parsedArgs.plugin = commandPlugin.plugin;
                 } else if (hasKey(virmatorFlags, arg)) {
                     parsedArgs.virmatorFlags[arg] = true;
@@ -170,7 +176,7 @@ export function parseCliArgs({
         },
         {
             virmatorFlags: {},
-            commands: [],
+            commands: [] as string[] as ParsedArgs['commands'],
             filteredCommandArgs: [],
             plugin: undefined,
             topLevelCommands: Object.keys(mappedPlugins),
