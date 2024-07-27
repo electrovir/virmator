@@ -5,11 +5,13 @@ import {
     JsModuleType,
     NpmDepType,
     withCompiledTsFile,
+    withImportedTsFile,
 } from '@virmator/core';
 import {findClosestNodeModulesDir} from '@virmator/core/src/augments/fs/search';
 import {PackageType, VirmatorEnv} from '@virmator/core/src/plugin/plugin-env';
 import mri from 'mri';
 import {join, relative} from 'node:path';
+import type {RunOptions} from 'npm-check-updates';
 
 export const virmatorDepsPlugin = defineVirmatorPlugin(
     import.meta.dirname,
@@ -91,12 +93,34 @@ export const virmatorDepsPlugin = defineVirmatorPlugin(
                             },
                         },
                     },
-                    update: {
+                    upgrade: {
                         doc: {
-                            examples: [],
-                            sections: [],
+                            sections: [
+                                {
+                                    content: 'Upgrades dependencies using npm-check-update.',
+                                },
+                            ],
+                            examples: [
+                                {
+                                    content: 'virmator deps upgrade',
+                                },
+                            ],
                         },
-                        configFiles: {},
+                        configFiles: {
+                            ncu: {
+                                copyFromPath: join('configs', 'ncu.config.ts'),
+                                copyToPath: join('configs', 'ncu.config.ts'),
+                                env: [
+                                    VirmatorEnv.Node,
+                                    VirmatorEnv.Web,
+                                ],
+                                packageType: [
+                                    PackageType.MonoRoot,
+                                    PackageType.TopPackage,
+                                ],
+                                required: true,
+                            },
+                        },
                         npmDeps: {
                             'npm-check-updates': {
                                 type: NpmDepType.Dev,
@@ -117,7 +141,7 @@ export const virmatorDepsPlugin = defineVirmatorPlugin(
     },
     async ({
         cliInputs: {filteredArgs, usedCommands},
-        package: {monoRepoRootPath, packageType, cwdPackagePath},
+        package: {monoRepoRootPath, packageType, cwdPackagePath, monoRepoPackages},
         configs,
         runPerPackage,
         runShellCommand,
@@ -174,6 +198,44 @@ export const virmatorDepsPlugin = defineVirmatorPlugin(
                     }
                 },
             );
+        } else if (usedCommands.deps?.subCommands.upgrade) {
+            await withImportedTsFile(
+                {
+                    inputPath: join(
+                        monoRepoRootPath,
+                        configs.deps.subCommands.upgrade.configs.ncu.copyToPath,
+                    ),
+                    outputPath: join(
+                        findClosestNodeModulesDir(import.meta.filename),
+                        '.virmator',
+                        'dep-cruiser.config.mjs',
+                    ),
+                },
+                JsModuleType.Esm,
+                async (configFile) => {
+                    const config = configFile.ncuConfig as RunOptions;
+
+                    const ncu = await import('npm-check-updates');
+
+                    /** This is needed otherwise ncu breaks. */
+                    const chalk = await import('npm-check-updates/build/src/lib/chalk');
+                    await chalk.chalkInit(true);
+
+                    await ncu.run(
+                        {
+                            ...config,
+                            cwd: monoRepoRootPath,
+                            workspaces: !!monoRepoPackages.length,
+                            format: [],
+                        },
+                        {
+                            cli: true,
+                        },
+                    );
+                },
+            );
+        } else {
+            throw new Error('deps sub command needed.');
         }
     },
 );

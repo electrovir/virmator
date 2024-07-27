@@ -190,3 +190,18 @@ exports[`Deps > passes with custom config 1`] = `
   }
 }
 `;
+
+exports[`Deps > upgrades deps 1`] = `
+{
+  "logs": {
+    "stdout": [
+      [
+        "deps finished.\\n"
+      ]
+    ]
+  },
+  "contentsDiff": {
+    "package.json": "{\\n    \\"dependencies\\": {\\n        \\"augment-vir\\": \\"3.1.2\\"\\n    }\\n}\\n"
+  }
+}
+`;

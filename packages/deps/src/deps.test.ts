@@ -45,4 +45,8 @@ describe(virmatorDepsPlugin.name, () => {
         await runShellCommand('npm i', {cwd: dir});
         await testDepsPlugin(false, context, dir, 'check');
     });
+
+    it('upgrades deps', async (context) => {
+        await testDepsPlugin(true, context, join(testFilesDir, 'upgrade'), 'upgrade');
+    });
 });
