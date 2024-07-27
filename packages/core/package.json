@@ -29,6 +29,13 @@
     "main": "src/index.ts",
     "module": "src/index.ts",
     "types": "src/index.ts",
+    "scripts": {
+        "test": "tsx --test --experimental-test-snapshots --test-reporter spec 'src/**/*.test.ts'",
+        "test:all": "concurrently --colors --kill-others-on-fail -c auto --names tests \"npm run test:coverage\"",
+        "test:coverage": "c8 --config configs/c8.config.json npm test",
+        "test:types": "tsc -b -f --pretty",
+        "test:update": "tsx --test --experimental-test-snapshots --test-update-snapshots --test-reporter spec 'src/**/*.test.ts'"
+    },
     "dependencies": {
         "@augment-vir/common": "^29.3.0",
         "@augment-vir/node-js": "^29.3.0",

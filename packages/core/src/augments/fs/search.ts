@@ -25,3 +25,12 @@ export function findClosestPackageDir(startDirPath: string) {
         return existsSync(join(dir, 'package.json'));
     });
 }
+
+export function findClosestNodeModulesDir(startDirPath: string) {
+    return join(
+        searchUpwardsForDir(startDirPath, (dir) => {
+            return existsSync(join(dir, 'node_modules'));
+        }),
+        'node_modules',
+    );
+}

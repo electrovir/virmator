@@ -30,7 +30,7 @@ import {
     VirmatorPluginExecutorParams,
     VirmatorPluginResolvedConfigs,
 } from '../plugin/plugin-executor';
-import {VirmatorPluginCliCommands, VirmatorPluginInit} from '../plugin/plugin-init';
+import {VirmatorPluginCliCommands} from '../plugin/plugin-init';
 import {copyPluginConfigs} from './copy-configs';
 import type {emptyLogger} from './empty-logger';
 import {parseCliArgs} from './parse-args';
@@ -97,15 +97,14 @@ export type ExecuteCommandParams = {
     concurrency: number;
 }>;
 
-function resolveConfigs<const Commands extends VirmatorPluginCliCommands>(
+function resolveConfigs(
     {cwdPackagePath, pluginPackagePath}: {cwdPackagePath: string; pluginPackagePath: string},
-    init: VirmatorPluginInit<Commands>,
-): VirmatorPluginResolvedConfigs<Commands> {
-    return mapObjectValues(
-        init.cliCommands,
-        (commandName, config): Record<string, VirmatorPluginResolvedConfigFile> => {
-            return mapObjectValues(
-                config.configFiles || {},
+    cliCommands: VirmatorPluginCliCommands,
+): VirmatorPluginResolvedConfigs<any> {
+    return mapObjectValues(cliCommands, (commandName, command) => {
+        return {
+            configs: mapObjectValues(
+                command.configFiles || {},
                 (configName, config): VirmatorPluginResolvedConfigFile => {
                     return {
                         ...config,
@@ -113,12 +112,19 @@ function resolveConfigs<const Commands extends VirmatorPluginCliCommands>(
                         fullCopyFromPath: join(pluginPackagePath, config.copyFromPath),
                     };
                 },
-            );
-        },
-    ) as VirmatorPluginResolvedConfigs<Commands>;
+            ),
+            subCommands: resolveConfigs(
+                {cwdPackagePath, pluginPackagePath},
+                command.subCommands || {},
+            ),
+        };
+    });
 }
 
-async function determinePackageType(cwdPackagePath: string): Promise<PackageType> {
+async function determinePackageType(
+    cwdPackagePath: string,
+    monoRepoRootPath: string,
+): Promise<PackageType> {
     try {
         const packageJson = await readPackageJson(cwdPackagePath);
 
@@ -130,17 +136,12 @@ async function determinePackageType(cwdPackagePath: string): Promise<PackageType
         ) {
             return PackageType.MonoRoot;
         } else {
-            const parentPackageDir = wrapInTry(
-                () => findClosestPackageDir(resolve(cwdPackagePath, '..')),
-                {fallbackValue: undefined},
-            );
-
-            if (parentPackageDir) {
-                const parentPackages = await getMonoRepoPackages(parentPackageDir);
+            if (monoRepoRootPath !== cwdPackagePath) {
+                const parentPackages = await getMonoRepoPackages(monoRepoRootPath);
 
                 if (
                     parentPackages.find((monoPackage) => {
-                        return join(parentPackageDir, monoPackage.relativePath) === cwdPackagePath;
+                        return join(monoRepoRootPath, monoPackage.relativePath) === cwdPackagePath;
                     })
                 ) {
                     return PackageType.MonoPackage;
@@ -177,6 +178,25 @@ async function getMonoRepoPackages(cwdPackagePath: string): Promise<MonoRepoPack
     );
 }
 
+async function findMonoRepoDir(cwdPackagePath: string) {
+    const parentPackageDir = wrapInTry(() => findClosestPackageDir(resolve(cwdPackagePath, '..')), {
+        fallbackValue: undefined,
+    });
+
+    if (parentPackageDir) {
+        const parentPackages = await getMonoRepoPackages(parentPackageDir);
+
+        if (
+            parentPackages.find((monoPackage) => {
+                return join(parentPackageDir, monoPackage.relativePath) === cwdPackagePath;
+            })
+        ) {
+            return parentPackageDir;
+        }
+    }
+    return cwdPackagePath;
+}
+
 /** The entry point to virmator. Runs a virmator command. */
 export async function executeVirmatorCommand({
     log: logParam = log,
@@ -197,13 +217,17 @@ export async function executeVirmatorCommand({
 
     const cwdPackagePath = findClosestPackageDir(cwd);
     const pluginPackagePath = args.plugin.pluginPackageRootPath;
-    const resolvedConfigs = resolveConfigs({cwdPackagePath, pluginPackagePath}, args.plugin);
-    const packageType = await determinePackageType(cwdPackagePath);
+    const resolvedConfigs = resolveConfigs(
+        {cwdPackagePath, pluginPackagePath},
+        args.plugin.cliCommands,
+    );
+    const monoRepoRootPath = await findMonoRepoDir(cwdPackagePath);
+    const packageType = await determinePackageType(cwdPackagePath, monoRepoRootPath);
     const monoRepoPackages =
         packageType === PackageType.MonoRoot ? await getMonoRepoPackages(cwdPackagePath) : [];
     const maxProcesses = params.concurrency || cpus().length - 1 || 1;
 
-    const executorParams: VirmatorPluginExecutorParams = {
+    const executorParams: VirmatorPluginExecutorParams<any> = {
         cliInputs: {
             filteredArgs: args.filteredCommandArgs,
             usedCommands: args.usedCommands,
@@ -214,8 +238,13 @@ export async function executeVirmatorCommand({
             cwdPackagePath,
             monoRepoPackages,
             packageType,
+            monoRepoRootPath,
         },
         configs: resolvedConfigs,
+        virmator: {
+            allPlugins: params.plugins,
+            pluginPackagePath,
+        },
         async runShellCommand(command, options) {
             log.faint(`> ${command}`);
             const result = await runShellCommand(command, {
@@ -304,14 +333,10 @@ export async function executeVirmatorCommand({
                 throw new VirmatorSilentError();
             }
         },
-        virmator: {
-            allPlugins: params.plugins,
-            pluginPackagePath,
-        },
     };
 
     if (!args.virmatorFlags['--no-configs']) {
-        await copyPluginConfigs(resolvedConfigs[args.commands[0]], packageType, log);
+        await copyPluginConfigs(args.usedCommands, resolvedConfigs, packageType, log);
     }
 
     try {

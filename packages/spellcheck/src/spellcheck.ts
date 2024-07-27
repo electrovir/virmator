@@ -45,19 +45,19 @@ export const virmatorSpellcheckPlugin = defineVirmatorPlugin(
                         required: true,
                     },
                 },
-            },
-        },
-        npmDeps: {
-            cspell: {
-                env: [
-                    VirmatorEnv.Node,
-                    VirmatorEnv.Web,
-                ],
-                packageType: [
-                    PackageType.MonoRoot,
-                    PackageType.TopPackage,
-                ],
-                type: NpmDepType.Dev,
+                npmDeps: {
+                    cspell: {
+                        env: [
+                            VirmatorEnv.Node,
+                            VirmatorEnv.Web,
+                        ],
+                        packageType: [
+                            PackageType.MonoRoot,
+                            PackageType.TopPackage,
+                        ],
+                        type: NpmDepType.Dev,
+                    },
+                },
             },
         },
     },
@@ -72,7 +72,7 @@ export const virmatorSpellcheckPlugin = defineVirmatorPlugin(
 
         const configPath = isRunTimeType(args.config, 'string')
             ? args.config
-            : relative(cwd, join(cwdPackagePath, configs.spellcheck.cspell.copyToPath));
+            : relative(cwd, join(cwdPackagePath, configs.spellcheck.configs.cspell.copyToPath));
         const filesArg =
             args['file-list'] || args.file ? '' : args._.length ? `--file ${args._}` : '.';
 

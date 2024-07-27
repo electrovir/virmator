@@ -12,7 +12,6 @@ import {
 export function parseTsConfig(cwd: string): ParsedCommandLine | undefined {
     try {
         const tsConfigPath = findConfigFile(cwd, sys.fileExists);
-        console.log(tsConfigPath);
 
         /** It'll be quite hard to setup a test where `tsConfigPath` is defined but does not exist. */
         /* node:coverage ignore next 1 */

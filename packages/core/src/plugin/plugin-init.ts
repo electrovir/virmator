@@ -17,6 +17,17 @@ export type IndividualPluginCommand = {
     };
     configFiles?: Readonly<Record<string, VirmatorPluginConfigFile>>;
     subCommands?: VirmatorPluginCliCommands;
+    /** Dependencies that this command needs to be installed in the host repo. */
+    npmDeps?: Readonly<
+        Record<
+            string,
+            {
+                type: NpmDepType;
+                packageType: ReadonlyArray<PackageType>;
+                env: ReadonlyArray<VirmatorEnv>;
+            }
+        >
+    >;
 };
 
 export type VirmatorPluginCliCommands = Readonly<{
@@ -45,15 +56,4 @@ export type VirmatorPluginInit<
     /** A proper noun (capitalized) for your plugin. Used for debugging. */
     name: string;
     cliCommands: Commands;
-    /** Dependencies that this plugin needs to be installed in the host repo. */
-    npmDeps: Readonly<
-        Record<
-            string,
-            {
-                type: NpmDepType;
-                packageType: ReadonlyArray<PackageType>;
-                env: ReadonlyArray<VirmatorEnv>;
-            }
-        >
-    >;
 }>;

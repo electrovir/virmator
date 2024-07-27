@@ -5,18 +5,44 @@ import {mkdir, readFile, writeFile} from 'node:fs/promises';
 import {basename, dirname} from 'node:path';
 import {VirmatorPluginResolvedConfigFile} from '../plugin/plugin-configs';
 import {PackageType} from '../plugin/plugin-env';
+import {UsedVirmatorPluginCommands, VirmatorPluginResolvedConfigs} from '../plugin/plugin-executor';
+
+export function flattenConfigs(
+    usedCommands: Readonly<UsedVirmatorPluginCommands<any>>,
+    resolvedConfigs: Readonly<VirmatorPluginResolvedConfigs<any>>,
+): VirmatorPluginResolvedConfigFile[] {
+    return Object.entries(usedCommands).flatMap(
+        ([
+            commandName,
+            usedCommand,
+        ]): VirmatorPluginResolvedConfigFile[] => {
+            const commandConfigs = resolvedConfigs[commandName];
+
+            const currentConfigs: VirmatorPluginResolvedConfigFile[] = Object.values(
+                commandConfigs?.configs || {},
+            );
+            const nestedConfigs: VirmatorPluginResolvedConfigFile[] = usedCommand?.subCommands
+                ? flattenConfigs(usedCommand.subCommands, commandConfigs?.subCommands || {})
+                : [];
+
+            return [
+                ...currentConfigs,
+                ...nestedConfigs,
+            ];
+        },
+    );
+}
 
 export async function copyPluginConfigs(
-    resolvedPluginConfigs: Readonly<Record<string, VirmatorPluginResolvedConfigFile>> | undefined,
+    usedCommands: Readonly<UsedVirmatorPluginCommands>,
+    resolvedConfigs: Readonly<VirmatorPluginResolvedConfigs<any>>,
     packageType: PackageType,
     log: Logger = defaultLog,
 ) {
-    if (!resolvedPluginConfigs || !Object.keys(resolvedPluginConfigs).length) {
-        return;
-    }
+    const configs = flattenConfigs(usedCommands, resolvedConfigs);
 
     await Promise.all(
-        Object.values(resolvedPluginConfigs).map(async (config) => {
+        Object.values(configs).map(async (config) => {
             if (!config.required || !config.packageType.includes(packageType)) {
                 return;
             }

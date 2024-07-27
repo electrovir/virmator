@@ -2,10 +2,10 @@ import assert from 'node:assert/strict';
 import {join} from 'node:path';
 import {describe, it} from 'node:test';
 import {assertDefined} from 'run-time-assertions';
-import {monoRepoTestFilesDir, testFilesDir} from './file-paths.mock';
+import {coreTestFilesDir, monoRepoTestFilesDir} from '../../file-paths.mock';
 import {parseTsConfig} from './parse-tsconfig';
 
-const tsConfigsPath = join(testFilesDir, 'ts-configs');
+const tsConfigsPath = join(coreTestFilesDir, 'ts-configs');
 
 describe(parseTsConfig.name, () => {
     it('parses a tsconfig', () => {

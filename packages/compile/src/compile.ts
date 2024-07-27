@@ -6,10 +6,10 @@ import {
     NpmDepType,
     VirmatorPluginExecutorParams,
 } from '@virmator/core';
+import {parseTsConfig} from '@virmator/core/src/augments/tsconfig/parse-tsconfig';
 import {PackageType, VirmatorEnv} from '@virmator/core/src/plugin/plugin-env';
 import {rm} from 'node:fs/promises';
 import {basename, join, relative} from 'node:path';
-import {parseTsConfig} from './parse-tsconfig';
 
 export const virmatorCompilePlugin = defineVirmatorPlugin(
     import.meta.dirname,
@@ -63,28 +63,28 @@ export const virmatorCompilePlugin = defineVirmatorPlugin(
                         required: true,
                     },
                 },
-            },
-        },
-        npmDeps: {
-            typescript: {
-                type: NpmDepType.Dev,
-                env: [
-                    VirmatorEnv.Node,
-                    VirmatorEnv.Web,
-                ],
-                packageType: [
-                    PackageType.TopPackage,
-                ],
-            },
-            'mono-vir': {
-                type: NpmDepType.Dev,
-                env: [
-                    VirmatorEnv.Node,
-                    VirmatorEnv.Web,
-                ],
-                packageType: [
-                    PackageType.MonoRoot,
-                ],
+                npmDeps: {
+                    typescript: {
+                        type: NpmDepType.Dev,
+                        env: [
+                            VirmatorEnv.Node,
+                            VirmatorEnv.Web,
+                        ],
+                        packageType: [
+                            PackageType.TopPackage,
+                        ],
+                    },
+                    'mono-vir': {
+                        type: NpmDepType.Dev,
+                        env: [
+                            VirmatorEnv.Node,
+                            VirmatorEnv.Web,
+                        ],
+                        packageType: [
+                            PackageType.MonoRoot,
+                        ],
+                    },
+                },
             },
         },
     },
@@ -101,7 +101,7 @@ export const virmatorCompilePlugin = defineVirmatorPlugin(
             await runPerPackage(async ({packageCwd, packageName}) => {
                 await copyConfigFile(
                     {
-                        ...configs.compile.tsconfigPackage,
+                        ...configs.compile.configs.tsconfigPackage,
                         fullCopyToPath: join(packageCwd, 'tsconfig.json'),
                     },
                     log,
@@ -111,7 +111,7 @@ export const virmatorCompilePlugin = defineVirmatorPlugin(
                             '@virmator/compile/configs/tsconfig.base.json',
                             join(
                                 relative(packageCwd, cwdPackagePath),
-                                configs.compile.tsconfigMono.copyToPath,
+                                configs.compile.configs.tsconfigMono.copyToPath,
                             ),
                         );
                     },
@@ -126,7 +126,7 @@ export const virmatorCompilePlugin = defineVirmatorPlugin(
 );
 
 async function createCompileCommandString(
-    {cwd, cliInputs, log}: VirmatorPluginExecutorParams<any>,
+    {cwd, cliInputs, log}: Pick<VirmatorPluginExecutorParams<any>, 'cwd' | 'cliInputs' | 'log'>,
     packageName: string | undefined,
 ): Promise<string> {
     const commandPath = await getNpmBinPath({command: 'tsc', cwd});

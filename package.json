@@ -21,10 +21,10 @@
         "test:docs": "virmator docs check",
         "test:format": "virmator format check",
         "test:spelling": "virmator spellcheck",
-        "test:types": "tsc --noEmit",
-        "test:web": "virmator test-web"
+        "test:types": "mono-vir for-each tsc -b -f --pretty"
     },
     "devDependencies": {
+        "mono-vir": "^1.0.1",
         "npm-check-updates": "^16.14.20",
         "prettier": "^3.3.3",
         "prettier-plugin-interpolated-html-tags": "^1.0.5",

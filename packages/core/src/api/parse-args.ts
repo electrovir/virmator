@@ -100,9 +100,9 @@ export function calculateUsedCommands(
     const usedCommands: UsedVirmatorPluginCommands = {
         [commands[0]]: {
             ...pluginCommand,
-            ...(Object.keys(subCommands).length ? subCommands : {}),
+            subCommands: Object.keys(subCommands).length ? subCommands : {},
         },
-    } as UsedVirmatorPluginCommands;
+    };
 
     return usedCommands;
 }
@@ -137,27 +137,21 @@ export function parseCliArgs({
 
     const mappedPlugins = mapPluginsByCommand(plugins);
 
-    return relevantArgs.reduce(
+    const parsedArgs = relevantArgs.reduce(
         (parsedArgs: ParsedArgs, arg) => {
             if (parsedArgs.filteredCommandArgs.length) {
                 parsedArgs.filteredCommandArgs.push(arg);
             } else if (isLengthAtLeast(parsedArgs.commands, 1)) {
                 const mainCommand = parsedArgs.commands[0];
-                const subCommands = mappedPlugins[mainCommand] || {};
+                const subCommands = mappedPlugins[mainCommand]?.subCommands || {};
                 const availableSubCommands = accessAtKeys<NestedSubCommands>(
                     subCommands,
                     parsedArgs.commands.slice(1),
                 );
+
                 if (availableSubCommands && arg in availableSubCommands) {
                     parsedArgs.commands.push(arg);
                 } else {
-                    if (!Object.keys(parsedArgs.usedCommands).length) {
-                        /** On the first non-command arg, populated the used commands object. */
-                        parsedArgs.usedCommands = calculateUsedCommands(
-                            parsedArgs.plugin?.cliCommands || {},
-                            parsedArgs.commands,
-                        );
-                    }
                     parsedArgs.filteredCommandArgs.push(arg);
                 }
             } else {
@@ -183,4 +177,11 @@ export function parseCliArgs({
             usedCommands: {},
         },
     );
+
+    parsedArgs.usedCommands = calculateUsedCommands(
+        parsedArgs.plugin?.cliCommands || {},
+        parsedArgs.commands,
+    );
+
+    return parsedArgs;
 }

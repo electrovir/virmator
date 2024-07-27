@@ -1,5 +1,6 @@
-import type {MaybePromise} from '@augment-vir/common';
+import type {AnyObject, MaybePromise} from '@augment-vir/common';
 import type {Logger, runShellCommand} from '@augment-vir/node-js';
+import {EmptyObject} from 'type-fest';
 import {VirmatorPluginResolvedConfigFile} from './plugin-configs';
 import {PackageType} from './plugin-env';
 import {
@@ -18,7 +19,7 @@ export type UsedVirmatorPluginCommands<
                     subCommands: infer SubCommands extends NonNullable<VirmatorPluginCliCommands>;
                 }
                     ? UsedVirmatorPluginCommands<SubCommands>
-                    : never;
+                    : EmptyObject;
             }
         >;
     }>
@@ -27,9 +28,19 @@ export type UsedVirmatorPluginCommands<
 export type VirmatorPluginResolvedConfigs<
     Commands extends VirmatorPluginCliCommands = VirmatorPluginCliCommands,
 > = Readonly<{
-    [Command in keyof Commands]: {
-        [ConfigName in keyof Commands[Command]['configFiles']]: VirmatorPluginResolvedConfigFile;
-    };
+    [Command in keyof Commands]: (Commands[Command]['configFiles'] extends infer Configs extends
+        AnyObject
+        ? {
+              configs: {
+                  [ConfigName in keyof Configs]: VirmatorPluginResolvedConfigFile;
+              };
+          }
+        : {configs?: never}) &
+        (Commands[Command]['subCommands'] extends infer SubCommands extends AnyObject
+            ? {
+                  subCommands: VirmatorPluginResolvedConfigs<SubCommands>;
+              }
+            : {subCommands?: never});
 }>;
 
 export type MonoRepoPackage = {
@@ -55,6 +66,11 @@ export type VirmatorPluginExecutorParams<
     package: {
         cwdPackagePath: string;
         packageType: PackageType;
+        /**
+         * The path to the parent mono-repo root if the current package is part of a mono-repo.
+         * Otherwise, the path to this current package's directory (same as `cwdPackagePath`).
+         */
+        monoRepoRootPath: string;
         /** In dependency graph order, with packages that have no interconnected dependencies first. */
         monoRepoPackages: MonoRepoPackage[];
     };

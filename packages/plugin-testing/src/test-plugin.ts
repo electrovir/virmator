@@ -1,4 +1,4 @@
-import {getOrSet, isTruthy, removeColor, wrapInTry} from '@augment-vir/common';
+import {addSuffix, getOrSet, isTruthy, removeColor, wrapInTry} from '@augment-vir/common';
 import {createLogger, Logger, LogOutputType} from '@augment-vir/node-js';
 import {executeVirmatorCommand, VirmatorPlugin} from '@virmator/core';
 import {sep} from 'node:path';
@@ -18,7 +18,10 @@ function serializeLogArgs(
     return args
         .map((arg): string | undefined => {
             if (isRunTimeType(arg, 'string')) {
-                return removeColor(arg).replaceAll(monoRepoDir, '');
+                return removeColor(arg).replaceAll(
+                    addSuffix({value: monoRepoDir, suffix: '/'}),
+                    '',
+                );
             } else if (isPrimitive(arg)) {
                 return String(arg);
             } else {
@@ -58,6 +61,7 @@ const contentsIgnoreList = [
 ];
 
 export async function testPlugin(
+    shouldPass: boolean,
     context: TestContext,
     plugin: Readonly<VirmatorPlugin>,
     cliCommand: string,
@@ -109,4 +113,10 @@ export async function testPlugin(
 
     // @ts-expect-error: `TestContext.assert` isn't in `@types/node` yet
     context.assert.snapshot(result);
+
+    if (shouldPass && error) {
+        throw new Error('Expected to not fail.');
+    } else if (!shouldPass && !error) {
+        throw new Error('Expected to fail.');
+    }
 }
