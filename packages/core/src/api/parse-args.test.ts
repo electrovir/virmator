@@ -1,5 +1,4 @@
-import {NpmDepType} from '@virmator/core';
-import {PackageType, VirmatorEnv} from '@virmator/core/src/plugin/plugin-env';
+import {NpmDepType, PackageType, VirmatorEnv} from '@virmator/core';
 import assert from 'node:assert/strict';
 import {join} from 'node:path';
 import {describe, it} from 'node:test';

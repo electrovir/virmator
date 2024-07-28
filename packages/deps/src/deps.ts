@@ -4,12 +4,12 @@ import {
     getNpmBinPath,
     JsModuleType,
     NpmDepType,
+    PackageType,
+    VirmatorEnv,
     VirmatorSilentError,
     withCompiledTsFile,
     withImportedTsFile,
 } from '@virmator/core';
-import {findClosestNodeModulesDir} from '@virmator/core/src/augments/fs/search';
-import {PackageType, VirmatorEnv} from '@virmator/core/src/plugin/plugin-env';
 import mri from 'mri';
 import {rm} from 'node:fs/promises';
 import {join, relative} from 'node:path';
@@ -197,7 +197,8 @@ export const virmatorDepsPlugin = defineVirmatorPlugin(
                         configs.deps.subCommands.check.configs.depCruiser.copyToPath,
                     ),
                     outputPath: join(
-                        findClosestNodeModulesDir(import.meta.filename),
+                        cwdPackagePath,
+                        'node_modules',
                         '.virmator',
                         'dep-cruiser.config.cjs',
                     ),
@@ -239,7 +240,8 @@ export const virmatorDepsPlugin = defineVirmatorPlugin(
                         configs.deps.subCommands.upgrade.configs.ncu.copyToPath,
                     ),
                     outputPath: join(
-                        findClosestNodeModulesDir(import.meta.filename),
+                        cwdPackagePath,
+                        'node_modules',
                         '.virmator',
                         'dep-cruiser.config.mjs',
                     ),

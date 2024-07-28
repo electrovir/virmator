@@ -4,10 +4,11 @@ import {
     defineVirmatorPlugin,
     getNpmBinPath,
     NpmDepType,
+    PackageType,
+    parseTsConfig,
+    VirmatorEnv,
     VirmatorPluginExecutorParams,
 } from '@virmator/core';
-import {parseTsConfig} from '@virmator/core/src/augments/tsconfig/parse-tsconfig';
-import {PackageType, VirmatorEnv} from '@virmator/core/src/plugin/plugin-env';
 import {rm} from 'node:fs/promises';
 import {basename, join, relative} from 'node:path';
 

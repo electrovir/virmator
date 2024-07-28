@@ -1,8 +1,9 @@
-import {value} from './a';
-
 export type A = {
     here: string;
     there: number;
 };
 
-console.info(value);
+export const value: A = {
+    here: 'yo',
+    there: 0,
+};

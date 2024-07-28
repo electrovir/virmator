@@ -2,7 +2,7 @@
 export class VirmatorSilentError extends Error {
     public override readonly name = 'VirmatorSilentError';
 
-    constructor() {
-        super();
+    constructor(message = '') {
+        super(message);
     }
 }

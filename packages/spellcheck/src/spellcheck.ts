@@ -1,6 +1,11 @@
 import {isTruthy} from '@augment-vir/common';
-import {defineVirmatorPlugin, getNpmBinPath, NpmDepType} from '@virmator/core';
-import {PackageType, VirmatorEnv} from '@virmator/core/src/plugin/plugin-env';
+import {
+    defineVirmatorPlugin,
+    getNpmBinPath,
+    NpmDepType,
+    PackageType,
+    VirmatorEnv,
+} from '@virmator/core';
 import mri from 'mri';
 import {join, relative} from 'node:path';
 import {isRunTimeType} from 'run-time-assertions';

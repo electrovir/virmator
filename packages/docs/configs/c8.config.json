@@ -1,0 +1,13 @@
+{
+    "100": true,
+    "all": true,
+    "checkCoverage": true,
+    "clean": true,
+    "perFile": true,
+    "reporter": [
+        "html",
+        "text"
+    ],
+    "skipFull": true,
+    "src": "src"
+}

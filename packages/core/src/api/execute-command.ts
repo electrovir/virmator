@@ -18,6 +18,7 @@ import {existsSync} from 'node:fs';
 import {cpus} from 'node:os';
 import {join, resolve} from 'node:path';
 import {isRunTimeType} from 'run-time-assertions';
+import {PackageJson} from 'type-fest';
 import {findClosestPackageDir} from '../augments/index';
 import {CallbackWritable} from '../augments/stream/callback-writable';
 import {VirmatorInternalError} from '../errors/virmator-internal.error';
@@ -124,15 +125,14 @@ function resolveConfigs(
 async function determinePackageType(
     cwdPackagePath: string,
     monoRepoRootPath: string,
+    cwdPackageJson: PackageJson,
 ): Promise<PackageType> {
     try {
-        const packageJson = await readPackageJson(cwdPackagePath);
-
         if (
-            packageJson.workspaces &&
-            (isRunTimeType(packageJson.workspaces, 'array')
-                ? packageJson.workspaces.length
-                : packageJson.workspaces.packages?.length)
+            cwdPackageJson.workspaces &&
+            (isRunTimeType(cwdPackageJson.workspaces, 'array')
+                ? cwdPackageJson.workspaces.length
+                : cwdPackageJson.workspaces.packages?.length)
         ) {
             return PackageType.MonoRoot;
         } else {
@@ -216,13 +216,19 @@ export async function executeVirmatorCommand({
     }
 
     const cwdPackagePath = findClosestPackageDir(cwd);
+
+    const cwdPackageJson = await readPackageJson(cwdPackagePath);
     const pluginPackagePath = args.plugin.pluginPackageRootPath;
     const resolvedConfigs = resolveConfigs(
         {cwdPackagePath, pluginPackagePath},
         args.plugin.cliCommands,
     );
     const monoRepoRootPath = await findMonoRepoDir(cwdPackagePath);
-    const packageType = await determinePackageType(cwdPackagePath, monoRepoRootPath);
+    const packageType = await determinePackageType(
+        cwdPackagePath,
+        monoRepoRootPath,
+        cwdPackageJson,
+    );
     const monoRepoPackages =
         packageType === PackageType.MonoRoot ? await getMonoRepoPackages(cwdPackagePath) : [];
     const maxProcesses = params.concurrency || cpus().length - 1 || 1;
@@ -239,6 +245,7 @@ export async function executeVirmatorCommand({
             monoRepoPackages,
             packageType,
             monoRepoRootPath,
+            cwdPackageJson,
         },
         configs: resolvedConfigs,
         virmator: {
@@ -260,7 +267,7 @@ export async function executeVirmatorCommand({
             });
 
             if (result.error) {
-                throw new VirmatorSilentError();
+                throw new VirmatorSilentError(result.stderr);
             }
 
             return result;

@@ -1,6 +1,6 @@
 import type {AnyObject, MaybePromise} from '@augment-vir/common';
 import type {Logger, runShellCommand} from '@augment-vir/node-js';
-import {EmptyObject} from 'type-fest';
+import {EmptyObject, PackageJson} from 'type-fest';
 import {VirmatorPluginResolvedConfigFile} from './plugin-configs';
 import {PackageType} from './plugin-env';
 import {
@@ -73,6 +73,7 @@ export type VirmatorPluginExecutorParams<
         monoRepoRootPath: string;
         /** In dependency graph order, with packages that have no interconnected dependencies first. */
         monoRepoPackages: MonoRepoPackage[];
+        cwdPackageJson: PackageJson;
     };
 
     /** Run a shell command with sensible defaults. */

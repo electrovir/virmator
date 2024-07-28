@@ -1,0 +1,208 @@
+exports[`Docs > allows custom file inputs 1`] = `
+{
+  "logs": {
+    "stdout": [
+      [
+        "Copied typedoc.config.ts\\n"
+      ],
+      [
+        "> node_modules/.bin/md-code --check something-else.md\\n"
+      ],
+      [
+        "docs finished.\\n"
+      ]
+    ],
+    "stderr": [
+      [
+        "No markdown files given to insert code into.\\n\\n"
+      ]
+    ]
+  },
+  "contentsDiff": {
+    "configs": {
+      "typedoc.config.ts": "import {baseTypedocConfig} from '@virmator/docs/configs/typedoc.config.base';\\nimport {join, resolve} from 'path';\\nimport type {TypeDocOptions} from 'typedoc';\\n\\nconst repoRoot = resolve(\\n    __dirname,\\n    /** Go up two directories because this gets compiled into \`node_modules/.virmator\` */\\n    '..',\\n    '..',\\n);\\nconst indexTsFile = join(repoRoot, 'src', 'index.ts');\\n\\nexport const typeDocConfig: Partial<TypeDocOptions> = {\\n    ...baseTypedocConfig,\\n    out: join(repoRoot, 'dist-docs'),\\n    entryPoints: [\\n        indexTsFile,\\n    ],\\n    intentionallyNotExported: [],\\n    defaultCategory: 'MISSING CATEGORY',\\n    categoryOrder: [\\n        'Main',\\n        'Internal',\\n    ],\\n};\\n"
+    }
+  }
+}
+`;
+
+exports[`Docs > fails readme docs check 1`] = `
+{
+  "logs": {
+    "stdout": [
+      [
+        "Copied typedoc.config.ts\\n"
+      ],
+      [
+        "> node_modules/.bin/md-code --check './**/*.md'\\n"
+      ],
+      [
+        "Checking that code in markdown is up to date:\\n\\n"
+      ]
+    ],
+    "stderr": [
+      [
+        "    README.md: NOT up to date\\n\\n"
+      ],
+      [
+        "Code in Markdown file(s) is out of date. Run without --check to update.\\n\\n"
+      ],
+      [
+        "docs failed.\\n"
+      ]
+    ]
+  },
+  "contentsDiff": {
+    "configs": {
+      "typedoc.config.ts": "import {baseTypedocConfig} from '@virmator/docs/configs/typedoc.config.base';\\nimport {join, resolve} from 'path';\\nimport type {TypeDocOptions} from 'typedoc';\\n\\nconst repoRoot = resolve(\\n    __dirname,\\n    /** Go up two directories because this gets compiled into \`node_modules/.virmator\` */\\n    '..',\\n    '..',\\n);\\nconst indexTsFile = join(repoRoot, 'src', 'index.ts');\\n\\nexport const typeDocConfig: Partial<TypeDocOptions> = {\\n    ...baseTypedocConfig,\\n    out: join(repoRoot, 'dist-docs'),\\n    entryPoints: [\\n        indexTsFile,\\n    ],\\n    intentionallyNotExported: [],\\n    defaultCategory: 'MISSING CATEGORY',\\n    categoryOrder: [\\n        'Main',\\n        'Internal',\\n    ],\\n};\\n"
+    }
+  },
+  "error": {
+    "name": "VirmatorSilentError"
+  }
+}
+`;
+
+exports[`Docs > fails typedoc check 1`] = `
+{
+  "logs": {
+    "stdout": [
+      [
+        "Copied typedoc.config.ts\\n"
+      ],
+      [
+        "> node_modules/.bin/md-code --check './**/*.md'\\n"
+      ]
+    ],
+    "stderr": [
+      [
+        "No markdown files given to insert code into.\\n\\n"
+      ],
+      [
+        "docs failed.\\n"
+      ]
+    ]
+  },
+  "contentsDiff": {
+    "configs": {
+      "typedoc.config.ts": "import {baseTypedocConfig} from '@virmator/docs/configs/typedoc.config.base';\\nimport {join, resolve} from 'path';\\nimport type {TypeDocOptions} from 'typedoc';\\n\\nconst repoRoot = resolve(\\n    __dirname,\\n    /** Go up two directories because this gets compiled into \`node_modules/.virmator\` */\\n    '..',\\n    '..',\\n);\\nconst indexTsFile = join(repoRoot, 'src', 'index.ts');\\n\\nexport const typeDocConfig: Partial<TypeDocOptions> = {\\n    ...baseTypedocConfig,\\n    out: join(repoRoot, 'dist-docs'),\\n    entryPoints: [\\n        indexTsFile,\\n    ],\\n    intentionallyNotExported: [],\\n    defaultCategory: 'MISSING CATEGORY',\\n    categoryOrder: [\\n        'Main',\\n        'Internal',\\n    ],\\n};\\n"
+    }
+  },
+  "error": {
+    "name": "VirmatorSilentError"
+  }
+}
+`;
+
+exports[`Docs > passes docs check 1`] = `
+{
+  "logs": {
+    "stdout": [
+      [
+        "Copied typedoc.config.ts\\n"
+      ],
+      [
+        "> node_modules/.bin/md-code --check './**/*.md'\\n"
+      ],
+      [
+        "Checking that code in markdown is up to date:\\n\\n"
+      ],
+      [
+        "    README.md: up to date\\n\\n"
+      ],
+      [
+        "docs finished.\\n"
+      ]
+    ]
+  },
+  "contentsDiff": {
+    "configs": {
+      "typedoc.config.ts": "import {baseTypedocConfig} from '@virmator/docs/configs/typedoc.config.base';\\nimport {join, resolve} from 'path';\\nimport type {TypeDocOptions} from 'typedoc';\\n\\nconst repoRoot = resolve(\\n    __dirname,\\n    /** Go up two directories because this gets compiled into \`node_modules/.virmator\` */\\n    '..',\\n    '..',\\n);\\nconst indexTsFile = join(repoRoot, 'src', 'index.ts');\\n\\nexport const typeDocConfig: Partial<TypeDocOptions> = {\\n    ...baseTypedocConfig,\\n    out: join(repoRoot, 'dist-docs'),\\n    entryPoints: [\\n        indexTsFile,\\n    ],\\n    intentionallyNotExported: [],\\n    defaultCategory: 'MISSING CATEGORY',\\n    categoryOrder: [\\n        'Main',\\n        'Internal',\\n    ],\\n};\\n"
+    }
+  }
+}
+`;
+
+exports[`Docs > runs typedoc and md-code 1`] = `
+{
+  "logs": {
+    "stdout": [
+      [
+        "Copied typedoc.config.ts\\n"
+      ],
+      [
+        "> node_modules/.bin/md-code './**/*.md'\\n"
+      ],
+      [
+        "Inserting code into markdown:\\n\\n"
+      ],
+      [
+        "    README.md\\n\\n"
+      ],
+      [
+        "docs finished.\\n"
+      ]
+    ]
+  },
+  "contentsDiff": {
+    "README.md": "here's a markdown code block\\n\\n<!-- example-link: src/readme-examples/thing.example.ts -->\\n\\n\`\`\`TypeScript\\nfunction doThing() {\\n    console.info('hi');\\n    return 'bye';\\n}\\n\\ndoThing();\\n\`\`\`\\n",
+    "configs": {
+      "typedoc.config.ts": "import {baseTypedocConfig} from '@virmator/docs/configs/typedoc.config.base';\\nimport {join, resolve} from 'path';\\nimport type {TypeDocOptions} from 'typedoc';\\n\\nconst repoRoot = resolve(\\n    __dirname,\\n    /** Go up two directories because this gets compiled into \`node_modules/.virmator\` */\\n    '..',\\n    '..',\\n);\\nconst indexTsFile = join(repoRoot, 'src', 'index.ts');\\n\\nexport const typeDocConfig: Partial<TypeDocOptions> = {\\n    ...baseTypedocConfig,\\n    out: join(repoRoot, 'dist-docs'),\\n    entryPoints: [\\n        indexTsFile,\\n    ],\\n    intentionallyNotExported: [],\\n    defaultCategory: 'MISSING CATEGORY',\\n    categoryOrder: [\\n        'Main',\\n        'Internal',\\n    ],\\n};\\n"
+    }
+  }
+}
+`;
+
+exports[`Docs > skips mono-repo root typedoc 1`] = `
+{
+  "logs": {
+    "stdout": [
+      [
+        "> node_modules/.bin/md-code './**/*.md'\\n"
+      ],
+      [
+        "Skipping typedoc generation in mono-repo root.\\n"
+      ],
+      [
+        "docs finished.\\n"
+      ]
+    ],
+    "stderr": [
+      [
+        "No markdown files given to insert code into.\\n\\n"
+      ]
+    ]
+  }
+}
+`;
+
+exports[`Docs > skips private repo typedoc 1`] = `
+{
+  "logs": {
+    "stdout": [
+      [
+        "Copied typedoc.config.ts\\n"
+      ],
+      [
+        "> node_modules/.bin/md-code './**/*.md'\\n"
+      ],
+      [
+        "Skipping typedoc generation in private repo.\\n"
+      ],
+      [
+        "docs finished.\\n"
+      ]
+    ],
+    "stderr": [
+      [
+        "No markdown files given to insert code into.\\n\\n"
+      ]
+    ]
+  },
+  "contentsDiff": {
+    "configs": {
+      "typedoc.config.ts": "import {baseTypedocConfig} from '@virmator/docs/configs/typedoc.config.base';\\nimport {join, resolve} from 'path';\\nimport type {TypeDocOptions} from 'typedoc';\\n\\nconst repoRoot = resolve(\\n    __dirname,\\n    /** Go up two directories because this gets compiled into \`node_modules/.virmator\` */\\n    '..',\\n    '..',\\n);\\nconst indexTsFile = join(repoRoot, 'src', 'index.ts');\\n\\nexport const typeDocConfig: Partial<TypeDocOptions> = {\\n    ...baseTypedocConfig,\\n    out: join(repoRoot, 'dist-docs'),\\n    entryPoints: [\\n        indexTsFile,\\n    ],\\n    intentionallyNotExported: [],\\n    defaultCategory: 'MISSING CATEGORY',\\n    categoryOrder: [\\n        'Main',\\n        'Internal',\\n    ],\\n};\\n"
+    }
+  }
+}
+`;

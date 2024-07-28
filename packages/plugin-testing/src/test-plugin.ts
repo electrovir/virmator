@@ -1,11 +1,18 @@
-import {addSuffix, getOrSet, isTruthy, removeColor, wrapInTry} from '@augment-vir/common';
+import {
+    addSuffix,
+    getOrSet,
+    isTruthy,
+    MaybePromise,
+    removeColor,
+    wrapInTry,
+    wrapString,
+} from '@augment-vir/common';
 import {createLogger, Logger, LogOutputType} from '@augment-vir/node-js';
 import {executeVirmatorCommand, VirmatorPlugin} from '@virmator/core';
 import {sep} from 'node:path';
 import {TestContext} from 'node:test';
 import {diffObjects, isPrimitive, isRunTimeType} from 'run-time-assertions';
-import {resetDirContents} from './augments/fs/dir-contents';
-import {DirContents, readAllDirContents} from './augments/index';
+import {DirContents, readAllDirContents, resetDirContents} from './augments/index';
 import {monoRepoDir} from './file-paths.mock';
 
 export type LogTransform = (logType: LogOutputType, arg: string) => string | undefined;
@@ -54,9 +61,9 @@ function handleWrite(
     return true;
 }
 
-const contentsIgnoreList = [
+const defaultContentsExcludeList = [
     'tsconfig.tsbuildinfo',
-    `${sep}node_modules${sep}`,
+    wrapString({value: 'node_modules', wrapper: sep}),
     `.git`,
 ];
 
@@ -67,6 +74,8 @@ export async function testPlugin(
     cliCommand: string,
     cwd: string,
     logTransform: LogTransform = (type, arg) => arg,
+    excludeContents: string[] = [],
+    beforeCleanupCallback?: (cwd: string) => MaybePromise<void>,
 ): Promise<void> {
     const logs: TestPluginResult['logs'] = {};
     const logger: Logger = createLogger({
@@ -81,9 +90,15 @@ export async function testPlugin(
             },
         },
     });
+
+    const fullExcludeList = [
+        ...excludeContents,
+        ...defaultContentsExcludeList,
+    ];
+
     const contentsBefore = await readAllDirContents(cwd, {
         recursive: true,
-        excludeList: contentsIgnoreList,
+        excludeList: fullExcludeList,
     });
 
     const error = await wrapInTry(() =>
@@ -95,10 +110,11 @@ export async function testPlugin(
             concurrency: 1,
         }),
     );
+    await beforeCleanupCallback?.(cwd);
 
     const contentsAfter = await readAllDirContents(cwd, {
         recursive: true,
-        excludeList: contentsIgnoreList,
+        excludeList: fullExcludeList,
     });
 
     const contentsDiff = diffObjects(contentsBefore, contentsAfter)[1] as DirContents;

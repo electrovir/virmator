@@ -1,3 +1,4 @@
+import {wrapString} from '@augment-vir/common';
 import assert from 'node:assert/strict';
 import {join, sep} from 'node:path';
 import {describe, it} from 'node:test';
@@ -21,7 +22,7 @@ describe(readAllDirContents.name, () => {
     it('excludes files', async () => {
         const output = await readAllDirContents(join(testFiles, 'dir-contents-test'), {
             recursive: true,
-            excludeList: [`${sep}b${sep}`],
+            excludeList: [wrapString({value: 'b', wrapper: sep})],
         });
 
         assert.deepStrictEqual(output, {
