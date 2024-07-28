@@ -1,15 +1,17 @@
-import {isTruthy} from '@augment-vir/common';
+import {awaitedBlockingMap, isTruthy} from '@augment-vir/common';
 import {
     defineVirmatorPlugin,
     getNpmBinPath,
     JsModuleType,
     NpmDepType,
+    VirmatorSilentError,
     withCompiledTsFile,
     withImportedTsFile,
 } from '@virmator/core';
 import {findClosestNodeModulesDir} from '@virmator/core/src/augments/fs/search';
 import {PackageType, VirmatorEnv} from '@virmator/core/src/plugin/plugin-env';
 import mri from 'mri';
+import {rm} from 'node:fs/promises';
 import {join, relative} from 'node:path';
 import type {RunOptions} from 'npm-check-updates';
 
@@ -23,15 +25,21 @@ export const virmatorDepsPlugin = defineVirmatorPlugin(
                     sections: [
                         {
                             content: `
-                                Various dependency commands. A sub command must be provided.
+                                Various dependency commands. A sub-command must be provided.
                             `,
                         },
                     ],
                     examples: [
                         {
+                            title: 'check import dependencies',
                             content: 'virmator deps check',
                         },
                         {
+                            title: 'upgrade npm dependencies',
+                            content: 'virmator deps upgrade',
+                        },
+                        {
+                            title: 'regenerate npm dependencies',
                             content: 'virmator deps regen',
                         },
                     ],
@@ -42,7 +50,9 @@ export const virmatorDepsPlugin = defineVirmatorPlugin(
                             sections: [
                                 {
                                     content: `
-                                        Checks that dependencies all pass your dependency cruiser config.
+                                        Checks that import dependencies pass your dependency cruiser config.
+                                        The base configuration blocks typical import errors such as
+                                        circular dependencies and importing test files.
                                     `,
                                 },
                             ],
@@ -97,7 +107,11 @@ export const virmatorDepsPlugin = defineVirmatorPlugin(
                         doc: {
                             sections: [
                                 {
-                                    content: 'Upgrades dependencies using npm-check-update.',
+                                    content: `
+                                        Upgrades dependencies using npm-check-update.
+                                        Does not automatically run 'npm i'.
+                                        It is recommended to run 'virmator deps regen' instead.
+                                    `,
                                 },
                             ],
                             examples: [
@@ -135,6 +149,24 @@ export const virmatorDepsPlugin = defineVirmatorPlugin(
                             },
                         },
                     },
+                    regen: {
+                        doc: {
+                            sections: [
+                                {
+                                    content: `
+                                        Force regeneration of all all dependencies by deleting all
+                                        node_modules directories and package-lock.json and then
+                                        running 'npm i'.
+                                    `,
+                                },
+                            ],
+                            examples: [
+                                {
+                                    content: 'virmator deps regen',
+                                },
+                            ],
+                        },
+                    },
                 },
             },
         },
@@ -143,6 +175,7 @@ export const virmatorDepsPlugin = defineVirmatorPlugin(
         cliInputs: {filteredArgs, usedCommands},
         package: {monoRepoRootPath, packageType, cwdPackagePath, monoRepoPackages},
         configs,
+        log,
         runPerPackage,
         runShellCommand,
         cwd,
@@ -215,10 +248,11 @@ export const virmatorDepsPlugin = defineVirmatorPlugin(
                 async (configFile) => {
                     const config = configFile.ncuConfig as RunOptions;
 
+                    /** C8 incorrectly thinks these imports are uncovered branches. */
+                    /* node:coverage ignore next 2 */
                     const ncu = await import('npm-check-updates');
-
-                    /** This is needed otherwise ncu breaks. */
                     const chalk = await import('npm-check-updates/build/src/lib/chalk');
+                    /** This is needed otherwise ncu breaks. */
                     await chalk.chalkInit(true);
 
                     await ncu.run(
@@ -234,8 +268,39 @@ export const virmatorDepsPlugin = defineVirmatorPlugin(
                     );
                 },
             );
+        } else if (usedCommands.deps?.subCommands.regen) {
+            const allNodeModulesDirectories = [
+                ...monoRepoPackages.map((monoPackage) =>
+                    join(monoRepoRootPath, monoPackage.relativePath, 'node_modules'),
+                ),
+                join(monoRepoRootPath, 'node_modules'),
+            ];
+
+            await awaitedBlockingMap(allNodeModulesDirectories, async (path) => {
+                log.faint(`Removing ${relative(monoRepoRootPath, path)}...`);
+                await rm(path, {
+                    force: true,
+                    recursive: true,
+                });
+            });
+
+            log.faint('Removing package-lock.json...');
+            await rm(join(monoRepoRootPath, 'package-lock.json'), {force: true});
+
+            const installCommand = [
+                'npm',
+                'i',
+                ...filteredArgs,
+            ].join(' ');
+
+            await runShellCommand(installCommand);
+            /** Run twice because npm needs this sometimes. */
+            await runShellCommand(installCommand);
         } else {
-            throw new Error('deps sub command needed.');
+            log.error(
+                "deps sub-command needed: 'virmator deps check', 'virmator deps upgrade', or 'virmator deps regen'",
+            );
+            throw new VirmatorSilentError();
         }
     },
 );

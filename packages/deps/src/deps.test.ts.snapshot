@@ -191,6 +191,54 @@ exports[`Deps > passes with custom config 1`] = `
 }
 `;
 
+exports[`Deps > regenerates deps 1`] = `
+{
+  "logs": {
+    "stdout": [
+      [
+        "Removing packages/a/node_modules...\\n"
+      ],
+      [
+        "Removing packages/b/node_modules...\\n"
+      ],
+      [
+        "Removing node_modules...\\n"
+      ],
+      [
+        "Removing package-lock.json...\\n"
+      ],
+      [
+        "> npm i --loglevel silent\\n"
+      ],
+      [
+        "> npm i --loglevel silent\\n"
+      ],
+      [
+        "deps finished.\\n"
+      ]
+    ]
+  }
+}
+`;
+
+exports[`Deps > rejects a missing sub command 1`] = `
+{
+  "logs": {
+    "stderr": [
+      [
+        "deps sub-command needed: 'virmator deps check', 'virmator deps upgrade', or 'virmator deps regen'\\n"
+      ],
+      [
+        "deps failed.\\n"
+      ]
+    ]
+  },
+  "error": {
+    "name": "VirmatorSilentError"
+  }
+}
+`;
+
 exports[`Deps > upgrades deps 1`] = `
 {
   "logs": {

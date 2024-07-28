@@ -49,4 +49,18 @@ describe(virmatorDepsPlugin.name, () => {
     it('upgrades deps', async (context) => {
         await testDepsPlugin(true, context, join(testFilesDir, 'upgrade'), 'upgrade');
     });
+
+    it('regenerates deps', async (context) => {
+        const dir = join(testFilesDir, 'valid-mono-repo');
+        await runShellCommand('npm i', {cwd: dir});
+        /**
+         * Silent log level is necessary to disable the "installed in X milliseconds" logs that npm
+         * spits out. With those logs, the tests are completely unstable.
+         */
+        await testDepsPlugin(true, context, dir, 'regen --loglevel silent');
+    });
+
+    it('rejects a missing sub command', async (context) => {
+        await testDepsPlugin(false, context, join(testFilesDir, 'valid-mono-repo'), '');
+    });
 });
