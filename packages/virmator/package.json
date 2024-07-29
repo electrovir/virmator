@@ -39,6 +39,7 @@
         "@virmator/format": "^13.0.0",
         "@virmator/frontend": "^13.0.0",
         "@virmator/spellcheck": "^13.0.0",
+        "@virmator/test": "^13.0.0",
         "tsx": "^4.16.2",
         "type-fest": "^4.23.0"
     },

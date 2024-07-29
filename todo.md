@@ -1,5 +1,7 @@
 -   port each command from virmator v12 into a plugin
 -   help command (built into /core?)
 -   help command or flag that can be passed into any command (`virmator compile --help` or maybe `virmator --help compile` or **`virmator help compile`**)
+-   add automatic dep install
+-   combine extra testPlugin args to an object param
 -   test calling `virmator` from with a sub dir of a package
 -   update all package keywords and descriptions.

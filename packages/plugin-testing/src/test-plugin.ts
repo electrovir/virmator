@@ -2,6 +2,7 @@ import {
     addSuffix,
     getOrSet,
     isTruthy,
+    mapObjectValues,
     MaybePromise,
     removeColor,
     wrapInTry,
@@ -46,7 +47,7 @@ function serializeLogArgs(
 }
 
 export type TestPluginResult = {
-    logs: Partial<Record<LogOutputType, unknown[][]>>;
+    logs: Partial<Record<LogOutputType, string[][]>>;
     contentsDiff: DirContents;
     error?: Error;
 };
@@ -81,20 +82,24 @@ export async function testPlugin(
     logTransform: LogTransform = (type, arg) => arg,
     excludeContents: string[] = [],
     beforeCleanupCallback?: (cwd: string) => MaybePromise<void>,
+    collapseLogs = false,
 ): Promise<void> {
     const logs: TestPluginResult['logs'] = {};
-    const logger: PluginLogger = createPluginLogger({
-        stderr: {
-            write(...args: unknown[]) {
-                return handleWrite(logs, LogOutputType.error, logTransform, args);
+    const logger: PluginLogger = createPluginLogger(
+        {
+            stderr: {
+                write(...args: unknown[]) {
+                    return handleWrite(logs, LogOutputType.error, logTransform, args);
+                },
+            },
+            stdout: {
+                write(...args: unknown[]) {
+                    return handleWrite(logs, LogOutputType.standard, logTransform, args);
+                },
             },
         },
-        stdout: {
-            write(...args: unknown[]) {
-                return handleWrite(logs, LogOutputType.standard, logTransform, args);
-            },
-        },
-    });
+        true,
+    );
 
     const fullExcludeList = [
         ...excludeContents,
@@ -125,7 +130,11 @@ export async function testPlugin(
     const contentsDiff = diffObjects(contentsBefore, contentsAfter)[1] as DirContents;
 
     const result: TestPluginResult = {
-        logs,
+        logs: collapseLogs
+            ? mapObjectValues(logs, (logType, logs) => {
+                  return [[logs.join(' ')]];
+              })
+            : logs,
         contentsDiff,
         ...(error ? {error} : {}),
     };

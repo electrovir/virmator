@@ -1,0 +1,81 @@
+exports[`Test > rejects missing env 1`] = `
+{
+  "logs": {
+    "stderr": [
+      [
+        "Test command requires an env argument: either 'node' or 'web'. test failed."
+      ]
+    ]
+  },
+  "error": {
+    "name": "VirmatorSilentError"
+  }
+}
+`;
+
+exports[`Test > runs web tests 1`] = `
+{
+  "logs": {
+    "stdout": [
+      [
+        "Copied web-test-runner.config.mjs > npx web-test-runner --color --config packages/test/test-files/browser-tests/configs/web-test-runner.config.mjs --one-browser Running 2 test files... src/good.test.ts: fake test [Webkit] ✓ tests a thing src/bad.test.ts: fake failing test [Webkit] 𐄂 fails a thing ❌ fake failing test > fails a thing AssertionError: expected false to be true + expected - actual -false +true at src/bad.test.ts:5:22"
+      ]
+    ],
+    "stderr": [
+      [
+        "test failed."
+      ]
+    ]
+  },
+  "contentsDiff": {
+    "configs": {
+      "web-test-runner.config.mjs": "import {getWebTestRunnerConfigWithCoveragePercent} from '@virmator/test/configs/web-test-runner.config.base.mjs';\\nimport {dirname} from 'path';\\nimport {fileURLToPath, pathToFileURL} from 'url';\\n\\nconst baseConfig = getWebTestRunnerConfigWithCoveragePercent({\\n    coveragePercent: 100,\\n    packageRootDirPath: dirname(dirname(fileURLToPath(import.meta.url))),\\n    extraScreenshotOptions: {},\\n});\\n\\n/** @type {import('@web/test-runner').TestRunnerConfig} */\\nconst webTestRunnerConfig = {\\n    ...baseConfig,\\n};\\n\\nexport default webTestRunnerConfig;\\n\\n/** Log the full config if this file file is run directly as a script, for debugging. */\\nif (import.meta.url === pathToFileURL(process.argv[1]).href) {\\n    console.info(JSON.stringify(webTestRunnerConfig, null, 4));\\n}\\n"
+    }
+  },
+  "error": {
+    "name": "VirmatorSilentError"
+  }
+}
+`;
+
+exports[`Test > tests a specific web file 1`] = `
+{
+  "logs": {
+    "stdout": [
+      [
+        "Copied web-test-runner.config.mjs > npx web-test-runner --color --config packages/test/test-files/browser-tests/configs/web-test-runner.config.mjs src/good.test.ts --one-browser Running 1 test files... src/good.test.ts: fake test [Webkit] ✓ tests a thing test finished."
+      ]
+    ]
+  },
+  "contentsDiff": {
+    "configs": {
+      "web-test-runner.config.mjs": "import {getWebTestRunnerConfigWithCoveragePercent} from '@virmator/test/configs/web-test-runner.config.base.mjs';\\nimport {dirname} from 'path';\\nimport {fileURLToPath, pathToFileURL} from 'url';\\n\\nconst baseConfig = getWebTestRunnerConfigWithCoveragePercent({\\n    coveragePercent: 100,\\n    packageRootDirPath: dirname(dirname(fileURLToPath(import.meta.url))),\\n    extraScreenshotOptions: {},\\n});\\n\\n/** @type {import('@web/test-runner').TestRunnerConfig} */\\nconst webTestRunnerConfig = {\\n    ...baseConfig,\\n};\\n\\nexport default webTestRunnerConfig;\\n\\n/** Log the full config if this file file is run directly as a script, for debugging. */\\nif (import.meta.url === pathToFileURL(process.argv[1]).href) {\\n    console.info(JSON.stringify(webTestRunnerConfig, null, 4));\\n}\\n"
+    }
+  }
+}
+`;
+
+exports[`Test > tests web coverage 1`] = `
+{
+  "logs": {
+    "stdout": [
+      [
+        "Copied web-test-runner.config.mjs > npx web-test-runner --color --config packages/test/test-files/coverage-browser-tests/configs/web-test-runner.config.mjs --coverage --one-browser Running 2 test files... src/all-files-for-code-coverage.test.ts: ----------|---------|----------|---------|---------|------------------- File | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s ----------|---------|----------|---------|---------|------------------- All files | 33.33 | 100 | 0 | 33.33 | good.ts | 33.33 | 100 | 0 | 33.33 | 2-3 ----------|---------|----------|---------|---------|------------------- src/good.test.ts: fake test [Chromium] ✓ tests a thing"
+      ]
+    ],
+    "stderr": [
+      [
+        "test failed."
+      ]
+    ]
+  },
+  "contentsDiff": {
+    "configs": {
+      "web-test-runner.config.mjs": "import {getWebTestRunnerConfigWithCoveragePercent} from '@virmator/test/configs/web-test-runner.config.base.mjs';\\nimport {dirname} from 'path';\\nimport {fileURLToPath, pathToFileURL} from 'url';\\n\\nconst baseConfig = getWebTestRunnerConfigWithCoveragePercent({\\n    coveragePercent: 100,\\n    packageRootDirPath: dirname(dirname(fileURLToPath(import.meta.url))),\\n    extraScreenshotOptions: {},\\n});\\n\\n/** @type {import('@web/test-runner').TestRunnerConfig} */\\nconst webTestRunnerConfig = {\\n    ...baseConfig,\\n};\\n\\nexport default webTestRunnerConfig;\\n\\n/** Log the full config if this file file is run directly as a script, for debugging. */\\nif (import.meta.url === pathToFileURL(process.argv[1]).href) {\\n    console.info(JSON.stringify(webTestRunnerConfig, null, 4));\\n}\\n"
+    }
+  },
+  "error": {
+    "name": "VirmatorSilentError"
+  }
+}
+`;

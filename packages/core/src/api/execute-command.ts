@@ -35,7 +35,7 @@ import {
     VirmatorPluginResolvedConfigs,
 } from '../plugin/plugin-executor';
 import {VirmatorPluginCliCommands} from '../plugin/plugin-init';
-import {log, PluginLogger} from '../plugin/plugin-logger';
+import {createPluginLogger, PluginLogger} from '../plugin/plugin-logger';
 import {copyPluginConfigs} from './copy-configs';
 import {parseCliArgs} from './parse-args';
 
@@ -227,12 +227,12 @@ function writeLog(
 
 /** The entry point to virmator. Runs a virmator command. */
 export async function executeVirmatorCommand({
-    log: logParam = log,
+    log: logParam,
     entryPointFilePath = '',
     cwd = process.cwd(),
     ...params
 }: ExecuteCommandParams) {
-    const log = logParam;
+    const log = logParam || createPluginLogger(process);
     const args = parseCliArgs({
         ...params,
         log,

@@ -1,0 +1,57 @@
+{
+    "name": "@virmator/test",
+    "version": "13.0.0",
+    "description": "Default test plugin for virmator.",
+    "keywords": [
+        "virmator",
+        "test",
+        "node",
+        "web",
+        "browser"
+    ],
+    "homepage": "https://github.com/electrovir/virmator",
+    "bugs": {
+        "url": "https://github.com/electrovir/virmator/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/electrovir/virmator.git"
+    },
+    "license": "(MIT or CC0 1.0)",
+    "author": {
+        "name": "electrovir",
+        "url": "https://github.com/electrovir"
+    },
+    "type": "module",
+    "main": "src/test.ts",
+    "module": "src/test.ts",
+    "types": "src/test.ts",
+    "scripts": {
+        "test": "tsx --test --experimental-test-snapshots --test-reporter spec 'src/**/*.test.ts'",
+        "test:all": "concurrently --colors --kill-others-on-fail -c auto --names tests \"npm run test:coverage\"",
+        "test:coverage": "c8 --config configs/c8.config.json npm test",
+        "test:types": "tsc -b -f --pretty",
+        "test:update": "tsx --test --experimental-test-snapshots --test-update-snapshots --test-reporter spec 'src/**/*.test.ts'"
+    },
+    "dependencies": {
+        "@augment-vir/common": "^29.3.0",
+        "glob": "^11.0.0",
+        "mri": "^1.2.0"
+    },
+    "devDependencies": {
+        "@open-wc/testing": "^4.0.0",
+        "@types/mocha": "^10.0.7",
+        "@types/node": "^22.0.0",
+        "@web/dev-server-esbuild": "^1.0.2",
+        "@web/test-runner": "^0.18.2",
+        "@web/test-runner-commands": "^0.9.0",
+        "@web/test-runner-playwright": "^0.11.0",
+        "@web/test-runner-visual-regression": "^0.9.0",
+        "c8": "^10.1.2",
+        "istanbul-smart-text-reporter": "^1.1.4",
+        "tsx": "^4.16.2"
+    },
+    "publishConfig": {
+        "access": "public"
+    }
+}
