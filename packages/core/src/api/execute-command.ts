@@ -207,15 +207,15 @@ function writeLog(
     logType: LogOutputType,
     extraOptions: PartialAndUndefined<ExtraRunShellCommandOptions> | undefined,
 ) {
-    const transformed = extraOptions?.logTransform?.[logType]
+    const transformed: string = extraOptions?.logTransform?.[logType]
         ? extraOptions.logTransform[logType](arg)
-        : log;
+        : arg;
     if (!transformed) {
         return;
     }
     const finalLog = [
         extraOptions?.logPrefix || '',
-        transformed,
+        transformed.replace(/\n$/, ''),
     ].join('');
 
     if (logType === LogOutputType.error) {

@@ -1,0 +1,50 @@
+{
+    "name": "@virmator/frontend",
+    "version": "13.0.0",
+    "description": "Default frontend plugin for virmator.",
+    "keywords": [
+        "virmator",
+        "frontend",
+        "vite",
+        "build",
+        "dev",
+        "server"
+    ],
+    "homepage": "https://github.com/electrovir/virmator",
+    "bugs": {
+        "url": "https://github.com/electrovir/virmator/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/electrovir/virmator.git"
+    },
+    "license": "(MIT or CC0 1.0)",
+    "author": {
+        "name": "electrovir",
+        "url": "https://github.com/electrovir"
+    },
+    "type": "module",
+    "main": "src/frontend.ts",
+    "module": "src/frontend.ts",
+    "types": "src/frontend.ts",
+    "scripts": {
+        "test": "tsx --test --experimental-test-snapshots --test-reporter spec 'src/**/*.test.ts'",
+        "test:all": "concurrently --colors --kill-others-on-fail -c auto --names tests \"npm run test\"",
+        "test:types": "tsc -b -f --pretty",
+        "test:update": "tsx --test --experimental-test-snapshots --test-update-snapshots --test-reporter spec 'src/**/*.test.ts'"
+    },
+    "dependencies": {
+        "@augment-vir/common": "^29.3.0",
+        "@augment-vir/node-js": "^29.3.0",
+        "mri": "^1.2.0"
+    },
+    "devDependencies": {
+        "@types/node": "^22.0.0",
+        "typescript": "^5.5.4",
+        "vite": "^5.3.4",
+        "vite-tsconfig-paths": "^4.3.2"
+    },
+    "publishConfig": {
+        "access": "public"
+    }
+}
