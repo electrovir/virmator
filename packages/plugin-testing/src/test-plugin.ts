@@ -7,8 +7,13 @@ import {
     wrapInTry,
     wrapString,
 } from '@augment-vir/common';
-import {createLogger, Logger, LogOutputType} from '@augment-vir/node-js';
-import {executeVirmatorCommand, VirmatorPlugin} from '@virmator/core';
+import {LogOutputType} from '@augment-vir/node-js';
+import {
+    createPluginLogger,
+    executeVirmatorCommand,
+    PluginLogger,
+    VirmatorPlugin,
+} from '@virmator/core';
 import {sep} from 'node:path';
 import {TestContext} from 'node:test';
 import {diffObjects, isPrimitive, isRunTimeType} from 'run-time-assertions';
@@ -78,7 +83,7 @@ export async function testPlugin(
     beforeCleanupCallback?: (cwd: string) => MaybePromise<void>,
 ): Promise<void> {
     const logs: TestPluginResult['logs'] = {};
-    const logger: Logger = createLogger({
+    const logger: PluginLogger = createPluginLogger({
         stderr: {
             write(...args: unknown[]) {
                 return handleWrite(logs, LogOutputType.error, logTransform, args);

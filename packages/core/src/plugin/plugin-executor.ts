@@ -1,5 +1,10 @@
-import type {AnyObject, MaybePromise, TypedFunction} from '@augment-vir/common';
-import type {Logger, runShellCommand} from '@augment-vir/node-js';
+import type {
+    AnyObject,
+    MaybePromise,
+    PartialAndUndefined,
+    TypedFunction,
+} from '@augment-vir/common';
+import type {LogOutputType, runShellCommand} from '@augment-vir/node-js';
 import {ChalkInstance} from 'chalk';
 import {EmptyObject, PackageJson} from 'type-fest';
 import {VirmatorPluginResolvedConfigFile} from './plugin-configs';
@@ -9,6 +14,7 @@ import {
     VirmatorPluginCliCommands,
     VirmatorPluginInit,
 } from './plugin-init';
+import {PluginLogger} from './plugin-logger';
 
 export type UsedVirmatorPluginCommands<
     Commands extends VirmatorPluginCliCommands = VirmatorPluginCliCommands,
@@ -59,6 +65,11 @@ export type RunPerPackage = (
     maxProcesses?: number | undefined,
 ) => Promise<void>;
 
+export type ExtraRunShellCommandOptions = {
+    logPrefix: string | undefined;
+    logTransform: Partial<Record<LogOutputType, (log: string) => string>>;
+};
+
 export type VirmatorPluginExecutorParams<
     Commands extends VirmatorPluginCliCommands = VirmatorPluginCliCommands,
 > = Readonly<{
@@ -82,12 +93,12 @@ export type VirmatorPluginExecutorParams<
 
     /** Run a shell command with sensible defaults. */
     runShellCommand: TypedFunction<
-        [...Parameters<typeof runShellCommand>, (string | undefined)?],
+        [...Parameters<typeof runShellCommand>, PartialAndUndefined<ExtraRunShellCommandOptions>?],
         ReturnType<typeof runShellCommand>
     >;
     runPerPackage: RunPerPackage;
 
-    log: Logger;
+    log: PluginLogger;
 
     configs: VirmatorPluginResolvedConfigs<Commands>;
 

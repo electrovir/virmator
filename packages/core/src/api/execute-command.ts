@@ -7,8 +7,7 @@ import {
     wrapInTry,
 } from '@augment-vir/common';
 import {
-    log,
-    Logger,
+    LogOutputType,
     readPackageJson,
     runShellCommand,
     type createLogger,
@@ -30,13 +29,14 @@ import {VirmatorPlugin} from '../plugin/plugin';
 import {VirmatorPluginResolvedConfigFile} from '../plugin/plugin-configs';
 import {PackageType} from '../plugin/plugin-env';
 import {
+    ExtraRunShellCommandOptions,
     MonoRepoPackage,
     VirmatorPluginExecutorParams,
     VirmatorPluginResolvedConfigs,
 } from '../plugin/plugin-executor';
 import {VirmatorPluginCliCommands} from '../plugin/plugin-init';
+import {log, PluginLogger} from '../plugin/plugin-logger';
 import {copyPluginConfigs} from './copy-configs';
-import type {emptyLogger} from './empty-logger';
 import {parseCliArgs} from './parse-args';
 
 export type ExecuteCommandParams = {
@@ -91,7 +91,7 @@ export type ExecuteCommandParams = {
      *   logger.
      * - Use {@link emptyLogger} from the `@virmator/core` npm package to easily block all logging.
      */
-    log: Logger;
+    log: PluginLogger;
     /**
      * The maximum number of concurrent processes that can run at the same time when running a
      * command per mono-repo sub package.
@@ -201,6 +201,30 @@ async function findMonoRepoDir(cwdPackagePath: string) {
     return cwdPackagePath;
 }
 
+function writeLog(
+    arg: string,
+    log: PluginLogger,
+    logType: LogOutputType,
+    extraOptions: PartialAndUndefined<ExtraRunShellCommandOptions> | undefined,
+) {
+    const transformed = extraOptions?.logTransform?.[logType]
+        ? extraOptions.logTransform[logType](arg)
+        : log;
+    if (!transformed) {
+        return;
+    }
+    const finalLog = [
+        extraOptions?.logPrefix || '',
+        transformed,
+    ].join('');
+
+    if (logType === LogOutputType.error) {
+        log.error(finalLog);
+    } else {
+        log.plain(finalLog);
+    }
+}
+
 /** The entry point to virmator. Runs a virmator command. */
 export async function executeVirmatorCommand({
     log: logParam = log,
@@ -239,7 +263,7 @@ export async function executeVirmatorCommand({
 
     const executorParams: VirmatorPluginExecutorParams<any> = {
         cliInputs: {
-            filteredArgs: args.filteredCommandArgs,
+            filteredArgs: args.filteredCommandArgs.filter(isTruthy),
             usedCommands: args.usedCommands,
         },
         log,
@@ -256,26 +280,16 @@ export async function executeVirmatorCommand({
             allPlugins: params.plugins,
             pluginPackagePath,
         },
-        async runShellCommand(command, options, prefix?: string | undefined) {
+        async runShellCommand(command, options, extraOptions) {
             log.faint(`> ${command}`);
             const result = await runShellCommand(command, {
                 cwd,
                 shell: 'bash',
                 stderrCallback(stderr) {
-                    process.stderr.write(
-                        [
-                            prefix || '',
-                            chalk.red(stderr),
-                        ].join(''),
-                    );
+                    writeLog(stderr, log, LogOutputType.error, extraOptions);
                 },
                 stdoutCallback(stdout) {
-                    process.stdout.write(
-                        [
-                            prefix || '',
-                            stdout,
-                        ].join(''),
-                    );
+                    writeLog(stdout, log, LogOutputType.standard, extraOptions);
                 },
                 ...options,
             });

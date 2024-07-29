@@ -1,6 +1,7 @@
 import {virmatorCompilePlugin} from '@virmator/compile';
 import {virmatorDepsPlugin} from '@virmator/deps';
 import {virmatorDocsPlugin} from '@virmator/docs';
+import {virmatorFormatPlugin} from '@virmator/format';
 import {virmatorSpellcheckPlugin} from '@virmator/spellcheck';
 
 export const defaultVirmatorPlugins = [
@@ -8,4 +9,5 @@ export const defaultVirmatorPlugins = [
     virmatorSpellcheckPlugin,
     virmatorDepsPlugin,
     virmatorDocsPlugin,
+    virmatorFormatPlugin,
 ];

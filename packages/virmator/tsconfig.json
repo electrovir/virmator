@@ -21,6 +21,15 @@
             "path": "../spellcheck"
         },
         {
+            "path": "../deps"
+        },
+        {
+            "path": "../docs"
+        },
+        {
+            "path": "../format"
+        },
+        {
             "path": "../compile"
         }
     ]

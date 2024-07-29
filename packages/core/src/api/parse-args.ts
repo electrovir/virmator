@@ -5,7 +5,6 @@ import {
     mapObjectValues,
     wrapInTry,
 } from '@augment-vir/common';
-import {Logger} from '@augment-vir/node-js';
 import {extractRelevantArgs} from 'cli-args-vir';
 import {isRunTimeType} from 'run-time-assertions';
 import {Writable} from 'type-fest';
@@ -13,6 +12,7 @@ import {accessAtKeys} from '../augments/object/access';
 import {VirmatorPlugin} from '../plugin/plugin';
 import {UsedVirmatorPluginCommands} from '../plugin/plugin-executor';
 import {VirmatorPluginCliCommands} from '../plugin/plugin-init';
+import {PluginLogger} from '../plugin/plugin-logger';
 import {SetVirmatorFlags, virmatorFlags} from './virmator-flags';
 
 export type ParsedArgs = {
@@ -116,7 +116,7 @@ export function parseCliArgs({
     plugins: ReadonlyArray<Readonly<VirmatorPlugin>>;
     cliCommand: string | ReadonlyArray<string>;
     entryPointFilePath: string;
-    log: Logger;
+    log: PluginLogger;
 }): ParsedArgs {
     const rawArgs: ReadonlyArray<string> = isRunTimeType(cliCommand, 'array')
         ? cliCommand

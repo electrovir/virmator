@@ -1,5 +1,5 @@
-import {Logger} from '@augment-vir/node-js';
 import {Writable} from 'stream';
+import {PluginLogger} from '../../plugin/plugin-logger';
 
 export class CallbackWritable extends Writable {
     private chunks: string[] = [];
@@ -19,7 +19,7 @@ export class CallbackWritable extends Writable {
         callback();
     }
 
-    constructor(private readonly logger: Logger) {
+    constructor(private readonly logger: PluginLogger) {
         super();
     }
 }

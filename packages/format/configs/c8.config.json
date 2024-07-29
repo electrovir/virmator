@@ -1,0 +1,9 @@
+{
+    "100": true,
+    "all": true,
+    "checkCoverage": true,
+    "clean": true,
+    "perFile": true,
+    "skipFull": true,
+    "src": "src"
+}

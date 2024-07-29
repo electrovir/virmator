@@ -1,6 +1,5 @@
 {
     "compilerOptions": {
-        "composite": true,
         "outDir": "./dist",
         "rootDir": "./src"
     },
@@ -13,5 +12,13 @@
         "./test-files",
         "./ts.out"
     ],
-    "extends": "../../configs/tsconfig.base.json"
+    "extends": "../../configs/tsconfig.base.json",
+    "references": [
+        {
+            "path": "../core"
+        },
+        {
+            "path": "../plugin-testing"
+        }
+    ]
 }

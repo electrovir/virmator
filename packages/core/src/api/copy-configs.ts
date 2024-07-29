@@ -1,5 +1,4 @@
-import {extractErrorMessage, MaybePromise} from '@augment-vir/common';
-import {Logger} from '@augment-vir/node-js';
+import {awaitedBlockingMap, extractErrorMessage, MaybePromise} from '@augment-vir/common';
 import {existsSync} from 'node:fs';
 import {mkdir, readFile, writeFile} from 'node:fs/promises';
 import {basename, dirname, join} from 'node:path';
@@ -10,6 +9,7 @@ import {
     UsedVirmatorPluginCommands,
     VirmatorPluginResolvedConfigs,
 } from '../plugin/plugin-executor';
+import {PluginLogger} from '../plugin/plugin-logger';
 
 export function flattenConfigs(
     usedCommands: Readonly<UsedVirmatorPluginCommands<any>>,
@@ -42,40 +42,40 @@ export async function copyPluginConfigs(
     resolvedConfigs: Readonly<VirmatorPluginResolvedConfigs<any>>,
     packageType: PackageType,
     monoRepoPackages: MonoRepoPackage[],
-    log: Logger,
+    log: PluginLogger,
 ) {
-    const configs = flattenConfigs(usedCommands, resolvedConfigs);
-
-    await Promise.all(
-        Object.values(configs).map(async (config) => {
-            if (
-                packageType === PackageType.MonoRoot &&
-                !config.packageType.includes(PackageType.MonoRoot) &&
-                config.packageType.includes(PackageType.MonoPackage)
-            ) {
-                await Promise.all(
-                    monoRepoPackages.map(async (repoPackage) => {
-                        await copyConfigFile(
-                            {
-                                ...config,
-                                fullCopyToPath: join(repoPackage.fullPath, config.copyToPath),
-                            },
-                            log,
-                        );
-                    }),
-                );
-            } else if (!config.required || !config.packageType.includes(packageType)) {
-                return;
-            } else {
-                await copyConfigFile(config, log);
-            }
-        }),
+    const configs = flattenConfigs(usedCommands, resolvedConfigs).sort((a, b) =>
+        basename(a.copyToPath).localeCompare(basename(b.copyToPath)),
     );
+
+    await awaitedBlockingMap(Object.values(configs), async (config) => {
+        if (
+            packageType === PackageType.MonoRoot &&
+            !config.packageType.includes(PackageType.MonoRoot) &&
+            config.packageType.includes(PackageType.MonoPackage)
+        ) {
+            await Promise.all(
+                monoRepoPackages.map(async (repoPackage) => {
+                    await copyConfigFile(
+                        {
+                            ...config,
+                            fullCopyToPath: join(repoPackage.fullPath, config.copyToPath),
+                        },
+                        log,
+                    );
+                }),
+            );
+        } else if (!config.required || !config.packageType.includes(packageType)) {
+            return;
+        } else {
+            await copyConfigFile(config, log);
+        }
+    });
 }
 
 export async function copyConfigFile(
     config: Readonly<Pick<VirmatorPluginResolvedConfigFile, 'fullCopyFromPath' | 'fullCopyToPath'>>,
-    log: Logger,
+    log: PluginLogger,
     /**
      * If `true`, the config will be copied even if the copy destination already exists.
      *

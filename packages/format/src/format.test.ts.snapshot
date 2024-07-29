@@ -1,0 +1,107 @@
+exports[`Format > does nothing in an already-formatted repo 1`] = `
+{
+  "logs": {
+    "stdout": [
+      [
+        "Copied .prettierignore\\n"
+      ],
+      [
+        "Copied prettier.config.mjs\\n"
+      ],
+      [
+        "> npx prettier --color --cache --cache-strategy content --list-different --write \\"./**/*.+(cjs|css|graphql|html|js|json|jsx|less|md|mjs|scss|toml|ts|tsx|yaml|yml)\\"\\n"
+      ],
+      [
+        "format finished.\\n"
+      ]
+    ]
+  },
+  "contentsDiff": {
+    ".prettierignore": "**/all-files-for-code-coverage.test.ts\\n**/coverage/\\n**/dist-*/\\n**/dist/\\n**/generated-config-*\\n**/graphics/\\n**/node_modules/\\n**/package-lock.json\\n**/ts.out/\\n**/tsconfig.tsbuildinfo\\n/Icon?",
+    "prettier.config.mjs": "import {basePrettierConfig} from '@virmator/format/configs/prettier.config.base.mjs';\\n\\n/**\\n * @typedef {import('prettier-plugin-multiline-arrays').MultilineArrayOptions} MultilineOptions\\n *\\n * @typedef {import('prettier').Options} PrettierOptions\\n * @type {PrettierOptions & MultilineOptions}\\n */\\nconst prettierConfig = {\\n    ...basePrettierConfig,\\n};\\n\\nexport default prettierConfig;\\n"
+  }
+}
+`;
+
+exports[`Format > fails an unformatted repo 1`] = `
+{
+  "logs": {
+    "stdout": [
+      [
+        "Copied .prettierignore\\n"
+      ],
+      [
+        "Copied prettier.config.mjs\\n"
+      ],
+      [
+        "> npx prettier --color --cache --cache-strategy content --check  \\"./**/*.+(cjs|css|graphql|html|js|json|jsx|less|md|mjs|scss|toml|ts|tsx|yaml|yml)\\"\\n"
+      ]
+    ],
+    "stderr": [
+      [
+        "[warn] a.ts\\n\\n"
+      ],
+      [
+        "format failed.\\n"
+      ]
+    ]
+  },
+  "contentsDiff": {
+    ".prettierignore": "**/all-files-for-code-coverage.test.ts\\n**/coverage/\\n**/dist-*/\\n**/dist/\\n**/generated-config-*\\n**/graphics/\\n**/node_modules/\\n**/package-lock.json\\n**/ts.out/\\n**/tsconfig.tsbuildinfo\\n/Icon?",
+    "prettier.config.mjs": "import {basePrettierConfig} from '@virmator/format/configs/prettier.config.base.mjs';\\n\\n/**\\n * @typedef {import('prettier-plugin-multiline-arrays').MultilineArrayOptions} MultilineOptions\\n *\\n * @typedef {import('prettier').Options} PrettierOptions\\n * @type {PrettierOptions & MultilineOptions}\\n */\\nconst prettierConfig = {\\n    ...basePrettierConfig,\\n};\\n\\nexport default prettierConfig;\\n"
+  },
+  "error": {
+    "name": "VirmatorSilentError"
+  }
+}
+`;
+
+exports[`Format > formats a specific file 1`] = `
+{
+  "logs": {
+    "stdout": [
+      [
+        "Copied .prettierignore\\n"
+      ],
+      [
+        "Copied prettier.config.mjs\\n"
+      ],
+      [
+        "> npx prettier --color --cache --cache-strategy content --check  package.json\\n"
+      ],
+      [
+        "format finished.\\n"
+      ]
+    ]
+  },
+  "contentsDiff": {
+    ".prettierignore": "**/all-files-for-code-coverage.test.ts\\n**/coverage/\\n**/dist-*/\\n**/dist/\\n**/generated-config-*\\n**/graphics/\\n**/node_modules/\\n**/package-lock.json\\n**/ts.out/\\n**/tsconfig.tsbuildinfo\\n/Icon?",
+    "prettier.config.mjs": "import {basePrettierConfig} from '@virmator/format/configs/prettier.config.base.mjs';\\n\\n/**\\n * @typedef {import('prettier-plugin-multiline-arrays').MultilineArrayOptions} MultilineOptions\\n *\\n * @typedef {import('prettier').Options} PrettierOptions\\n * @type {PrettierOptions & MultilineOptions}\\n */\\nconst prettierConfig = {\\n    ...basePrettierConfig,\\n};\\n\\nexport default prettierConfig;\\n"
+  }
+}
+`;
+
+exports[`Format > passes check on an already-formatted repo 1`] = `
+{
+  "logs": {
+    "stdout": [
+      [
+        "Copied .prettierignore\\n"
+      ],
+      [
+        "Copied prettier.config.mjs\\n"
+      ],
+      [
+        "> npx prettier --color --cache --cache-strategy content --check  \\"./**/*.+(cjs|css|graphql|html|js|json|jsx|less|md|mjs|scss|toml|ts|tsx|yaml|yml)\\"\\n"
+      ],
+      [
+        "format finished.\\n"
+      ]
+    ]
+  },
+  "contentsDiff": {
+    ".prettierignore": "**/all-files-for-code-coverage.test.ts\\n**/coverage/\\n**/dist-*/\\n**/dist/\\n**/generated-config-*\\n**/graphics/\\n**/node_modules/\\n**/package-lock.json\\n**/ts.out/\\n**/tsconfig.tsbuildinfo\\n/Icon?",
+    "prettier.config.mjs": "import {basePrettierConfig} from '@virmator/format/configs/prettier.config.base.mjs';\\n\\n/**\\n * @typedef {import('prettier-plugin-multiline-arrays').MultilineArrayOptions} MultilineOptions\\n *\\n * @typedef {import('prettier').Options} PrettierOptions\\n * @type {PrettierOptions & MultilineOptions}\\n */\\nconst prettierConfig = {\\n    ...basePrettierConfig,\\n};\\n\\nexport default prettierConfig;\\n"
+  }
+}
+`;

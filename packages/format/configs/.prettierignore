@@ -9,5 +9,3 @@
 **/ts.out/
 **/tsconfig.tsbuildinfo
 /Icon?
-
-packages/format/test-files/bad-format

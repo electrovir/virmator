@@ -142,7 +142,16 @@ export const virmatorDocsPlugin = defineVirmatorPlugin(
                 await runShellCommand(
                     mdCodeCommand,
                     {cwd: packageDir},
-                    color && packageName ? color(`[${packageName}] `) : undefined,
+                    {
+                        logPrefix: color && packageName ? color(`[${packageName}] `) : undefined,
+                        logTransform: {
+                            stderr: (stderrInput) =>
+                                stderrInput.replace(
+                                    'Run without --check to update.',
+                                    'Run without the "check" sub-command in order to update.',
+                                ),
+                        },
+                    },
                 );
             } catch (caught) {
                 const error = ensureError(caught);
