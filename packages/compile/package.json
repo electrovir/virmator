@@ -41,6 +41,7 @@
         "@types/node": "^20.14.12",
         "@virmator/plugin-testing": "^13.0.0",
         "c8": "^10.1.2",
+        "chalk": "^5.3.0",
         "concurrently": "^8.2.2",
         "mono-vir": "^1.0.1",
         "tsx": "^4.16.2",

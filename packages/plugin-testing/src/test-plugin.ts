@@ -13,7 +13,7 @@ import {sep} from 'node:path';
 import {TestContext} from 'node:test';
 import {diffObjects, isPrimitive, isRunTimeType} from 'run-time-assertions';
 import {DirContents, readAllDirContents, resetDirContents} from './augments/index';
-import {monoRepoDir} from './file-paths.mock';
+import {monoRepoDir} from './file-paths';
 
 export type LogTransform = (logType: LogOutputType, arg: string) => string | undefined;
 

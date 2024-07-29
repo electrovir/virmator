@@ -1,7 +1,6 @@
 import {awaitedBlockingMap, isTruthy} from '@augment-vir/common';
 import {
     defineVirmatorPlugin,
-    getNpmBinPath,
     JsModuleType,
     NpmDepType,
     PackageType,
@@ -64,8 +63,8 @@ export const virmatorDepsPlugin = defineVirmatorPlugin(
                         },
                         configFiles: {
                             depCruiser: {
-                                copyFromPath: join('configs', 'dep-cruiser.config.ts'),
-                                copyToPath: join('configs', 'dep-cruiser.config.ts'),
+                                copyFromPath: join('configs', 'dep-cruiser.config.cts'),
+                                copyToPath: join('configs', 'dep-cruiser.config.cts'),
                                 env: [
                                     VirmatorEnv.Node,
                                     VirmatorEnv.Web,
@@ -181,11 +180,6 @@ export const virmatorDepsPlugin = defineVirmatorPlugin(
         cwd,
     }) => {
         if (usedCommands.deps?.subCommands.check) {
-            const depCruiseCommand = await getNpmBinPath({
-                cwd,
-                command: 'depcruise',
-            });
-
             const args = mri(filteredArgs);
 
             const pathToCheck: string = args._.length ? '' : 'src';
@@ -214,7 +208,8 @@ export const virmatorDepsPlugin = defineVirmatorPlugin(
                               ];
 
                         return [
-                            depCruiseCommand,
+                            'npx',
+                            'depcruise',
                             ...config,
                             pathToCheck,
                             ...filteredArgs,

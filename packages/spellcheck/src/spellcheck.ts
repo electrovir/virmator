@@ -1,11 +1,5 @@
 import {isTruthy} from '@augment-vir/common';
-import {
-    defineVirmatorPlugin,
-    getNpmBinPath,
-    NpmDepType,
-    PackageType,
-    VirmatorEnv,
-} from '@virmator/core';
+import {defineVirmatorPlugin, NpmDepType, PackageType, VirmatorEnv} from '@virmator/core';
 import mri from 'mri';
 import {join, relative} from 'node:path';
 import {isRunTimeType} from 'run-time-assertions';
@@ -67,8 +61,6 @@ export const virmatorSpellcheckPlugin = defineVirmatorPlugin(
         },
     },
     async ({cliInputs, cwd, package: {cwdPackagePath}, configs, runShellCommand}) => {
-        const commandPath = await getNpmBinPath({command: 'cspell', cwd});
-
         const args = mri(cliInputs.filteredArgs, {
             alias: {
                 config: ['c'],
@@ -82,7 +74,8 @@ export const virmatorSpellcheckPlugin = defineVirmatorPlugin(
             args['file-list'] || args.file ? '' : args._.length ? `--file ${args._}` : '.';
 
         const fullCommand = [
-            commandPath,
+            'npx',
+            'cspell',
             '--config',
             configPath,
             '--dot',
@@ -93,8 +86,10 @@ export const virmatorSpellcheckPlugin = defineVirmatorPlugin(
             args['--cache-strategy'] || 'content',
             ...cliInputs.filteredArgs,
             filesArg,
-        ].filter(isTruthy);
+        ]
+            .filter(isTruthy)
+            .join(' ');
 
-        await runShellCommand(fullCommand.join(' '));
+        await runShellCommand(fullCommand);
     },
 );

@@ -1,8 +1,6 @@
 import {ensureError, isTruthy} from '@augment-vir/common';
-import {virmatorCompilePlugin} from '@virmator/compile';
 import {
     defineVirmatorPlugin,
-    getNpmBinPath,
     JsModuleType,
     NpmDepType,
     PackageType,
@@ -10,6 +8,7 @@ import {
     VirmatorSilentError,
     withImportedTsFile,
 } from '@virmator/core';
+import {ChalkInstance} from 'chalk';
 import mri from 'mri';
 import {join} from 'node:path';
 import type * as Typedoc from 'typedoc';
@@ -68,7 +67,6 @@ export const virmatorDocsPlugin = defineVirmatorPlugin(
                         ],
                         required: true,
                     },
-                    tsconfig: virmatorCompilePlugin.cliCommands.compile.configFiles.tsconfigPackage,
                 },
                 npmDeps: {
                     'markdown-code-example-inserter': {
@@ -112,27 +110,22 @@ export const virmatorDocsPlugin = defineVirmatorPlugin(
     },
     async ({
         cliInputs: {filteredArgs, usedCommands},
-        package: {monoRepoRootPath, packageType, cwdPackagePath, cwdPackageJson},
+        package: {packageType, cwdPackagePath, cwdPackageJson},
         configs,
         log,
         runPerPackage,
         runShellCommand,
-        cwd,
     }) => {
         const checkOnly: boolean = !!usedCommands.docs?.subCommands.check;
 
         const args = mri(filteredArgs);
 
         /** Run md-code. */
-        const mdCodeBin = await getNpmBinPath({
-            command: 'md-code',
-            cwd,
-        });
-
         const mdFilesArg = args._.some((arg) => arg.endsWith('.md')) ? '' : "'./**/*.md'";
 
         const mdCodeCommand = [
-            mdCodeBin,
+            'npx',
+            'md-code',
             checkOnly ? '--check' : '',
             ...filteredArgs,
             mdFilesArg,
@@ -140,51 +133,67 @@ export const virmatorDocsPlugin = defineVirmatorPlugin(
             .filter(isTruthy)
             .join(' ');
 
-        try {
-            await runShellCommand(mdCodeCommand);
-        } catch (caught) {
-            const error = ensureError(caught);
-            /** Don't error for missing files. */
-            if (!error.message.toLowerCase().includes('no markdown files')) {
-                throw error;
+        async function runDocs(
+            packageDir: string,
+            packageName: string | undefined,
+            color: ChalkInstance | undefined,
+        ) {
+            try {
+                await runShellCommand(
+                    mdCodeCommand,
+                    {cwd: packageDir},
+                    color && packageName ? color(`[${packageName}] `) : undefined,
+                );
+            } catch (caught) {
+                const error = ensureError(caught);
+                /** Don't error for missing files. */
+                if (!error.message.toLowerCase().includes('no markdown files')) {
+                    throw error;
+                }
             }
-        }
 
-        /** Run typedoc */
-        const typedocVerb = checkOnly ? 'check' : 'generation';
+            /** Run typedoc */
+            const typedocVerb = checkOnly ? 'check' : 'generation';
+
+            if (packageType !== PackageType.MonoRoot && cwdPackageJson.private) {
+                log.faint(`Skipping typedoc ${typedocVerb} in private repo.`);
+                return;
+            }
+
+            await withImportedTsFile(
+                {
+                    inputPath: join(packageDir, configs.docs.configs.typedoc.copyFromPath),
+                    outputPath: join(packageDir, 'node_modules', '.virmator', 'typedoc.config.cjs'),
+                },
+                JsModuleType.Cjs,
+                async (loadedConfig) => {
+                    const typedocOptions: Typedoc.TypeDocOptions = loadedConfig.typeDocConfig;
+
+                    // dynamic imports are not branches
+                    /* node:coverage ignore next */
+                    const typedoc = await import('typedoc');
+
+                    const fullTypedocOptions: Typedoc.TypeDocOptions = {
+                        ...typedocOptions,
+                        ...(checkOnly ? {emit: typedoc.Configuration.EmitStrategy.none} : {}),
+                        tsconfig: join(packageDir, 'tsconfig.json'),
+                    };
+
+                    if (!(await runTypedoc(fullTypedocOptions, typedoc))) {
+                        throw new VirmatorSilentError();
+                    }
+                },
+            );
+        }
 
         if (packageType === PackageType.MonoRoot) {
-            log.faint(`Skipping typedoc ${typedocVerb} in mono-repo root.`);
-            return;
-        } else if (cwdPackageJson.private) {
-            log.faint(`Skipping typedoc ${typedocVerb} in private repo.`);
-            return;
+            await runPerPackage(async ({color, packageCwd, packageName}) => {
+                await runDocs(packageCwd, packageName, color);
+                return undefined;
+            });
+        } else {
+            await runDocs(cwdPackagePath, undefined, undefined);
         }
-
-        await withImportedTsFile(
-            {
-                inputPath: join(cwdPackagePath, configs.docs.configs.typedoc.copyFromPath),
-                outputPath: join(cwdPackagePath, 'node_modules', '.virmator', 'typedoc.config.cjs'),
-            },
-            JsModuleType.Cjs,
-            async (loadedConfig) => {
-                const typedocOptions: Typedoc.TypeDocOptions = loadedConfig.typeDocConfig;
-
-                // dynamic imports are not branches
-                /* node:coverage ignore next */
-                const typedoc = await import('typedoc');
-
-                const fullTypedocOptions: Typedoc.TypeDocOptions = {
-                    ...typedocOptions,
-                    ...(checkOnly ? {emit: typedoc.Configuration.EmitStrategy.none} : {}),
-                    tsconfig: join(cwdPackagePath, 'tsconfig.json'),
-                };
-
-                if (!(await runTypedoc(fullTypedocOptions, typedoc))) {
-                    throw new VirmatorSilentError();
-                }
-            },
-        );
     },
 );
 

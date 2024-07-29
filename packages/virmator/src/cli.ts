@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#!/usr/bin/env -S npx tsx
 
 import {log} from '@augment-vir/node-js';
 import {executeVirmatorCommand, VirmatorSilentError} from '@virmator/core';

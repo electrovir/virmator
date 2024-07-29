@@ -1,6 +1,7 @@
 import {
     awaitedBlockingMap,
     filterMap,
+    isTruthy,
     mapObjectValues,
     PartialAndUndefined,
     wrapInTry,
@@ -12,6 +13,7 @@ import {
     runShellCommand,
     type createLogger,
 } from '@augment-vir/node-js';
+import chalk from 'chalk';
 import concurrently, {CloseEvent, ConcurrentlyCommandInput} from 'concurrently';
 import {getRelativePosixPackagePathsInDependencyOrder} from 'mono-vir';
 import {existsSync} from 'node:fs';
@@ -21,6 +23,7 @@ import {isRunTimeType} from 'run-time-assertions';
 import {PackageJson} from 'type-fest';
 import {findClosestPackageDir} from '../augments/index';
 import {CallbackWritable} from '../augments/stream/callback-writable';
+import {getTerminalColor, terminalColors} from '../colors';
 import {VirmatorInternalError} from '../errors/virmator-internal.error';
 import {VirmatorSilentError} from '../errors/virmator-silent.error';
 import {VirmatorPlugin} from '../plugin/plugin';
@@ -173,6 +176,7 @@ async function getMonoRepoPackages(cwdPackagePath: string): Promise<MonoRepoPack
             return {
                 packageName: packageJson?.name || packagePath,
                 relativePath: packagePath,
+                fullPath: join(cwdPackagePath, packagePath),
             };
         }),
     );
@@ -231,7 +235,7 @@ export async function executeVirmatorCommand({
     );
     const monoRepoPackages =
         packageType === PackageType.MonoRoot ? await getMonoRepoPackages(cwdPackagePath) : [];
-    const maxProcesses = params.concurrency || cpus().length - 1 || 1;
+    const outerMaxProcesses = params.concurrency || cpus().length - 1 || 1;
 
     const executorParams: VirmatorPluginExecutorParams<any> = {
         cliInputs: {
@@ -252,16 +256,26 @@ export async function executeVirmatorCommand({
             allPlugins: params.plugins,
             pluginPackagePath,
         },
-        async runShellCommand(command, options) {
+        async runShellCommand(command, options, prefix?: string | undefined) {
             log.faint(`> ${command}`);
             const result = await runShellCommand(command, {
                 cwd,
                 shell: 'bash',
                 stderrCallback(stderr) {
-                    log.error(stderr);
+                    process.stderr.write(
+                        [
+                            prefix || '',
+                            chalk.red(stderr),
+                        ].join(''),
+                    );
                 },
                 stdoutCallback(stdout) {
-                    log.faint(stdout);
+                    process.stdout.write(
+                        [
+                            prefix || '',
+                            stdout,
+                        ].join(''),
+                    );
                 },
                 ...options,
             });
@@ -272,7 +286,7 @@ export async function executeVirmatorCommand({
 
             return result;
         },
-        async runPerPackage(generateCliCommandString) {
+        async runPerPackage(generateCliCommandString, maxProcesses: number | undefined) {
             if (packageType !== PackageType.MonoRoot) {
                 throw new Error(`Cannot run "runPerPackage" on non-mono-repo.`);
             } else if (!monoRepoPackages.length) {
@@ -281,22 +295,27 @@ export async function executeVirmatorCommand({
                 );
             }
 
-            const commands: Exclude<ConcurrentlyCommandInput, string>[] = await awaitedBlockingMap(
-                monoRepoPackages,
-                async (monoRepoPackage) => {
+            const commands: Exclude<ConcurrentlyCommandInput, string>[] = (
+                await awaitedBlockingMap(monoRepoPackages, async (monoRepoPackage, index) => {
+                    const color = chalk[getTerminalColor(index)];
                     const absolutePackagePath = join(cwd, monoRepoPackage.relativePath);
                     const command = await generateCliCommandString({
                         packageCwd: absolutePackagePath,
                         packageName: monoRepoPackage.packageName,
+                        color,
                     });
-                    log.faint(`[${monoRepoPackage.packageName}] > ${command}`);
+
+                    if (!command) {
+                        return undefined;
+                    }
+                    log.faint(`${color(`[${monoRepoPackage.packageName}]`)} > ${command}`);
                     return {
                         command,
                         cwd: absolutePackagePath,
                         name: monoRepoPackage.packageName,
                     };
-                },
-            );
+                })
+            ).filter(isTruthy);
 
             const writeStream = new CallbackWritable(log);
 
@@ -308,11 +327,11 @@ export async function executeVirmatorCommand({
 
             try {
                 concurrentlyResults = await concurrently(commands, {
-                    prefixColors: ['auto'],
+                    prefixColors: [...terminalColors],
                     killOthers: 'failure',
                     killSignal: 'SIGKILL',
                     outputStream: writeStream,
-                    maxProcesses,
+                    maxProcesses: maxProcesses || outerMaxProcesses,
                 }).result;
             } catch (error) {
                 failed = true;
@@ -343,7 +362,13 @@ export async function executeVirmatorCommand({
     };
 
     if (!args.virmatorFlags['--no-configs']) {
-        await copyPluginConfigs(args.usedCommands, resolvedConfigs, packageType, log);
+        await copyPluginConfigs(
+            args.usedCommands,
+            resolvedConfigs,
+            packageType,
+            monoRepoPackages,
+            log,
+        );
     }
 
     try {

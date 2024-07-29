@@ -7,21 +7,18 @@
         "packages/*"
     ],
     "scripts": {
-        "build": "virmator frontend build",
         "compile": "virmator compile",
         "docs": "virmator docs",
         "format": "virmator format",
-        "preview": "virmator frontend preview",
         "publish": "virmator publish \"npm run compile && npm run test:all\"",
-        "start": "virmator frontend",
         "test": "virmator test",
-        "test:all": "concurrently --colors --kill-others-on-fail -c auto --names types,tests,spelling,format,docs,deps \"npm run test:types\" \"npm run test:coverage\" \"npm run test:spelling\" \"npm run test:format\" \"npm run test:docs\" \"npm run test:deps\"",
+        "test:all": "npm run compile && concurrently --colors --kill-others-on-fail -c auto --names tests,spelling,format,docs,deps \"npm run test:coverage\" \"npm run test:spelling\" \"npm run test:format\" \"npm run test:docs\" \"npm run test:deps\"",
         "test:coverage": "npm run test coverage",
         "test:deps": "virmator deps check",
         "test:docs": "virmator docs check",
         "test:format": "virmator format check",
         "test:spelling": "virmator spellcheck",
-        "test:types": "mono-vir for-each tsc -b -f --pretty"
+        "test:types": "npm run compile"
     },
     "devDependencies": {
         "mono-vir": "^1.0.1",
@@ -34,6 +31,9 @@
         "prettier-plugin-packagejson": "^2.5.1",
         "prettier-plugin-sort-json": "^4.0.0",
         "prettier-plugin-toml": "^2.0.1",
-        "virmator": "^12.0.4"
+        "virmator": "./"
+    },
+    "overrides": {
+        "virmator": "*"
     }
 }

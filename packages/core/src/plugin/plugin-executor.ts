@@ -1,5 +1,6 @@
-import type {AnyObject, MaybePromise} from '@augment-vir/common';
+import type {AnyObject, MaybePromise, TypedFunction} from '@augment-vir/common';
 import type {Logger, runShellCommand} from '@augment-vir/node-js';
+import {ChalkInstance} from 'chalk';
 import {EmptyObject, PackageJson} from 'type-fest';
 import {VirmatorPluginResolvedConfigFile} from './plugin-configs';
 import {PackageType} from './plugin-env';
@@ -46,13 +47,16 @@ export type VirmatorPluginResolvedConfigs<
 export type MonoRepoPackage = {
     packageName: string;
     relativePath: string;
+    fullPath: string;
 };
 
 export type RunPerPackage = (
     generateCliCommandString: (params: {
         packageCwd: string;
         packageName: string;
-    }) => MaybePromise<string>,
+        color: ChalkInstance;
+    }) => MaybePromise<string | undefined>,
+    maxProcesses?: number | undefined,
 ) => Promise<void>;
 
 export type VirmatorPluginExecutorParams<
@@ -77,7 +81,10 @@ export type VirmatorPluginExecutorParams<
     };
 
     /** Run a shell command with sensible defaults. */
-    runShellCommand: typeof runShellCommand;
+    runShellCommand: TypedFunction<
+        [...Parameters<typeof runShellCommand>, (string | undefined)?],
+        ReturnType<typeof runShellCommand>
+    >;
     runPerPackage: RunPerPackage;
 
     log: Logger;

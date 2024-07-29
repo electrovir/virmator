@@ -4,6 +4,7 @@ module.exports = {
     ...baseConfig,
     ignorePaths: [
         ...baseConfig.ignorePaths,
+        'packages/spellcheck/test-files/fail-spellcheck',
     ],
     words: [
         ...baseConfig.words,

@@ -2,13 +2,13 @@ import {isTruthy} from '@augment-vir/common';
 import {
     copyConfigFile,
     defineVirmatorPlugin,
-    getNpmBinPath,
     NpmDepType,
     PackageType,
     parseTsConfig,
     VirmatorEnv,
     VirmatorPluginExecutorParams,
 } from '@virmator/core';
+import type {ChalkInstance} from 'chalk';
 import {rm} from 'node:fs/promises';
 import {basename, join, relative} from 'node:path';
 
@@ -99,27 +99,38 @@ export const virmatorCompilePlugin = defineVirmatorPlugin(
         } = params;
 
         if (packageType === PackageType.MonoRoot) {
-            await runPerPackage(async ({packageCwd, packageName}) => {
-                await copyConfigFile(
-                    {
-                        ...configs.compile.configs.tsconfigPackage,
-                        fullCopyToPath: join(packageCwd, 'tsconfig.json'),
-                    },
-                    log,
-                    false,
-                    (contents) => {
-                        return contents.replace(
-                            '@virmator/compile/configs/tsconfig.base.json',
-                            join(
-                                relative(packageCwd, cwdPackagePath),
-                                configs.compile.configs.tsconfigMono.copyToPath,
-                            ),
-                        );
-                    },
-                    packageName,
-                );
-                return await createCompileCommandString({...params, cwd: packageCwd}, packageName);
-            });
+            await runPerPackage(
+                async ({packageCwd, packageName, color}) => {
+                    await copyConfigFile(
+                        {
+                            ...configs.compile.configs.tsconfigPackage,
+                            fullCopyToPath: join(packageCwd, 'tsconfig.json'),
+                        },
+                        log,
+                        false,
+                        (contents) => {
+                            return contents.replace(
+                                '@virmator/compile/configs/tsconfig.base.json',
+                                join(
+                                    relative(packageCwd, cwdPackagePath),
+                                    configs.compile.configs.tsconfigMono.copyToPath,
+                                ),
+                            );
+                        },
+                        packageName,
+                    );
+                    return await createCompileCommandString(
+                        {...params, cwd: packageCwd},
+                        packageName,
+                        color,
+                    );
+                },
+                /**
+                 * Compiling each package needs to happen in series so that dependent packages are
+                 * compiled first.
+                 */
+                1,
+            );
         } else {
             await runShellCommand(await createCompileCommandString(params, undefined));
         }
@@ -129,25 +140,27 @@ export const virmatorCompilePlugin = defineVirmatorPlugin(
 async function createCompileCommandString(
     {cwd, cliInputs, log}: Pick<VirmatorPluginExecutorParams<any>, 'cwd' | 'cliInputs' | 'log'>,
     packageName: string | undefined,
+    prefixColor?: ChalkInstance,
 ): Promise<string> {
-    const commandPath = await getNpmBinPath({command: 'tsc', cwd});
-
     const tsconfig = parseTsConfig(cwd);
     const outDir = tsconfig?.options.outDir;
 
-    const logPrefix = packageName ? `[${packageName}] ` : '';
+    const logPrefix = packageName && prefixColor ? prefixColor(`[${packageName}] `) : '';
 
     if (outDir) {
         log.faint(`${logPrefix}Deleting ${basename(outDir)}...`);
 
         await rm(outDir, {force: true, recursive: true});
     }
+    log.faint(`${logPrefix}Deleting tsconfig.tsbuildinfo...`);
+    await rm(join(cwd, 'tsconfig.tsbuildinfo'), {force: true});
 
     log.faint(`${logPrefix}Compiling...`);
 
     const fullCommand = [
-        commandPath,
-        tsconfig?.options.composite ? '-b -f' : '',
+        'npx',
+        'tsc',
+        tsconfig?.options.composite ? '-b' : '',
         '--pretty',
         ...cliInputs.filteredArgs,
     ].filter(isTruthy);

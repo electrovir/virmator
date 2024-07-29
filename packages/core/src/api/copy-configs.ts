@@ -1,11 +1,15 @@
 import {extractErrorMessage, MaybePromise} from '@augment-vir/common';
-import {log as defaultLog, Logger} from '@augment-vir/node-js';
+import {Logger} from '@augment-vir/node-js';
 import {existsSync} from 'node:fs';
 import {mkdir, readFile, writeFile} from 'node:fs/promises';
-import {basename, dirname} from 'node:path';
+import {basename, dirname, join} from 'node:path';
 import {VirmatorPluginResolvedConfigFile} from '../plugin/plugin-configs';
 import {PackageType} from '../plugin/plugin-env';
-import {UsedVirmatorPluginCommands, VirmatorPluginResolvedConfigs} from '../plugin/plugin-executor';
+import {
+    MonoRepoPackage,
+    UsedVirmatorPluginCommands,
+    VirmatorPluginResolvedConfigs,
+} from '../plugin/plugin-executor';
 
 export function flattenConfigs(
     usedCommands: Readonly<UsedVirmatorPluginCommands<any>>,
@@ -37,16 +41,34 @@ export async function copyPluginConfigs(
     usedCommands: Readonly<UsedVirmatorPluginCommands>,
     resolvedConfigs: Readonly<VirmatorPluginResolvedConfigs<any>>,
     packageType: PackageType,
-    log: Logger = defaultLog,
+    monoRepoPackages: MonoRepoPackage[],
+    log: Logger,
 ) {
     const configs = flattenConfigs(usedCommands, resolvedConfigs);
 
     await Promise.all(
         Object.values(configs).map(async (config) => {
-            if (!config.required || !config.packageType.includes(packageType)) {
+            if (
+                packageType === PackageType.MonoRoot &&
+                !config.packageType.includes(PackageType.MonoRoot) &&
+                config.packageType.includes(PackageType.MonoPackage)
+            ) {
+                await Promise.all(
+                    monoRepoPackages.map(async (repoPackage) => {
+                        await copyConfigFile(
+                            {
+                                ...config,
+                                fullCopyToPath: join(repoPackage.fullPath, config.copyToPath),
+                            },
+                            log,
+                        );
+                    }),
+                );
+            } else if (!config.required || !config.packageType.includes(packageType)) {
                 return;
+            } else {
+                await copyConfigFile(config, log);
             }
-            await copyConfigFile(config, log);
         }),
     );
 }

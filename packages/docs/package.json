@@ -22,15 +22,22 @@
         "url": "https://github.com/electrovir"
     },
     "type": "module",
-    "main": "src/deps.ts",
-    "module": "src/deps.ts",
-    "types": "src/deps.ts",
+    "main": "src/docs.ts",
+    "module": "src/docs.ts",
+    "types": "src/docs.ts",
     "scripts": {
         "test": "tsx --test --experimental-test-snapshots --test-reporter spec 'src/**/*.test.ts'",
         "test:all": "concurrently --colors --kill-others-on-fail -c auto --names tests \"npm run test:coverage\"",
         "test:coverage": "c8 --config configs/c8.config.json npm test",
         "test:types": "tsc -b -f --pretty",
         "test:update": "tsx --test --experimental-test-snapshots --test-update-snapshots --test-reporter spec 'src/**/*.test.ts'"
+    },
+    "dependencies": {
+        "@augment-vir/common": "^29.3.0",
+        "@augment-vir/node-js": "^29.3.0",
+        "chalk": "^5.3.0",
+        "mri": "^1.2.0",
+        "run-time-assertions": "^1.5.2"
     },
     "devDependencies": {
         "@types/node": "^22.0.0",
@@ -39,11 +46,5 @@
     },
     "publishConfig": {
         "access": "public"
-    },
-    "dependencies": {
-        "@augment-vir/common": "^29.3.0",
-        "@augment-vir/node-js": "^29.3.0",
-        "mri": "^1.2.0",
-        "run-time-assertions": "^1.5.2"
     }
 }

@@ -144,6 +144,7 @@ const baseConfig = {
         'localmodule',
         'localstorage',
         'locationchange',
+        'loglevel',
         'longterm',
         'luxon',
         'macquarie',
