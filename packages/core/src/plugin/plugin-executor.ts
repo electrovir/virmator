@@ -6,7 +6,7 @@ import type {
 } from '@augment-vir/common';
 import type {LogOutputType, runShellCommand} from '@augment-vir/node-js';
 import {ChalkInstance} from 'chalk';
-import {EmptyObject, PackageJson} from 'type-fest';
+import {EmptyObject, PackageJson, SetRequired} from 'type-fest';
 import {VirmatorPluginResolvedConfigFile} from './plugin-configs';
 import {PackageType} from './plugin-env';
 import {
@@ -70,6 +70,8 @@ export type ExtraRunShellCommandOptions = {
     logTransform: Partial<Record<LogOutputType, (log: string) => string>>;
 };
 
+export type ValidPackageJson = SetRequired<PackageJson, 'name' | 'version'>;
+
 export type VirmatorPluginExecutorParams<
     Commands extends VirmatorPluginCliCommands = VirmatorPluginCliCommands,
 > = Readonly<{
@@ -88,7 +90,7 @@ export type VirmatorPluginExecutorParams<
         monoRepoRootPath: string;
         /** In dependency graph order, with packages that have no interconnected dependencies first. */
         monoRepoPackages: MonoRepoPackage[];
-        cwdPackageJson: PackageJson;
+        cwdPackageJson: ValidPackageJson;
     };
 
     /** Run a shell command with sensible defaults. */
@@ -112,4 +114,4 @@ export type VirmatorPluginExecutorParams<
 
 export type VirmatorPluginExecutor<
     Commands extends VirmatorPluginCliCommands = VirmatorPluginCliCommands,
-> = (params: VirmatorPluginExecutorParams<Commands>) => MaybePromise<void>;
+> = (params: VirmatorPluginExecutorParams<Commands>) => MaybePromise<void | {noLog: true}>;

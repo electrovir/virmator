@@ -1,8 +1,10 @@
 #!/usr/bin/env -S npx tsx
 
-import {executeVirmatorCommand, log, VirmatorSilentError} from '@virmator/core';
+import {createPluginLogger, executeVirmatorCommand, VirmatorSilentError} from '@virmator/core';
 import {fileURLToPath} from 'node:url';
 import {defaultVirmatorPlugins} from './index';
+
+const log = createPluginLogger(process);
 
 executeVirmatorCommand({
     cliCommand: process.argv,

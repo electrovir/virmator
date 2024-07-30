@@ -24,6 +24,7 @@ import {findClosestPackageDir} from '../augments/index';
 import {CallbackWritable} from '../augments/stream/callback-writable';
 import {getTerminalColor, terminalColors} from '../colors';
 import {VirmatorInternalError} from '../errors/virmator-internal.error';
+import {VirmatorNoTraceError} from '../errors/virmator-no-trace.error';
 import {VirmatorSilentError} from '../errors/virmator-silent.error';
 import {VirmatorPlugin} from '../plugin/plugin';
 import {VirmatorPluginResolvedConfigFile} from '../plugin/plugin-configs';
@@ -31,6 +32,7 @@ import {PackageType} from '../plugin/plugin-env';
 import {
     ExtraRunShellCommandOptions,
     MonoRepoPackage,
+    ValidPackageJson,
     VirmatorPluginExecutorParams,
     VirmatorPluginResolvedConfigs,
 } from '../plugin/plugin-executor';
@@ -239,18 +241,23 @@ export async function executeVirmatorCommand({
         entryPointFilePath,
     });
 
-    if (!args.commands.length || !args.plugin) {
+    const plugin = args.plugin;
+
+    if (!args.commands.length || !plugin) {
         throw new VirmatorInternalError(`Missing valid command.`);
     }
 
     const cwdPackagePath = findClosestPackageDir(cwd);
 
     const cwdPackageJson = await readPackageJson(cwdPackagePath);
-    const pluginPackagePath = args.plugin.pluginPackageRootPath;
-    const resolvedConfigs = resolveConfigs(
-        {cwdPackagePath, pluginPackagePath},
-        args.plugin.cliCommands,
-    );
+    if (!cwdPackageJson.name) {
+        throw new VirmatorNoTraceError(`No package name found in '${cwdPackagePath}'`);
+    } else if (!cwdPackageJson.version) {
+        throw new VirmatorNoTraceError(`No package version found in '${cwdPackagePath}'`);
+    }
+
+    const pluginPackagePath = plugin.pluginPackageRootPath;
+    const resolvedConfigs = resolveConfigs({cwdPackagePath, pluginPackagePath}, plugin.cliCommands);
     const monoRepoRootPath = await findMonoRepoDir(cwdPackagePath);
     const packageType = await determinePackageType(
         cwdPackagePath,
@@ -273,7 +280,7 @@ export async function executeVirmatorCommand({
             monoRepoPackages,
             packageType,
             monoRepoRootPath,
-            cwdPackageJson,
+            cwdPackageJson: cwdPackageJson as ValidPackageJson,
         },
         configs: resolvedConfigs,
         virmator: {
@@ -385,15 +392,19 @@ export async function executeVirmatorCommand({
         );
     }
 
-    try {
-        await args.plugin.executor(executorParams);
-    } catch (error) {
-        if (!(error instanceof VirmatorSilentError)) {
-            log.error(error);
+    const result = await wrapInTry(() => plugin.executor(executorParams));
+
+    if (result instanceof Error) {
+        if (result instanceof VirmatorNoTraceError) {
+            log.error(result.message);
+        } else if (!(result instanceof VirmatorSilentError)) {
+            log.error(result);
         }
         log.error(`${args.commands[0]} failed.`);
         throw new VirmatorSilentError();
     }
 
-    log.success(`${args.commands[0]} finished.`);
+    if (!result) {
+        log.success(`${args.commands[0]} finished.`);
+    }
 }

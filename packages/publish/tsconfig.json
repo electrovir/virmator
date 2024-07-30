@@ -18,28 +18,7 @@
             "path": "../core"
         },
         {
-            "path": "../spellcheck"
-        },
-        {
-            "path": "../frontend"
-        },
-        {
-            "path": "../deps"
-        },
-        {
-            "path": "../test"
-        },
-        {
-            "path": "../publish"
-        },
-        {
-            "path": "../docs"
-        },
-        {
-            "path": "../format"
-        },
-        {
-            "path": "../compile"
+            "path": "../plugin-testing"
         }
     ]
 }

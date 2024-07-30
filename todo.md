@@ -5,3 +5,4 @@
 -   combine extra testPlugin args to an object param
 -   test calling `virmator` from with a sub dir of a package
 -   update all package keywords and descriptions.
+-   replace VirmatorSilentError with VirmatorNoTraceError, include the message in the error
