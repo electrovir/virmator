@@ -25,12 +25,13 @@ describe(virmatorDocsPlugin.name, () => {
             virmatorDocsPlugin,
             `docs ${extraCommand || ''}`,
             dir,
-            undefined,
-            [
-                wrapString({value: 'assets', wrapper: sep}),
-                wrapString({value: 'dist-docs', wrapper: sep}),
-            ],
-            beforeCleanupCallback,
+            {
+                beforeCleanupCallback,
+                excludeContents: [
+                    wrapString({value: 'assets', wrapper: sep}),
+                    wrapString({value: 'dist-docs', wrapper: sep}),
+                ],
+            },
         );
     }
 

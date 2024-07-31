@@ -2,22 +2,13 @@ import {ArrayElement} from '@augment-vir/common';
 
 export const terminalColors = [
     // Text colors
-    'cyan',
+    'red',
     'yellow',
     'greenBright',
+    'cyan',
     'blueBright',
     'magentaBright',
     'grey',
-    'red',
-    // Background colors
-    'bgCyan',
-    'bgYellow',
-    'bgGreenBright',
-    'bgBlueBright',
-    'bgMagenta',
-    'bgWhiteBright',
-    'bgGrey',
-    'bgRed',
 ] as const;
 
 export type TerminalColor = ArrayElement<typeof terminalColors>;

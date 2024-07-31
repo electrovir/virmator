@@ -104,5 +104,6 @@ export async function copyConfigFile(
         log.error(
             `${logPrefix}Failed to copy ${baseConfigFileName}: ${extractErrorMessage(error)}`,
         );
+        throw error;
     }
 }

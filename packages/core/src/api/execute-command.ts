@@ -7,6 +7,7 @@ import {
     wrapInTry,
 } from '@augment-vir/common';
 import {
+    logColors,
     LogOutputType,
     readPackageJson,
     runShellCommand,
@@ -22,7 +23,7 @@ import {isRunTimeType} from 'run-time-assertions';
 import {PackageJson} from 'type-fest';
 import {findClosestPackageDir} from '../augments/index';
 import {CallbackWritable} from '../augments/stream/callback-writable';
-import {getTerminalColor, terminalColors} from '../colors';
+import {getTerminalColor} from '../colors';
 import {VirmatorInternalError} from '../errors/virmator-internal.error';
 import {VirmatorNoTraceError} from '../errors/virmator-no-trace.error';
 import {VirmatorSilentError} from '../errors/virmator-silent.error';
@@ -250,11 +251,6 @@ export async function executeVirmatorCommand({
     const cwdPackagePath = findClosestPackageDir(cwd);
 
     const cwdPackageJson = await readPackageJson(cwdPackagePath);
-    if (!cwdPackageJson.name) {
-        throw new VirmatorNoTraceError(`No package name found in '${cwdPackagePath}'`);
-    } else if (!cwdPackageJson.version) {
-        throw new VirmatorNoTraceError(`No package version found in '${cwdPackagePath}'`);
-    }
 
     const pluginPackagePath = plugin.pluginPackageRootPath;
     const resolvedConfigs = resolveConfigs({cwdPackagePath, pluginPackagePath}, plugin.cliCommands);
@@ -280,7 +276,11 @@ export async function executeVirmatorCommand({
             monoRepoPackages,
             packageType,
             monoRepoRootPath,
-            cwdPackageJson: cwdPackageJson as ValidPackageJson,
+            cwdPackageJson: cwdPackageJson,
+            cwdValidPackageJson:
+                cwdPackageJson.name && cwdPackageJson.version
+                    ? (cwdPackageJson as ValidPackageJson)
+                    : undefined,
         },
         configs: resolvedConfigs,
         virmator: {
@@ -317,25 +317,35 @@ export async function executeVirmatorCommand({
             }
 
             const commands: Exclude<ConcurrentlyCommandInput, string>[] = (
-                await awaitedBlockingMap(monoRepoPackages, async (monoRepoPackage, index) => {
-                    const color = chalk[getTerminalColor(index)];
-                    const absolutePackagePath = join(cwd, monoRepoPackage.relativePath);
-                    const command = await generateCliCommandString({
-                        packageCwd: absolutePackagePath,
-                        packageName: monoRepoPackage.packageName,
-                        color,
-                    });
+                await awaitedBlockingMap(
+                    monoRepoPackages,
+                    async (
+                        monoRepoPackage,
+                        index,
+                    ): Promise<Exclude<ConcurrentlyCommandInput, string> | undefined> => {
+                        const colorString = getTerminalColor(index);
+                        const color = chalk[colorString];
+                        const absolutePackagePath = join(cwd, monoRepoPackage.relativePath);
+                        const command = await generateCliCommandString({
+                            packageCwd: absolutePackagePath,
+                            packageName: monoRepoPackage.packageName,
+                            color,
+                        });
 
-                    if (!command) {
-                        return undefined;
-                    }
-                    log.faint(`${color(`[${monoRepoPackage.packageName}]`)} > ${command}`);
-                    return {
-                        command,
-                        cwd: absolutePackagePath,
-                        name: monoRepoPackage.packageName,
-                    };
-                })
+                        if (!command) {
+                            return undefined;
+                        }
+                        log.faint(
+                            `${color(`[${monoRepoPackage.packageName}]`)}${logColors.faint} > ${command}`,
+                        );
+                        return {
+                            command,
+                            cwd: absolutePackagePath,
+                            name: monoRepoPackage.packageName,
+                            prefixColor: colorString,
+                        };
+                    },
+                )
             ).filter(isTruthy);
 
             const writeStream = new CallbackWritable(log);
@@ -348,7 +358,6 @@ export async function executeVirmatorCommand({
 
             try {
                 concurrentlyResults = await concurrently(commands, {
-                    prefixColors: [...terminalColors],
                     killOthers: 'failure',
                     killSignal: 'SIGKILL',
                     outputStream: writeStream,

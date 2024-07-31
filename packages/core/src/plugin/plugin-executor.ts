@@ -72,6 +72,13 @@ export type ExtraRunShellCommandOptions = {
 
 export type ValidPackageJson = SetRequired<PackageJson, 'name' | 'version'>;
 
+export type VirmatorPlugin<Commands extends VirmatorPluginCliCommands = any> = Readonly<
+    VirmatorPluginInit<NoInfer<Commands>> & {
+        pluginPackageRootPath: string;
+        executor: VirmatorPluginExecutor<NoInfer<Commands>>;
+    }
+>;
+
 export type VirmatorPluginExecutorParams<
     Commands extends VirmatorPluginCliCommands = VirmatorPluginCliCommands,
 > = Readonly<{
@@ -90,7 +97,8 @@ export type VirmatorPluginExecutorParams<
         monoRepoRootPath: string;
         /** In dependency graph order, with packages that have no interconnected dependencies first. */
         monoRepoPackages: MonoRepoPackage[];
-        cwdPackageJson: ValidPackageJson;
+        cwdPackageJson: PackageJson;
+        cwdValidPackageJson: ValidPackageJson | undefined;
     };
 
     /** Run a shell command with sensible defaults. */
@@ -106,7 +114,7 @@ export type VirmatorPluginExecutorParams<
 
     virmator: Readonly<{
         /** All plugins currently installed on the currently executing virmator instance. */
-        allPlugins: ReadonlyArray<VirmatorPluginInit>;
+        allPlugins: ReadonlyArray<VirmatorPlugin>;
         /** Path of the current plugin's installation. This will likely be within `node_modules`. */
         pluginPackagePath: string;
     }>;

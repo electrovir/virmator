@@ -57,7 +57,7 @@ export const virmatorPublishPlugin = defineVirmatorPlugin(
     },
     async ({
         cliInputs: {filteredArgs},
-        package: {cwdPackageJson, monoRepoRootPath, monoRepoPackages},
+        package: {cwdValidPackageJson, monoRepoRootPath, monoRepoPackages},
         log,
         cwd,
         runPerPackage,
@@ -65,6 +65,8 @@ export const virmatorPublishPlugin = defineVirmatorPlugin(
     }) => {
         if (process.env[inVirmatorEnvKey]) {
             return {noLog: true};
+        } else if (!cwdValidPackageJson) {
+            throw new VirmatorNoTraceError(`Missing "name" / "version" package.json fields.`);
         }
 
         const monoRepoPackageJsonPath = join(monoRepoRootPath, 'package.json');
@@ -81,6 +83,8 @@ export const virmatorPublishPlugin = defineVirmatorPlugin(
             log.error('Git changes exist, cannot run publish. Commit or stash the changes.');
             throw new VirmatorSilentError();
         }
+        const isDryRun = filteredArgs.includes('--dry-run');
+
         const monoRepoPackageJsonFiles: ReadonlyArray<Readonly<ValidPackageJson>> =
             await Promise.all(
                 monoRepoPackages.map(async (monoRepoPackage): Promise<ValidPackageJson> => {
@@ -105,7 +109,7 @@ export const virmatorPublishPlugin = defineVirmatorPlugin(
 
         if (
             await isVersionPublished(version, [
-                cwdPackageJson,
+                cwdValidPackageJson,
                 ...monoRepoPackageJsonFiles,
             ])
         ) {
@@ -118,7 +122,7 @@ export const virmatorPublishPlugin = defineVirmatorPlugin(
             }
 
             const allPackageJsonFiles = [
-                cwdPackageJson,
+                cwdValidPackageJson,
                 ...monoRepoPackageJsonFiles,
             ];
 
@@ -145,7 +149,14 @@ export const virmatorPublishPlugin = defineVirmatorPlugin(
 
         await runShellCommand(filteredArgs.join(' '));
 
-        const publishCommand = `${inVirmatorEnvKey}=true npm publish`;
+        const publishCommand: string = [
+            `${inVirmatorEnvKey}=true`,
+            'npm',
+            'publish',
+            ...filteredArgs,
+        ]
+            .filter(isTruthy)
+            .join(' ');
 
         if (monoRepoPackages.length) {
             await runPerPackage(async ({packageCwd, packageName}) => {
@@ -165,7 +176,9 @@ export const virmatorPublishPlugin = defineVirmatorPlugin(
             await runShellCommand(publishCommand);
         }
 
-        await updateGit(join(monoRepoPackageJsonPath));
+        if (!isDryRun) {
+            await updateGit(join(monoRepoPackageJsonPath));
+        }
 
         return;
     },

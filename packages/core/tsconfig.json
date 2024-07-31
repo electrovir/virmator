@@ -10,8 +10,7 @@
         "./dist",
         "./dist-*",
         "./node_modules",
-        "./test-files",
-        "./ts.out"
+        "./test-files"
     ],
     "extends": "../../configs/tsconfig.base.json"
 }

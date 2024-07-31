@@ -1,0 +1,18 @@
+{
+    "license": "(MIT or CC0 1.0)",
+    "type": "module",
+    "main": "dist/index.ts",
+    "module": "dist/index.ts",
+    "types": "dist/index.ts",
+    "scripts": {
+        "compile": "virmator compile",
+        "docs": "virmator docs",
+        "start": "tsx src/index.ts",
+        "test": "virmator test node",
+        "test:coverage": "npm run test coverage",
+        "test:docs": "virmator docs check"
+    },
+    "publishConfig": {
+        "access": "public"
+    }
+}

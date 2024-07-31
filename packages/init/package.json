@@ -1,0 +1,38 @@
+{
+    "name": "@virmator/init",
+    "version": "13.0.0",
+    "description": "Default init plugin for virmator.",
+    "keywords": [
+        "virmator",
+        "init"
+    ],
+    "homepage": "https://github.com/electrovir/virmator",
+    "bugs": {
+        "url": "https://github.com/electrovir/virmator/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/electrovir/virmator.git"
+    },
+    "license": "(MIT or CC0 1.0)",
+    "author": {
+        "name": "electrovir",
+        "url": "https://github.com/electrovir"
+    },
+    "type": "module",
+    "main": "src/init.ts",
+    "module": "src/init.ts",
+    "types": "src/init.ts",
+    "scripts": {
+        "test:types": "tsc -b -f --pretty"
+    },
+    "dependencies": {
+        "@augment-vir/common": "^29.3.0"
+    },
+    "devDependencies": {
+        "@types/node": "^22.0.0"
+    },
+    "publishConfig": {
+        "access": "public"
+    }
+}

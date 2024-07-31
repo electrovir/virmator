@@ -17,7 +17,7 @@ exports[`Format > does nothing in an already-formatted repo 1`] = `
     ]
   },
   "contentsDiff": {
-    ".prettierignore": "**/all-files-for-code-coverage.test.ts\\n**/coverage/\\n**/dist-*/\\n**/dist/\\n**/generated-config-*\\n**/graphics/\\n**/node_modules/\\n**/package-lock.json\\n**/ts.out/\\n**/tsconfig.tsbuildinfo\\n/Icon?",
+    ".prettierignore": "**/all-files-for-code-coverage.test.ts\\n**/coverage/\\n**/dist-*/\\n**/dist/\\n**/generated-config-*\\n**/graphics/\\n**/node_modules/\\n**/package-lock.json\\n**/tsconfig.tsbuildinfo\\n/Icon?",
     "prettier.config.mjs": "import {basePrettierConfig} from '@virmator/format/configs/prettier.config.base.mjs';\\n\\n/**\\n * @typedef {import('prettier-plugin-multiline-arrays').MultilineArrayOptions} MultilineOptions\\n *\\n * @typedef {import('prettier').Options} PrettierOptions\\n * @type {PrettierOptions & MultilineOptions}\\n */\\nconst prettierConfig = {\\n    ...basePrettierConfig,\\n};\\n\\nexport default prettierConfig;\\n"
   }
 }
@@ -47,7 +47,7 @@ exports[`Format > fails an unformatted repo 1`] = `
     ]
   },
   "contentsDiff": {
-    ".prettierignore": "**/all-files-for-code-coverage.test.ts\\n**/coverage/\\n**/dist-*/\\n**/dist/\\n**/generated-config-*\\n**/graphics/\\n**/node_modules/\\n**/package-lock.json\\n**/ts.out/\\n**/tsconfig.tsbuildinfo\\n/Icon?",
+    ".prettierignore": "**/all-files-for-code-coverage.test.ts\\n**/coverage/\\n**/dist-*/\\n**/dist/\\n**/generated-config-*\\n**/graphics/\\n**/node_modules/\\n**/package-lock.json\\n**/tsconfig.tsbuildinfo\\n/Icon?",
     "prettier.config.mjs": "import {basePrettierConfig} from '@virmator/format/configs/prettier.config.base.mjs';\\n\\n/**\\n * @typedef {import('prettier-plugin-multiline-arrays').MultilineArrayOptions} MultilineOptions\\n *\\n * @typedef {import('prettier').Options} PrettierOptions\\n * @type {PrettierOptions & MultilineOptions}\\n */\\nconst prettierConfig = {\\n    ...basePrettierConfig,\\n};\\n\\nexport default prettierConfig;\\n"
   },
   "error": {
@@ -75,7 +75,7 @@ exports[`Format > formats a specific file 1`] = `
     ]
   },
   "contentsDiff": {
-    ".prettierignore": "**/all-files-for-code-coverage.test.ts\\n**/coverage/\\n**/dist-*/\\n**/dist/\\n**/generated-config-*\\n**/graphics/\\n**/node_modules/\\n**/package-lock.json\\n**/ts.out/\\n**/tsconfig.tsbuildinfo\\n/Icon?",
+    ".prettierignore": "**/all-files-for-code-coverage.test.ts\\n**/coverage/\\n**/dist-*/\\n**/dist/\\n**/generated-config-*\\n**/graphics/\\n**/node_modules/\\n**/package-lock.json\\n**/tsconfig.tsbuildinfo\\n/Icon?",
     "prettier.config.mjs": "import {basePrettierConfig} from '@virmator/format/configs/prettier.config.base.mjs';\\n\\n/**\\n * @typedef {import('prettier-plugin-multiline-arrays').MultilineArrayOptions} MultilineOptions\\n *\\n * @typedef {import('prettier').Options} PrettierOptions\\n * @type {PrettierOptions & MultilineOptions}\\n */\\nconst prettierConfig = {\\n    ...basePrettierConfig,\\n};\\n\\nexport default prettierConfig;\\n"
   }
 }
@@ -100,7 +100,7 @@ exports[`Format > passes check on an already-formatted repo 1`] = `
     ]
   },
   "contentsDiff": {
-    ".prettierignore": "**/all-files-for-code-coverage.test.ts\\n**/coverage/\\n**/dist-*/\\n**/dist/\\n**/generated-config-*\\n**/graphics/\\n**/node_modules/\\n**/package-lock.json\\n**/ts.out/\\n**/tsconfig.tsbuildinfo\\n/Icon?",
+    ".prettierignore": "**/all-files-for-code-coverage.test.ts\\n**/coverage/\\n**/dist-*/\\n**/dist/\\n**/generated-config-*\\n**/graphics/\\n**/node_modules/\\n**/package-lock.json\\n**/tsconfig.tsbuildinfo\\n/Icon?",
     "prettier.config.mjs": "import {basePrettierConfig} from '@virmator/format/configs/prettier.config.base.mjs';\\n\\n/**\\n * @typedef {import('prettier-plugin-multiline-arrays').MultilineArrayOptions} MultilineOptions\\n *\\n * @typedef {import('prettier').Options} PrettierOptions\\n * @type {PrettierOptions & MultilineOptions}\\n */\\nconst prettierConfig = {\\n    ...basePrettierConfig,\\n};\\n\\nexport default prettierConfig;\\n"
   }
 }

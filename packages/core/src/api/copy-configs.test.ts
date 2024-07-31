@@ -58,7 +58,6 @@ describe(flattenConfigs.name, () => {
                                 packageType: [
                                     PackageType.TopPackage,
                                 ],
-                                required: true,
                                 fullCopyToPath: join('packages', 'compile', 'tsconfig.json'),
                                 fullCopyFromPath: join(
                                     'packages',
@@ -66,6 +65,7 @@ describe(flattenConfigs.name, () => {
                                     'configs',
                                     'tsconfig.package.json',
                                 ),
+                                required: true,
                             },
                             tsconfigMono: {
                                 copyFromPath: join('configs', 'tsconfig.mono.json'),
@@ -77,7 +77,6 @@ describe(flattenConfigs.name, () => {
                                 packageType: [
                                     PackageType.MonoRoot,
                                 ],
-                                required: true,
                                 fullCopyToPath: join(
                                     'packages',
                                     'compile',
@@ -90,6 +89,7 @@ describe(flattenConfigs.name, () => {
                                     'configs',
                                     'tsconfig.mono.json',
                                 ),
+                                required: true,
                             },
                         },
                     },
@@ -106,7 +106,6 @@ describe(flattenConfigs.name, () => {
                     packageType: [
                         PackageType.TopPackage,
                     ],
-                    required: true,
                     fullCopyToPath: join('packages', 'compile', 'tsconfig.json'),
                     fullCopyFromPath: join(
                         'packages',
@@ -125,7 +124,6 @@ describe(flattenConfigs.name, () => {
                     packageType: [
                         PackageType.MonoRoot,
                     ],
-                    required: true,
                     fullCopyToPath: join('packages', 'compile', 'configs', 'tsconfig.base.json'),
                     fullCopyFromPath: join('packages', 'compile', 'configs', 'tsconfig.mono.json'),
                 },
@@ -206,7 +204,6 @@ describe(flattenConfigs.name, () => {
                                             PackageType.MonoRoot,
                                             PackageType.TopPackage,
                                         ],
-                                        required: true,
                                         fullCopyToPath: join(
                                             'packages',
                                             'deps',
@@ -221,6 +218,7 @@ describe(flattenConfigs.name, () => {
                                             'configs',
                                             'dep-cruiser.config.ts',
                                         ),
+                                        required: true,
                                     },
                                 },
                                 subCommands: {},
@@ -254,7 +252,6 @@ describe(flattenConfigs.name, () => {
                         PackageType.MonoRoot,
                         PackageType.TopPackage,
                     ],
-                    required: true,
                 },
             ],
         );

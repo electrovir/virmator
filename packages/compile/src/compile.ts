@@ -1,4 +1,5 @@
 import {isTruthy} from '@augment-vir/common';
+import {logColors} from '@augment-vir/node-js';
 import {
     copyConfigFile,
     defineVirmatorPlugin,
@@ -48,6 +49,18 @@ export const virmatorCompilePlugin = defineVirmatorPlugin(
                         ],
                         packageType: [
                             PackageType.TopPackage,
+                        ],
+                        required: true,
+                    },
+                    tsconfigMonoPackage: {
+                        copyFromPath: join('configs', 'tsconfig.mono-package.json'),
+                        copyToPath: 'tsconfig.json',
+                        env: [
+                            VirmatorEnv.Node,
+                            VirmatorEnv.Web,
+                        ],
+                        packageType: [
+                            PackageType.MonoPackage,
                         ],
                         required: true,
                     },
@@ -145,7 +158,14 @@ async function createCompileCommandString(
     const tsconfig = parseTsConfig(cwd);
     const outDir = tsconfig?.options.outDir;
 
-    const logPrefix = packageName && prefixColor ? prefixColor(`[${packageName}] `) : '';
+    const logPrefix =
+        packageName && prefixColor
+            ? [
+                  prefixColor(`[${packageName}]`),
+                  logColors.faint,
+                  ' ',
+              ].join('')
+            : '';
 
     if (outDir) {
         log.faint(`${logPrefix}Deleting ${basename(outDir)}...`);

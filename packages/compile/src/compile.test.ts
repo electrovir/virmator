@@ -13,13 +13,8 @@ describe(virmatorCompilePlugin.name, () => {
     ) {
         let versionMarkerFound = false;
 
-        await testPlugin(
-            shouldPass,
-            context,
-            virmatorCompilePlugin,
-            'compile',
-            cwd,
-            (logType, arg) => {
+        await testPlugin(shouldPass, context, virmatorCompilePlugin, 'compile', cwd, {
+            logTransform(logType, arg) {
                 /**
                  * This log transform removes excessive TypeScript help logging so that test results
                  * are stable.
@@ -34,7 +29,7 @@ describe(virmatorCompilePlugin.name, () => {
                 }
                 return arg;
             },
-        );
+        });
     }
 
     it('compiles a valid project', async (context) => {

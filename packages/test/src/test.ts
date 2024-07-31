@@ -242,14 +242,7 @@ export const virmatorTestPlugin = defineVirmatorPlugin(
             },
         },
     },
-    async ({
-        cliInputs: {filteredArgs, usedCommands},
-        package: {cwdPackagePath},
-        runShellCommand,
-        cwd,
-        log,
-        configs,
-    }) => {
+    async ({cliInputs: {filteredArgs, usedCommands}, runShellCommand, cwd, log, configs}) => {
         const args = mri(filteredArgs);
 
         if (usedCommands.test?.subCommands.web) {

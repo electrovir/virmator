@@ -4,6 +4,7 @@ import {
     isTruthy,
     mapObjectValues,
     MaybePromise,
+    PartialAndUndefined,
     removeColor,
     wrapInTry,
     wrapString,
@@ -13,6 +14,7 @@ import {
     createPluginLogger,
     executeVirmatorCommand,
     PluginLogger,
+    VirmatorNoTraceError,
     VirmatorPlugin,
 } from '@virmator/core';
 import {sep} from 'node:path';
@@ -73,16 +75,25 @@ const defaultContentsExcludeList = [
     `.git`,
 ];
 
+export type TestPluginOptions = PartialAndUndefined<{
+    logTransform: LogTransform;
+    excludeContents: string[];
+    beforeCleanupCallback: (cwd: string) => MaybePromise<void>;
+    collapseLogs: boolean;
+}>;
+
 export async function testPlugin(
     shouldPass: boolean,
     context: TestContext,
-    plugin: Readonly<VirmatorPlugin>,
+    plugin: Readonly<VirmatorPlugin> | ReadonlyArray<Readonly<VirmatorPlugin>>,
     cliCommand: string,
     cwd: string,
-    logTransform: LogTransform = (type, arg) => arg,
-    excludeContents: string[] = [],
-    beforeCleanupCallback?: (cwd: string) => MaybePromise<void>,
-    collapseLogs = false,
+    {
+        excludeContents = [],
+        logTransform = (type, arg) => arg,
+        beforeCleanupCallback,
+        collapseLogs = false,
+    }: TestPluginOptions = {},
 ): Promise<void> {
     const logs: TestPluginResult['logs'] = {};
     const logger: PluginLogger = createPluginLogger(
@@ -113,13 +124,18 @@ export async function testPlugin(
 
     const error = await wrapInTry(() =>
         executeVirmatorCommand({
-            plugins: [plugin],
+            plugins: Array.isArray(plugin) ? plugin : [plugin],
             cliCommand,
             cwd,
             log: logger,
             concurrency: 1,
         }),
     );
+
+    if (error instanceof VirmatorNoTraceError) {
+        logger.error(error.message);
+    }
+
     await beforeCleanupCallback?.(cwd);
 
     const contentsAfter = await readAllDirContents(cwd, {

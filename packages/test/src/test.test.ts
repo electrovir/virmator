@@ -21,12 +21,13 @@ describe(virmatorTestPlugin.name, () => {
             virmatorTestPlugin,
             `test ${extraCommand || ''}`,
             dir,
-            (logType, arg) => {
-                return collapseWhiteSpace(arg);
+            {
+                logTransform(logType, arg) {
+                    return collapseWhiteSpace(arg);
+                },
+                excludeContents: [wrapString({value: 'coverage', wrapper: sep})],
+                collapseLogs: true,
             },
-            [wrapString({value: 'coverage', wrapper: sep})],
-            undefined,
-            true,
         );
     }
     /** Can't run node tests because then node complains about nested node tests. */
