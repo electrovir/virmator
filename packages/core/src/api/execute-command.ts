@@ -24,7 +24,6 @@ import {PackageJson} from 'type-fest';
 import {findClosestPackageDir} from '../augments/index';
 import {CallbackWritable} from '../augments/stream/callback-writable';
 import {getTerminalColor} from '../colors';
-import {VirmatorInternalError} from '../errors/virmator-internal.error';
 import {VirmatorNoTraceError} from '../errors/virmator-no-trace.error';
 import {VirmatorPlugin} from '../plugin/plugin';
 import {VirmatorPluginResolvedConfigFile} from '../plugin/plugin-configs';
@@ -244,7 +243,7 @@ export async function executeVirmatorCommand({
     const plugin = args.plugin;
 
     if (!args.commands.length || !plugin) {
-        throw new VirmatorInternalError(`Missing valid command.`);
+        throw new VirmatorNoTraceError(`Missing valid command.`);
     }
 
     const cwdPackagePath = findClosestPackageDir(cwd);

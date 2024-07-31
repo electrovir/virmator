@@ -3,4 +3,3 @@
 -   add automatic npm dep install when a plugin is run
 -   update all package keywords and descriptions.
 -   replace VirmatorSilentError with VirmatorNoTraceError, include the message in the error
--   remove virmator internal error maybe?
