@@ -4,7 +4,7 @@ import {
     NpmDepType,
     PackageType,
     VirmatorEnv,
-    VirmatorSilentError,
+    VirmatorNoTraceError,
 } from '@virmator/core';
 import {TestRunnerConfig} from '@web/test-runner';
 import {glob} from 'glob';
@@ -324,8 +324,9 @@ export const virmatorTestPlugin = defineVirmatorPlugin(
 
             await runShellCommand(testCommand);
         } else {
-            log.error("Test command requires an env argument: either 'node' or 'web'.");
-            throw new VirmatorSilentError();
+            throw new VirmatorNoTraceError(
+                "Test command requires an env argument: either 'node' or 'web'.",
+            );
         }
     },
 );

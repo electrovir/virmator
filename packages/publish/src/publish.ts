@@ -16,7 +16,6 @@ import {
     MonoRepoPackage,
     PluginLogger,
     VirmatorNoTraceError,
-    VirmatorSilentError,
 } from '@virmator/core';
 import {readFile, writeFile} from 'node:fs/promises';
 import {dirname, join, relative} from 'node:path';
@@ -75,13 +74,13 @@ export const virmatorPublishPlugin = defineVirmatorPlugin(
         const version = monoRepoPackageJson.version;
 
         if (!version) {
-            log.error(
+            throw new VirmatorNoTraceError(
                 `No "version" found in package.json at '${relative(cwd, monoRepoPackageJsonPath)}'`,
             );
-            throw new VirmatorSilentError();
         } else if (await doChangesExist(monoRepoRootPath)) {
-            log.error('Git changes exist, cannot run publish. Commit or stash the changes.');
-            throw new VirmatorSilentError();
+            throw new VirmatorNoTraceError(
+                'Git changes exist, cannot run publish. Commit or stash the changes.',
+            );
         }
         const isDryRun = filteredArgs.includes('--dry-run');
 

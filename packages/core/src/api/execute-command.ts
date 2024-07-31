@@ -26,7 +26,6 @@ import {CallbackWritable} from '../augments/stream/callback-writable';
 import {getTerminalColor} from '../colors';
 import {VirmatorInternalError} from '../errors/virmator-internal.error';
 import {VirmatorNoTraceError} from '../errors/virmator-no-trace.error';
-import {VirmatorSilentError} from '../errors/virmator-silent.error';
 import {VirmatorPlugin} from '../plugin/plugin';
 import {VirmatorPluginResolvedConfigFile} from '../plugin/plugin-configs';
 import {PackageType} from '../plugin/plugin-env';
@@ -302,7 +301,7 @@ export async function executeVirmatorCommand({
             });
 
             if (result.error) {
-                throw new VirmatorSilentError(result.stderr);
+                throw new VirmatorNoTraceError(result.stderr);
             }
 
             return result;
@@ -385,8 +384,7 @@ export async function executeVirmatorCommand({
             );
 
             if (failedCommandNames.length) {
-                log.error(`${failedCommandNames.join(', ')} failed.`);
-                throw new VirmatorSilentError();
+                throw new VirmatorNoTraceError(`${failedCommandNames.join(', ')} failed.`);
             }
         },
     };
@@ -405,12 +403,14 @@ export async function executeVirmatorCommand({
 
     if (result instanceof Error) {
         if (result instanceof VirmatorNoTraceError) {
-            log.error(result.message);
-        } else if (!(result instanceof VirmatorSilentError)) {
+            if (result.message) {
+                log.error(result.message);
+            }
+        } else {
             log.error(result);
         }
         log.error(`${args.commands[0]} failed.`);
-        throw new VirmatorSilentError();
+        throw new VirmatorNoTraceError();
     }
 
     if (!result) {

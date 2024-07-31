@@ -23,9 +23,12 @@ export const virmatorCompilePlugin = defineVirmatorPlugin(
                     sections: [
                         {
                             content: `
-                                Compiles and type checks TypeScript files into JS outputs using the default TypeScript compiler.
-                                Assumes that the compiled output dir is 'dist'.
-                                Pass any extra tsc flags to this command.
+                                Type checks TypeScript files and compiles them into JS outputs using
+                                the TypeScript compiler.
+                                Any extra args are passed directly to tsc.
+                                
+                                Automatically compiles a mono-repo's sub packages in the correct order
+                                if called from a mono-repo root.
                             `,
                         },
                     ],

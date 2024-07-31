@@ -5,13 +5,13 @@ import {
     NpmDepType,
     PackageType,
     VirmatorEnv,
-    VirmatorSilentError,
     withImportedTsFile,
 } from '@virmator/core';
 import {ChalkInstance} from 'chalk';
 import mri from 'mri';
 import {join} from 'node:path';
 import type * as Typedoc from 'typedoc';
+import {VirmatorNoTraceError} from '../../core/src/errors/virmator-no-trace.error';
 
 export const virmatorDocsPlugin = defineVirmatorPlugin(
     import.meta.dirname,
@@ -189,7 +189,7 @@ export const virmatorDocsPlugin = defineVirmatorPlugin(
                     };
 
                     if (!(await runTypedoc(fullTypedocOptions, typedoc))) {
-                        throw new VirmatorSilentError();
+                        throw new VirmatorNoTraceError();
                     }
                 },
             );

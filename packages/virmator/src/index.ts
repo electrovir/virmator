@@ -14,8 +14,8 @@ export const defaultVirmatorPlugins = [
     virmatorDocsPlugin,
     virmatorFormatPlugin,
     virmatorFrontendPlugin,
-    virmatorPublishPlugin,
     virmatorInitPlugin,
+    virmatorPublishPlugin,
     virmatorSpellcheckPlugin,
     virmatorTestPlugin,
 ];

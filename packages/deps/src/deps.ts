@@ -5,7 +5,6 @@ import {
     NpmDepType,
     PackageType,
     VirmatorEnv,
-    VirmatorSilentError,
     withCompiledTsFile,
     withImportedTsFile,
 } from '@virmator/core';
@@ -13,6 +12,7 @@ import mri from 'mri';
 import {rm} from 'node:fs/promises';
 import {join, relative} from 'node:path';
 import type {RunOptions} from 'npm-check-updates';
+import {VirmatorNoTraceError} from '../../core/src/errors/virmator-no-trace.error';
 
 export const virmatorDepsPlugin = defineVirmatorPlugin(
     import.meta.dirname,
@@ -294,10 +294,9 @@ export const virmatorDepsPlugin = defineVirmatorPlugin(
             /** Run twice because npm needs this sometimes. */
             await runShellCommand(installCommand);
         } else {
-            log.error(
+            throw new VirmatorNoTraceError(
                 "deps sub-command needed: 'virmator deps check', 'virmator deps upgrade', or 'virmator deps regen'",
             );
-            throw new VirmatorSilentError();
         }
     },
 );
