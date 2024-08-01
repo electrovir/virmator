@@ -16,7 +16,6 @@ import {
 import chalk from 'chalk';
 import concurrently, {CloseEvent, ConcurrentlyCommandInput} from 'concurrently';
 import {getRelativePosixPackagePathsInDependencyOrder} from 'mono-vir';
-import {existsSync} from 'node:fs';
 import {cpus} from 'node:os';
 import {join, resolve} from 'node:path';
 import {isRunTimeType} from 'run-time-assertions';
@@ -24,7 +23,7 @@ import {PackageJson} from 'type-fest';
 import {findClosestPackageDir} from '../augments/index';
 import {CallbackWritable} from '../augments/stream/callback-writable';
 import {getTerminalColor} from '../colors';
-import {VirmatorNoTraceError} from '../errors/virmator-no-trace.error';
+import {hideNoTraceTraces, VirmatorNoTraceError} from '../errors/virmator-no-trace.error';
 import {VirmatorPlugin} from '../plugin/plugin';
 import {VirmatorPluginResolvedConfigFile} from '../plugin/plugin-configs';
 import {PackageType} from '../plugin/plugin-env';
@@ -38,6 +37,7 @@ import {
 import {VirmatorPluginCliCommands} from '../plugin/plugin-init';
 import {createPluginLogger, PluginLogger} from '../plugin/plugin-logger';
 import {copyPluginConfigs} from './copy-configs';
+import {installNpmDeps, installPluginNpmDeps} from './install-deps';
 import {parseCliArgs} from './parse-args';
 
 export type ExecuteCommandParams = {
@@ -170,10 +170,9 @@ async function getMonoRepoPackages(cwdPackagePath: string): Promise<MonoRepoPack
 
     return await Promise.all(
         relativePackagePathsInOrder.map(async (packagePath): Promise<MonoRepoPackage> => {
-            const packageJsonPath = join(cwdPackagePath, packagePath);
-            const packageJson = existsSync(packageJsonPath)
-                ? await readPackageJson(packageJsonPath)
-                : undefined;
+            const packageJson = await wrapInTry(() => readPackageJson(cwdPackagePath), {
+                fallbackValue: undefined,
+            });
             return {
                 packageName: packageJson?.name || packagePath,
                 relativePath: packagePath,
@@ -300,10 +299,23 @@ export async function executeVirmatorCommand({
             });
 
             if (result.error) {
-                throw new VirmatorNoTraceError(result.stderr);
+                throw new VirmatorNoTraceError(
+                    extraOptions?.includeErrorMessage ? result.stderr : undefined,
+                );
             }
 
             return result;
+        },
+        async runInstallDeps(deps) {
+            await installNpmDeps({
+                deps,
+                cwdPackageJson,
+                cwdPackagePath,
+                log,
+                packageType,
+                pluginName: plugin.name,
+                pluginPackagePath,
+            });
         },
         async runPerPackage(generateCliCommandString, maxProcesses: number | undefined) {
             if (packageType !== PackageType.MonoRoot) {
@@ -397,19 +409,29 @@ export async function executeVirmatorCommand({
             log,
         );
     }
+    if (!args.virmatorFlags['--no-deps']) {
+        await installPluginNpmDeps({
+            cwdPackageJson,
+            cwdPackagePath,
+            log,
+            packageType,
+            pluginName: plugin.name,
+            pluginPackagePath,
+            usedCommands: args.usedCommands,
+        });
+    }
 
     const result = await wrapInTry(() => plugin.executor(executorParams));
 
     if (result instanceof Error) {
-        if (result instanceof VirmatorNoTraceError) {
+        if (result instanceof VirmatorNoTraceError && hideNoTraceTraces) {
             if (result.message) {
                 log.error(result.message);
             }
         } else {
             log.error(result);
         }
-        log.error(`${args.commands[0]} failed.`);
-        throw new VirmatorNoTraceError();
+        throw new VirmatorNoTraceError(`${args.commands[0]} failed.`);
     }
 
     if (!result) {

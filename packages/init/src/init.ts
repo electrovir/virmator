@@ -1,5 +1,11 @@
+/**
+ * Tests for this plugin are inside the `virmator` package since a lot of `init`'s functionality is
+ * missed without the other packages.
+ */
+
 import {
     awaitedBlockingMap,
+    filterObject,
     getEnumTypedValues,
     isEnumValue,
     joinWithFinalConjunction,
@@ -10,6 +16,7 @@ import {
     IndividualPluginCommand,
     NpmDepType,
     PackageType,
+    PluginNpmDeps,
     VirmatorEnv,
     VirmatorNoTraceError,
     VirmatorPlugin,
@@ -17,6 +24,37 @@ import {
     VirmatorPluginResolvedConfigFile,
 } from '@virmator/core';
 import {basename, join} from 'node:path';
+
+const deps: PluginNpmDeps = {
+    'mono-vir': {
+        env: [
+            VirmatorEnv.Node,
+            VirmatorEnv.Web,
+        ],
+        packageType: [PackageType.MonoRoot],
+        type: NpmDepType.Dev,
+    },
+    tsx: {
+        env: [
+            VirmatorEnv.Node,
+        ],
+        packageType: [
+            PackageType.MonoPackage,
+            PackageType.TopPackage,
+        ],
+        type: NpmDepType.Dev,
+    },
+    'element-vir': {
+        env: [
+            VirmatorEnv.Web,
+        ],
+        packageType: [
+            PackageType.MonoPackage,
+            PackageType.TopPackage,
+        ],
+        type: NpmDepType.Regular,
+    },
+};
 
 export const virmatorInitPlugin = defineVirmatorPlugin(
     import.meta.dirname,
@@ -288,40 +326,16 @@ export const virmatorInitPlugin = defineVirmatorPlugin(
                         required: false,
                     },
                 },
-                npmDeps: {
-                    'mono-vir': {
-                        env: [
-                            VirmatorEnv.Node,
-                            VirmatorEnv.Web,
-                        ],
-                        packageType: [PackageType.MonoRoot],
-                        type: NpmDepType.Dev,
-                    },
-                    tsx: {
-                        env: [
-                            VirmatorEnv.Node,
-                        ],
-                        packageType: [
-                            PackageType.MonoPackage,
-                            PackageType.TopPackage,
-                        ],
-                        type: NpmDepType.Dev,
-                    },
-                    'element-vir': {
-                        env: [
-                            VirmatorEnv.Web,
-                        ],
-                        packageType: [
-                            PackageType.MonoPackage,
-                            PackageType.TopPackage,
-                        ],
-                        type: NpmDepType.Regular,
-                    },
-                },
             },
         },
     },
-    async ({cliInputs: {filteredArgs}, package: {cwdPackagePath}, virmator: {allPlugins}, log}) => {
+    async ({
+        cliInputs: {filteredArgs},
+        package: {cwdPackagePath},
+        virmator: {allPlugins},
+        log,
+        runInstallDeps,
+    }) => {
         const packageType = filteredArgs.find((arg) => isEnumValue(arg, PackageType));
         const packageEnv = filteredArgs.find((arg) => isEnumValue(arg, VirmatorEnv));
 
@@ -334,6 +348,13 @@ export const virmatorInitPlugin = defineVirmatorPlugin(
                 `Missing package type. Expected one of ${joinWithFinalConjunction(getEnumTypedValues(PackageType), 'or')}`,
             );
         }
+
+        const depsToInstall = filterObject(deps, (depName, depOptions) => {
+            return (
+                depOptions.env.includes(packageEnv) && depOptions.packageType.includes(packageType)
+            );
+        });
+        await runInstallDeps(depsToInstall);
 
         const allConfigs = flattenAllConfigs(cwdPackagePath, allPlugins);
         const relevantConfigs = allConfigs.filter((config) => {

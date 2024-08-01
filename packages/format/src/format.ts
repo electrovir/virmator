@@ -227,11 +227,7 @@ export const virmatorFormatPlugin = defineVirmatorPlugin(
                         );
                     },
                     stderr(stderr) {
-                        if (
-                            stderr.includes(
-                                'Code style issues found in the above file. Run Prettier with --write to fix.',
-                            )
-                        ) {
+                        if (stderr.includes('Run Prettier with --write to fix.')) {
                             return '';
                         } else {
                             return stderr;

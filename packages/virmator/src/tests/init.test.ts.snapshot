@@ -1,17 +1,11 @@
 exports[`Init > errors without env 1`] = `
 {
   "logs": {
-    "stderr": [
-      [
-        "Missing env. Expected one of node or web"
-      ],
-      [
-        "init failed."
-      ]
-    ]
+    "stderr": "Missing env. Expected one of node or web\\ninit failed."
   },
+  "cwd": "packages/virmator/test-files/top-package",
   "error": {
-    "name": "VirmatorSilentError"
+    "name": "VirmatorNoTraceError"
   }
 }
 `;
@@ -19,17 +13,11 @@ exports[`Init > errors without env 1`] = `
 exports[`Init > errors without package type 1`] = `
 {
   "logs": {
-    "stderr": [
-      [
-        "Missing package type. Expected one of mono-root, top-level-package, or mono-package"
-      ],
-      [
-        "init failed."
-      ]
-    ]
+    "stderr": "Missing package type. Expected one of mono-root, top-level-package, or mono-package\\ninit failed."
   },
+  "cwd": "packages/virmator/test-files/top-package",
   "error": {
-    "name": "VirmatorSilentError"
+    "name": "VirmatorNoTraceError"
   }
 }
 `;
@@ -37,38 +25,12 @@ exports[`Init > errors without package type 1`] = `
 exports[`Init > initializes a mono-package node package 1`] = `
 {
   "logs": {
-    "stdout": [
-      [
-        "Copied .npmignore"
-      ],
-      [
-        "Copied c8.config.json"
-      ],
-      [
-        "Copied LICENSE-CC0"
-      ],
-      [
-        "Copied LICENSE-MIT"
-      ],
-      [
-        "Copied package.json"
-      ],
-      [
-        "Copied tsconfig.json"
-      ],
-      [
-        "Copied typedoc.config.ts"
-      ],
-      [
-        "init finished."
-      ]
-    ]
+    "stdout": "Installing tsx@4.16.3...\\nCopied .npmignore\\nCopied c8.config.json\\nCopied LICENSE-CC0\\nCopied LICENSE-MIT\\nCopied package.json\\nCopied tsconfig.json\\nCopied typedoc.config.ts\\ninit finished."
   },
+  "cwd": "packages/virmator/test-files/mono-package",
   "contentsDiff": {
-    "package.json": "{\\n    \\"license\\": \\"(MIT or CC0 1.0)\\",\\n    \\"type\\": \\"module\\",\\n    \\"main\\": \\"dist/index.ts\\",\\n    \\"module\\": \\"dist/index.ts\\",\\n    \\"types\\": \\"dist/index.ts\\",\\n    \\"scripts\\": {\\n        \\"compile\\": \\"virmator compile\\",\\n        \\"docs\\": \\"virmator docs\\",\\n        \\"start\\": \\"tsx src/index.ts\\",\\n        \\"test\\": \\"virmator test node\\",\\n        \\"test:coverage\\": \\"npm run test coverage\\",\\n        \\"test:docs\\": \\"virmator docs check\\"\\n    },\\n    \\"publishConfig\\": {\\n        \\"access\\": \\"public\\"\\n    }\\n}\\n",
+    "package.json": "{\\n    \\"license\\": \\"(MIT or CC0 1.0)\\",\\n    \\"type\\": \\"module\\",\\n    \\"main\\": \\"dist/index.ts\\",\\n    \\"module\\": \\"dist/index.ts\\",\\n    \\"types\\": \\"dist/index.ts\\",\\n    \\"scripts\\": {\\n        \\"compile\\": \\"virmator compile\\",\\n        \\"docs\\": \\"virmator docs\\",\\n        \\"start\\": \\"tsx src/index.ts\\",\\n        \\"test\\": \\"virmator test node\\",\\n        \\"test:coverage\\": \\"npm run test coverage\\",\\n        \\"test:docs\\": \\"virmator docs check\\",\\n        \\"test:update\\": \\"npm test update\\"\\n    },\\n    \\"publishConfig\\": {\\n        \\"access\\": \\"public\\"\\n    }\\n}\\n",
     ".npmignore": ".*\\n.not-committed/\\n*.book-helper.*\\n*.book.*\\n*.d.ts.map\\n*.test-helper.*\\n*.test.*\\n*.tgz\\n**/*/readme-examples/\\n**/*/test/\\n/configs/\\n/coverage/\\n/cspell.config.cjs\\n/graphics/\\n/Icon?\\n/src/\\n/www-static/\\nbash-scripts/\\ndist-docs/\\ngenerated-config-*\\nindex.html\\ntest-files/\\ntodo.md\\ntsconfig.tsbuildinfo\\ntsconfig*.json",
-    "LICENSE-CC0": "CC0 1.0 Universal\\n\\nCreative Commons Legal Code\\n\\n    CREATIVE COMMONS CORPORATION IS NOT A LAW FIRM AND DOES NOT PROVIDE\\n    LEGAL SERVICES. DISTRIBUTION OF THIS DOCUMENT DOES NOT CREATE AN\\n    ATTORNEY-CLIENT RELATIONSHIP. CREATIVE COMMONS PROVIDES THIS\\n    INFORMATION ON AN \\"AS-IS\\" BASIS. CREATIVE COMMONS MAKES NO WARRANTIES\\n    REGARDING THE USE OF THIS DOCUMENT OR THE INFORMATION OR WORKS\\n    PROVIDED HEREUNDER, AND DISCLAIMS LIABILITY FOR DAMAGES RESULTING FROM\\n    THE USE OF THIS DOCUMENT OR THE INFORMATION OR WORKS PROVIDED\\n    HEREUNDER.\\n\\nStatement of Purpose\\n\\nThe laws of most jurisdictions throughout the world automatically confer\\nexclusive Copyright and Related Rights (defined below) upon the creator\\nand subsequent owner(s) (each and all, an \\"owner\\") of an original work of\\nauthorship and/or a database (each, a \\"Work\\").\\n\\nCertain owners wish to permanently relinquish those rights to a Work for\\nthe purpose of contributing to a commons of creative, cultural and\\nscientific works (\\"Commons\\") that the public can reliably and without fear\\nof later claims of infringement build upon, modify, incorporate in other\\nworks, reuse and redistribute as freely as possible in any form whatsoever\\nand for any purposes, including without limitation commercial purposes.\\nThese owners may contribute to the Commons to promote the ideal of a free\\nculture and the further production of creative, cultural and scientific\\nworks, or to gain reputation or greater distribution for their Work in\\npart through the use and efforts of others.\\n\\nFor these and/or other purposes and motivations, and without any\\nexpectation of additional consideration or compensation, the person\\nassociating CC0 with a Work (the \\"Affirmer\\"), to the extent that he or she\\nis an owner of Copyright and Related Rights in the Work, voluntarily\\nelects to apply CC0 to the Work and publicly distribute the Work under its\\nterms, with knowledge of his or her Copyright and Related Rights in the\\nWork and the meaning and intended legal effect of CC0 on those rights.\\n\\n1. Copyright and Related Rights. A Work made available under CC0 may be\\nprotected by copyright and related or neighboring rights (\\"Copyright and\\nRelated Rights\\"). Copyright and Related Rights include, but are not\\nlimited to, the following:\\n\\n  i. the right to reproduce, adapt, distribute, perform, display,\\n     communicate, and translate a Work;\\n ii. moral rights retained by the original author(s) and/or performer(s);\\niii. publicity and privacy rights pertaining to a person's image or\\n     likeness depicted in a Work;\\n iv. rights protecting against unfair competition in regards to a Work,\\n     subject to the limitations in paragraph 4(a), below;\\n  v. rights protecting the extraction, dissemination, use and reuse of data\\n     in a Work;\\n vi. database rights (such as those arising under Directive 96/9/EC of the\\n     European Parliament and of the Council of 11 March 1996 on the legal\\n     protection of databases, and under any national implementation\\n     thereof, including any amended or successor version of such\\n     directive); and\\nvii. other similar, equivalent or corresponding rights throughout the\\n     world based on applicable law or treaty, and any national\\n     implementations thereof.\\n\\n2. Waiver. To the greatest extent permitted by, but not in contravention\\nof, applicable law, Affirmer hereby overtly, fully, permanently,\\nirrevocably and unconditionally waives, abandons, and surrenders all of\\nAffirmer's Copyright and Related Rights and associated claims and causes\\nof action, whether now known or unknown (including existing as well as\\nfuture claims and causes of action), in the Work (i) in all territories\\nworldwide, (ii) for the maximum duration provided by applicable law or\\ntreaty (including future time extensions), (iii) in any current or future\\nmedium and for any number of copies, and (iv) for any purpose whatsoever,\\nincluding without limitation commercial, advertising or promotional\\npurposes (the \\"Waiver\\"). Affirmer makes the Waiver for the benefit of each\\nmember of the public at large and to the detriment of Affirmer's heirs and\\nsuccessors, fully intending that such Waiver shall not be subject to\\nrevocation, rescission, cancellation, termination, or any other legal or\\nequitable action to disrupt the quiet enjoyment of the Work by the public\\nas contemplated by Affirmer's express Statement of Purpose.\\n\\n3. Public License Fallback. Should any part of the Waiver for any reason\\nbe judged legally invalid or ineffective under applicable law, then the\\nWaiver shall be preserved to the maximum extent permitted taking into\\naccount Affirmer's express Statement of Purpose. In addition, to the\\nextent the Waiver is so judged Affirmer hereby grants to each affected\\nperson a royalty-free, non transferable, non sublicensable, non exclusive,\\nirrevocable and unconditional license to exercise Affirmer's Copyright and\\nRelated Rights in the Work (i) in all territories worldwide, (ii) for the\\nmaximum duration provided by applicable law or treaty (including future\\ntime extensions), (iii) in any current or future medium and for any number\\nof copies, and (iv) for any purpose whatsoever, including without\\nlimitation commercial, advertising or promotional purposes (the\\n\\"License\\"). The License shall be deemed effective as of the date CC0 was\\napplied by Affirmer to the Work. Should any part of the License for any\\nreason be judged legally invalid or ineffective under applicable law, such\\npartial invalidity or ineffectiveness shall not invalidate the remainder\\nof the License, and in such case Affirmer hereby affirms that he or she\\nwill not (i) exercise any of his or her remaining Copyright and Related\\nRights in the Work or (ii) assert any associated claims and causes of\\naction with respect to the Work, in either case contrary to Affirmer's\\nexpress Statement of Purpose.\\n\\n4. Limitations and Disclaimers.\\n\\n a. No trademark or patent rights held by Affirmer are waived, abandoned,\\n    surrendered, licensed or otherwise affected by this document.\\n b. Affirmer offers the Work as-is and makes no representations or\\n    warranties of any kind concerning the Work, express, implied,\\n    statutory or otherwise, including without limitation warranties of\\n    title, merchantability, fitness for a particular purpose, non\\n    infringement, or the absence of latent or other defects, accuracy, or\\n    the present or absence of errors, whether or not discoverable, all to\\n    the greatest extent permissible under applicable law.\\n c. Affirmer disclaims responsibility for clearing rights of other persons\\n    that may apply to the Work or any use thereof, including without\\n    limitation any person's Copyright and Related Rights in the Work.\\n    Further, Affirmer disclaims responsibility for obtaining any necessary\\n    consents, permissions or other rights required for any use of the\\n    Work.\\n d. Affirmer understands and acknowledges that Creative Commons is not a\\n    party to this document and has no duty or obligation with respect to\\n    this CC0 or use of the Work.",
-    "LICENSE-MIT": "MIT License\\n\\nCopyright (c) 2024 electrovir\\n\\nPermission is hereby granted, free of charge, to any person obtaining a copy\\nof this software and associated documentation files (the \\"Software\\"), to deal\\nin the Software without restriction, including without limitation the rights\\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\\ncopies of the Software, and to permit persons to whom the Software is\\nfurnished to do so, subject to the following conditions:\\n\\nThe above copyright notice and this permission notice shall be included in all\\ncopies or substantial portions of the Software.\\n\\nTHE SOFTWARE IS PROVIDED \\"AS IS\\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\\nSOFTWARE.\\n",
     "configs": {
       "c8.config.json": "{\\n    \\"100\\": true,\\n    \\"all\\": true,\\n    \\"checkCoverage\\": true,\\n    \\"clean\\": true,\\n    \\"perFile\\": true,\\n    \\"skipFull\\": true,\\n    \\"src\\": \\"src\\"\\n}\\n",
       "typedoc.config.ts": "import {baseTypedocConfig} from '@virmator/docs/configs/typedoc.config.base';\\nimport {join, resolve} from 'path';\\nimport type {TypeDocOptions} from 'typedoc';\\n\\nconst repoRoot = resolve(\\n    __dirname,\\n    /** Go up two directories because this gets compiled into \`node_modules/.virmator\` */\\n    '..',\\n    '..',\\n);\\nconst indexTsFile = join(repoRoot, 'src', 'index.ts');\\n\\nexport const typeDocConfig: Partial<TypeDocOptions> = {\\n    ...baseTypedocConfig,\\n    out: join(repoRoot, 'dist-docs'),\\n    entryPoints: [\\n        indexTsFile,\\n    ],\\n    intentionallyNotExported: [],\\n    defaultCategory: 'MISSING CATEGORY',\\n    categoryOrder: [\\n        'Main',\\n        'Internal',\\n    ],\\n};\\n"
@@ -81,53 +43,12 @@ exports[`Init > initializes a mono-package node package 1`] = `
 exports[`Init > initializes a mono-package web package 1`] = `
 {
   "logs": {
-    "stdout": [
-      [
-        "Copied _redirects"
-      ],
-      [
-        "Copied .npmignore"
-      ],
-      [
-        "Copied index.css"
-      ],
-      [
-        "Copied index.html"
-      ],
-      [
-        "Copied LICENSE-CC0"
-      ],
-      [
-        "Copied LICENSE-MIT"
-      ],
-      [
-        "Copied package.json"
-      ],
-      [
-        "Copied tsconfig.json"
-      ],
-      [
-        "Copied typedoc.config.ts"
-      ],
-      [
-        "Copied vir-app.element.ts"
-      ],
-      [
-        "Copied vite.config.ts"
-      ],
-      [
-        "Copied web-test-runner.config.mjs"
-      ],
-      [
-        "init finished."
-      ]
-    ]
+    "stdout": "Installing element-vir@22.2.2...\\nCopied _redirects\\nCopied .npmignore\\nCopied index.css\\nCopied index.html\\nCopied LICENSE-CC0\\nCopied LICENSE-MIT\\nCopied package.json\\nCopied tsconfig.json\\nCopied typedoc.config.ts\\nCopied vir-app.element.ts\\nCopied vite.config.ts\\nCopied web-test-runner.config.mjs\\ninit finished."
   },
+  "cwd": "packages/virmator/test-files/mono-package",
   "contentsDiff": {
     "package.json": "{\\n    \\"license\\": \\"(MIT or CC0 1.0)\\",\\n    \\"type\\": \\"module\\",\\n    \\"main\\": \\"dist/index.ts\\",\\n    \\"module\\": \\"dist/index.ts\\",\\n    \\"types\\": \\"dist/index.ts\\",\\n    \\"scripts\\": {\\n        \\"build\\": \\"virmator frontend build\\",\\n        \\"compile\\": \\"virmator compile\\",\\n        \\"docs\\": \\"virmator docs\\",\\n        \\"start\\": \\"virmator frontend\\",\\n        \\"test\\": \\"virmator test web\\",\\n        \\"test:coverage\\": \\"npm run test coverage\\",\\n        \\"test:docs\\": \\"virmator docs check\\"\\n    },\\n    \\"publishConfig\\": {\\n        \\"access\\": \\"public\\"\\n    }\\n}\\n",
     ".npmignore": ".*\\n.not-committed/\\n*.book-helper.*\\n*.book.*\\n*.d.ts.map\\n*.test-helper.*\\n*.test.*\\n*.tgz\\n**/*/readme-examples/\\n**/*/test/\\n/configs/\\n/coverage/\\n/cspell.config.cjs\\n/graphics/\\n/Icon?\\n/src/\\n/www-static/\\nbash-scripts/\\ndist-docs/\\ngenerated-config-*\\nindex.html\\ntest-files/\\ntodo.md\\ntsconfig.tsbuildinfo\\ntsconfig*.json",
-    "LICENSE-CC0": "CC0 1.0 Universal\\n\\nCreative Commons Legal Code\\n\\n    CREATIVE COMMONS CORPORATION IS NOT A LAW FIRM AND DOES NOT PROVIDE\\n    LEGAL SERVICES. DISTRIBUTION OF THIS DOCUMENT DOES NOT CREATE AN\\n    ATTORNEY-CLIENT RELATIONSHIP. CREATIVE COMMONS PROVIDES THIS\\n    INFORMATION ON AN \\"AS-IS\\" BASIS. CREATIVE COMMONS MAKES NO WARRANTIES\\n    REGARDING THE USE OF THIS DOCUMENT OR THE INFORMATION OR WORKS\\n    PROVIDED HEREUNDER, AND DISCLAIMS LIABILITY FOR DAMAGES RESULTING FROM\\n    THE USE OF THIS DOCUMENT OR THE INFORMATION OR WORKS PROVIDED\\n    HEREUNDER.\\n\\nStatement of Purpose\\n\\nThe laws of most jurisdictions throughout the world automatically confer\\nexclusive Copyright and Related Rights (defined below) upon the creator\\nand subsequent owner(s) (each and all, an \\"owner\\") of an original work of\\nauthorship and/or a database (each, a \\"Work\\").\\n\\nCertain owners wish to permanently relinquish those rights to a Work for\\nthe purpose of contributing to a commons of creative, cultural and\\nscientific works (\\"Commons\\") that the public can reliably and without fear\\nof later claims of infringement build upon, modify, incorporate in other\\nworks, reuse and redistribute as freely as possible in any form whatsoever\\nand for any purposes, including without limitation commercial purposes.\\nThese owners may contribute to the Commons to promote the ideal of a free\\nculture and the further production of creative, cultural and scientific\\nworks, or to gain reputation or greater distribution for their Work in\\npart through the use and efforts of others.\\n\\nFor these and/or other purposes and motivations, and without any\\nexpectation of additional consideration or compensation, the person\\nassociating CC0 with a Work (the \\"Affirmer\\"), to the extent that he or she\\nis an owner of Copyright and Related Rights in the Work, voluntarily\\nelects to apply CC0 to the Work and publicly distribute the Work under its\\nterms, with knowledge of his or her Copyright and Related Rights in the\\nWork and the meaning and intended legal effect of CC0 on those rights.\\n\\n1. Copyright and Related Rights. A Work made available under CC0 may be\\nprotected by copyright and related or neighboring rights (\\"Copyright and\\nRelated Rights\\"). Copyright and Related Rights include, but are not\\nlimited to, the following:\\n\\n  i. the right to reproduce, adapt, distribute, perform, display,\\n     communicate, and translate a Work;\\n ii. moral rights retained by the original author(s) and/or performer(s);\\niii. publicity and privacy rights pertaining to a person's image or\\n     likeness depicted in a Work;\\n iv. rights protecting against unfair competition in regards to a Work,\\n     subject to the limitations in paragraph 4(a), below;\\n  v. rights protecting the extraction, dissemination, use and reuse of data\\n     in a Work;\\n vi. database rights (such as those arising under Directive 96/9/EC of the\\n     European Parliament and of the Council of 11 March 1996 on the legal\\n     protection of databases, and under any national implementation\\n     thereof, including any amended or successor version of such\\n     directive); and\\nvii. other similar, equivalent or corresponding rights throughout the\\n     world based on applicable law or treaty, and any national\\n     implementations thereof.\\n\\n2. Waiver. To the greatest extent permitted by, but not in contravention\\nof, applicable law, Affirmer hereby overtly, fully, permanently,\\nirrevocably and unconditionally waives, abandons, and surrenders all of\\nAffirmer's Copyright and Related Rights and associated claims and causes\\nof action, whether now known or unknown (including existing as well as\\nfuture claims and causes of action), in the Work (i) in all territories\\nworldwide, (ii) for the maximum duration provided by applicable law or\\ntreaty (including future time extensions), (iii) in any current or future\\nmedium and for any number of copies, and (iv) for any purpose whatsoever,\\nincluding without limitation commercial, advertising or promotional\\npurposes (the \\"Waiver\\"). Affirmer makes the Waiver for the benefit of each\\nmember of the public at large and to the detriment of Affirmer's heirs and\\nsuccessors, fully intending that such Waiver shall not be subject to\\nrevocation, rescission, cancellation, termination, or any other legal or\\nequitable action to disrupt the quiet enjoyment of the Work by the public\\nas contemplated by Affirmer's express Statement of Purpose.\\n\\n3. Public License Fallback. Should any part of the Waiver for any reason\\nbe judged legally invalid or ineffective under applicable law, then the\\nWaiver shall be preserved to the maximum extent permitted taking into\\naccount Affirmer's express Statement of Purpose. In addition, to the\\nextent the Waiver is so judged Affirmer hereby grants to each affected\\nperson a royalty-free, non transferable, non sublicensable, non exclusive,\\nirrevocable and unconditional license to exercise Affirmer's Copyright and\\nRelated Rights in the Work (i) in all territories worldwide, (ii) for the\\nmaximum duration provided by applicable law or treaty (including future\\ntime extensions), (iii) in any current or future medium and for any number\\nof copies, and (iv) for any purpose whatsoever, including without\\nlimitation commercial, advertising or promotional purposes (the\\n\\"License\\"). The License shall be deemed effective as of the date CC0 was\\napplied by Affirmer to the Work. Should any part of the License for any\\nreason be judged legally invalid or ineffective under applicable law, such\\npartial invalidity or ineffectiveness shall not invalidate the remainder\\nof the License, and in such case Affirmer hereby affirms that he or she\\nwill not (i) exercise any of his or her remaining Copyright and Related\\nRights in the Work or (ii) assert any associated claims and causes of\\naction with respect to the Work, in either case contrary to Affirmer's\\nexpress Statement of Purpose.\\n\\n4. Limitations and Disclaimers.\\n\\n a. No trademark or patent rights held by Affirmer are waived, abandoned,\\n    surrendered, licensed or otherwise affected by this document.\\n b. Affirmer offers the Work as-is and makes no representations or\\n    warranties of any kind concerning the Work, express, implied,\\n    statutory or otherwise, including without limitation warranties of\\n    title, merchantability, fitness for a particular purpose, non\\n    infringement, or the absence of latent or other defects, accuracy, or\\n    the present or absence of errors, whether or not discoverable, all to\\n    the greatest extent permissible under applicable law.\\n c. Affirmer disclaims responsibility for clearing rights of other persons\\n    that may apply to the Work or any use thereof, including without\\n    limitation any person's Copyright and Related Rights in the Work.\\n    Further, Affirmer disclaims responsibility for obtaining any necessary\\n    consents, permissions or other rights required for any use of the\\n    Work.\\n d. Affirmer understands and acknowledges that Creative Commons is not a\\n    party to this document and has no duty or obligation with respect to\\n    this CC0 or use of the Work.",
-    "LICENSE-MIT": "MIT License\\n\\nCopyright (c) 2024 electrovir\\n\\nPermission is hereby granted, free of charge, to any person obtaining a copy\\nof this software and associated documentation files (the \\"Software\\"), to deal\\nin the Software without restriction, including without limitation the rights\\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\\ncopies of the Software, and to permit persons to whom the Software is\\nfurnished to do so, subject to the following conditions:\\n\\nThe above copyright notice and this permission notice shall be included in all\\ncopies or substantial portions of the Software.\\n\\nTHE SOFTWARE IS PROVIDED \\"AS IS\\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\\nSOFTWARE.\\n",
     "configs": {
       "typedoc.config.ts": "import {baseTypedocConfig} from '@virmator/docs/configs/typedoc.config.base';\\nimport {join, resolve} from 'path';\\nimport type {TypeDocOptions} from 'typedoc';\\n\\nconst repoRoot = resolve(\\n    __dirname,\\n    /** Go up two directories because this gets compiled into \`node_modules/.virmator\` */\\n    '..',\\n    '..',\\n);\\nconst indexTsFile = join(repoRoot, 'src', 'index.ts');\\n\\nexport const typeDocConfig: Partial<TypeDocOptions> = {\\n    ...baseTypedocConfig,\\n    out: join(repoRoot, 'dist-docs'),\\n    entryPoints: [\\n        indexTsFile,\\n    ],\\n    intentionallyNotExported: [],\\n    defaultCategory: 'MISSING CATEGORY',\\n    categoryOrder: [\\n        'Main',\\n        'Internal',\\n    ],\\n};\\n",
       "vite.config.ts": "import {defineConfig} from '@virmator/frontend/configs/vite.config.base.ts';\\nimport {resolve} from 'node:path';\\n\\nexport default defineConfig(\\n    {\\n        forGitHubPages: true,\\n        packageDirPath: resolve(import.meta.dirname, '..'),\\n    },\\n    (baseConfig) => {\\n        return {\\n            ...baseConfig,\\n        };\\n    },\\n);\\n",
@@ -153,63 +74,13 @@ exports[`Init > initializes a mono-package web package 1`] = `
 exports[`Init > initializes a mono-root node package 1`] = `
 {
   "logs": {
-    "stdout": [
-      [
-        "Copied .gitattributes"
-      ],
-      [
-        "Copied .gitignore"
-      ],
-      [
-        "Copied .nvmrc"
-      ],
-      [
-        "Copied .prettierignore"
-      ],
-      [
-        "Copied build-for-gh-pages.yml"
-      ],
-      [
-        "Copied cspell.config.cjs"
-      ],
-      [
-        "Copied dep-cruiser.config.cts"
-      ],
-      [
-        "Copied LICENSE-CC0"
-      ],
-      [
-        "Copied LICENSE-MIT"
-      ],
-      [
-        "Copied ncu.config.ts"
-      ],
-      [
-        "Copied package.json"
-      ],
-      [
-        "Copied prettier.config.mjs"
-      ],
-      [
-        "Copied tagged-release.yml"
-      ],
-      [
-        "Copied tests.yml"
-      ],
-      [
-        "Copied tsconfig.base.json"
-      ],
-      [
-        "init finished."
-      ]
-    ]
+    "stdout": "Copied .gitattributes\\nCopied .gitignore\\nCopied .nvmrc\\nCopied .prettierignore\\nCopied build-for-gh-pages.yml\\nCopied cspell.config.cjs\\nCopied dep-cruiser.config.cts\\nCopied LICENSE-CC0\\nCopied LICENSE-MIT\\nCopied ncu.config.ts\\nCopied package.json\\nCopied prettier.config.mjs\\nCopied tagged-release.yml\\nCopied tests.yml\\nCopied tsconfig.base.json\\ninit finished."
   },
+  "cwd": "packages/virmator/test-files/mono-root",
   "contentsDiff": {
-    "package.json": "{\\n    \\"private\\": true,\\n    \\"license\\": \\"(MIT or CC0 1.0)\\",\\n    \\"type\\": \\"module\\",\\n    \\"scripts\\": {\\n        \\"compile\\": \\"virmator compile\\",\\n        \\"format\\": \\"virmator format\\",\\n        \\"publish\\": \\"virmator publish npm run test:all\\",\\n        \\"test\\": \\"mono-vir for-each-async npm run test\\",\\n        \\"test:all\\": \\"npm run compile && concurrently --colors --kill-others-on-fail --kill-signal SIGKILL -c auto --names tests,spelling,format,docs,deps \\\\\\"npm run test:coverage\\\\\\" \\\\\\"npm run test:spelling\\\\\\" \\\\\\"npm run test:format\\\\\\" \\\\\\"npm run test:docs\\\\\\" \\\\\\"npm run test:deps\\\\\\"\\",\\n        \\"test:coverage\\": \\"mono-vir for-each-async npm run test:coverage\\",\\n        \\"test:deps\\": \\"virmator deps check\\",\\n        \\"test:docs\\": \\"virmator docs check\\",\\n        \\"test:format\\": \\"virmator format check\\",\\n        \\"test:spelling\\": \\"virmator spellcheck\\"\\n    }\\n}\\n",
+    "package.json": "{\\n    \\"private\\": true,\\n    \\"license\\": \\"(MIT or CC0 1.0)\\",\\n    \\"type\\": \\"module\\",\\n    \\"scripts\\": {\\n        \\"compile\\": \\"virmator compile\\",\\n        \\"format\\": \\"virmator format\\",\\n        \\"publish\\": \\"virmator publish npm run test:all\\",\\n        \\"test\\": \\"mono-vir for-each-async npm run test\\",\\n        \\"test:all\\": \\"npm run compile && concurrently --colors --kill-others-on-fail --kill-signal SIGKILL -c auto --names tests,spelling,format,docs,deps \\\\\\"npm run test:coverage\\\\\\" \\\\\\"npm run test:spelling\\\\\\" \\\\\\"npm run test:format\\\\\\" \\\\\\"npm run test:docs\\\\\\" \\\\\\"npm run test:deps\\\\\\"\\",\\n        \\"test:coverage\\": \\"mono-vir for-each-async npm run test:coverage\\",\\n        \\"test:deps\\": \\"virmator deps check\\",\\n        \\"test:docs\\": \\"virmator docs check\\",\\n        \\"test:format\\": \\"virmator format check\\",\\n        \\"test:spelling\\": \\"virmator spellcheck\\",\\n        \\"test:update\\": \\"mono-vir for-each-async npm run test:update\\"\\n    }\\n}\\n",
     ".nvmrc": "22",
     ".prettierignore": "**/all-files-for-code-coverage.test.ts\\n**/coverage/\\n**/dist-*/\\n**/dist/\\n**/generated-config-*\\n**/graphics/\\n**/node_modules/\\n**/package-lock.json\\n**/tsconfig.tsbuildinfo\\n/Icon?",
-    "LICENSE-CC0": "CC0 1.0 Universal\\n\\nCreative Commons Legal Code\\n\\n    CREATIVE COMMONS CORPORATION IS NOT A LAW FIRM AND DOES NOT PROVIDE\\n    LEGAL SERVICES. DISTRIBUTION OF THIS DOCUMENT DOES NOT CREATE AN\\n    ATTORNEY-CLIENT RELATIONSHIP. CREATIVE COMMONS PROVIDES THIS\\n    INFORMATION ON AN \\"AS-IS\\" BASIS. CREATIVE COMMONS MAKES NO WARRANTIES\\n    REGARDING THE USE OF THIS DOCUMENT OR THE INFORMATION OR WORKS\\n    PROVIDED HEREUNDER, AND DISCLAIMS LIABILITY FOR DAMAGES RESULTING FROM\\n    THE USE OF THIS DOCUMENT OR THE INFORMATION OR WORKS PROVIDED\\n    HEREUNDER.\\n\\nStatement of Purpose\\n\\nThe laws of most jurisdictions throughout the world automatically confer\\nexclusive Copyright and Related Rights (defined below) upon the creator\\nand subsequent owner(s) (each and all, an \\"owner\\") of an original work of\\nauthorship and/or a database (each, a \\"Work\\").\\n\\nCertain owners wish to permanently relinquish those rights to a Work for\\nthe purpose of contributing to a commons of creative, cultural and\\nscientific works (\\"Commons\\") that the public can reliably and without fear\\nof later claims of infringement build upon, modify, incorporate in other\\nworks, reuse and redistribute as freely as possible in any form whatsoever\\nand for any purposes, including without limitation commercial purposes.\\nThese owners may contribute to the Commons to promote the ideal of a free\\nculture and the further production of creative, cultural and scientific\\nworks, or to gain reputation or greater distribution for their Work in\\npart through the use and efforts of others.\\n\\nFor these and/or other purposes and motivations, and without any\\nexpectation of additional consideration or compensation, the person\\nassociating CC0 with a Work (the \\"Affirmer\\"), to the extent that he or she\\nis an owner of Copyright and Related Rights in the Work, voluntarily\\nelects to apply CC0 to the Work and publicly distribute the Work under its\\nterms, with knowledge of his or her Copyright and Related Rights in the\\nWork and the meaning and intended legal effect of CC0 on those rights.\\n\\n1. Copyright and Related Rights. A Work made available under CC0 may be\\nprotected by copyright and related or neighboring rights (\\"Copyright and\\nRelated Rights\\"). Copyright and Related Rights include, but are not\\nlimited to, the following:\\n\\n  i. the right to reproduce, adapt, distribute, perform, display,\\n     communicate, and translate a Work;\\n ii. moral rights retained by the original author(s) and/or performer(s);\\niii. publicity and privacy rights pertaining to a person's image or\\n     likeness depicted in a Work;\\n iv. rights protecting against unfair competition in regards to a Work,\\n     subject to the limitations in paragraph 4(a), below;\\n  v. rights protecting the extraction, dissemination, use and reuse of data\\n     in a Work;\\n vi. database rights (such as those arising under Directive 96/9/EC of the\\n     European Parliament and of the Council of 11 March 1996 on the legal\\n     protection of databases, and under any national implementation\\n     thereof, including any amended or successor version of such\\n     directive); and\\nvii. other similar, equivalent or corresponding rights throughout the\\n     world based on applicable law or treaty, and any national\\n     implementations thereof.\\n\\n2. Waiver. To the greatest extent permitted by, but not in contravention\\nof, applicable law, Affirmer hereby overtly, fully, permanently,\\nirrevocably and unconditionally waives, abandons, and surrenders all of\\nAffirmer's Copyright and Related Rights and associated claims and causes\\nof action, whether now known or unknown (including existing as well as\\nfuture claims and causes of action), in the Work (i) in all territories\\nworldwide, (ii) for the maximum duration provided by applicable law or\\ntreaty (including future time extensions), (iii) in any current or future\\nmedium and for any number of copies, and (iv) for any purpose whatsoever,\\nincluding without limitation commercial, advertising or promotional\\npurposes (the \\"Waiver\\"). Affirmer makes the Waiver for the benefit of each\\nmember of the public at large and to the detriment of Affirmer's heirs and\\nsuccessors, fully intending that such Waiver shall not be subject to\\nrevocation, rescission, cancellation, termination, or any other legal or\\nequitable action to disrupt the quiet enjoyment of the Work by the public\\nas contemplated by Affirmer's express Statement of Purpose.\\n\\n3. Public License Fallback. Should any part of the Waiver for any reason\\nbe judged legally invalid or ineffective under applicable law, then the\\nWaiver shall be preserved to the maximum extent permitted taking into\\naccount Affirmer's express Statement of Purpose. In addition, to the\\nextent the Waiver is so judged Affirmer hereby grants to each affected\\nperson a royalty-free, non transferable, non sublicensable, non exclusive,\\nirrevocable and unconditional license to exercise Affirmer's Copyright and\\nRelated Rights in the Work (i) in all territories worldwide, (ii) for the\\nmaximum duration provided by applicable law or treaty (including future\\ntime extensions), (iii) in any current or future medium and for any number\\nof copies, and (iv) for any purpose whatsoever, including without\\nlimitation commercial, advertising or promotional purposes (the\\n\\"License\\"). The License shall be deemed effective as of the date CC0 was\\napplied by Affirmer to the Work. Should any part of the License for any\\nreason be judged legally invalid or ineffective under applicable law, such\\npartial invalidity or ineffectiveness shall not invalidate the remainder\\nof the License, and in such case Affirmer hereby affirms that he or she\\nwill not (i) exercise any of his or her remaining Copyright and Related\\nRights in the Work or (ii) assert any associated claims and causes of\\naction with respect to the Work, in either case contrary to Affirmer's\\nexpress Statement of Purpose.\\n\\n4. Limitations and Disclaimers.\\n\\n a. No trademark or patent rights held by Affirmer are waived, abandoned,\\n    surrendered, licensed or otherwise affected by this document.\\n b. Affirmer offers the Work as-is and makes no representations or\\n    warranties of any kind concerning the Work, express, implied,\\n    statutory or otherwise, including without limitation warranties of\\n    title, merchantability, fitness for a particular purpose, non\\n    infringement, or the absence of latent or other defects, accuracy, or\\n    the present or absence of errors, whether or not discoverable, all to\\n    the greatest extent permissible under applicable law.\\n c. Affirmer disclaims responsibility for clearing rights of other persons\\n    that may apply to the Work or any use thereof, including without\\n    limitation any person's Copyright and Related Rights in the Work.\\n    Further, Affirmer disclaims responsibility for obtaining any necessary\\n    consents, permissions or other rights required for any use of the\\n    Work.\\n d. Affirmer understands and acknowledges that Creative Commons is not a\\n    party to this document and has no duty or obligation with respect to\\n    this CC0 or use of the Work.",
-    "LICENSE-MIT": "MIT License\\n\\nCopyright (c) 2024 electrovir\\n\\nPermission is hereby granted, free of charge, to any person obtaining a copy\\nof this software and associated documentation files (the \\"Software\\"), to deal\\nin the Software without restriction, including without limitation the rights\\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\\ncopies of the Software, and to permit persons to whom the Software is\\nfurnished to do so, subject to the following conditions:\\n\\nThe above copyright notice and this permission notice shall be included in all\\ncopies or substantial portions of the Software.\\n\\nTHE SOFTWARE IS PROVIDED \\"AS IS\\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\\nSOFTWARE.\\n",
     "configs": {
       "dep-cruiser.config.cts": "import {generateDepCruiserConfig} from '@virmator/deps/configs/dep-cruiser.config.base';\\nimport type {IConfiguration} from 'dependency-cruiser';\\n\\nconst baseConfig = generateDepCruiserConfig({\\n    fileExceptions: {\\n        // enter file exceptions by rule name here\\n        'no-orphans': {\\n            from: [\\n                'src/index.ts',\\n            ],\\n        },\\n    },\\n    omitRules: [\\n        // enter rule names here to omit\\n    ],\\n});\\n\\nconst depCruiserConfig: IConfiguration = {\\n    ...baseConfig,\\n};\\n\\nmodule.exports = depCruiserConfig;\\n",
       "ncu.config.ts": "import {baseNcuConfig} from '@virmator/deps/configs/ncu.config.base';\\nimport {RunOptions} from 'npm-check-updates';\\n\\nexport const ncuConfig: RunOptions = {\\n    ...baseNcuConfig,\\n    // exclude these\\n    reject: [\\n        ...baseNcuConfig.reject,\\n    ],\\n    // include only these\\n    filter: [],\\n};\\n",
@@ -224,63 +95,13 @@ exports[`Init > initializes a mono-root node package 1`] = `
 exports[`Init > initializes a mono-root web package 1`] = `
 {
   "logs": {
-    "stdout": [
-      [
-        "Copied .gitattributes"
-      ],
-      [
-        "Copied .gitignore"
-      ],
-      [
-        "Copied .nvmrc"
-      ],
-      [
-        "Copied .prettierignore"
-      ],
-      [
-        "Copied build-for-gh-pages.yml"
-      ],
-      [
-        "Copied cspell.config.cjs"
-      ],
-      [
-        "Copied dep-cruiser.config.cts"
-      ],
-      [
-        "Copied LICENSE-CC0"
-      ],
-      [
-        "Copied LICENSE-MIT"
-      ],
-      [
-        "Copied ncu.config.ts"
-      ],
-      [
-        "Copied package.json"
-      ],
-      [
-        "Copied prettier.config.mjs"
-      ],
-      [
-        "Copied tagged-release.yml"
-      ],
-      [
-        "Copied tests.yml"
-      ],
-      [
-        "Copied tsconfig.base.json"
-      ],
-      [
-        "init finished."
-      ]
-    ]
+    "stdout": "Copied .gitattributes\\nCopied .gitignore\\nCopied .nvmrc\\nCopied .prettierignore\\nCopied build-for-gh-pages.yml\\nCopied cspell.config.cjs\\nCopied dep-cruiser.config.cts\\nCopied LICENSE-CC0\\nCopied LICENSE-MIT\\nCopied ncu.config.ts\\nCopied package.json\\nCopied prettier.config.mjs\\nCopied tagged-release.yml\\nCopied tests.yml\\nCopied tsconfig.base.json\\ninit finished."
   },
+  "cwd": "packages/virmator/test-files/mono-root",
   "contentsDiff": {
-    "package.json": "{\\n    \\"private\\": true,\\n    \\"license\\": \\"(MIT or CC0 1.0)\\",\\n    \\"type\\": \\"module\\",\\n    \\"scripts\\": {\\n        \\"compile\\": \\"virmator compile\\",\\n        \\"format\\": \\"virmator format\\",\\n        \\"publish\\": \\"virmator publish npm run test:all\\",\\n        \\"test\\": \\"mono-vir for-each-async npm run test\\",\\n        \\"test:all\\": \\"npm run compile && concurrently --colors --kill-others-on-fail --kill-signal SIGKILL -c auto --names tests,spelling,format,docs,deps \\\\\\"npm run test:coverage\\\\\\" \\\\\\"npm run test:spelling\\\\\\" \\\\\\"npm run test:format\\\\\\" \\\\\\"npm run test:docs\\\\\\" \\\\\\"npm run test:deps\\\\\\"\\",\\n        \\"test:coverage\\": \\"mono-vir for-each-async npm run test:coverage\\",\\n        \\"test:deps\\": \\"virmator deps check\\",\\n        \\"test:docs\\": \\"virmator docs check\\",\\n        \\"test:format\\": \\"virmator format check\\",\\n        \\"test:spelling\\": \\"virmator spellcheck\\"\\n    }\\n}\\n",
+    "package.json": "{\\n    \\"private\\": true,\\n    \\"license\\": \\"(MIT or CC0 1.0)\\",\\n    \\"type\\": \\"module\\",\\n    \\"scripts\\": {\\n        \\"compile\\": \\"virmator compile\\",\\n        \\"format\\": \\"virmator format\\",\\n        \\"publish\\": \\"virmator publish npm run test:all\\",\\n        \\"test\\": \\"mono-vir for-each-async npm run test\\",\\n        \\"test:all\\": \\"npm run compile && concurrently --colors --kill-others-on-fail --kill-signal SIGKILL -c auto --names tests,spelling,format,docs,deps \\\\\\"npm run test:coverage\\\\\\" \\\\\\"npm run test:spelling\\\\\\" \\\\\\"npm run test:format\\\\\\" \\\\\\"npm run test:docs\\\\\\" \\\\\\"npm run test:deps\\\\\\"\\",\\n        \\"test:coverage\\": \\"mono-vir for-each-async npm run test:coverage\\",\\n        \\"test:deps\\": \\"virmator deps check\\",\\n        \\"test:docs\\": \\"virmator docs check\\",\\n        \\"test:format\\": \\"virmator format check\\",\\n        \\"test:spelling\\": \\"virmator spellcheck\\",\\n        \\"test:update\\": \\"mono-vir for-each-async npm run test:update\\"\\n    }\\n}\\n",
     ".nvmrc": "22",
     ".prettierignore": "**/all-files-for-code-coverage.test.ts\\n**/coverage/\\n**/dist-*/\\n**/dist/\\n**/generated-config-*\\n**/graphics/\\n**/node_modules/\\n**/package-lock.json\\n**/tsconfig.tsbuildinfo\\n/Icon?",
-    "LICENSE-CC0": "CC0 1.0 Universal\\n\\nCreative Commons Legal Code\\n\\n    CREATIVE COMMONS CORPORATION IS NOT A LAW FIRM AND DOES NOT PROVIDE\\n    LEGAL SERVICES. DISTRIBUTION OF THIS DOCUMENT DOES NOT CREATE AN\\n    ATTORNEY-CLIENT RELATIONSHIP. CREATIVE COMMONS PROVIDES THIS\\n    INFORMATION ON AN \\"AS-IS\\" BASIS. CREATIVE COMMONS MAKES NO WARRANTIES\\n    REGARDING THE USE OF THIS DOCUMENT OR THE INFORMATION OR WORKS\\n    PROVIDED HEREUNDER, AND DISCLAIMS LIABILITY FOR DAMAGES RESULTING FROM\\n    THE USE OF THIS DOCUMENT OR THE INFORMATION OR WORKS PROVIDED\\n    HEREUNDER.\\n\\nStatement of Purpose\\n\\nThe laws of most jurisdictions throughout the world automatically confer\\nexclusive Copyright and Related Rights (defined below) upon the creator\\nand subsequent owner(s) (each and all, an \\"owner\\") of an original work of\\nauthorship and/or a database (each, a \\"Work\\").\\n\\nCertain owners wish to permanently relinquish those rights to a Work for\\nthe purpose of contributing to a commons of creative, cultural and\\nscientific works (\\"Commons\\") that the public can reliably and without fear\\nof later claims of infringement build upon, modify, incorporate in other\\nworks, reuse and redistribute as freely as possible in any form whatsoever\\nand for any purposes, including without limitation commercial purposes.\\nThese owners may contribute to the Commons to promote the ideal of a free\\nculture and the further production of creative, cultural and scientific\\nworks, or to gain reputation or greater distribution for their Work in\\npart through the use and efforts of others.\\n\\nFor these and/or other purposes and motivations, and without any\\nexpectation of additional consideration or compensation, the person\\nassociating CC0 with a Work (the \\"Affirmer\\"), to the extent that he or she\\nis an owner of Copyright and Related Rights in the Work, voluntarily\\nelects to apply CC0 to the Work and publicly distribute the Work under its\\nterms, with knowledge of his or her Copyright and Related Rights in the\\nWork and the meaning and intended legal effect of CC0 on those rights.\\n\\n1. Copyright and Related Rights. A Work made available under CC0 may be\\nprotected by copyright and related or neighboring rights (\\"Copyright and\\nRelated Rights\\"). Copyright and Related Rights include, but are not\\nlimited to, the following:\\n\\n  i. the right to reproduce, adapt, distribute, perform, display,\\n     communicate, and translate a Work;\\n ii. moral rights retained by the original author(s) and/or performer(s);\\niii. publicity and privacy rights pertaining to a person's image or\\n     likeness depicted in a Work;\\n iv. rights protecting against unfair competition in regards to a Work,\\n     subject to the limitations in paragraph 4(a), below;\\n  v. rights protecting the extraction, dissemination, use and reuse of data\\n     in a Work;\\n vi. database rights (such as those arising under Directive 96/9/EC of the\\n     European Parliament and of the Council of 11 March 1996 on the legal\\n     protection of databases, and under any national implementation\\n     thereof, including any amended or successor version of such\\n     directive); and\\nvii. other similar, equivalent or corresponding rights throughout the\\n     world based on applicable law or treaty, and any national\\n     implementations thereof.\\n\\n2. Waiver. To the greatest extent permitted by, but not in contravention\\nof, applicable law, Affirmer hereby overtly, fully, permanently,\\nirrevocably and unconditionally waives, abandons, and surrenders all of\\nAffirmer's Copyright and Related Rights and associated claims and causes\\nof action, whether now known or unknown (including existing as well as\\nfuture claims and causes of action), in the Work (i) in all territories\\nworldwide, (ii) for the maximum duration provided by applicable law or\\ntreaty (including future time extensions), (iii) in any current or future\\nmedium and for any number of copies, and (iv) for any purpose whatsoever,\\nincluding without limitation commercial, advertising or promotional\\npurposes (the \\"Waiver\\"). Affirmer makes the Waiver for the benefit of each\\nmember of the public at large and to the detriment of Affirmer's heirs and\\nsuccessors, fully intending that such Waiver shall not be subject to\\nrevocation, rescission, cancellation, termination, or any other legal or\\nequitable action to disrupt the quiet enjoyment of the Work by the public\\nas contemplated by Affirmer's express Statement of Purpose.\\n\\n3. Public License Fallback. Should any part of the Waiver for any reason\\nbe judged legally invalid or ineffective under applicable law, then the\\nWaiver shall be preserved to the maximum extent permitted taking into\\naccount Affirmer's express Statement of Purpose. In addition, to the\\nextent the Waiver is so judged Affirmer hereby grants to each affected\\nperson a royalty-free, non transferable, non sublicensable, non exclusive,\\nirrevocable and unconditional license to exercise Affirmer's Copyright and\\nRelated Rights in the Work (i) in all territories worldwide, (ii) for the\\nmaximum duration provided by applicable law or treaty (including future\\ntime extensions), (iii) in any current or future medium and for any number\\nof copies, and (iv) for any purpose whatsoever, including without\\nlimitation commercial, advertising or promotional purposes (the\\n\\"License\\"). The License shall be deemed effective as of the date CC0 was\\napplied by Affirmer to the Work. Should any part of the License for any\\nreason be judged legally invalid or ineffective under applicable law, such\\npartial invalidity or ineffectiveness shall not invalidate the remainder\\nof the License, and in such case Affirmer hereby affirms that he or she\\nwill not (i) exercise any of his or her remaining Copyright and Related\\nRights in the Work or (ii) assert any associated claims and causes of\\naction with respect to the Work, in either case contrary to Affirmer's\\nexpress Statement of Purpose.\\n\\n4. Limitations and Disclaimers.\\n\\n a. No trademark or patent rights held by Affirmer are waived, abandoned,\\n    surrendered, licensed or otherwise affected by this document.\\n b. Affirmer offers the Work as-is and makes no representations or\\n    warranties of any kind concerning the Work, express, implied,\\n    statutory or otherwise, including without limitation warranties of\\n    title, merchantability, fitness for a particular purpose, non\\n    infringement, or the absence of latent or other defects, accuracy, or\\n    the present or absence of errors, whether or not discoverable, all to\\n    the greatest extent permissible under applicable law.\\n c. Affirmer disclaims responsibility for clearing rights of other persons\\n    that may apply to the Work or any use thereof, including without\\n    limitation any person's Copyright and Related Rights in the Work.\\n    Further, Affirmer disclaims responsibility for obtaining any necessary\\n    consents, permissions or other rights required for any use of the\\n    Work.\\n d. Affirmer understands and acknowledges that Creative Commons is not a\\n    party to this document and has no duty or obligation with respect to\\n    this CC0 or use of the Work.",
-    "LICENSE-MIT": "MIT License\\n\\nCopyright (c) 2024 electrovir\\n\\nPermission is hereby granted, free of charge, to any person obtaining a copy\\nof this software and associated documentation files (the \\"Software\\"), to deal\\nin the Software without restriction, including without limitation the rights\\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\\ncopies of the Software, and to permit persons to whom the Software is\\nfurnished to do so, subject to the following conditions:\\n\\nThe above copyright notice and this permission notice shall be included in all\\ncopies or substantial portions of the Software.\\n\\nTHE SOFTWARE IS PROVIDED \\"AS IS\\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\\nSOFTWARE.\\n",
     "configs": {
       "dep-cruiser.config.cts": "import {generateDepCruiserConfig} from '@virmator/deps/configs/dep-cruiser.config.base';\\nimport type {IConfiguration} from 'dependency-cruiser';\\n\\nconst baseConfig = generateDepCruiserConfig({\\n    fileExceptions: {\\n        // enter file exceptions by rule name here\\n        'no-orphans': {\\n            from: [\\n                'src/index.ts',\\n            ],\\n        },\\n    },\\n    omitRules: [\\n        // enter rule names here to omit\\n    ],\\n});\\n\\nconst depCruiserConfig: IConfiguration = {\\n    ...baseConfig,\\n};\\n\\nmodule.exports = depCruiserConfig;\\n",
       "ncu.config.ts": "import {baseNcuConfig} from '@virmator/deps/configs/ncu.config.base';\\nimport {RunOptions} from 'npm-check-updates';\\n\\nexport const ncuConfig: RunOptions = {\\n    ...baseNcuConfig,\\n    // exclude these\\n    reject: [\\n        ...baseNcuConfig.reject,\\n    ],\\n    // include only these\\n    filter: [],\\n};\\n",
@@ -295,73 +116,14 @@ exports[`Init > initializes a mono-root web package 1`] = `
 exports[`Init > initializes a top-level node package 1`] = `
 {
   "logs": {
-    "stdout": [
-      [
-        "Copied .gitattributes"
-      ],
-      [
-        "Copied .gitignore"
-      ],
-      [
-        "Copied .npmignore"
-      ],
-      [
-        "Copied .nvmrc"
-      ],
-      [
-        "Copied .prettierignore"
-      ],
-      [
-        "Copied build-for-gh-pages.yml"
-      ],
-      [
-        "Copied c8.config.json"
-      ],
-      [
-        "Copied cspell.config.cjs"
-      ],
-      [
-        "Copied dep-cruiser.config.cts"
-      ],
-      [
-        "Copied LICENSE-CC0"
-      ],
-      [
-        "Copied LICENSE-MIT"
-      ],
-      [
-        "Copied ncu.config.ts"
-      ],
-      [
-        "Copied package.json"
-      ],
-      [
-        "Copied prettier.config.mjs"
-      ],
-      [
-        "Copied tagged-release.yml"
-      ],
-      [
-        "Copied tests.yml"
-      ],
-      [
-        "Copied tsconfig.json"
-      ],
-      [
-        "Copied typedoc.config.ts"
-      ],
-      [
-        "init finished."
-      ]
-    ]
+    "stdout": "Installing tsx@4.16.3...\\nCopied .gitattributes\\nCopied .gitignore\\nCopied .npmignore\\nCopied .nvmrc\\nCopied .prettierignore\\nCopied build-for-gh-pages.yml\\nCopied c8.config.json\\nCopied cspell.config.cjs\\nCopied dep-cruiser.config.cts\\nCopied LICENSE-CC0\\nCopied LICENSE-MIT\\nCopied ncu.config.ts\\nCopied package.json\\nCopied prettier.config.mjs\\nCopied tagged-release.yml\\nCopied tests.yml\\nCopied tsconfig.json\\nCopied typedoc.config.ts\\ninit finished."
   },
+  "cwd": "packages/virmator/test-files/top-package",
   "contentsDiff": {
-    "package.json": "{\\n    \\"license\\": \\"(MIT or CC0 1.0)\\",\\n    \\"type\\": \\"module\\",\\n    \\"main\\": \\"dist/index.ts\\",\\n    \\"module\\": \\"dist/index.ts\\",\\n    \\"types\\": \\"dist/index.ts\\",\\n    \\"scripts\\": {\\n        \\"compile\\": \\"virmator compile\\",\\n        \\"docs\\": \\"virmator docs\\",\\n        \\"format\\": \\"virmator format\\",\\n        \\"publish\\": \\"virmator publish npm run test:all\\",\\n        \\"start\\": \\"txs src/index.ts\\",\\n        \\"test\\": \\"virmator test node\\",\\n        \\"test:all\\": \\"npm run compile && concurrently --colors --kill-others-on-fail --kill-signal SIGKILL -c auto --names tests,spelling,format,docs,deps \\\\\\"npm run test:coverage\\\\\\" \\\\\\"npm run test:spelling\\\\\\" \\\\\\"npm run test:format\\\\\\" \\\\\\"npm run test:docs\\\\\\" \\\\\\"npm run test:deps\\\\\\"\\",\\n        \\"test:coverage\\": \\"npm run test coverage\\",\\n        \\"test:deps\\": \\"virmator deps check\\",\\n        \\"test:docs\\": \\"virmator docs check\\",\\n        \\"test:format\\": \\"virmator format check\\",\\n        \\"test:spelling\\": \\"virmator spellcheck\\"\\n    }\\n}\\n",
+    "package.json": "{\\n    \\"license\\": \\"(MIT or CC0 1.0)\\",\\n    \\"type\\": \\"module\\",\\n    \\"main\\": \\"dist/index.ts\\",\\n    \\"module\\": \\"dist/index.ts\\",\\n    \\"types\\": \\"dist/index.ts\\",\\n    \\"scripts\\": {\\n        \\"compile\\": \\"virmator compile\\",\\n        \\"docs\\": \\"virmator docs\\",\\n        \\"format\\": \\"virmator format\\",\\n        \\"publish\\": \\"virmator publish npm run test:all\\",\\n        \\"start\\": \\"txs src/index.ts\\",\\n        \\"test\\": \\"virmator test node\\",\\n        \\"test:all\\": \\"npm run compile && concurrently --colors --kill-others-on-fail --kill-signal SIGKILL -c auto --names tests,spelling,format,docs,deps \\\\\\"npm run test:coverage\\\\\\" \\\\\\"npm run test:spelling\\\\\\" \\\\\\"npm run test:format\\\\\\" \\\\\\"npm run test:docs\\\\\\" \\\\\\"npm run test:deps\\\\\\"\\",\\n        \\"test:coverage\\": \\"npm run test coverage\\",\\n        \\"test:deps\\": \\"virmator deps check\\",\\n        \\"test:docs\\": \\"virmator docs check\\",\\n        \\"test:format\\": \\"virmator format check\\",\\n        \\"test:spelling\\": \\"virmator spellcheck\\",\\n        \\"test:update\\": \\"npm run test update\\"\\n    }\\n}\\n",
     ".npmignore": ".*\\n.not-committed/\\n*.book-helper.*\\n*.book.*\\n*.d.ts.map\\n*.test-helper.*\\n*.test.*\\n*.tgz\\n**/*/readme-examples/\\n**/*/test/\\n/configs/\\n/coverage/\\n/cspell.config.cjs\\n/graphics/\\n/Icon?\\n/src/\\n/www-static/\\nbash-scripts/\\ndist-docs/\\ngenerated-config-*\\nindex.html\\ntest-files/\\ntodo.md\\ntsconfig.tsbuildinfo\\ntsconfig*.json",
     ".nvmrc": "22",
     ".prettierignore": "**/all-files-for-code-coverage.test.ts\\n**/coverage/\\n**/dist-*/\\n**/dist/\\n**/generated-config-*\\n**/graphics/\\n**/node_modules/\\n**/package-lock.json\\n**/tsconfig.tsbuildinfo\\n/Icon?",
-    "LICENSE-CC0": "CC0 1.0 Universal\\n\\nCreative Commons Legal Code\\n\\n    CREATIVE COMMONS CORPORATION IS NOT A LAW FIRM AND DOES NOT PROVIDE\\n    LEGAL SERVICES. DISTRIBUTION OF THIS DOCUMENT DOES NOT CREATE AN\\n    ATTORNEY-CLIENT RELATIONSHIP. CREATIVE COMMONS PROVIDES THIS\\n    INFORMATION ON AN \\"AS-IS\\" BASIS. CREATIVE COMMONS MAKES NO WARRANTIES\\n    REGARDING THE USE OF THIS DOCUMENT OR THE INFORMATION OR WORKS\\n    PROVIDED HEREUNDER, AND DISCLAIMS LIABILITY FOR DAMAGES RESULTING FROM\\n    THE USE OF THIS DOCUMENT OR THE INFORMATION OR WORKS PROVIDED\\n    HEREUNDER.\\n\\nStatement of Purpose\\n\\nThe laws of most jurisdictions throughout the world automatically confer\\nexclusive Copyright and Related Rights (defined below) upon the creator\\nand subsequent owner(s) (each and all, an \\"owner\\") of an original work of\\nauthorship and/or a database (each, a \\"Work\\").\\n\\nCertain owners wish to permanently relinquish those rights to a Work for\\nthe purpose of contributing to a commons of creative, cultural and\\nscientific works (\\"Commons\\") that the public can reliably and without fear\\nof later claims of infringement build upon, modify, incorporate in other\\nworks, reuse and redistribute as freely as possible in any form whatsoever\\nand for any purposes, including without limitation commercial purposes.\\nThese owners may contribute to the Commons to promote the ideal of a free\\nculture and the further production of creative, cultural and scientific\\nworks, or to gain reputation or greater distribution for their Work in\\npart through the use and efforts of others.\\n\\nFor these and/or other purposes and motivations, and without any\\nexpectation of additional consideration or compensation, the person\\nassociating CC0 with a Work (the \\"Affirmer\\"), to the extent that he or she\\nis an owner of Copyright and Related Rights in the Work, voluntarily\\nelects to apply CC0 to the Work and publicly distribute the Work under its\\nterms, with knowledge of his or her Copyright and Related Rights in the\\nWork and the meaning and intended legal effect of CC0 on those rights.\\n\\n1. Copyright and Related Rights. A Work made available under CC0 may be\\nprotected by copyright and related or neighboring rights (\\"Copyright and\\nRelated Rights\\"). Copyright and Related Rights include, but are not\\nlimited to, the following:\\n\\n  i. the right to reproduce, adapt, distribute, perform, display,\\n     communicate, and translate a Work;\\n ii. moral rights retained by the original author(s) and/or performer(s);\\niii. publicity and privacy rights pertaining to a person's image or\\n     likeness depicted in a Work;\\n iv. rights protecting against unfair competition in regards to a Work,\\n     subject to the limitations in paragraph 4(a), below;\\n  v. rights protecting the extraction, dissemination, use and reuse of data\\n     in a Work;\\n vi. database rights (such as those arising under Directive 96/9/EC of the\\n     European Parliament and of the Council of 11 March 1996 on the legal\\n     protection of databases, and under any national implementation\\n     thereof, including any amended or successor version of such\\n     directive); and\\nvii. other similar, equivalent or corresponding rights throughout the\\n     world based on applicable law or treaty, and any national\\n     implementations thereof.\\n\\n2. Waiver. To the greatest extent permitted by, but not in contravention\\nof, applicable law, Affirmer hereby overtly, fully, permanently,\\nirrevocably and unconditionally waives, abandons, and surrenders all of\\nAffirmer's Copyright and Related Rights and associated claims and causes\\nof action, whether now known or unknown (including existing as well as\\nfuture claims and causes of action), in the Work (i) in all territories\\nworldwide, (ii) for the maximum duration provided by applicable law or\\ntreaty (including future time extensions), (iii) in any current or future\\nmedium and for any number of copies, and (iv) for any purpose whatsoever,\\nincluding without limitation commercial, advertising or promotional\\npurposes (the \\"Waiver\\"). Affirmer makes the Waiver for the benefit of each\\nmember of the public at large and to the detriment of Affirmer's heirs and\\nsuccessors, fully intending that such Waiver shall not be subject to\\nrevocation, rescission, cancellation, termination, or any other legal or\\nequitable action to disrupt the quiet enjoyment of the Work by the public\\nas contemplated by Affirmer's express Statement of Purpose.\\n\\n3. Public License Fallback. Should any part of the Waiver for any reason\\nbe judged legally invalid or ineffective under applicable law, then the\\nWaiver shall be preserved to the maximum extent permitted taking into\\naccount Affirmer's express Statement of Purpose. In addition, to the\\nextent the Waiver is so judged Affirmer hereby grants to each affected\\nperson a royalty-free, non transferable, non sublicensable, non exclusive,\\nirrevocable and unconditional license to exercise Affirmer's Copyright and\\nRelated Rights in the Work (i) in all territories worldwide, (ii) for the\\nmaximum duration provided by applicable law or treaty (including future\\ntime extensions), (iii) in any current or future medium and for any number\\nof copies, and (iv) for any purpose whatsoever, including without\\nlimitation commercial, advertising or promotional purposes (the\\n\\"License\\"). The License shall be deemed effective as of the date CC0 was\\napplied by Affirmer to the Work. Should any part of the License for any\\nreason be judged legally invalid or ineffective under applicable law, such\\npartial invalidity or ineffectiveness shall not invalidate the remainder\\nof the License, and in such case Affirmer hereby affirms that he or she\\nwill not (i) exercise any of his or her remaining Copyright and Related\\nRights in the Work or (ii) assert any associated claims and causes of\\naction with respect to the Work, in either case contrary to Affirmer's\\nexpress Statement of Purpose.\\n\\n4. Limitations and Disclaimers.\\n\\n a. No trademark or patent rights held by Affirmer are waived, abandoned,\\n    surrendered, licensed or otherwise affected by this document.\\n b. Affirmer offers the Work as-is and makes no representations or\\n    warranties of any kind concerning the Work, express, implied,\\n    statutory or otherwise, including without limitation warranties of\\n    title, merchantability, fitness for a particular purpose, non\\n    infringement, or the absence of latent or other defects, accuracy, or\\n    the present or absence of errors, whether or not discoverable, all to\\n    the greatest extent permissible under applicable law.\\n c. Affirmer disclaims responsibility for clearing rights of other persons\\n    that may apply to the Work or any use thereof, including without\\n    limitation any person's Copyright and Related Rights in the Work.\\n    Further, Affirmer disclaims responsibility for obtaining any necessary\\n    consents, permissions or other rights required for any use of the\\n    Work.\\n d. Affirmer understands and acknowledges that Creative Commons is not a\\n    party to this document and has no duty or obligation with respect to\\n    this CC0 or use of the Work.",
-    "LICENSE-MIT": "MIT License\\n\\nCopyright (c) 2024 electrovir\\n\\nPermission is hereby granted, free of charge, to any person obtaining a copy\\nof this software and associated documentation files (the \\"Software\\"), to deal\\nin the Software without restriction, including without limitation the rights\\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\\ncopies of the Software, and to permit persons to whom the Software is\\nfurnished to do so, subject to the following conditions:\\n\\nThe above copyright notice and this permission notice shall be included in all\\ncopies or substantial portions of the Software.\\n\\nTHE SOFTWARE IS PROVIDED \\"AS IS\\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\\nSOFTWARE.\\n",
     "configs": {
       "c8.config.json": "{\\n    \\"100\\": true,\\n    \\"all\\": true,\\n    \\"checkCoverage\\": true,\\n    \\"clean\\": true,\\n    \\"perFile\\": true,\\n    \\"skipFull\\": true,\\n    \\"src\\": \\"src\\"\\n}\\n",
       "dep-cruiser.config.cts": "import {generateDepCruiserConfig} from '@virmator/deps/configs/dep-cruiser.config.base';\\nimport type {IConfiguration} from 'dependency-cruiser';\\n\\nconst baseConfig = generateDepCruiserConfig({\\n    fileExceptions: {\\n        // enter file exceptions by rule name here\\n        'no-orphans': {\\n            from: [\\n                'src/index.ts',\\n            ],\\n        },\\n    },\\n    omitRules: [\\n        // enter rule names here to omit\\n    ],\\n});\\n\\nconst depCruiserConfig: IConfiguration = {\\n    ...baseConfig,\\n};\\n\\nmodule.exports = depCruiserConfig;\\n",
@@ -378,88 +140,14 @@ exports[`Init > initializes a top-level node package 1`] = `
 exports[`Init > initializes a top-level web package 1`] = `
 {
   "logs": {
-    "stdout": [
-      [
-        "Copied _redirects"
-      ],
-      [
-        "Copied .gitattributes"
-      ],
-      [
-        "Copied .gitignore"
-      ],
-      [
-        "Copied .npmignore"
-      ],
-      [
-        "Copied .nvmrc"
-      ],
-      [
-        "Copied .prettierignore"
-      ],
-      [
-        "Copied build-for-gh-pages.yml"
-      ],
-      [
-        "Copied cspell.config.cjs"
-      ],
-      [
-        "Copied dep-cruiser.config.cts"
-      ],
-      [
-        "Copied index.css"
-      ],
-      [
-        "Copied index.html"
-      ],
-      [
-        "Copied LICENSE-CC0"
-      ],
-      [
-        "Copied LICENSE-MIT"
-      ],
-      [
-        "Copied ncu.config.ts"
-      ],
-      [
-        "Copied package.json"
-      ],
-      [
-        "Copied prettier.config.mjs"
-      ],
-      [
-        "Copied tagged-release.yml"
-      ],
-      [
-        "Copied tests.yml"
-      ],
-      [
-        "Copied tsconfig.json"
-      ],
-      [
-        "Copied typedoc.config.ts"
-      ],
-      [
-        "Copied vir-app.element.ts"
-      ],
-      [
-        "Copied vite.config.ts"
-      ],
-      [
-        "Copied web-test-runner.config.mjs"
-      ],
-      [
-        "init finished."
-      ]
-    ]
+    "stdout": "Installing element-vir@22.2.2...\\nCopied _redirects\\nCopied .gitattributes\\nCopied .gitignore\\nCopied .npmignore\\nCopied .nvmrc\\nCopied .prettierignore\\nCopied build-for-gh-pages.yml\\nCopied cspell.config.cjs\\nCopied dep-cruiser.config.cts\\nCopied index.css\\nCopied index.html\\nCopied LICENSE-CC0\\nCopied LICENSE-MIT\\nCopied ncu.config.ts\\nCopied package.json\\nCopied prettier.config.mjs\\nCopied tagged-release.yml\\nCopied tests.yml\\nCopied tsconfig.json\\nCopied typedoc.config.ts\\nCopied vir-app.element.ts\\nCopied vite.config.ts\\nCopied web-test-runner.config.mjs\\ninit finished."
   },
+  "cwd": "packages/virmator/test-files/top-package",
   "contentsDiff": {
     "package.json": "{\\n    \\"license\\": \\"(MIT or CC0 1.0)\\",\\n    \\"type\\": \\"module\\",\\n    \\"main\\": \\"dist/index.ts\\",\\n    \\"module\\": \\"dist/index.ts\\",\\n    \\"types\\": \\"dist/index.ts\\",\\n    \\"scripts\\": {\\n        \\"build\\": \\"virmator frontend build\\",\\n        \\"compile\\": \\"virmator compile\\",\\n        \\"docs\\": \\"virmator docs\\",\\n        \\"format\\": \\"virmator format\\",\\n        \\"publish\\": \\"virmator publish npm run test:all\\",\\n        \\"start\\": \\"virmator frontend\\",\\n        \\"test\\": \\"virmator test web\\",\\n        \\"test:all\\": \\"npm run compile && concurrently --colors --kill-others-on-fail --kill-signal SIGKILL -c auto --names tests,spelling,format,docs,deps \\\\\\"npm run test:coverage\\\\\\" \\\\\\"npm run test:spelling\\\\\\" \\\\\\"npm run test:format\\\\\\" \\\\\\"npm run test:docs\\\\\\" \\\\\\"npm run test:deps\\\\\\"\\",\\n        \\"test:coverage\\": \\"npm run test coverage\\",\\n        \\"test:deps\\": \\"virmator deps check\\",\\n        \\"test:docs\\": \\"virmator docs check\\",\\n        \\"test:format\\": \\"virmator format check\\",\\n        \\"test:spelling\\": \\"virmator spellcheck\\"\\n    }\\n}\\n",
     ".npmignore": ".*\\n.not-committed/\\n*.book-helper.*\\n*.book.*\\n*.d.ts.map\\n*.test-helper.*\\n*.test.*\\n*.tgz\\n**/*/readme-examples/\\n**/*/test/\\n/configs/\\n/coverage/\\n/cspell.config.cjs\\n/graphics/\\n/Icon?\\n/src/\\n/www-static/\\nbash-scripts/\\ndist-docs/\\ngenerated-config-*\\nindex.html\\ntest-files/\\ntodo.md\\ntsconfig.tsbuildinfo\\ntsconfig*.json",
     ".nvmrc": "22",
     ".prettierignore": "**/all-files-for-code-coverage.test.ts\\n**/coverage/\\n**/dist-*/\\n**/dist/\\n**/generated-config-*\\n**/graphics/\\n**/node_modules/\\n**/package-lock.json\\n**/tsconfig.tsbuildinfo\\n/Icon?",
-    "LICENSE-CC0": "CC0 1.0 Universal\\n\\nCreative Commons Legal Code\\n\\n    CREATIVE COMMONS CORPORATION IS NOT A LAW FIRM AND DOES NOT PROVIDE\\n    LEGAL SERVICES. DISTRIBUTION OF THIS DOCUMENT DOES NOT CREATE AN\\n    ATTORNEY-CLIENT RELATIONSHIP. CREATIVE COMMONS PROVIDES THIS\\n    INFORMATION ON AN \\"AS-IS\\" BASIS. CREATIVE COMMONS MAKES NO WARRANTIES\\n    REGARDING THE USE OF THIS DOCUMENT OR THE INFORMATION OR WORKS\\n    PROVIDED HEREUNDER, AND DISCLAIMS LIABILITY FOR DAMAGES RESULTING FROM\\n    THE USE OF THIS DOCUMENT OR THE INFORMATION OR WORKS PROVIDED\\n    HEREUNDER.\\n\\nStatement of Purpose\\n\\nThe laws of most jurisdictions throughout the world automatically confer\\nexclusive Copyright and Related Rights (defined below) upon the creator\\nand subsequent owner(s) (each and all, an \\"owner\\") of an original work of\\nauthorship and/or a database (each, a \\"Work\\").\\n\\nCertain owners wish to permanently relinquish those rights to a Work for\\nthe purpose of contributing to a commons of creative, cultural and\\nscientific works (\\"Commons\\") that the public can reliably and without fear\\nof later claims of infringement build upon, modify, incorporate in other\\nworks, reuse and redistribute as freely as possible in any form whatsoever\\nand for any purposes, including without limitation commercial purposes.\\nThese owners may contribute to the Commons to promote the ideal of a free\\nculture and the further production of creative, cultural and scientific\\nworks, or to gain reputation or greater distribution for their Work in\\npart through the use and efforts of others.\\n\\nFor these and/or other purposes and motivations, and without any\\nexpectation of additional consideration or compensation, the person\\nassociating CC0 with a Work (the \\"Affirmer\\"), to the extent that he or she\\nis an owner of Copyright and Related Rights in the Work, voluntarily\\nelects to apply CC0 to the Work and publicly distribute the Work under its\\nterms, with knowledge of his or her Copyright and Related Rights in the\\nWork and the meaning and intended legal effect of CC0 on those rights.\\n\\n1. Copyright and Related Rights. A Work made available under CC0 may be\\nprotected by copyright and related or neighboring rights (\\"Copyright and\\nRelated Rights\\"). Copyright and Related Rights include, but are not\\nlimited to, the following:\\n\\n  i. the right to reproduce, adapt, distribute, perform, display,\\n     communicate, and translate a Work;\\n ii. moral rights retained by the original author(s) and/or performer(s);\\niii. publicity and privacy rights pertaining to a person's image or\\n     likeness depicted in a Work;\\n iv. rights protecting against unfair competition in regards to a Work,\\n     subject to the limitations in paragraph 4(a), below;\\n  v. rights protecting the extraction, dissemination, use and reuse of data\\n     in a Work;\\n vi. database rights (such as those arising under Directive 96/9/EC of the\\n     European Parliament and of the Council of 11 March 1996 on the legal\\n     protection of databases, and under any national implementation\\n     thereof, including any amended or successor version of such\\n     directive); and\\nvii. other similar, equivalent or corresponding rights throughout the\\n     world based on applicable law or treaty, and any national\\n     implementations thereof.\\n\\n2. Waiver. To the greatest extent permitted by, but not in contravention\\nof, applicable law, Affirmer hereby overtly, fully, permanently,\\nirrevocably and unconditionally waives, abandons, and surrenders all of\\nAffirmer's Copyright and Related Rights and associated claims and causes\\nof action, whether now known or unknown (including existing as well as\\nfuture claims and causes of action), in the Work (i) in all territories\\nworldwide, (ii) for the maximum duration provided by applicable law or\\ntreaty (including future time extensions), (iii) in any current or future\\nmedium and for any number of copies, and (iv) for any purpose whatsoever,\\nincluding without limitation commercial, advertising or promotional\\npurposes (the \\"Waiver\\"). Affirmer makes the Waiver for the benefit of each\\nmember of the public at large and to the detriment of Affirmer's heirs and\\nsuccessors, fully intending that such Waiver shall not be subject to\\nrevocation, rescission, cancellation, termination, or any other legal or\\nequitable action to disrupt the quiet enjoyment of the Work by the public\\nas contemplated by Affirmer's express Statement of Purpose.\\n\\n3. Public License Fallback. Should any part of the Waiver for any reason\\nbe judged legally invalid or ineffective under applicable law, then the\\nWaiver shall be preserved to the maximum extent permitted taking into\\naccount Affirmer's express Statement of Purpose. In addition, to the\\nextent the Waiver is so judged Affirmer hereby grants to each affected\\nperson a royalty-free, non transferable, non sublicensable, non exclusive,\\nirrevocable and unconditional license to exercise Affirmer's Copyright and\\nRelated Rights in the Work (i) in all territories worldwide, (ii) for the\\nmaximum duration provided by applicable law or treaty (including future\\ntime extensions), (iii) in any current or future medium and for any number\\nof copies, and (iv) for any purpose whatsoever, including without\\nlimitation commercial, advertising or promotional purposes (the\\n\\"License\\"). The License shall be deemed effective as of the date CC0 was\\napplied by Affirmer to the Work. Should any part of the License for any\\nreason be judged legally invalid or ineffective under applicable law, such\\npartial invalidity or ineffectiveness shall not invalidate the remainder\\nof the License, and in such case Affirmer hereby affirms that he or she\\nwill not (i) exercise any of his or her remaining Copyright and Related\\nRights in the Work or (ii) assert any associated claims and causes of\\naction with respect to the Work, in either case contrary to Affirmer's\\nexpress Statement of Purpose.\\n\\n4. Limitations and Disclaimers.\\n\\n a. No trademark or patent rights held by Affirmer are waived, abandoned,\\n    surrendered, licensed or otherwise affected by this document.\\n b. Affirmer offers the Work as-is and makes no representations or\\n    warranties of any kind concerning the Work, express, implied,\\n    statutory or otherwise, including without limitation warranties of\\n    title, merchantability, fitness for a particular purpose, non\\n    infringement, or the absence of latent or other defects, accuracy, or\\n    the present or absence of errors, whether or not discoverable, all to\\n    the greatest extent permissible under applicable law.\\n c. Affirmer disclaims responsibility for clearing rights of other persons\\n    that may apply to the Work or any use thereof, including without\\n    limitation any person's Copyright and Related Rights in the Work.\\n    Further, Affirmer disclaims responsibility for obtaining any necessary\\n    consents, permissions or other rights required for any use of the\\n    Work.\\n d. Affirmer understands and acknowledges that Creative Commons is not a\\n    party to this document and has no duty or obligation with respect to\\n    this CC0 or use of the Work.",
-    "LICENSE-MIT": "MIT License\\n\\nCopyright (c) 2024 electrovir\\n\\nPermission is hereby granted, free of charge, to any person obtaining a copy\\nof this software and associated documentation files (the \\"Software\\"), to deal\\nin the Software without restriction, including without limitation the rights\\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\\ncopies of the Software, and to permit persons to whom the Software is\\nfurnished to do so, subject to the following conditions:\\n\\nThe above copyright notice and this permission notice shall be included in all\\ncopies or substantial portions of the Software.\\n\\nTHE SOFTWARE IS PROVIDED \\"AS IS\\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\\nSOFTWARE.\\n",
     "configs": {
       "dep-cruiser.config.cts": "import {generateDepCruiserConfig} from '@virmator/deps/configs/dep-cruiser.config.base';\\nimport type {IConfiguration} from 'dependency-cruiser';\\n\\nconst baseConfig = generateDepCruiserConfig({\\n    fileExceptions: {\\n        // enter file exceptions by rule name here\\n        'no-orphans': {\\n            from: [\\n                'src/index.ts',\\n            ],\\n        },\\n    },\\n    omitRules: [\\n        // enter rule names here to omit\\n    ],\\n});\\n\\nconst depCruiserConfig: IConfiguration = {\\n    ...baseConfig,\\n};\\n\\nmodule.exports = depCruiserConfig;\\n",
       "ncu.config.ts": "import {baseNcuConfig} from '@virmator/deps/configs/ncu.config.base';\\nimport {RunOptions} from 'npm-check-updates';\\n\\nexport const ncuConfig: RunOptions = {\\n    ...baseNcuConfig,\\n    // exclude these\\n    reject: [\\n        ...baseNcuConfig.reject,\\n    ],\\n    // include only these\\n    filter: [],\\n};\\n",

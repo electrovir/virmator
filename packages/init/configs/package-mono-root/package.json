@@ -12,6 +12,7 @@
         "test:deps": "virmator deps check",
         "test:docs": "virmator docs check",
         "test:format": "virmator format check",
-        "test:spelling": "virmator spellcheck"
+        "test:spelling": "virmator spellcheck",
+        "test:update": "mono-vir for-each-async npm run test:update"
     }
 }

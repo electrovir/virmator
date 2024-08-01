@@ -1,6 +1,11 @@
 #!/usr/bin/env -S npx tsx
 
-import {createPluginLogger, executeVirmatorCommand, VirmatorNoTraceError} from '@virmator/core';
+import {
+    createPluginLogger,
+    executeVirmatorCommand,
+    hideNoTraceTraces,
+    VirmatorNoTraceError,
+} from '@virmator/core';
 import {fileURLToPath} from 'node:url';
 import {defaultVirmatorPlugins} from './index';
 
@@ -12,7 +17,11 @@ executeVirmatorCommand({
     entryPointFilePath: fileURLToPath(import.meta.url),
     log,
 }).catch((error) => {
-    if (!(error instanceof VirmatorNoTraceError)) {
+    if (error instanceof VirmatorNoTraceError && hideNoTraceTraces) {
+        if (error.message) {
+            log.error(error.message);
+        }
+    } else {
         log.error(error);
     }
 

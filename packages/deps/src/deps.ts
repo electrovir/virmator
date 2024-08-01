@@ -5,6 +5,7 @@ import {
     NpmDepType,
     PackageType,
     VirmatorEnv,
+    VirmatorNoTraceError,
     withCompiledTsFile,
     withImportedTsFile,
 } from '@virmator/core';
@@ -12,7 +13,6 @@ import mri from 'mri';
 import {rm} from 'node:fs/promises';
 import {join, relative} from 'node:path';
 import type {RunOptions} from 'npm-check-updates';
-import {VirmatorNoTraceError} from '../../core/src/errors/virmator-no-trace.error';
 
 export const virmatorDepsPlugin = defineVirmatorPlugin(
     import.meta.dirname,

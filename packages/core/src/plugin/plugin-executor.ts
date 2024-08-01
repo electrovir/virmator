@@ -11,6 +11,7 @@ import {VirmatorPluginResolvedConfigFile} from './plugin-configs';
 import {PackageType} from './plugin-env';
 import {
     IndividualPluginCommand,
+    PluginNpmDeps,
     VirmatorPluginCliCommands,
     VirmatorPluginInit,
 } from './plugin-init';
@@ -68,6 +69,12 @@ export type RunPerPackage = (
 export type ExtraRunShellCommandOptions = {
     logPrefix: string | undefined;
     logTransform: Partial<Record<LogOutputType, (log: string) => string>>;
+    /**
+     * Include stderr in thrown errors.
+     *
+     * @default false
+     */
+    includeErrorMessage: boolean;
 };
 
 export type ValidPackageJson = SetRequired<PackageJson, 'name' | 'version'>;
@@ -107,6 +114,7 @@ export type VirmatorPluginExecutorParams<
         ReturnType<typeof runShellCommand>
     >;
     runPerPackage: RunPerPackage;
+    runInstallDeps: (deps: Readonly<Partial<PluginNpmDeps>>) => Promise<void>;
 
     log: PluginLogger;
 

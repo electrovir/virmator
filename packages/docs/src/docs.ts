@@ -1,17 +1,19 @@
 import {ensureError, isTruthy} from '@augment-vir/common';
+import {readPackageJson} from '@augment-vir/node-js';
 import {
     defineVirmatorPlugin,
     JsModuleType,
     NpmDepType,
     PackageType,
+    PluginLogger,
     VirmatorEnv,
+    VirmatorNoTraceError,
     withImportedTsFile,
 } from '@virmator/core';
 import {ChalkInstance} from 'chalk';
 import mri from 'mri';
-import {join} from 'node:path';
+import {basename, join} from 'node:path';
 import type * as Typedoc from 'typedoc';
-import {VirmatorNoTraceError} from '../../core/src/errors/virmator-no-trace.error';
 
 export const virmatorDocsPlugin = defineVirmatorPlugin(
     import.meta.dirname,
@@ -135,7 +137,7 @@ export const virmatorDocsPlugin = defineVirmatorPlugin(
 
         async function runDocs(
             packageDir: string,
-            packageName: string | undefined,
+            packageName: string,
             color: ChalkInstance | undefined,
         ) {
             try {
@@ -148,24 +150,28 @@ export const virmatorDocsPlugin = defineVirmatorPlugin(
                             stderr: (stderrInput) =>
                                 stderrInput.replace(
                                     'Run without --check to update.',
-                                    'Run without the "check" sub-command in order to update.',
+                                    'Run without the "check" sub-command to update.',
                                 ),
                         },
+                        includeErrorMessage: true,
                     },
                 );
             } catch (caught) {
                 const error = ensureError(caught);
                 /** Don't error for missing files. */
-                if (!error.message.toLowerCase().includes('no markdown files')) {
-                    throw error;
+                if (!error.message.toLowerCase().includes('no markdown files given')) {
+                    /** Don't throw an error message here because it'll already be logged to stderr. */
+                    throw new VirmatorNoTraceError();
                 }
             }
 
             /** Run typedoc */
             const typedocVerb = checkOnly ? 'check' : 'generation';
 
-            if (packageType !== PackageType.MonoRoot && cwdPackageJson.private) {
-                log.faint(`Skipping typedoc ${typedocVerb} in private repo.`);
+            const packageJson = await readPackageJson(packageDir);
+
+            if (packageJson.private) {
+                log.faint(`Skipping typedoc ${typedocVerb} in private repo ${packageName}`);
                 return;
             }
 
@@ -188,7 +194,7 @@ export const virmatorDocsPlugin = defineVirmatorPlugin(
                         tsconfig: join(packageDir, 'tsconfig.json'),
                     };
 
-                    if (!(await runTypedoc(fullTypedocOptions, typedoc))) {
+                    if (!(await runTypedoc(fullTypedocOptions, typedoc, log))) {
                         throw new VirmatorNoTraceError();
                     }
                 },
@@ -201,7 +207,11 @@ export const virmatorDocsPlugin = defineVirmatorPlugin(
                 return undefined;
             });
         } else {
-            await runDocs(cwdPackagePath, undefined, undefined);
+            await runDocs(
+                cwdPackagePath,
+                cwdPackageJson.name || basename(cwdPackagePath),
+                undefined,
+            );
         }
     },
 );
@@ -209,6 +219,7 @@ export const virmatorDocsPlugin = defineVirmatorPlugin(
 async function runTypedoc(
     options: Partial<Typedoc.TypeDocOptions>,
     typeDoc: typeof Typedoc,
+    log: PluginLogger,
 ): Promise<boolean> {
     /** Lots of edge cases included in here to just make sure we fully run the typedoc API. */
     /* node:coverage disable */
@@ -218,13 +229,13 @@ async function runTypedoc(
         new typeDoc.TSConfigReader(),
     ]);
     if (app.options.getValue('version')) {
-        console.info(app.toString());
+        log.plain(app.toString());
         return true;
     } else if (app.options.getValue('help')) {
-        console.info(app.options.getHelp);
+        log.plain(app.options.getHelp);
         return true;
     } else if (app.options.getValue('showConfig')) {
-        console.info(app.options.getRawValues());
+        log.plain(app.options.getRawValues());
         return true;
     } else if (app.logger.hasErrors()) {
         return false;

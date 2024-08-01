@@ -26,10 +26,10 @@
     "module": "src/docs.ts",
     "types": "src/docs.ts",
     "scripts": {
+        "compile": "virmator compile",
         "test": "tsx --test --experimental-test-snapshots --test-reporter spec 'src/**/*.test.ts'",
         "test:all": "concurrently --colors --kill-others-on-fail --kill-signal SIGKILL -c auto --names tests \"npm run test:coverage\"",
         "test:coverage": "c8 --config configs/c8.config.json npm test",
-        "test:types": "tsc -b -f --pretty",
         "test:update": "tsx --test --experimental-test-snapshots --test-update-snapshots --test-reporter spec 'src/**/*.test.ts'"
     },
     "dependencies": {
@@ -42,6 +42,7 @@
     },
     "devDependencies": {
         "@types/node": "^22.0.0",
+        "esbuild": "^0.23.0",
         "markdown-code-example-inserter": "^1.0.0",
         "typedoc": "^0.26.5"
     },

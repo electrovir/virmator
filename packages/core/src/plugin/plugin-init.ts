@@ -6,6 +6,15 @@ export type PluginCommandDoc = Readonly<{
     content: string;
 }>;
 
+export type PluginNpmDeps = Record<
+    string,
+    {
+        type: NpmDepType;
+        packageType: ReadonlyArray<PackageType>;
+        env: ReadonlyArray<VirmatorEnv>;
+    }
+>;
+
 export type IndividualPluginCommand = {
     /**
      * Documentation for this command which will be printed to the terminal when `virmator help` is
@@ -18,16 +27,7 @@ export type IndividualPluginCommand = {
     configFiles?: Readonly<Record<string, VirmatorPluginConfigFile>>;
     subCommands?: VirmatorPluginCliCommands;
     /** Dependencies that this command needs to be installed in the host repo. */
-    npmDeps?: Readonly<
-        Record<
-            string,
-            {
-                type: NpmDepType;
-                packageType: ReadonlyArray<PackageType>;
-                env: ReadonlyArray<VirmatorEnv>;
-            }
-        >
-    >;
+    npmDeps?: Readonly<PluginNpmDeps>;
 };
 
 export type VirmatorPluginCliCommands = Readonly<{

@@ -113,6 +113,7 @@ describe(flattenConfigs.name, () => {
                         'configs',
                         'tsconfig.package.json',
                     ),
+                    required: true,
                 },
                 {
                     copyFromPath: join('configs', 'tsconfig.mono.json'),
@@ -126,6 +127,7 @@ describe(flattenConfigs.name, () => {
                     ],
                     fullCopyToPath: join('packages', 'compile', 'configs', 'tsconfig.base.json'),
                     fullCopyFromPath: join('packages', 'compile', 'configs', 'tsconfig.mono.json'),
+                    required: true,
                 },
             ],
         );
@@ -252,6 +254,7 @@ describe(flattenConfigs.name, () => {
                         PackageType.MonoRoot,
                         PackageType.TopPackage,
                     ],
+                    required: true,
                 },
             ],
         );

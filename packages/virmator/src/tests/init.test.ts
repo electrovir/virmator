@@ -16,7 +16,11 @@ describe(virmatorInitPlugin.name, () => {
         env: VirmatorEnv | undefined,
         packageType: PackageType | undefined,
     ) {
-        await testVirmator(shouldPass, context, `init ${env || ''} ${packageType || ''}`, dir);
+        await testVirmator(shouldPass, context, `init ${env || ''} ${packageType || ''}`, dir, {
+            excludeContents: [
+                'LICENSE-',
+            ],
+        });
     }
 
     it('errors without env', async (context) => {

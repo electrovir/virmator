@@ -13,23 +13,21 @@ import {LogOutputType} from '@augment-vir/node-js';
 import {
     createPluginLogger,
     executeVirmatorCommand,
+    findClosestPackageDir,
+    hideNoTraceTraces,
     PluginLogger,
     VirmatorNoTraceError,
     VirmatorPlugin,
 } from '@virmator/core';
-import {sep} from 'node:path';
+import {relative, sep} from 'node:path';
 import {TestContext} from 'node:test';
 import {diffObjects, isPrimitive, isRunTimeType} from 'run-time-assertions';
 import {DirContents, readAllDirContents, resetDirContents} from './augments/index';
 import {monoRepoDir} from './file-paths';
 
-export type LogTransform = (logType: LogOutputType, arg: string) => string | undefined;
+export type LogTransform = (logType: LogOutputType, arg: string) => string;
 
-function serializeLogArgs(
-    logType: LogOutputType,
-    args: unknown[],
-    logTransform: LogTransform,
-): string[] {
+function serializeLogArgs(logType: LogOutputType, args: unknown[]): string[] {
     return args
         .map((arg): string | undefined => {
             if (isRunTimeType(arg, 'string')) {
@@ -40,27 +38,25 @@ function serializeLogArgs(
             } else if (isPrimitive(arg)) {
                 return String(arg);
             } else {
-                return serializeLogArgs(logType, [JSON.stringify(arg)], logTransform)[0];
+                return serializeLogArgs(logType, [JSON.stringify(arg)])[0];
             }
         })
-        .filter(isTruthy)
-        .map((entry) => logTransform(logType, entry))
         .filter(isTruthy);
 }
 
 export type TestPluginResult = {
-    logs: Partial<Record<LogOutputType, string[][]>>;
+    logs: Partial<Record<LogOutputType, string>>;
     contentsDiff: DirContents;
+    cwd: string;
     error?: Error;
 };
 
 function handleWrite(
-    logs: TestPluginResult['logs'],
+    logs: Partial<Record<LogOutputType, string[][]>>,
     logType: LogOutputType,
-    logTransform: LogTransform,
     args: unknown[],
 ): true {
-    const serialized = serializeLogArgs(logType, args, logTransform);
+    const serialized = serializeLogArgs(logType, args);
 
     if (serialized.length) {
         getOrSet(logs, logType, () => []).push(serialized);
@@ -73,13 +69,13 @@ const defaultContentsExcludeList = [
     'tsconfig.tsbuildinfo',
     wrapString({value: 'node_modules', wrapper: sep}),
     `.git`,
+    'package-lock.json',
 ];
 
 export type TestPluginOptions = PartialAndUndefined<{
     logTransform: LogTransform;
     excludeContents: string[];
     beforeCleanupCallback: (cwd: string) => MaybePromise<void>;
-    collapseLogs: boolean;
 }>;
 
 export async function testPlugin(
@@ -92,20 +88,19 @@ export async function testPlugin(
         excludeContents = [],
         logTransform = (type, arg) => arg,
         beforeCleanupCallback,
-        collapseLogs = false,
     }: TestPluginOptions = {},
 ): Promise<void> {
-    const logs: TestPluginResult['logs'] = {};
+    const logs: Partial<Record<LogOutputType, string[][]>> = {};
     const logger: PluginLogger = createPluginLogger(
         {
             stderr: {
                 write(...args: unknown[]) {
-                    return handleWrite(logs, LogOutputType.error, logTransform, args);
+                    return handleWrite(logs, LogOutputType.error, args);
                 },
             },
             stdout: {
                 write(...args: unknown[]) {
-                    return handleWrite(logs, LogOutputType.standard, logTransform, args);
+                    return handleWrite(logs, LogOutputType.standard, args);
                 },
             },
         },
@@ -117,52 +112,59 @@ export async function testPlugin(
         ...defaultContentsExcludeList,
     ];
 
-    const contentsBefore = await readAllDirContents(cwd, {
+    const readDir = findClosestPackageDir(cwd);
+
+    const contentsBefore = await readAllDirContents(readDir, {
         recursive: true,
         excludeList: fullExcludeList,
     });
 
-    const error = await wrapInTry(() =>
-        executeVirmatorCommand({
-            plugins: Array.isArray(plugin) ? plugin : [plugin],
-            cliCommand,
-            cwd,
-            log: logger,
-            concurrency: 1,
-        }),
-    );
+    try {
+        const error = await wrapInTry(() =>
+            executeVirmatorCommand({
+                plugins: Array.isArray(plugin) ? plugin : [plugin],
+                cliCommand,
+                cwd,
+                log: logger,
+                concurrency: 1,
+            }),
+        );
 
-    if (error instanceof VirmatorNoTraceError) {
-        logger.error(error.message);
-    }
+        if (error instanceof VirmatorNoTraceError && hideNoTraceTraces) {
+            if (error.message) {
+                logger.error(error.message);
+            }
+        } else if (error) {
+            console.error(error);
+        }
 
-    await beforeCleanupCallback?.(cwd);
+        await beforeCleanupCallback?.(cwd);
 
-    const contentsAfter = await readAllDirContents(cwd, {
-        recursive: true,
-        excludeList: fullExcludeList,
-    });
+        const contentsAfter = await readAllDirContents(readDir, {
+            recursive: true,
+            excludeList: fullExcludeList,
+        });
 
-    const contentsDiff = diffObjects(contentsBefore, contentsAfter)[1] as DirContents;
+        const contentsDiff = diffObjects(contentsBefore, contentsAfter)[1] as DirContents;
 
-    const result: TestPluginResult = {
-        logs: collapseLogs
-            ? mapObjectValues(logs, (logType, logs) => {
-                  return [[logs.join(' ')]];
-              })
-            : logs,
-        contentsDiff,
-        ...(error ? {error} : {}),
-    };
+        const result: TestPluginResult = {
+            logs: mapObjectValues(logs, (logType, logs) => {
+                return logTransform(logType, logs.join('\n'));
+            }),
+            cwd: relative(monoRepoDir, cwd),
+            contentsDiff,
+            ...(error ? {error} : {}),
+        };
 
-    await resetDirContents(cwd, contentsBefore);
+        // @ts-expect-error: `TestContext.assert` isn't in `@types/node` yet
+        context.assert.snapshot(result);
 
-    // @ts-expect-error: `TestContext.assert` isn't in `@types/node` yet
-    context.assert.snapshot(result);
-
-    if (shouldPass && error) {
-        throw new Error('Expected to not fail.');
-    } else if (!shouldPass && !error) {
-        throw new Error('Expected to fail.');
+        if (shouldPass && error) {
+            throw new Error('Expected to not fail.');
+        } else if (!shouldPass && !error) {
+            throw new Error('Expected to fail.');
+        }
+    } finally {
+        await resetDirContents(readDir, contentsBefore);
     }
 }

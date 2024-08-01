@@ -20,6 +20,11 @@ describe(virmatorFrontendPlugin.name, () => {
             virmatorFrontendPlugin,
             `frontend ${extraCommand || ''}`,
             dir,
+            {
+                logTransform(logType, log) {
+                    return log.replace(/built in [\dm]+s/, 'built');
+                },
+            },
         );
     }
 

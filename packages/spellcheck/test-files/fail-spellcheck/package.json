@@ -1,1 +1,5 @@
-{}
+{
+  "devDependencies": {
+    "cspell": "^8.12.1"
+  }
+}

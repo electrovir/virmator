@@ -23,6 +23,8 @@ export const virmatorTestPlugin = defineVirmatorPlugin(
                         {
                             content: `
                                 Runs tests. An environment is required.
+                                
+                                This cannot be run in a mono-repo root, it can only be run for mono-repo sub-packages or a top-level singular package.
                             `,
                         },
                     ],
@@ -43,7 +45,7 @@ export const virmatorTestPlugin = defineVirmatorPlugin(
                             sections: [
                                 {
                                     content: `
-                                        Runs web tests in a browser.
+                                        Runs web tests in a browser using web-test-runner.
                                     `,
                                 },
                             ],
@@ -171,7 +173,7 @@ export const virmatorTestPlugin = defineVirmatorPlugin(
                             sections: [
                                 {
                                     content: `
-                                        Runs backend tests in node.
+                                        Runs backend tests in Node.js using its built-in test runner.
                                     `,
                                 },
                             ],
@@ -242,8 +244,20 @@ export const virmatorTestPlugin = defineVirmatorPlugin(
             },
         },
     },
-    async ({cliInputs: {filteredArgs, usedCommands}, runShellCommand, cwd, log, configs}) => {
+    async ({
+        cliInputs: {filteredArgs, usedCommands},
+        runShellCommand,
+        cwd,
+        configs,
+        package: {packageType},
+    }) => {
         const args = mri(filteredArgs);
+
+        if (packageType === PackageType.MonoRoot) {
+            throw new VirmatorNoTraceError(
+                "'virmator test' cannot be run in a mono-repo root. Instead, run it for each sub-package.",
+            );
+        }
 
         if (usedCommands.test?.subCommands.web) {
             const allFilesTestFilePath = join(cwd, 'src', 'all-files-for-code-coverage.test.ts');

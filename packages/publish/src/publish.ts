@@ -15,14 +15,14 @@ import {
     defineVirmatorPlugin,
     MonoRepoPackage,
     PluginLogger,
+    ValidPackageJson,
     VirmatorNoTraceError,
 } from '@virmator/core';
 import {readFile, writeFile} from 'node:fs/promises';
-import {dirname, join, relative} from 'node:path';
+import {join, relative} from 'node:path';
 import semver, {SemVer} from 'semver';
 import simpleGit, {SimpleGit} from 'simple-git';
 import {PackageJson, SetRequired} from 'type-fest';
-import {ValidPackageJson} from '../../core/src/plugin/plugin-executor';
 
 const inVirmatorEnvKey = 'IN_VIRMATOR';
 
@@ -68,14 +68,12 @@ export const virmatorPublishPlugin = defineVirmatorPlugin(
             throw new VirmatorNoTraceError(`Missing "name" / "version" package.json fields.`);
         }
 
-        const monoRepoPackageJsonPath = join(monoRepoRootPath, 'package.json');
-
-        const monoRepoPackageJson = await readPackageJson(monoRepoPackageJsonPath);
+        const monoRepoPackageJson = await readPackageJson(monoRepoRootPath);
         const version = monoRepoPackageJson.version;
 
         if (!version) {
             throw new VirmatorNoTraceError(
-                `No "version" found in package.json at '${relative(cwd, monoRepoPackageJsonPath)}'`,
+                `No "version" found in package.json at '${relative(cwd, monoRepoRootPath)}'`,
             );
         } else if (await doChangesExist(monoRepoRootPath)) {
             throw new VirmatorNoTraceError(
@@ -87,9 +85,7 @@ export const virmatorPublishPlugin = defineVirmatorPlugin(
         const monoRepoPackageJsonFiles: ReadonlyArray<Readonly<ValidPackageJson>> =
             await Promise.all(
                 monoRepoPackages.map(async (monoRepoPackage): Promise<ValidPackageJson> => {
-                    const packageJson = await readPackageJson(
-                        join(monoRepoPackage.fullPath, 'package.json'),
-                    );
+                    const packageJson = await readPackageJson(monoRepoPackage.fullPath);
                     if (!packageJson.name) {
                         throw new VirmatorNoTraceError(
                             `No package.json name in '${monoRepoPackage.relativePath}'`,
@@ -159,7 +155,7 @@ export const virmatorPublishPlugin = defineVirmatorPlugin(
 
         if (monoRepoPackages.length) {
             await runPerPackage(async ({packageCwd, packageName}) => {
-                const isPrivate = (await readPackageJson(join(packageCwd, 'package.json'))).private;
+                const isPrivate = (await readPackageJson(packageCwd)).private;
 
                 if (isPrivate) {
                     log.faint(`Skipping ${packageName} because it's private.`);
@@ -169,23 +165,22 @@ export const virmatorPublishPlugin = defineVirmatorPlugin(
                 return publishCommand;
             });
         }
-        const isPrivate = (await readPackageJson(monoRepoPackageJsonPath)).private;
+        const isPrivate = (await readPackageJson(monoRepoRootPath)).private;
 
         if (!isPrivate) {
             await runShellCommand(publishCommand);
         }
 
         if (!isDryRun) {
-            await updateGit(join(monoRepoPackageJsonPath));
+            await updateGit(monoRepoRootPath);
         }
 
         return;
     },
 );
 
-async function updateGit(packageJsonPath: string): Promise<void> {
-    const newVersion: string = (await readPackageJson(packageJsonPath)).version!;
-    const packageDirPath = dirname(packageJsonPath);
+async function updateGit(packageDirPath: string): Promise<void> {
+    const newVersion: string = (await readPackageJson(packageDirPath)).version!;
 
     if (await doChangesExist(packageDirPath)) {
         await runShellCommand(`git commit -a --amend --no-edit`, {

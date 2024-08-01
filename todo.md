@@ -1,5 +1,8 @@
 -   help command (built into /core?)
 -   help command or flag that can be passed into any command (`virmator compile --help` or maybe `virmator --help compile` or **`virmator help compile`**)
--   add automatic npm dep install when a plugin is run
+-   update mono-repo root npm scripts
 -   update all package keywords and descriptions.
--   replace VirmatorSilentError with VirmatorNoTraceError, include the message in the error
+-   add lint command
+-   only copy configs if the user hasn't specified a manual config path (like in spellcheck)
+
+-   update `markdown-code-example-inserter` package

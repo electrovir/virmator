@@ -23,13 +23,8 @@ describe(virmatorSpellcheckPlugin.name, () => {
         );
     }
 
-    it('compiles a valid project', async (context) => {
-        await testSpellcheckPlugin(
-            true,
-            context,
-            join(testFilesDir, 'pass-spellcheck'),
-            'spellcheck',
-        );
+    it('spellchecks a valid package', async (context) => {
+        await testSpellcheckPlugin(true, context, join(testFilesDir, 'pass-spellcheck'));
     });
     it('rejects an invalid project', async (context) => {
         await testSpellcheckPlugin(false, context, join(testFilesDir, 'fail-spellcheck'));

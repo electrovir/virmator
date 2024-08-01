@@ -146,6 +146,7 @@ describe(calculateUsedCommands.name, () => {
                                         'top-level-package',
                                         'mono-root',
                                     ],
+                                    required: true,
                                 },
                             },
                             doc: {

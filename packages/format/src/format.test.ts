@@ -33,11 +33,6 @@ describe(virmatorFormatPlugin.name, () => {
         await testFormatPlugin(false, context, join(testFilesDir, 'bad-format'), 'check');
     });
     it('formats a specific file', async (context) => {
-        await testFormatPlugin(
-            true,
-            context,
-            join(testFilesDir, 'bad-format'),
-            'check package.json',
-        );
+        await testFormatPlugin(true, context, join(testFilesDir, 'bad-format'), 'package.json');
     });
 });
