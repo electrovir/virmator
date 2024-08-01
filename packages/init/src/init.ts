@@ -10,6 +10,7 @@ import {
     isEnumValue,
     joinWithFinalConjunction,
 } from '@augment-vir/common';
+import {readPackageJson, writeJson} from '@augment-vir/node-js';
 import {
     copyConfigFile,
     defineVirmatorPlugin,
@@ -24,6 +25,7 @@ import {
     VirmatorPluginResolvedConfigFile,
 } from '@virmator/core';
 import {basename, join} from 'node:path';
+import {simpleGit} from 'simple-git';
 
 const deps: PluginNpmDeps = {
     'mono-vir': {
@@ -365,8 +367,55 @@ export const virmatorInitPlugin = defineVirmatorPlugin(
         await awaitedBlockingMap(relevantConfigs, async (config) => {
             await copyConfigFile(config, log, true);
         });
+
+        await writePackageJson(cwdPackagePath);
     },
 );
+
+async function writePackageJson(packagePath: string) {
+    const currentPackageJson = await readPackageJson(packagePath);
+    const git = simpleGit(packagePath);
+    const remotes = await git.getRemotes(true);
+    const originRemote = remotes.find((remote) => remote.name === 'origin') || remotes[0];
+    const gitProperties = originRemote ? createGitUrls(originRemote.refs.fetch) : {};
+
+    const packageJson = {
+        name: basename(packagePath),
+        ...gitProperties,
+        ...currentPackageJson,
+    };
+
+    await writeJson(join(packagePath, 'package.json'), packageJson);
+}
+
+function createGitUrls(ref: string) {
+    const repoPath = ref
+        .replace(/(\w):(\w)/g, '$1/$2')
+        .replace(/\.git$/, '')
+        .replace(/^git@/g, 'https://');
+    const isGitHub = repoPath.includes('github.com');
+    const issuesUrl = isGitHub ? `${repoPath}/issues` : '';
+    const username = repoPath.replace(/^.+\.com\//, '').replace(/\/.+$/, '');
+    const bugsObject = issuesUrl ? {bugs: {url: issuesUrl}} : {};
+    const userUrlObject = isGitHub
+        ? {
+              url: `https://github.com/${username}`,
+          }
+        : {};
+
+    return {
+        homepage: repoPath,
+        ...bugsObject,
+        repository: {
+            type: 'git',
+            url: `git+${repoPath}.git`,
+        },
+        author: {
+            name: username,
+            ...userUrlObject,
+        },
+    };
+}
 
 function flattenAllConfigs(
     cwdPackagePath: string,

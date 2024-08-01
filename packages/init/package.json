@@ -30,7 +30,9 @@
         "test:update": "npm test"
     },
     "dependencies": {
-        "@augment-vir/common": "^29.3.0"
+        "@augment-vir/common": "^29.3.0",
+        "@augment-vir/node-js": "^29.3.0",
+        "simple-git": "^3.25.0"
     },
     "devDependencies": {
         "@types/node": "^22.0.0",
