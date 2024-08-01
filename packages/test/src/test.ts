@@ -222,6 +222,16 @@ export const virmatorTestPlugin = defineVirmatorPlugin(
                                         ],
                                         type: NpmDepType.Dev,
                                     },
+                                    'istanbul-smart-text-reporter': {
+                                        env: [
+                                            VirmatorEnv.Node,
+                                        ],
+                                        packageType: [
+                                            PackageType.MonoPackage,
+                                            PackageType.TopPackage,
+                                        ],
+                                        type: NpmDepType.Dev,
+                                    },
                                 },
                             },
                             update: {
@@ -309,6 +319,7 @@ export const virmatorTestPlugin = defineVirmatorPlugin(
                 ? [
                       'npx',
                       'c8',
+                      '--color',
                       '--config',
                       relative(
                           cwd,
@@ -336,7 +347,12 @@ export const virmatorTestPlugin = defineVirmatorPlugin(
                 .filter(isTruthy)
                 .join(' ');
 
-            await runShellCommand(testCommand);
+            await runShellCommand(testCommand, {
+                env: {
+                    ...process.env,
+                    FORCE_COLOR: '1',
+                },
+            });
         } else {
             throw new VirmatorNoTraceError(
                 "Test command requires an env argument: either 'node' or 'web'.",

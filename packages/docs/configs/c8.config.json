@@ -6,7 +6,7 @@
     "perFile": true,
     "reporter": [
         "html",
-        "text"
+        "istanbul-smart-text-reporter"
     ],
     "skipFull": true,
     "src": "src"

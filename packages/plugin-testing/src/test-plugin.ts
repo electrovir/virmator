@@ -21,25 +21,19 @@ import {
 } from '@virmator/core';
 import {relative, sep} from 'node:path';
 import {TestContext} from 'node:test';
-import {diffObjects, isPrimitive, isRunTimeType} from 'run-time-assertions';
+import {diffObjects} from 'run-time-assertions';
 import {DirContents, readAllDirContents, resetDirContents} from './augments/index';
 import {monoRepoDir} from './file-paths';
 
 export type LogTransform = (logType: LogOutputType, arg: string) => string;
 
-function serializeLogArgs(logType: LogOutputType, args: unknown[]): string[] {
+function serializeLogArgs(args: unknown[]): string[] {
     return args
         .map((arg): string | undefined => {
-            if (isRunTimeType(arg, 'string')) {
-                return removeColor(arg).replaceAll(
-                    addSuffix({value: monoRepoDir, suffix: '/'}),
-                    '',
-                );
-            } else if (isPrimitive(arg)) {
-                return String(arg);
-            } else {
-                return serializeLogArgs(logType, [JSON.stringify(arg)])[0];
-            }
+            return removeColor(String(arg)).replaceAll(
+                addSuffix({value: monoRepoDir, suffix: '/'}),
+                '',
+            );
         })
         .filter(isTruthy);
 }
@@ -56,7 +50,7 @@ function handleWrite(
     logType: LogOutputType,
     args: unknown[],
 ): true {
-    const serialized = serializeLogArgs(logType, args);
+    const serialized = serializeLogArgs(args);
 
     if (serialized.length) {
         getOrSet(logs, logType, () => []).push(serialized);
@@ -70,6 +64,7 @@ const defaultContentsExcludeList = [
     wrapString({value: 'node_modules', wrapper: sep}),
     `.git`,
     'package-lock.json',
+    wrapString({value: 'coverage', wrapper: sep}),
 ];
 
 export type TestPluginOptions = PartialAndUndefined<{
@@ -134,6 +129,8 @@ export async function testPlugin(
             if (error.message) {
                 logger.error(error.message);
             }
+            /** Edge case that cannot be intentionally triggered. */
+            /* node:coverage ignore next 3 */
         } else if (error) {
             console.error(error);
         }

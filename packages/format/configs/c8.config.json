@@ -4,6 +4,10 @@
     "checkCoverage": true,
     "clean": true,
     "perFile": true,
+    "reporter": [
+        "html",
+        "istanbul-smart-text-reporter"
+    ],
     "skipFull": true,
     "src": "src"
 }

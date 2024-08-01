@@ -71,21 +71,7 @@ export async function resetDirContents(
         recursive: true,
     });
 
-    await Promise.all(
-        getObjectTypedEntries(contents).map(
-            async ([
-                relativePath,
-                content,
-            ]) => {
-                const fullPath = join(rootDir, relativePath);
-                if (isRunTimeType(content, 'string')) {
-                    await writeFileAndDir(fullPath, content);
-                } else {
-                    await writeDirContents(fullPath, content);
-                }
-            },
-        ),
-    );
+    await writeDirContents(rootDir, contents);
 }
 export async function writeDirContents(
     rootDir: string,
