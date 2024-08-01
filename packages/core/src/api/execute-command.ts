@@ -170,7 +170,7 @@ async function getMonoRepoPackages(cwdPackagePath: string): Promise<MonoRepoPack
 
     return await Promise.all(
         relativePackagePathsInOrder.map(async (packagePath): Promise<MonoRepoPackage> => {
-            const packageJson = await wrapInTry(() => readPackageJson(cwdPackagePath), {
+            const packageJson = await wrapInTry(() => readPackageJson(packagePath), {
                 fallbackValue: undefined,
             });
             return {
@@ -369,7 +369,6 @@ export async function executeVirmatorCommand({
             try {
                 concurrentlyResults = await concurrently(commands, {
                     killOthers: 'failure',
-                    killSignal: 'SIGKILL',
                     outputStream: writeStream,
                     maxProcesses: maxProcesses || outerMaxProcesses,
                 }).result;

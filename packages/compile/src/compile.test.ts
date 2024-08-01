@@ -11,8 +11,6 @@ describe(virmatorCompilePlugin.name, () => {
         context: TestContext,
         cwd: string,
     ) {
-        let versionMarkerFound = false;
-
         await testPlugin(shouldPass, context, virmatorCompilePlugin, 'compile', cwd, {
             logTransform(logType, arg) {
                 /**
@@ -20,12 +18,7 @@ describe(virmatorCompilePlugin.name, () => {
                  * are stable.
                  */
                 if (logType === LogOutputType.standard) {
-                    if (versionMarkerFound) {
-                        return undefined;
-                    } else if (arg.startsWith('Version')) {
-                        versionMarkerFound = true;
-                        return undefined;
-                    }
+                    return arg.replace(/ Version.+/, '');
                 }
                 return arg;
             },

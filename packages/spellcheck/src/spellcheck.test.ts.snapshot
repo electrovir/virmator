@@ -6,6 +6,7 @@ exports[`CSpell Spellcheck > rejects an invalid project 1`] = `
   },
   "cwd": "packages/spellcheck/test-files/fail-spellcheck",
   "contentsDiff": {
+    "package.json": "{\\n  \\"devDependencies\\": {\\n    \\"cspell\\": \\"^8.12.1\\"\\n  }\\n}\\n",
     "cspell.config.cjs": "const {baseConfig} = require('@virmator/spellcheck/configs/cspell.config.base.cjs');\\n\\nmodule.exports = {\\n    ...baseConfig,\\n    ignorePaths: [\\n        ...baseConfig.ignorePaths,\\n    ],\\n    words: [\\n        ...baseConfig.words,\\n    ],\\n};\\n"
   },
   "error": {
@@ -36,6 +37,7 @@ exports[`CSpell Spellcheck > spellchecks only at the current directory 1`] = `
   },
   "cwd": "packages/spellcheck/test-files/fail-spellcheck/nested",
   "contentsDiff": {
+    "package.json": "{\\n  \\"devDependencies\\": {\\n    \\"cspell\\": \\"^8.12.1\\"\\n  }\\n}\\n",
     "cspell.config.cjs": "const {baseConfig} = require('@virmator/spellcheck/configs/cspell.config.base.cjs');\\n\\nmodule.exports = {\\n    ...baseConfig,\\n    ignorePaths: [\\n        ...baseConfig.ignorePaths,\\n    ],\\n    words: [\\n        ...baseConfig.words,\\n    ],\\n};\\n"
   }
 }
@@ -63,6 +65,7 @@ exports[`CSpell Spellcheck > uses custom file list 1`] = `
   },
   "cwd": "packages/spellcheck/test-files/fail-spellcheck",
   "contentsDiff": {
+    "package.json": "{\\n  \\"devDependencies\\": {\\n    \\"cspell\\": \\"^8.12.1\\"\\n  }\\n}\\n",
     "cspell.config.cjs": "const {baseConfig} = require('@virmator/spellcheck/configs/cspell.config.base.cjs');\\n\\nmodule.exports = {\\n    ...baseConfig,\\n    ignorePaths: [\\n        ...baseConfig.ignorePaths,\\n    ],\\n    words: [\\n        ...baseConfig.words,\\n    ],\\n};\\n"
   }
 }

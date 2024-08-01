@@ -75,7 +75,7 @@ export async function installNpmDeps({
 
             const currentVersion = semver.coerce(cwdPackageDeps[depName] || '');
 
-            if (currentVersion && baselineVersion.compare(currentVersion) === -1) {
+            if (currentVersion && baselineVersion.compare(currentVersion) !== 1) {
                 return accum;
             }
 

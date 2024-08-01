@@ -42,6 +42,10 @@ exports[`TS Compile > works in a mono-repo 1`] = `
     "package.json": "{\\n    \\"private\\": true,\\n    \\"workspaces\\": [\\n        \\"packages/*\\"\\n    ],\\n    \\"devDependencies\\": {\\n        \\"mono-vir\\": \\"^1.0.1\\"\\n    }\\n}\\n",
     "packages": {
       "a": {
+        "dist": {
+          "a.d.ts": "export type A = {\\n    here: string;\\n    there: number;\\n};\\nexport declare const value: A;\\n",
+          "a.js": "export const value = {\\n    here: 'yo',\\n    there: 0,\\n};\\n"
+        },
         "tsconfig.json": "{\\n    \\"compilerOptions\\": {\\n        \\"outDir\\": \\"./dist/\\",\\n        \\"rootDir\\": \\"./src/\\"\\n    },\\n    \\"exclude\\": [\\n        \\"./configs/\\",\\n        \\"./coverage/\\",\\n        \\"./dist/\\",\\n        \\"./dist-*/\\",\\n        \\"./node_modules/\\",\\n        \\"./test-files/\\"\\n    ],\\n    \\"extends\\": \\"../../configs/tsconfig.base.json\\"\\n}\\n"
       },
       "b": {

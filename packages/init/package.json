@@ -25,8 +25,9 @@
     "types": "src/init.ts",
     "scripts": {
         "compile": "virmator compile",
-        "test:coverage": "exit 0",
-        "test:update": "exit 0"
+        "test": "exit 0",
+        "test:coverage": "npm test",
+        "test:update": "npm test"
     },
     "dependencies": {
         "@augment-vir/common": "^29.3.0"

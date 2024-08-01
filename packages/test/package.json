@@ -29,7 +29,6 @@
     "scripts": {
         "compile": "virmator compile",
         "test": "tsx --test --experimental-test-snapshots --test-reporter spec 'src/**/*.test.ts'",
-        "test:all": "concurrently --colors --kill-others-on-fail --kill-signal SIGKILL -c auto --names tests \"npm run test:coverage\"",
         "test:coverage": "c8 --config configs/c8.config.json npm test",
         "test:update": "tsx --test --experimental-test-snapshots --test-update-snapshots --test-reporter spec 'src/**/*.test.ts'"
     },

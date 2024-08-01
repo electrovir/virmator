@@ -7,7 +7,7 @@
         "format": "virmator format",
         "publish": "virmator publish npm run test:all",
         "test": "mono-vir for-each-async npm run test",
-        "test:all": "npm run compile && concurrently --colors --kill-others-on-fail --kill-signal SIGKILL -c auto --names tests,spelling,format,docs,deps \"npm run test:coverage\" \"npm run test:spelling\" \"npm run test:format\" \"npm run test:docs\" \"npm run test:deps\"",
+        "test:all": "npm run compile && concurrently --colors --kill-others-on-fail -c auto --names tests,spelling,format,docs,deps \"npm run test:coverage\" \"npm run test:spelling\" \"npm run test:format\" \"npm run test:docs\" \"npm run test:deps\"",
         "test:coverage": "mono-vir for-each-async npm run test:coverage",
         "test:deps": "virmator deps check",
         "test:docs": "virmator docs check",
