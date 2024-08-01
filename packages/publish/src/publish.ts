@@ -26,6 +26,7 @@ import {PackageJson, SetRequired} from 'type-fest';
 
 const inVirmatorEnvKey = 'IN_VIRMATOR';
 
+/** A virmator plugin for publishing a package to npm. */
 export const virmatorPublishPlugin = defineVirmatorPlugin(
     import.meta.dirname,
     {

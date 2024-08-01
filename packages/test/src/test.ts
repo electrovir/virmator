@@ -12,6 +12,7 @@ import mri from 'mri';
 import {rm, writeFile} from 'node:fs/promises';
 import {join, relative} from 'node:path';
 
+/** A virmator plugin for running tests. */
 export const virmatorTestPlugin = defineVirmatorPlugin(
     import.meta.dirname,
     {

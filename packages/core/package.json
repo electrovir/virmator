@@ -32,7 +32,7 @@
     "scripts": {
         "compile": "virmator compile",
         "test": "virmator test node",
-        "test:coverage": "npm test coverage",
+        "test:coverage": "npm test",
         "test:update": "npm test update"
     },
     "dependencies": {

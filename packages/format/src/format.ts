@@ -22,6 +22,7 @@ const defaultFormatExtensions = [
     'yml',
 ];
 
+/** A virmator plugin for formatting code. */
 export const virmatorFormatPlugin = defineVirmatorPlugin(
     import.meta.dirname,
     {

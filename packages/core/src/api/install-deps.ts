@@ -8,6 +8,7 @@ import {UsedVirmatorPluginCommands} from '../plugin/plugin-executor';
 import {NpmDepType, PluginNpmDeps} from '../plugin/plugin-init';
 import {PluginLogger} from '../plugin/plugin-logger';
 
+/** Install's a virmator plugin's listed npm deps depending on which command is being run. */
 export async function installPluginNpmDeps({
     usedCommands,
     ...params
@@ -25,6 +26,7 @@ export async function installPluginNpmDeps({
     await installNpmDeps({...params, deps});
 }
 
+/** Installs a set of virmator plugin npm deps. */
 export async function installNpmDeps({
     cwdPackagePath,
     cwdPackageJson,

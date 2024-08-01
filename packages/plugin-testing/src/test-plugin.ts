@@ -25,6 +25,7 @@ import {diffObjects} from 'run-time-assertions';
 import {DirContents, readAllDirContents, resetDirContents} from './augments/index';
 import {monoRepoDir} from './file-paths';
 
+/** Log string transformer. */
 export type LogTransform = (logType: LogOutputType, arg: string) => string;
 
 function serializeLogArgs(args: unknown[]): string[] {
@@ -38,10 +39,18 @@ function serializeLogArgs(args: unknown[]): string[] {
         .filter(isTruthy);
 }
 
+/** Results of a plugin test. */
 export type TestPluginResult = {
+    /**
+     * The logs of the plugin execution. Note that this won't catch _all_ logs, as some logged
+     * directly to the terminal.
+     */
     logs: Partial<Record<LogOutputType, string>>;
+    /** All diff contents created by the test plugin execution. */
     contentsDiff: DirContents;
+    /** The directory wherein the test was executed. */
     cwd: string;
+    /** Any error that was thrown by the plugin execution. */
     error?: Error;
 };
 
@@ -67,12 +76,17 @@ const defaultContentsExcludeList = [
     wrapString({value: 'coverage', wrapper: sep}),
 ];
 
+/** Optional options for {@link testPlugin}. */
 export type TestPluginOptions = PartialAndUndefined<{
+    /** Transforms the final log string output of a plugin's command. */
     logTransform: LogTransform;
+    /** Exclude the given contents from directory reading. */
     excludeContents: string[];
+    /** Execute a command before the test directory is cleaned up. */
     beforeCleanupCallback: (cwd: string) => MaybePromise<void>;
 }>;
 
+/** Tests a virmator plugin and saves a snapshot of the results. */
 export async function testPlugin(
     shouldPass: boolean,
     context: TestContext,

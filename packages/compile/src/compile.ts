@@ -11,8 +11,9 @@ import {
 } from '@virmator/core';
 import type {ChalkInstance} from 'chalk';
 import {rm} from 'node:fs/promises';
-import {basename, join, relative} from 'node:path';
+import {basename, join} from 'node:path';
 
+/** A virmator plugin for compiling TypeScript. */
 export const virmatorCompilePlugin = defineVirmatorPlugin(
     import.meta.dirname,
     {
@@ -119,20 +120,12 @@ export const virmatorCompilePlugin = defineVirmatorPlugin(
                 async ({packageCwd, packageName, color}) => {
                     await copyConfigFile(
                         {
-                            ...configs.compile.configs.tsconfigPackage,
+                            ...configs.compile.configs.tsconfigMonoPackage,
                             fullCopyToPath: join(packageCwd, 'tsconfig.json'),
                         },
                         log,
                         false,
-                        (contents) => {
-                            return contents.replace(
-                                '@virmator/compile/configs/tsconfig.base.json',
-                                join(
-                                    relative(packageCwd, cwdPackagePath),
-                                    configs.compile.configs.tsconfigMono.copyToPath,
-                                ),
-                            );
-                        },
+                        undefined,
                         packageName,
                     );
                     return await createCompileCommandString(

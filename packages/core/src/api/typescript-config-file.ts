@@ -3,6 +3,10 @@ import {unlink} from 'node:fs/promises';
 import {basename, join} from 'node:path';
 import {findClosestNodeModulesDir} from '../augments/index';
 
+/**
+ * Compiles and imports a TS file so it can be used within JS contexts. After the given callback is
+ * executed, the compiled JS output is deleted.
+ */
 export async function withImportedTsFile<T>(
     {inputPath, outputPath}: {inputPath: string; outputPath?: string | undefined},
     moduleType: JsModuleType,
@@ -24,6 +28,10 @@ export async function withImportedTsFile<T>(
     }
 }
 
+/**
+ * Compiles a TS file and provides its path so it can be used within JS contexts. After the given
+ * callback is executed, the compiled JS output is deleted.
+ */
 export async function withCompiledTsFile<T>(
     {inputPath, outputPath}: {inputPath: string; outputPath?: string | undefined},
     moduleType: JsModuleType,
@@ -52,6 +60,7 @@ function createOutfilePath(inputFilePath: string, moduleType: JsModuleType): str
     );
 }
 
+/** Output JS module types. */
 export enum JsModuleType {
     /** CommonJS. */
     Cjs = 'cjs',
@@ -59,6 +68,7 @@ export enum JsModuleType {
     Esm = 'esm',
 }
 
+/** Compiles a TS file to JS and returns its path. */
 export async function compileTs({
     inputPath,
     outputPath,

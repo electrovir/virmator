@@ -1,5 +1,6 @@
 import {PackageType, VirmatorEnv} from './plugin-env';
 
+/** Definition for a plugin's config file. */
 export type VirmatorPluginConfigFile = {
     /**
      * The path from which the config file resides within the virmator plugin itself. Relative to
@@ -23,6 +24,7 @@ export type VirmatorPluginConfigFile = {
     required: boolean;
 };
 
+/** {@link VirmatorPluginConfigFile} but with resolved paths too. */
 export type VirmatorPluginResolvedConfigFile = VirmatorPluginConfigFile & {
     /** Absolute path to the config's copy to location. */
     fullCopyToPath: string;

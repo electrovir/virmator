@@ -121,7 +121,6 @@ export function getWebTestRunnerConfigWithCoveragePercent({
             exclude: [
                 '**/*.test.ts',
                 '**/*.example.ts',
-                '**/*.type.test.ts',
                 '**/*.test-helper.ts',
             ],
             threshold: {

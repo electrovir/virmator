@@ -1,9 +1,11 @@
 import {Writable} from 'stream';
 import {PluginLogger} from '../../plugin/plugin-logger';
 
+/** A {@link Writable} implementation that writes to the provided plugin logger. */
 export class CallbackWritable extends Writable {
     private chunks: string[] = [];
 
+    /** Special write implementation that writs to the given logger. */
     override _write(
         chunk: any,
         encoding: BufferEncoding,

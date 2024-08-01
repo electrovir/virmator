@@ -1,6 +1,10 @@
 import {existsSync} from 'node:fs';
 import {dirname, join} from 'node:path';
 
+/**
+ * Recursively calls the `check` callback on ancestor directories until there are no more ancestor
+ * directories to check.
+ */
 export function searchUpwardsForDir(
     startDirPath: string,
     check: (dirPath: string) => boolean,
@@ -20,12 +24,14 @@ export function searchUpwardsForDir(
     return searchUpwardsForDir(parent, check);
 }
 
+/** Finds the closest ancestor directory with a `package.json` file. */
 export function findClosestPackageDir(startDirPath: string) {
     return searchUpwardsForDir(startDirPath, (dir) => {
         return existsSync(join(dir, 'package.json'));
     });
 }
 
+/** Finds the closest ancestor `node_modules` directory. */
 export function findClosestNodeModulesDir(startDirPath: string) {
     return join(
         searchUpwardsForDir(startDirPath, (dir) => {

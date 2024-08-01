@@ -9,6 +9,7 @@ import {
     sys,
 } from 'typescript';
 
+/** Parsed the nearest ancestor TS Config file, if one can be found. */
 export function parseTsConfig(cwd: string): ParsedCommandLine | undefined {
     try {
         const tsConfigPath = findConfigFile(cwd, sys.fileExists);

@@ -169,6 +169,7 @@ const baseConfig = {
         'nerfed',
         'nerfing',
         'nipigon',
+        'nocase',
         'nodir',
         'nojekyll',
         'noopener',

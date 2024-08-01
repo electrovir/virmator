@@ -40,6 +40,7 @@ import {copyPluginConfigs} from './copy-configs';
 import {installNpmDeps, installPluginNpmDeps} from './install-deps';
 import {parseCliArgs} from './parse-args';
 
+/** Params for executing a plugin command. */
 export type ExecuteCommandParams = {
     /**
      * An array of {@link VirmatorPlugin} definitions to use. There is no default list of plugins
@@ -225,7 +226,7 @@ function writeLog(
     }
 }
 
-/** The entry point to virmator. Runs a virmator command. */
+/** The entry point to virmator. Runs a virmator plugin command. */
 export async function executeVirmatorCommand({
     log: logParam,
     entryPointFilePath = '',
@@ -285,7 +286,7 @@ export async function executeVirmatorCommand({
             pluginPackagePath,
         },
         async runShellCommand(command, options, extraOptions) {
-            log.faint(`> ${command}`);
+            log.faint(`${extraOptions?.logPrefix ? `${extraOptions.logPrefix} ` : ''}> ${command}`);
             const result = await runShellCommand(command, {
                 cwd,
                 shell: 'bash',
@@ -367,11 +368,13 @@ export async function executeVirmatorCommand({
             let failed = false;
 
             try {
-                concurrentlyResults = await concurrently(commands, {
-                    killOthers: 'failure',
-                    outputStream: writeStream,
-                    maxProcesses: maxProcesses || outerMaxProcesses,
-                }).result;
+                if (commands.length) {
+                    concurrentlyResults = await concurrently(commands, {
+                        killOthers: 'failure',
+                        outputStream: writeStream,
+                        maxProcesses: maxProcesses || outerMaxProcesses,
+                    }).result;
+                }
             } catch (error) {
                 failed = true;
                 if (Array.isArray(error)) {

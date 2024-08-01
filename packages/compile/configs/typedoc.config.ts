@@ -8,7 +8,7 @@ const repoRoot = resolve(
     '..',
     '..',
 );
-const indexTsFile = join(repoRoot, 'src', 'index.ts');
+const indexTsFile = join(repoRoot, 'src', 'compile.ts');
 
 export const typeDocConfig: Partial<TypeDocOptions> = {
     ...baseTypedocConfig,
@@ -17,9 +17,4 @@ export const typeDocConfig: Partial<TypeDocOptions> = {
         indexTsFile,
     ],
     intentionallyNotExported: [],
-    defaultCategory: 'MISSING CATEGORY',
-    categoryOrder: [
-        'Main',
-        'Internal',
-    ],
 };

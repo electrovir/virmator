@@ -8,7 +8,7 @@ const repoRoot = resolve(
     '..',
     '..',
 );
-const indexTsFile = join(repoRoot, 'src', 'index.ts');
+const indexTsFile = join(repoRoot, 'src', 'publish.ts');
 
 export const typeDocConfig: Partial<TypeDocOptions> = {
     ...baseTypedocConfig,

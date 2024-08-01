@@ -15,6 +15,7 @@ import {VirmatorPluginCliCommands} from '../plugin/plugin-init';
 import {PluginLogger} from '../plugin/plugin-logger';
 import {SetVirmatorFlags, virmatorFlags} from './virmator-flags';
 
+/** All supported sets of args for virmator. */
 export type ParsedArgs = {
     virmatorFlags: SetVirmatorFlags;
     commands: [string, ...string[]];
@@ -24,8 +25,10 @@ export type ParsedArgs = {
     usedCommands: UsedVirmatorPluginCommands;
 };
 
+/** Arbitrarily nested arbitrary virmator plugin commands. */
 export type NestedSubCommands = Readonly<{[SubCommand in string]: NestedSubCommands}>;
 
+/** A mapping from command strings to plugins. */
 export type PluginsMappedByCommand = Readonly<{
     [Command in string]: Readonly<{
         plugin: Readonly<VirmatorPlugin>;
@@ -45,6 +48,7 @@ function extractNestedCommands(
     });
 }
 
+/** Map a set of plugins from their top level commands to the plugins themselves. */
 export function mapPluginsByCommand(
     plugins: ReadonlyArray<Readonly<VirmatorPlugin>>,
 ): PluginsMappedByCommand {
@@ -81,6 +85,7 @@ export function mapPluginsByCommand(
     return mappedPlugins;
 }
 
+/** Determine the path of used commands from a plugin's nested cli command definition. */
 export function calculateUsedCommands(
     pluginCliCommands: Readonly<VirmatorPluginCliCommands>,
     commands: ReadonlyArray<string>,
@@ -107,6 +112,7 @@ export function calculateUsedCommands(
     return usedCommands;
 }
 
+/** Parses a raw cli command into supported virmator args. */
 export function parseCliArgs({
     cliCommand,
     entryPointFilePath,

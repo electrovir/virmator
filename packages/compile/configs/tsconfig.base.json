@@ -1,7 +1,6 @@
 {
     "compilerOptions": {
         "alwaysStrict": true,
-        "composite": true,
         "declaration": true,
         "esModuleInterop": true,
         "exactOptionalPropertyTypes": true,

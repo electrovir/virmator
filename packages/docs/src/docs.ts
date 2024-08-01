@@ -15,6 +15,7 @@ import mri from 'mri';
 import {basename, join} from 'node:path';
 import type * as Typedoc from 'typedoc';
 
+/** A virmator plugin for checking and generating documentation. */
 export const virmatorDocsPlugin = defineVirmatorPlugin(
     import.meta.dirname,
     {
@@ -57,7 +58,7 @@ export const virmatorDocsPlugin = defineVirmatorPlugin(
                 },
                 configFiles: {
                     typedoc: {
-                        copyFromPath: join('configs', 'typedoc.config.ts'),
+                        copyFromPath: join('configs', 'typedoc.config.share.ts'),
                         copyToPath: join('configs', 'typedoc.config.ts'),
                         env: [
                             VirmatorEnv.Node,
@@ -123,7 +124,7 @@ export const virmatorDocsPlugin = defineVirmatorPlugin(
         const args = mri(filteredArgs);
 
         /** Run md-code. */
-        const mdFilesArg = args._.some((arg) => arg.endsWith('.md')) ? '' : "'./**/*.md'";
+        const mdFilesArg = args._.some((arg) => arg.endsWith('.md')) ? '' : "'README.md'";
 
         const mdCodeCommand = [
             'npx',
@@ -177,7 +178,7 @@ export const virmatorDocsPlugin = defineVirmatorPlugin(
 
             await withImportedTsFile(
                 {
-                    inputPath: join(packageDir, configs.docs.configs.typedoc.copyFromPath),
+                    inputPath: join(packageDir, configs.docs.configs.typedoc.copyToPath),
                     outputPath: join(packageDir, 'node_modules', '.virmator', 'typedoc.config.cjs'),
                 },
                 JsModuleType.Cjs,
@@ -201,6 +202,11 @@ export const virmatorDocsPlugin = defineVirmatorPlugin(
             );
         }
 
+        /**
+         * Node is incorrectly reporting coverage missing from the following lines. They are all
+         * called.
+         */
+        /* node:coverage ignore next 12 */
         if (packageType === PackageType.MonoRoot) {
             await runPerPackage(async ({color, packageCwd, packageName}) => {
                 await runDocs(packageCwd, packageName, color);

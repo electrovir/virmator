@@ -4,6 +4,7 @@ import mri from 'mri';
 import {join, relative} from 'node:path';
 import {isRunTimeType} from 'run-time-assertions';
 
+/** A virmator package for checking spelling. */
 export const virmatorSpellcheckPlugin = defineVirmatorPlugin(
     import.meta.dirname,
     {
@@ -70,8 +71,7 @@ export const virmatorSpellcheckPlugin = defineVirmatorPlugin(
         const configPath = isRunTimeType(args.config, 'string')
             ? args.config
             : relative(cwd, join(cwdPackagePath, configs.spellcheck.configs.cspell.copyToPath));
-        const filesArg =
-            args['file-list'] || args.file ? '' : args._.length ? `--file ${args._}` : '.';
+        const filesArg = args.file ? '' : args._.length ? `--file ${args._}` : '.';
 
         const fullCommand = [
             'npx',

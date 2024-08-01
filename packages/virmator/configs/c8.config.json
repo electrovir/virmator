@@ -3,11 +3,19 @@
     "all": true,
     "checkCoverage": true,
     "clean": true,
+    "exclude": [
+        "**/*.test.ts",
+        "**/*.example.ts",
+        "**/*.test-helper.ts",
+        "src/cli.ts"
+    ],
+    "include": [
+        "src/**/*.ts"
+    ],
     "perFile": true,
     "reporter": [
         "html",
         "istanbul-smart-text-reporter"
     ],
-    "skipFull": true,
-    "src": "src"
+    "skipFull": true
 }

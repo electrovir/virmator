@@ -1,3 +1,4 @@
+/** Supported virmator flags. */
 export const virmatorFlags = {
     '--no-configs': {
         doc: 'Prevents config files from being copied for the following command.',
@@ -7,4 +8,5 @@ export const virmatorFlags = {
     },
 } as const;
 
+/** Each supported virmator flag mapped to a boolean. */
 export type SetVirmatorFlags = Partial<{-readonly [FlagName in keyof typeof virmatorFlags]: true}>;

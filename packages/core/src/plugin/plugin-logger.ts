@@ -1,8 +1,10 @@
 import {ColorKey, Logger, LogOutputType, toLogString} from '@augment-vir/node-js';
 import {Socket} from 'net';
 
+/** An extensions of `@augment-vir/node-js`'s logger with a `plain` log command. */
 export type PluginLogger = Logger & {plain: Logger['faint']};
 
+/** Creates a plugin logger based on the provided stderr and stdout writers. */
 export function createPluginLogger(
     logWriters: Record<LogOutputType, Pick<Socket, 'write'>>,
     omitNewLines?: boolean | undefined,
@@ -87,6 +89,7 @@ export function createPluginLogger(
     };
 }
 
+/** A {@link PluginLogger} implementation that does nothing. */
 export const emptyLogger: PluginLogger = createPluginLogger({
     stderr: {
         write() {

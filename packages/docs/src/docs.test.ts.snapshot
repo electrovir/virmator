@@ -17,7 +17,7 @@ exports[`Docs > allows custom file inputs 1`] = `
 exports[`Docs > does not error on missing markdown files 1`] = `
 {
   "logs": {
-    "stdout": "Copied typedoc.config.ts\\nInstalling markdown-code-example-inserter@1.0.0 typedoc@0.26.5 esbuild@0.23.0...\\n> npx md-code './**/*.md'\\ndocs finished.",
+    "stdout": "Copied typedoc.config.ts\\nInstalling markdown-code-example-inserter@1.0.0 typedoc@0.26.5 esbuild@0.23.0...\\n> npx md-code 'README.md'\\ndocs finished.",
     "stderr": "No markdown files given to insert code into."
   },
   "cwd": "packages/docs/test-files/mono-repo/packages/c",
@@ -33,7 +33,7 @@ exports[`Docs > does not error on missing markdown files 1`] = `
 exports[`Docs > fails typedoc check 1`] = `
 {
   "logs": {
-    "stdout": "Copied typedoc.config.ts\\nInstalling markdown-code-example-inserter@1.0.0 typedoc@0.26.5 esbuild@0.23.0...\\n> npx md-code --check './**/*.md'",
+    "stdout": "Copied typedoc.config.ts\\nInstalling markdown-code-example-inserter@1.0.0 typedoc@0.26.5 esbuild@0.23.0...\\n> npx md-code --check 'README.md'",
     "stderr": "No markdown files given to insert code into.\\ndocs failed."
   },
   "cwd": "packages/docs/test-files/invalid-typedoc",
@@ -52,7 +52,7 @@ exports[`Docs > fails typedoc check 1`] = `
 exports[`Docs > fails unfinished readme 1`] = `
 {
   "logs": {
-    "stdout": "Copied typedoc.config.ts\\nInstalling markdown-code-example-inserter@1.0.0 typedoc@0.26.5 esbuild@0.23.0...\\n> npx md-code --check './**/*.md'\\nChecking that code in markdown is up to date:",
+    "stdout": "Copied typedoc.config.ts\\nInstalling markdown-code-example-inserter@1.0.0 typedoc@0.26.5 esbuild@0.23.0...\\n> npx md-code --check 'README.md'\\nChecking that code in markdown is up to date:",
     "stderr": "    README.md: NOT up to date\\nCode in Markdown file(s) is out of date. Run without the \\"check\\" sub-command to update.\\ndocs failed."
   },
   "cwd": "packages/docs/test-files/unfinished-readme",
@@ -71,7 +71,7 @@ exports[`Docs > fails unfinished readme 1`] = `
 exports[`Docs > passes docs check 1`] = `
 {
   "logs": {
-    "stdout": "Copied typedoc.config.ts\\nInstalling markdown-code-example-inserter@1.0.0 typedoc@0.26.5 esbuild@0.23.0...\\n> npx md-code --check './**/*.md'\\nChecking that code in markdown is up to date:\\n    README.md: up to date\\ndocs finished."
+    "stdout": "Copied typedoc.config.ts\\nInstalling markdown-code-example-inserter@1.0.0 typedoc@0.26.5 esbuild@0.23.0...\\n> npx md-code --check 'README.md'\\nChecking that code in markdown is up to date:\\n    README.md: up to date\\ndocs finished."
   },
   "cwd": "packages/docs/test-files/valid-docs",
   "contentsDiff": {
@@ -86,7 +86,7 @@ exports[`Docs > passes docs check 1`] = `
 exports[`Docs > runs on mono-repo packages 1`] = `
 {
   "logs": {
-    "stdout": "Copied typedoc.config.ts\\nCopied typedoc.config.ts\\nCopied typedoc.config.ts\\nInstalling markdown-code-example-inserter@1.0.0...\\n> npx md-code './**/*.md'",
+    "stdout": "Copied typedoc.config.ts\\nCopied typedoc.config.ts\\nCopied typedoc.config.ts\\nInstalling markdown-code-example-inserter@1.0.0...\\n[packages/a]  > npx md-code 'README.md'",
     "stderr": "[packages/a] No markdown files given to insert code into.\\ndocs failed."
   },
   "cwd": "packages/docs/test-files/mono-repo",
@@ -119,7 +119,7 @@ exports[`Docs > runs on mono-repo packages 1`] = `
 exports[`Docs > runs typedoc and md-code 1`] = `
 {
   "logs": {
-    "stdout": "Copied typedoc.config.ts\\nInstalling markdown-code-example-inserter@1.0.0 typedoc@0.26.5 esbuild@0.23.0...\\n> npx md-code './**/*.md'\\nInserting code into markdown:\\n    README.md\\ndocs finished."
+    "stdout": "Copied typedoc.config.ts\\nInstalling markdown-code-example-inserter@1.0.0 typedoc@0.26.5 esbuild@0.23.0...\\n> npx md-code 'README.md'\\nInserting code into markdown:\\n    README.md\\ndocs finished."
   },
   "cwd": "packages/docs/test-files/unfinished-readme",
   "contentsDiff": {
@@ -135,7 +135,7 @@ exports[`Docs > runs typedoc and md-code 1`] = `
 exports[`Docs > skips private repo typedoc 1`] = `
 {
   "logs": {
-    "stdout": "Copied typedoc.config.ts\\nInstalling markdown-code-example-inserter@1.0.0 typedoc@0.26.5 esbuild@0.23.0...\\n> npx md-code './**/*.md'\\nSkipping typedoc generation in private repo b\\ndocs finished.",
+    "stdout": "Copied typedoc.config.ts\\nInstalling markdown-code-example-inserter@1.0.0 typedoc@0.26.5 esbuild@0.23.0...\\n> npx md-code 'README.md'\\nSkipping typedoc generation in private repo b\\ndocs finished.",
     "stderr": "No markdown files given to insert code into."
   },
   "cwd": "packages/docs/test-files/mono-repo/packages/b",

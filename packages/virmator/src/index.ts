@@ -8,6 +8,7 @@ import {virmatorPublishPlugin} from '@virmator/publish';
 import {virmatorSpellcheckPlugin} from '@virmator/spellcheck';
 import {virmatorTestPlugin} from '@virmator/test';
 
+/** Default list of plugins that the virmator npm package's CLI uses. */
 export const defaultVirmatorPlugins = [
     virmatorCompilePlugin,
     virmatorDepsPlugin,

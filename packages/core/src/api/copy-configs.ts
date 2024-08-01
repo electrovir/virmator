@@ -11,6 +11,10 @@ import {
 } from '../plugin/plugin-executor';
 import {PluginLogger} from '../plugin/plugin-logger';
 
+/**
+ * Extracts a 1d array of virmator plugin config files from previously calculated used commands and
+ * resolved configs.
+ */
 export function flattenConfigs(
     usedCommands: Readonly<UsedVirmatorPluginCommands<any>>,
     resolvedConfigs: Readonly<VirmatorPluginResolvedConfigs<any>>,
@@ -37,6 +41,7 @@ export function flattenConfigs(
     );
 }
 
+/** Copies a plugin's entire set of configs based on the used command. */
 export async function copyPluginConfigs(
     usedCommands: Readonly<UsedVirmatorPluginCommands>,
     resolvedConfigs: Readonly<VirmatorPluginResolvedConfigs<any>>,
@@ -73,6 +78,7 @@ export async function copyPluginConfigs(
     });
 }
 
+/** Copies a single virmator plugin config file. */
 export async function copyConfigFile(
     config: Readonly<Pick<VirmatorPluginResolvedConfigFile, 'fullCopyFromPath' | 'fullCopyToPath'>>,
     log: PluginLogger,

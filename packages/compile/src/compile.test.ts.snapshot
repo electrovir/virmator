@@ -1,14 +1,16 @@
 exports[`TS Compile > compiles a valid project 1`] = `
 {
   "logs": {
-    "stdout": "Installing typescript@5.5.4...\\nDeleting dist...\\nDeleting tsconfig.tsbuildinfo...\\nCompiling...\\n> npx tsc --pretty\\ncompile finished."
+    "stdout": "Copied tsconfig.json\\nInstalling typescript@5.5.4...\\nDeleting dist...\\nDeleting tsconfig.tsbuildinfo...\\nCompiling...\\n> npx tsc --pretty\\ncompile finished."
   },
   "cwd": "packages/compile/test-files/pass-compile",
   "contentsDiff": {
     "package.json": "{\\n  \\"devDependencies\\": {\\n    \\"typescript\\": \\"^5.5.4\\"\\n  }\\n}\\n",
     "dist": {
-      "a.js": "\\"use strict\\";\\nObject.defineProperty(exports, \\"__esModule\\", { value: true });\\nexports.value = void 0;\\nexports.value = {\\n    here: 'yo',\\n    there: 0,\\n};\\n"
-    }
+      "a.d.ts": "export type A = {\\n    here: string;\\n    there: number;\\n};\\nexport declare const value: A;\\n",
+      "a.js": "export const value = {\\n    here: 'yo',\\n    there: 0,\\n};\\n"
+    },
+    "tsconfig.json": "{\\n    \\"compilerOptions\\": {\\n        \\"outDir\\": \\"./dist/\\",\\n        \\"rootDir\\": \\"./src/\\"\\n    },\\n    \\"exclude\\": [\\n        \\"./configs/\\",\\n        \\"./coverage/\\",\\n        \\"./dist/\\",\\n        \\"./dist-*/\\",\\n        \\"./node_modules/\\",\\n        \\"./test-files/\\"\\n    ],\\n    \\"extends\\": \\"@virmator/compile/configs/tsconfig.base.json\\"\\n}\\n"
   }
 }
 `;
@@ -16,15 +18,17 @@ exports[`TS Compile > compiles a valid project 1`] = `
 exports[`TS Compile > rejects an invalid project 1`] = `
 {
   "logs": {
-    "stdout": "Installing typescript@5.5.4...\\nDeleting dist...\\nDeleting tsconfig.tsbuildinfo...\\nCompiling...\\n> npx tsc --pretty\\nsrc/a.ts:12:5 - error TS2353: Object literal may only specify known properties, and 'no' does not exist in type 'A'.\\n\\n12     no: 'bad',\\n       ~~\\n\\n\\nFound 1 error in src/a.ts:12\\n",
+    "stdout": "Copied tsconfig.json\\nInstalling typescript@5.5.4...\\nDeleting dist...\\nDeleting tsconfig.tsbuildinfo...\\nCompiling...\\n> npx tsc --pretty\\nsrc/a.ts:12:5 - error TS2353: Object literal may only specify known properties, and 'no' does not exist in type 'A'.\\n\\n12     no: 'bad',\\n       ~~\\n\\n\\nFound 1 error in src/a.ts:12\\n",
     "stderr": "compile failed."
   },
   "cwd": "packages/compile/test-files/fail-compile",
   "contentsDiff": {
     "package.json": "{\\n  \\"devDependencies\\": {\\n    \\"typescript\\": \\"^5.5.4\\"\\n  }\\n}\\n",
     "dist": {
-      "a.js": "\\"use strict\\";\\nObject.defineProperty(exports, \\"__esModule\\", { value: true });\\nexports.value2 = exports.value = void 0;\\nexports.value = {\\n    here: 'yo',\\n    there: 0,\\n};\\nexports.value2 = {\\n    no: 'bad',\\n};\\n"
-    }
+      "a.d.ts": "export type A = {\\n    here: string;\\n    there: number;\\n};\\nexport declare const value: A;\\nexport declare const value2: A;\\n",
+      "a.js": "export const value = {\\n    here: 'yo',\\n    there: 0,\\n};\\nexport const value2 = {\\n    no: 'bad',\\n};\\n"
+    },
+    "tsconfig.json": "{\\n    \\"compilerOptions\\": {\\n        \\"outDir\\": \\"./dist/\\",\\n        \\"rootDir\\": \\"./src/\\"\\n    },\\n    \\"exclude\\": [\\n        \\"./configs/\\",\\n        \\"./coverage/\\",\\n        \\"./dist/\\",\\n        \\"./dist-*/\\",\\n        \\"./node_modules/\\",\\n        \\"./test-files/\\"\\n    ],\\n    \\"extends\\": \\"@virmator/compile/configs/tsconfig.base.json\\"\\n}\\n"
   },
   "error": {
     "name": "VirmatorNoTraceError"
@@ -57,7 +61,7 @@ exports[`TS Compile > works in a mono-repo 1`] = `
       }
     },
     "configs": {
-      "tsconfig.base.json": "{\\n    \\"extends\\": \\"@virmator/compile/configs/tsconfig.base.json\\"\\n}\\n"
+      "tsconfig.base.json": "{\\n    \\"compilerOptions\\": {\\n        \\"composite\\": true\\n    },\\n    \\"extends\\": \\"@virmator/compile/configs/tsconfig.base.json\\"\\n}\\n"
     }
   }
 }

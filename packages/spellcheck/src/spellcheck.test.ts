@@ -45,6 +45,14 @@ describe(virmatorSpellcheckPlugin.name, () => {
             'nested/file.txt',
         );
     });
+    it('uses file flag', async (context) => {
+        await testSpellcheckPlugin(
+            true,
+            context,
+            join(testFilesDir, 'fail-spellcheck'),
+            '--file nested/file.txt',
+        );
+    });
     it('spellchecks only at the current directory', async (context) => {
         await testSpellcheckPlugin(true, context, join(testFilesDir, 'fail-spellcheck', 'nested'));
     });

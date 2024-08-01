@@ -4,10 +4,12 @@ import {readdir, readFile, rm, stat} from 'node:fs/promises';
 import {join} from 'node:path';
 import {isRunTimeType} from 'run-time-assertions';
 
+/** Nested contents read from a file system directory. */
 export type DirContents = {
     [Path in string]: string | DirContents;
 };
 
+/** Read all contents within a directory and store them in an object. Optionally recursive. */
 export async function readAllDirContents(
     dir: string,
     {
@@ -62,6 +64,7 @@ export async function readAllDirContents(
     return mappedFileContents;
 }
 
+/** Deletes and entire directory and resets it to the given contents. */
 export async function resetDirContents(
     rootDir: string,
     contents: Readonly<DirContents>,
@@ -73,6 +76,7 @@ export async function resetDirContents(
 
     await writeDirContents(rootDir, contents);
 }
+/** Write {@link DirContents} to a directory. */
 export async function writeDirContents(
     rootDir: string,
     contents: Readonly<DirContents>,
