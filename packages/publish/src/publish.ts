@@ -14,12 +14,13 @@ import {
 import {
     defineVirmatorPlugin,
     MonoRepoPackage,
+    parseTsConfig,
     PluginLogger,
     ValidPackageJson,
     VirmatorNoTraceError,
 } from '@virmator/core';
 import {readFile, writeFile} from 'node:fs/promises';
-import {join, relative} from 'node:path';
+import {join, relative, resolve} from 'node:path';
 import semver, {SemVer} from 'semver';
 import simpleGit, {SimpleGit} from 'simple-git';
 import {PackageJson, SetRequired} from 'type-fest';
@@ -154,29 +155,83 @@ export const virmatorPublishPlugin = defineVirmatorPlugin(
             .filter(isTruthy)
             .join(' ');
 
-        if (monoRepoPackages.length) {
-            await runPerPackage(async ({packageCwd, packageName}) => {
-                const isPrivate = (await readPackageJson(packageCwd)).private;
+        const alteredPackageJsonFiles: {path: string; original: string}[] = [];
+
+        async function alterPackageEntryPoints(packagePath: string) {
+            const packageJsonPath = join(packagePath, 'package.json');
+            let packageJsonContents: string = (await readFile(packageJsonPath)).toString();
+            const packageJson = await readPackageJson(packagePath);
+
+            const alteredJsonFile = {
+                path: packageJsonPath,
+                original: packageJsonContents,
+            };
+
+            const relativeOutDir = parseTsConfig(packagePath)?.options.outDir || 'dist';
+            const outDir = relative(packagePath, resolve(packagePath, relativeOutDir));
+
+            if (packageJson.main?.endsWith('.ts')) {
+                packageJsonContents = packageJsonContents.replace(
+                    `"main": "${packageJson.main}"`,
+                    `"main": "${packageJson.main.replace('src', outDir).replace('.ts', '.js')}"`,
+                );
+            }
+            if (packageJson.module?.endsWith('.ts')) {
+                packageJsonContents = packageJsonContents.replace(
+                    `"module": "${packageJson.module}"`,
+                    `"module": "${packageJson.module.replace('src', outDir).replace('.ts', '.js')}"`,
+                );
+            }
+            if (packageJson.types?.startsWith('src')) {
+                packageJsonContents = packageJsonContents.replace(
+                    `"types": "${packageJson.types}"`,
+                    `"types": "${packageJson.types.replace('src', outDir).replace('.ts', '.d.ts')}"`,
+                );
+            }
+
+            if (packageJsonContents !== alteredJsonFile.original) {
+                alteredPackageJsonFiles.push(alteredJsonFile);
+                await writeFile(alteredJsonFile.path, packageJsonContents);
+            }
+        }
+        try {
+            if (monoRepoPackages.length) {
+                await runPerPackage(async ({packageCwd, packageName}) => {
+                    const isPrivate = (await readPackageJson(packageCwd)).private;
+
+                    if (isPrivate) {
+                        log.faint(`Skipping ${packageName} because it's private.`);
+                        return undefined;
+                    }
+
+                    await alterPackageEntryPoints(packageCwd);
+
+                    return publishCommand;
+                });
+            } else {
+                const isPrivate = monoRepoPackageJson.private;
 
                 if (isPrivate) {
-                    log.faint(`Skipping ${packageName} because it's private.`);
-                    return undefined;
+                    log.info(`This package is private. Skipping publish.`);
+                    return;
                 }
+                await alterPackageEntryPoints(monoRepoRootPath);
 
-                return publishCommand;
-            });
+                await runShellCommand(publishCommand);
+            }
+
+            if (!isDryRun) {
+                await updateGit(monoRepoRootPath);
+            }
+
+            return;
+        } finally {
+            await Promise.all(
+                alteredPackageJsonFiles.map(async (alteredFile) => {
+                    await writeFile(alteredFile.path, alteredFile.original);
+                }),
+            );
         }
-        const isPrivate = (await readPackageJson(monoRepoRootPath)).private;
-
-        if (!isPrivate) {
-            await runShellCommand(publishCommand);
-        }
-
-        if (!isDryRun) {
-            await updateGit(monoRepoRootPath);
-        }
-
-        return;
     },
 );
 

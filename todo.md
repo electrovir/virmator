@@ -1,10 +1,8 @@
 -   help command (built into /core?)
 -   help command or flag that can be passed into any command (`virmator compile --help` or maybe `virmator --help compile` or **`virmator help compile`**)
--   update mono-repo root npm scripts
 -   update all package keywords and descriptions.
 -   add lint command
--   automatically generate author and git properties for package.json
--   convert `"main": "src/index.ts"` to `"main": "dist/index.js"` in `package.json` when running the publish plugin
+-   automatically generate author and git properties for package.json in init
 -   only copy configs if the user hasn't specified a manual config path (like in spellcheck)
 
 -   update `markdown-code-example-inserter` package
