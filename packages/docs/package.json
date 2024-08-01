@@ -4,9 +4,9 @@
     "description": "Default TS docs plugin for virmator.",
     "keywords": [
         "virmator",
-        "deps",
-        "upgrade",
-        "dependencies"
+        "docs",
+        "typedoc",
+        "documentation"
     ],
     "homepage": "https://github.com/electrovir/virmator",
     "bugs": {

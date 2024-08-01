@@ -1,7 +1,7 @@
 {
     "name": "@virmator/compile",
     "version": "13.0.0",
-    "description": "Default TS compile plugin for virmator",
+    "description": "Default TS compile plugin for virmator.",
     "keywords": [
         "virmator",
         "typescript",

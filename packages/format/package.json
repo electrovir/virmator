@@ -4,9 +4,8 @@
     "description": "Default format plugin for virmator.",
     "keywords": [
         "virmator",
-        "deps",
-        "upgrade",
-        "dependencies"
+        "format",
+        "prettier"
     ],
     "homepage": "https://github.com/electrovir/virmator",
     "bugs": {

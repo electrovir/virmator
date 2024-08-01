@@ -1,16 +1,11 @@
 {
     "name": "@virmator/core",
     "version": "13.0.0",
-    "description": "Handle common package configs, commands, and dependencies.",
+    "description": "Shared core functionality for all virmator plugins and the virmator CLI.",
     "keywords": [
         "automation",
-        "config",
-        "configs",
-        "formatting",
-        "publish",
-        "spellcheck",
-        "template",
-        "vir"
+        "vir",
+        "virmator"
     ],
     "homepage": "https://github.com/electrovir/virmator",
     "bugs": {
