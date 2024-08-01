@@ -27,9 +27,9 @@
     "types": "src/deps.ts",
     "scripts": {
         "compile": "virmator compile",
-        "test": "tsx --test --experimental-test-snapshots --test-reporter spec 'src/**/*.test.ts'",
-        "test:coverage": "c8 --config configs/c8.config.json npm test",
-        "test:update": "tsx --test --experimental-test-snapshots --test-update-snapshots --test-reporter spec 'src/**/*.test.ts'"
+        "test": "virmator test node",
+        "test:coverage": "npm test coverage",
+        "test:update": "npm test update"
     },
     "dependencies": {
         "@augment-vir/common": "^29.3.0",

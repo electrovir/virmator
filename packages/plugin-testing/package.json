@@ -25,9 +25,9 @@
     "module": "src/index.ts",
     "types": "src/index.ts",
     "scripts": {
-        "test": "tsx --test --test-reporter spec 'src/**/*.test.ts'",
-        "test:coverage": "c8 --config configs/c8.config.json npm test",
-        "test:update": "exit 0"
+        "test": "virmator test node",
+        "test:coverage": "npm test coverage",
+        "test:update": "npm test update"
     },
     "dependencies": {
         "@augment-vir/common": "^29.3.0",
