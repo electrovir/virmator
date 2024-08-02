@@ -1,6 +1,7 @@
 import {
     collapseWhiteSpace,
     getObjectTypedEntries,
+    isTruthy,
     mapObjectValues,
     safeMatch,
 } from '@augment-vir/common';
@@ -11,7 +12,7 @@ import {
     VirmatorPlugin,
     VirmatorPluginCliCommands,
 } from '@virmator/core';
-import {PluginCommandDocs, PluginDocEntry} from '@virmator/core/src/plugin/plugin-init';
+import {PluginDocEntry} from '@virmator/core/src/plugin/plugin-init';
 
 /** Different syntaxes for each supported help message target environment. */
 export enum HelpMessageSyntax {
@@ -68,10 +69,10 @@ export function generateHelpMessage(
                 return commandToHelpString(commandName, command, format, 0);
             },
         )
-        .join('\n');
+        .join('\n\n');
 
     const commandsText =
-        `${format.h2}Available commands${format.reset}${format.newLine}${commandsMessage}`.trim();
+        `${format.h2}Available commands${format.reset}\n\n${commandsMessage}`.trim();
 
     const helpMessage = hideVirmatorExplanations
         ? commandsText + '\n'
@@ -112,10 +113,6 @@ export const formats = {
         [HelpMessageSyntax.Cli]: logColors.reset,
         [HelpMessageSyntax.Markdown]: '',
     },
-    newLine: {
-        [HelpMessageSyntax.Cli]: '\n\n',
-        [HelpMessageSyntax.Markdown]: '\n\n',
-    },
     indent: {
         [HelpMessageSyntax.Cli]: '    ',
         [HelpMessageSyntax.Markdown]: '    ',
@@ -123,6 +120,10 @@ export const formats = {
     bullet: {
         [HelpMessageSyntax.Cli]: '-   ',
         [HelpMessageSyntax.Markdown]: '-   ',
+    },
+    escape: {
+        [HelpMessageSyntax.Cli]: '',
+        [HelpMessageSyntax.Markdown]: '\\',
     },
 } as const;
 
@@ -168,17 +169,18 @@ function commandToHelpString(
 ): string {
     const title = `${indent(indentCount, format)}${format.bullet}${bold(commandName, format)}${format.reset}`;
 
-    const description = commandDocToString(command.doc, format, indentCount);
-    const subCommandDescriptions = getObjectTypedEntries(command.subCommands || {})
-        .map(
-            ([
-                subCommandName,
-                subCommand,
-            ]) => commandToHelpString(subCommandName, subCommand, format, indentCount + 1),
-        )
-        .join('\n');
+    const description = commandDocToString(command, format, indentCount);
+    const subCommands = getObjectTypedEntries(command.subCommands || {}).map(
+        ([
+            subCommandName,
+            subCommand,
+        ]) => commandToHelpString(subCommandName, subCommand, format, indentCount + 2),
+    );
+    const subCommandsBlock = subCommands.length
+        ? `\n${indent(indentCount + 1, format)}${format.bullet}Sub Commands\n\n${subCommands.join('\n\n')}`
+        : '';
 
-    return `${title}\n\n${description}\n${subCommandDescriptions}`;
+    return `${title}\n\n${description}${subCommandsBlock}`;
 }
 
 function indent(count: number, format: Formatter): string {
@@ -199,24 +201,51 @@ function docEntryToString(
 }
 
 function commandDocToString(
-    docs: PluginCommandDocs,
-    format: Formatter,
+    command: Readonly<IndividualPluginCommand>,
+    format: Readonly<Formatter>,
     indentCount: number,
 ): string {
-    const sections = docs.sections
-        .map((section) => docEntryToString({content: section}, indentCount, false, format))
-        .join(format.newLine);
+    const sections = command.doc.sections.map((section) =>
+        docEntryToString({content: section}, indentCount, false, format),
+    );
 
-    const examples = docs.examples
-        .map((example) => docEntryToString(example, indentCount, true, format))
-        .join('\n');
+    const examples = command.doc.examples.map((example) =>
+        docEntryToString(example, indentCount + 1, true, format),
+    );
 
-    return `${sections}${format.newLine}${examples}`;
+    const exampleBlock = examples.length
+        ? `${indent(indentCount + 1, format)}${format.bullet}Examples\n${examples.join('\n')}`
+        : '';
+
+    const configs = Object.values(command.configFiles || {}).map((configFile) => {
+        const escaped = configFile.copyToPath.replaceAll(/(_)/g, `${format.escape}$1`);
+        return `${indent(indentCount + 2, format)}${format.bullet}${escaped}`;
+    });
+
+    const configsBlock = configs.length
+        ? `${indent(indentCount + 1, format)}${format.bullet}Configs\n${configs.join('\n')}`
+        : '';
+
+    const deps = Object.keys(command.npmDeps || {}).map((npmDepName) => {
+        return `${indent(indentCount + 2, format)}${format.bullet}[${npmDepName}](https://npmjs.com/package/${npmDepName})`;
+    });
+    const depsBlock = deps.length
+        ? `${indent(indentCount + 1, format)}${format.bullet}Deps\n${deps.join('\n')}`
+        : '';
+
+    const blocks = [
+        sections.length ? sections.join('\n\n') + '\n' : '',
+        exampleBlock,
+        configsBlock,
+        depsBlock,
+    ].filter(isTruthy);
+
+    return blocks.join('\n');
 }
 
 function combineHelpMessage(commandsText: string, format: Formatter): string {
     const flagsText = flagsToHelpString(virmatorFlags, format);
-    return `${format.h1}virmator usage${format.reset}${format.newLine}${code('[npx] virmator [--flags] command subCommand [...optional args]', format)}${format.newLine}${format.bullet}${code(
+    return `${format.h1}virmator usage${format.reset}\n\n${code('[npx] virmator [--flags] command subCommand [...optional args]', format)}\n\n${format.bullet}${code(
         'npx',
         format,
     )} is needed when the command is run directly from the terminal (not called from within an npm script) unless virmator has been globally installed (which I recommend against).
@@ -224,7 +253,7 @@ ${format.bullet}${code(
         '[--flags]',
         format,
     )} is any of the optional virmator flags. See Virmator Flags below.
-${format.bullet}${code('command', format)}, ${code('subCommand', format)}, and ${code('[...optional args]', format)} depend on the specific command you're running. See Available Commands below.${format.newLine}${commandsText}${format.newLine}${format.h2}Virmator Flags${format.reset}${format.newLine}All virmator flags are optional and typically not needed.${format.newLine}${flagsText}`;
+${format.bullet}${code('command', format)}, ${code('subCommand', format)}, and ${code('[...optional args]', format)} depend on the specific command you're running. See Available Commands below.\n\n${commandsText}\n\n${format.h2}Virmator Flags${format.reset}\n\nAll virmator flags are optional and typically not needed.\n\n${flagsText}`;
 }
 
 function getIndent(line: string, format: Formatter): string {

@@ -8,4 +8,5 @@ A default plugin for [virmator](https://www.npmjs.com/package/virmator).
 
     Prints help messages for all supported plugins/commands.
 
-    -   `virmator help`
+    -   Examples
+        -   `virmator help`

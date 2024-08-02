@@ -10,5 +10,13 @@ A default plugin for [virmator](https://www.npmjs.com/package/virmator).
 
     Automatically compiles a mono-repo's sub packages in the correct order if called from a mono-repo root.
 
-    -   `virmator compile`
-    -   With tsc flags: `virmator compile --noEmit`
+    -   Examples
+        -   `virmator compile`
+        -   With tsc flags: `virmator compile --noEmit`
+    -   Configs
+        -   tsconfig.json
+        -   tsconfig.json
+        -   configs/tsconfig.base.json
+    -   Deps
+        -   [typescript](https://npmjs.com/package/typescript)
+        -   [mono-vir](https://npmjs.com/package/mono-vir)

@@ -18,110 +18,217 @@ A package for centralizing and automating mind-numbingly repetitive repo tasks a
 
     Automatically compiles a mono-repo's sub packages in the correct order if called from a mono-repo root.
 
-    -   `virmator compile`
-    -   With tsc flags: `virmator compile --noEmit`
+    -   Examples
+        -   `virmator compile`
+        -   With tsc flags: `virmator compile --noEmit`
+    -   Configs
+        -   tsconfig.json
+        -   tsconfig.json
+        -   configs/tsconfig.base.json
+    -   Deps
+        -   [typescript](https://npmjs.com/package/typescript)
+        -   [mono-vir](https://npmjs.com/package/mono-vir)
 
 -   **deps**
 
     Various dependency commands. A sub-command must be provided.
 
-    -   check import dependencies: `virmator deps check`
-    -   upgrade npm dependencies: `virmator deps upgrade`
-    -   regenerate npm dependencies: `virmator deps regen`
-    -   **check**
+    -   Examples
+        -   check import dependencies: `virmator deps check`
+        -   upgrade npm dependencies: `virmator deps upgrade`
+        -   regenerate npm dependencies: `virmator deps regen`
+    -   Sub Commands
 
-        Checks that import dependencies pass your dependency cruiser config. The base configuration blocks typical import errors such as circular dependencies and importing test files.
+        -   **check**
 
-        -   `virmator deps check`
+            Checks that import dependencies pass your dependency cruiser config. The base configuration blocks typical import errors such as circular dependencies and importing test files.
 
-    -   **upgrade**
+            -   Examples
+                -   `virmator deps check`
+            -   Configs
+                -   configs/dep-cruiser.config.cts
+            -   Deps
+                -   [dependency-cruiser](https://npmjs.com/package/dependency-cruiser)
+                -   [esbuild](https://npmjs.com/package/esbuild)
 
-        Upgrades dependencies using npm-check-update. Does not automatically run 'npm i'. It is recommended to run 'virmator deps regen' instead.
+        -   **upgrade**
 
-        -   `virmator deps upgrade`
+            Upgrades dependencies using npm-check-update. Does not automatically run 'npm i'. It is recommended to run 'virmator deps regen' instead.
 
-    -   **regen**
+            -   Examples
+                -   `virmator deps upgrade`
+            -   Configs
+                -   configs/ncu.config.ts
+            -   Deps
+                -   [npm-check-updates](https://npmjs.com/package/npm-check-updates)
 
-        Force regeneration of all all dependencies by deleting all node_modules directories and package-lock.json and then running 'npm i'.
+        -   **regen**
 
-        -   `virmator deps regen`
+            Force regeneration of all all dependencies by deleting all node_modules directories and package-lock.json and then running 'npm i'.
+
+            -   Examples
+                -   `virmator deps regen`
 
 -   **docs**
 
     Generates documentation using the typedoc package and inserts code examples into README files using the markdown-code-example-inserter package.
 
-    -   `virmator docs`
-    -   **check**
+    -   Examples
+        -   `virmator docs`
+    -   Configs
+        -   configs/typedoc.config.ts
+    -   Deps
+        -   [markdown-code-example-inserter](https://npmjs.com/package/markdown-code-example-inserter)
+        -   [typedoc](https://npmjs.com/package/typedoc)
+        -   [esbuild](https://npmjs.com/package/esbuild)
+    -   Sub Commands
 
-        Checks that documentation is valid and passes all checks without generating documentation outputs.
+        -   **check**
 
-        -   `virmator docs check`
+            Checks that documentation is valid and passes all checks without generating documentation outputs.
+
+            -   Examples
+                -   `virmator docs check`
 
 -   **format**
 
     Formats with prettier.
 
-    -   `virmator format`
-    -   **check**
+    -   Examples
+        -   `virmator format`
+    -   Configs
+        -   prettier.config.mjs
+        -   .prettierignore
+    -   Deps
+        -   [prettier](https://npmjs.com/package/prettier)
+        -   [prettier-plugin-jsdoc](https://npmjs.com/package/prettier-plugin-jsdoc)
+        -   [prettier-plugin-multiline-arrays](https://npmjs.com/package/prettier-plugin-multiline-arrays)
+        -   [prettier-plugin-organize-imports](https://npmjs.com/package/prettier-plugin-organize-imports)
+        -   [prettier-plugin-packagejson](https://npmjs.com/package/prettier-plugin-packagejson)
+        -   [prettier-plugin-sort-json](https://npmjs.com/package/prettier-plugin-sort-json)
+        -   [prettier-plugin-toml](https://npmjs.com/package/prettier-plugin-toml)
+        -   [prettier-plugin-interpolated-html-tags](https://npmjs.com/package/prettier-plugin-interpolated-html-tags)
+    -   Sub Commands
 
-        Checks that formatting is all valid.
+        -   **check**
 
-        -   `virmator format check`
+            Checks that formatting is all valid.
+
+            -   Examples
+                -   `virmator format check`
 
 -   **frontend**
 
     Runs a frontend dev server with Vite.
 
-    -   `virmator frontend`
-    -   **build**
+    -   Examples
+        -   `virmator frontend`
+    -   Configs
+        -   configs/vite.config.ts
+    -   Deps
+        -   [typescript](https://npmjs.com/package/typescript)
+        -   [vite](https://npmjs.com/package/vite)
+    -   Sub Commands
 
-        Builds a frontend for deployment using Vite (and Rollup).
+        -   **build**
 
-        -   `virmator frontend build`
+            Builds a frontend for deployment using Vite (and Rollup).
 
-    -   **preview**
+            -   Examples
+                -   `virmator frontend build`
 
-        Builds a frontend and previews that build in a local dev server.
+        -   **preview**
 
-        -   `virmator frontend preview`
+            Builds a frontend and previews that build in a local dev server.
+
+            -   Examples
+                -   `virmator frontend preview`
 
 -   **help**
 
     Prints help messages for all supported plugins/commands.
 
-    -   `virmator help`
+    -   Examples
+        -   `virmator help`
 
 -   **init**
 
     Init all default configs. Needs env and package type args.
 
-    -   `virmator init web mono-repo`
-    -   `virmator init node package`
+    -   Examples
+        -   `virmator init web mono-repo`
+        -   `virmator init node package`
+    -   Configs
+        -   .github/workflows/build-for-gh-pages.yml
+        -   .github/workflows/tagged-release.yml
+        -   .github/workflows/tests.yml
+        -   .github/workflows/tests.yml
+        -   src/ui/elements/vir-app.element.ts
+        -   src/index.html
+        -   www-static/index.css
+        -   www-static/\_redirects
+        -   .gitattributes
+        -   .nvmrc
+        -   .gitignore
+        -   LICENSE-MIT
+        -   LICENSE-CC0
+        -   .npmignore
+        -   package.json
+        -   package.json
+        -   package.json
+        -   package.json
+        -   package.json
 
 -   **lint**
 
     Runs ESLint.
 
-    -   `virmator lint`
-    -   **fix**
+    -   Examples
+        -   `virmator lint`
+    -   Configs
+        -   configs/tsconfig.eslint.json
+        -   eslint.config.mjs
+    -   Deps
+        -   [eslint](https://npmjs.com/package/eslint)
+        -   [@eslint/js](https://npmjs.com/package/@eslint/js)
+        -   [@stylistic/eslint-plugin](https://npmjs.com/package/@stylistic/eslint-plugin)
+        -   [@stylistic/eslint-plugin-ts](https://npmjs.com/package/@stylistic/eslint-plugin-ts)
+        -   [@typescript-eslint/eslint-plugin](https://npmjs.com/package/@typescript-eslint/eslint-plugin)
+        -   [eslint-config-prettier](https://npmjs.com/package/eslint-config-prettier)
+        -   [eslint-plugin-jsdoc](https://npmjs.com/package/eslint-plugin-jsdoc)
+        -   [eslint-plugin-mocha](https://npmjs.com/package/eslint-plugin-mocha)
+        -   [eslint-plugin-playwright](https://npmjs.com/package/eslint-plugin-playwright)
+        -   [eslint-plugin-prettier](https://npmjs.com/package/eslint-plugin-prettier)
+        -   [eslint-plugin-sonarjs](https://npmjs.com/package/eslint-plugin-sonarjs)
+        -   [typescript-eslint](https://npmjs.com/package/typescript-eslint)
+    -   Sub Commands
 
-        Auto fix all fixable ESLint issues.
+        -   **fix**
 
-        -   `virmator lint fix`
+            Auto fix all fixable ESLint issues.
+
+            -   Examples
+                -   `virmator lint fix`
 
 -   **publish**
 
     Publish a package or mono-repo to NPM with an optional test script and auto-incrementing package version.
 
-    -   With tests: `virmator publish npm test`
-    -   Without tests: `virmator publish`
+    -   Examples
+        -   With tests: `virmator publish npm test`
+        -   Without tests: `virmator publish`
 
 -   **spellcheck**
 
     Checks spelling for all files using the cspell package. All arguments are passed directly to cspell.
 
-    -   `virmator spellcheck`
-    -   Check a specific file: `virmator spellcheck src/index.ts`
+    -   Examples
+        -   `virmator spellcheck`
+        -   Check a specific file: `virmator spellcheck src/index.ts`
+    -   Configs
+        -   cspell.config.cjs
+    -   Deps
+        -   [cspell](https://npmjs.com/package/cspell)
 
 -   **test**
 
@@ -129,35 +236,63 @@ A package for centralizing and automating mind-numbingly repetitive repo tasks a
 
     This cannot be run in a mono-repo root, it can only be run for mono-repo sub-packages or a top-level singular package.
 
-    -   Run tests in a browser: `virmator test web`
-    -   Run tests in Node: `virmator test node`
-    -   **web**
+    -   Examples
+        -   Run tests in a browser: `virmator test web`
+        -   Run tests in Node: `virmator test node`
+    -   Sub Commands
 
-        Runs web tests in a browser using web-test-runner.
+        -   **web**
 
-        -   `virmator test web`
-        -   **coverage**
+            Runs web tests in a browser using web-test-runner.
 
-            Run tests and calculate code coverage.
+            -   Examples
+                -   `virmator test web`
+            -   Configs
+                -   configs/web-test-runner.config.mjs
+            -   Deps
+                -   [@open-wc/testing](https://npmjs.com/package/@open-wc/testing)
+                -   [@types/mocha](https://npmjs.com/package/@types/mocha)
+                -   [@web/dev-server-esbuild](https://npmjs.com/package/@web/dev-server-esbuild)
+                -   [@web/test-runner-commands](https://npmjs.com/package/@web/test-runner-commands)
+                -   [@web/test-runner-playwright](https://npmjs.com/package/@web/test-runner-playwright)
+                -   [@web/test-runner-visual-regression](https://npmjs.com/package/@web/test-runner-visual-regression)
+                -   [@web/test-runner](https://npmjs.com/package/@web/test-runner)
+                -   [istanbul-smart-text-reporter](https://npmjs.com/package/istanbul-smart-text-reporter)
+            -   Sub Commands
 
-            -   `virmator test web coverage`
+                -   **coverage**
 
-    -   **node**
+                    Run tests and calculate code coverage.
 
-        Runs backend tests in Node.js using its built-in test runner.
+                    -   Examples
+                        -   `virmator test web coverage`
 
-        -   `virmator test node`
-        -   **coverage**
+        -   **node**
 
-            Run tests and calculate code coverage.
+            Runs backend tests in Node.js using its built-in test runner.
 
-            -   `virmator test node coverage`
+            -   Examples
+                -   `virmator test node`
+            -   Sub Commands
 
-        -   **update**
+                -   **coverage**
 
-            Run tests and update snapshots.
+                    Run tests and calculate code coverage.
 
-            -   `virmator test node update`
+                    -   Examples
+                        -   `virmator test node coverage`
+                    -   Configs
+                        -   configs/c8.config.json
+                    -   Deps
+                        -   [c8](https://npmjs.com/package/c8)
+                        -   [istanbul-smart-text-reporter](https://npmjs.com/package/istanbul-smart-text-reporter)
+
+                -   **update**
+
+                    Run tests and update snapshots.
+
+                    -   Examples
+                        -   `virmator test node update`
 
 ## Virmator Flags
 

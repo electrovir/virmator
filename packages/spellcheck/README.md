@@ -8,5 +8,10 @@ A default plugin for [virmator](https://www.npmjs.com/package/virmator).
 
     Checks spelling for all files using the cspell package. All arguments are passed directly to cspell.
 
-    -   `virmator spellcheck`
-    -   Check a specific file: `virmator spellcheck src/index.ts`
+    -   Examples
+        -   `virmator spellcheck`
+        -   Check a specific file: `virmator spellcheck src/index.ts`
+    -   Configs
+        -   cspell.config.cjs
+    -   Deps
+        -   [cspell](https://npmjs.com/package/cspell)

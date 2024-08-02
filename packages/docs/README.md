@@ -8,9 +8,19 @@ A default plugin for [virmator](https://www.npmjs.com/package/virmator).
 
     Generates documentation using the typedoc package and inserts code examples into README files using the markdown-code-example-inserter package.
 
-    -   `virmator docs`
-    -   **check**
+    -   Examples
+        -   `virmator docs`
+    -   Configs
+        -   configs/typedoc.config.ts
+    -   Deps
+        -   [markdown-code-example-inserter](https://npmjs.com/package/markdown-code-example-inserter)
+        -   [typedoc](https://npmjs.com/package/typedoc)
+        -   [esbuild](https://npmjs.com/package/esbuild)
+    -   Sub Commands
 
-        Checks that documentation is valid and passes all checks without generating documentation outputs.
+        -   **check**
 
-        -   `virmator docs check`
+            Checks that documentation is valid and passes all checks without generating documentation outputs.
+
+            -   Examples
+                -   `virmator docs check`

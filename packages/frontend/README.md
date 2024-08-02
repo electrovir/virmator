@@ -8,15 +8,25 @@ A default plugin for [virmator](https://www.npmjs.com/package/virmator).
 
     Runs a frontend dev server with Vite.
 
-    -   `virmator frontend`
-    -   **build**
+    -   Examples
+        -   `virmator frontend`
+    -   Configs
+        -   configs/vite.config.ts
+    -   Deps
+        -   [typescript](https://npmjs.com/package/typescript)
+        -   [vite](https://npmjs.com/package/vite)
+    -   Sub Commands
 
-        Builds a frontend for deployment using Vite (and Rollup).
+        -   **build**
 
-        -   `virmator frontend build`
+            Builds a frontend for deployment using Vite (and Rollup).
 
-    -   **preview**
+            -   Examples
+                -   `virmator frontend build`
 
-        Builds a frontend and previews that build in a local dev server.
+        -   **preview**
 
-        -   `virmator frontend preview`
+            Builds a frontend and previews that build in a local dev server.
+
+            -   Examples
+                -   `virmator frontend preview`
