@@ -1,0 +1,49 @@
+exports[`Lint > fixes an invalid project 1`] = `
+{
+  "logs": {
+    "stdout": "Copied eslint.config.mjs\\nInstalling eslint@9.8.0 @eslint/js@9.8.0 @stylistic/eslint-plugin@2.6.1 @stylistic/eslint-plugin-ts@2.6.1 @typescript-eslint/eslint-plugin@8.0.0 eslint-config-prettier@9.1.0 eslint-plugin-jsdoc@48.11.0 eslint-plugin-mocha@10.5.0 eslint-plugin-playwright@1.6.2 eslint-plugin-prettier@5.2.1 eslint-plugin-sonarjs@1.0.4 typescript-eslint@8.0.0...\\n> npx eslint --fix\\n\\npackages/lint/test-files/bad-repo/src/a.ts\\n  3:8   error  Async function 'doThing' has no 'await' expression  @typescript-eslint/require-await\\n  4:12  error  Forbidden non-null assertion                        @typescript-eslint/no-non-null-assertion\\n\\n✖ 2 problems (2 errors, 0 warnings)\\n",
+    "stderr": "lint failed."
+  },
+  "cwd": "packages/lint/test-files/bad-repo",
+  "contentsDiff": {
+    "package.json": "{\\n  \\"devDependencies\\": {\\n    \\"@eslint/js\\": \\"^9.8.0\\",\\n    \\"@stylistic/eslint-plugin\\": \\"^2.6.1\\",\\n    \\"@stylistic/eslint-plugin-ts\\": \\"^2.6.1\\",\\n    \\"@typescript-eslint/eslint-plugin\\": \\"^8.0.0\\",\\n    \\"eslint\\": \\"^9.8.0\\",\\n    \\"eslint-config-prettier\\": \\"^9.1.0\\",\\n    \\"eslint-plugin-jsdoc\\": \\"^48.11.0\\",\\n    \\"eslint-plugin-mocha\\": \\"^10.5.0\\",\\n    \\"eslint-plugin-playwright\\": \\"^1.6.2\\",\\n    \\"eslint-plugin-prettier\\": \\"^5.2.1\\",\\n    \\"eslint-plugin-sonarjs\\": \\"^1.0.4\\",\\n    \\"typescript-eslint\\": \\"^8.0.0\\"\\n  }\\n}\\n",
+    "src": {
+      "a.ts": "const something: undefined | number = undefined;\\n\\nexport async function doThing(): Promise<number> {\\n    return something!;\\n}\\n"
+    },
+    "eslint.config.mjs": "import {defineEslintConfig} from '@virmator/lint/configs/eslint.config.base.mjs';\\n\\nexport default defineEslintConfig(import.meta.dirname);\\n"
+  },
+  "error": {
+    "name": "VirmatorNoTraceError"
+  }
+}
+`;
+
+exports[`Lint > lints a valid project 1`] = `
+{
+  "logs": {
+    "stdout": "Copied eslint.config.mjs\\nInstalling eslint@9.8.0 @eslint/js@9.8.0 @stylistic/eslint-plugin@2.6.1 @stylistic/eslint-plugin-ts@2.6.1 @typescript-eslint/eslint-plugin@8.0.0 eslint-config-prettier@9.1.0 eslint-plugin-jsdoc@48.11.0 eslint-plugin-mocha@10.5.0 eslint-plugin-playwright@1.6.2 eslint-plugin-prettier@5.2.1 eslint-plugin-sonarjs@1.0.4 typescript-eslint@8.0.0...\\n> npx eslint\\nlint finished."
+  },
+  "cwd": "packages/lint/test-files/good-repo",
+  "contentsDiff": {
+    "package.json": "{\\n  \\"devDependencies\\": {\\n    \\"@eslint/js\\": \\"^9.8.0\\",\\n    \\"@stylistic/eslint-plugin\\": \\"^2.6.1\\",\\n    \\"@stylistic/eslint-plugin-ts\\": \\"^2.6.1\\",\\n    \\"@typescript-eslint/eslint-plugin\\": \\"^8.0.0\\",\\n    \\"eslint\\": \\"^9.8.0\\",\\n    \\"eslint-config-prettier\\": \\"^9.1.0\\",\\n    \\"eslint-plugin-jsdoc\\": \\"^48.11.0\\",\\n    \\"eslint-plugin-mocha\\": \\"^10.5.0\\",\\n    \\"eslint-plugin-playwright\\": \\"^1.6.2\\",\\n    \\"eslint-plugin-prettier\\": \\"^5.2.1\\",\\n    \\"eslint-plugin-sonarjs\\": \\"^1.0.4\\",\\n    \\"typescript-eslint\\": \\"^8.0.0\\"\\n  }\\n}\\n",
+    "eslint.config.mjs": "import {defineEslintConfig} from '@virmator/lint/configs/eslint.config.base.mjs';\\n\\nexport default defineEslintConfig(import.meta.dirname);\\n"
+  }
+}
+`;
+
+exports[`Lint > lints an invalid project 1`] = `
+{
+  "logs": {
+    "stdout": "Copied eslint.config.mjs\\nInstalling eslint@9.8.0 @eslint/js@9.8.0 @stylistic/eslint-plugin@2.6.1 @stylistic/eslint-plugin-ts@2.6.1 @typescript-eslint/eslint-plugin@8.0.0 eslint-config-prettier@9.1.0 eslint-plugin-jsdoc@48.11.0 eslint-plugin-mocha@10.5.0 eslint-plugin-playwright@1.6.2 eslint-plugin-prettier@5.2.1 eslint-plugin-sonarjs@1.0.4 typescript-eslint@8.0.0...\\n> npx eslint\\n\\npackages/lint/test-files/bad-repo/src/a.ts\\n  3:8   error  Async function 'doThing' has no 'await' expression                                 @typescript-eslint/require-await\\n  4:12  error  Forbidden non-null assertion                                                       @typescript-eslint/no-non-null-assertion\\n  4:12  error  This assertion is unnecessary since it does not change the type of the expression  @typescript-eslint/no-unnecessary-type-assertion\\n  4:12  error  Forbidden non-null assertion                                                       @typescript-eslint/no-non-null-assertion\\n  4:12  error  This assertion is unnecessary since it does not change the type of the expression  @typescript-eslint/no-unnecessary-type-assertion\\n  4:12  error  Forbidden extra non-null assertion                                                 @typescript-eslint/no-extra-non-null-assertion\\n  4:12  error  Forbidden non-null assertion                                                       @typescript-eslint/no-non-null-assertion\\n  4:12  error  Forbidden extra non-null assertion                                                 @typescript-eslint/no-extra-non-null-assertion\\n\\n✖ 8 problems (8 errors, 0 warnings)\\n  4 errors and 0 warnings potentially fixable with the \`--fix\` option.\\n",
+    "stderr": "lint failed."
+  },
+  "cwd": "packages/lint/test-files/bad-repo",
+  "contentsDiff": {
+    "package.json": "{\\n  \\"devDependencies\\": {\\n    \\"@eslint/js\\": \\"^9.8.0\\",\\n    \\"@stylistic/eslint-plugin\\": \\"^2.6.1\\",\\n    \\"@stylistic/eslint-plugin-ts\\": \\"^2.6.1\\",\\n    \\"@typescript-eslint/eslint-plugin\\": \\"^8.0.0\\",\\n    \\"eslint\\": \\"^9.8.0\\",\\n    \\"eslint-config-prettier\\": \\"^9.1.0\\",\\n    \\"eslint-plugin-jsdoc\\": \\"^48.11.0\\",\\n    \\"eslint-plugin-mocha\\": \\"^10.5.0\\",\\n    \\"eslint-plugin-playwright\\": \\"^1.6.2\\",\\n    \\"eslint-plugin-prettier\\": \\"^5.2.1\\",\\n    \\"eslint-plugin-sonarjs\\": \\"^1.0.4\\",\\n    \\"typescript-eslint\\": \\"^8.0.0\\"\\n  }\\n}\\n",
+    "eslint.config.mjs": "import {defineEslintConfig} from '@virmator/lint/configs/eslint.config.base.mjs';\\n\\nexport default defineEslintConfig(import.meta.dirname);\\n"
+  },
+  "error": {
+    "name": "VirmatorNoTraceError"
+  }
+}
+`;

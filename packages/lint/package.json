@@ -34,6 +34,20 @@
         "@augment-vir/common": "^29.3.0",
         "mri": "^1.2.0"
     },
+    "devDependencies": {
+        "@eslint/js": "^9.8.0",
+        "@stylistic/eslint-plugin": "^2.6.1",
+        "@stylistic/eslint-plugin-ts": "^2.6.1",
+        "@typescript-eslint/eslint-plugin": "^8.0.0",
+        "eslint": "^9.8.0",
+        "eslint-config-prettier": "^9.1.0",
+        "eslint-plugin-jsdoc": "^48.11.0",
+        "eslint-plugin-mocha": "^10.5.0",
+        "eslint-plugin-playwright": "^1.6.2",
+        "eslint-plugin-prettier": "^5.2.1",
+        "eslint-plugin-sonarjs": "^1.0.4",
+        "typescript-eslint": "^8.0.0"
+    },
     "publishConfig": {
         "access": "public"
     }

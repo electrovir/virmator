@@ -14,8 +14,9 @@
 
     Automatically compiles a mono-repo's sub packages in the correct order if called from a mono-repo root.
 
-    -   `virmator compile`
-    -   With tsc flags: `virmator compile --noEmit`
+    -   Examples
+        -   `virmator compile`
+        -   With tsc flags: `virmator compile --noEmit`
 
 ## Virmator Flags
 
@@ -23,3 +24,4 @@ All virmator flags are optional and typically not needed.
 
 -   **--no-configs**: Prevents command config files from being copied.
 -   **--no-deps**: Prevents command npm deps from being installed.
+-   **--help**: Print the help message.

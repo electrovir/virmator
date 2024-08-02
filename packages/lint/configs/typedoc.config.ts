@@ -8,7 +8,7 @@ const repoRoot = resolve(
     '..',
     '..',
 );
-const indexTsFile = join(repoRoot, 'src', 'compile.ts');
+const indexTsFile = join(repoRoot, 'src', 'lint.ts');
 
 export const typeDocConfig: Partial<TypeDocOptions> = {
     ...baseTypedocConfig,

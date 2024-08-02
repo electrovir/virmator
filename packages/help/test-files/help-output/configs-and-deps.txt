@@ -21,6 +21,10 @@
     -   Examples
         -   [36mvirmator compile[0m
         -   With tsc flags: [36mvirmator compile --noEmit[0m
+    -   Configs
+        -   path
+    -   Deps
+        -   [element-vir](https://npmjs.com/package/element-vir)
 
 [1m[36mVirmator Flags[0m
 

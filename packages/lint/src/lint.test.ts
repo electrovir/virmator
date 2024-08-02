@@ -1,41 +1,29 @@
-import {LogOutputType, runShellCommand} from '@augment-vir/node-js';
 import {testPlugin} from '@virmator/plugin-testing';
-import {join} from 'node:path';
+import {join, resolve} from 'node:path';
 import {describe, it, TestContext} from 'node:test';
-import {testFilesDir} from './file-paths.mock';
-import {virmatorCompilePlugin} from './lint';
+import {virmatorLintPlugin} from './lint';
 
-describe(virmatorCompilePlugin.name, () => {
-    async function testVirmatorCompilePlugin(
+const testFilesDir = resolve(import.meta.dirname, '..', 'test-files');
+
+describe(virmatorLintPlugin.name, () => {
+    async function testVirmatorLintPlugin(
         shouldPass: boolean,
         context: TestContext,
         cwd: string,
+        extraCommand = '',
     ) {
-        await testPlugin(shouldPass, context, virmatorCompilePlugin, 'compile', cwd, {
-            logTransform(logType, arg) {
-                /**
-                 * This log transform removes excessive TypeScript help logging so that test results
-                 * are stable.
-                 */
-                if (logType === LogOutputType.standard) {
-                    return arg.replace(/ Version.+/, '');
-                }
-                return arg;
-            },
-        });
+        await testPlugin(shouldPass, context, virmatorLintPlugin, `lint ${extraCommand}`, cwd);
     }
 
-    it('compiles a valid project', async (context) => {
-        await testVirmatorCompilePlugin(true, context, join(testFilesDir, 'pass-compile'));
+    it('lints a valid project', async (context) => {
+        await testVirmatorLintPlugin(true, context, join(testFilesDir, 'good-repo'));
     });
 
-    it('rejects an invalid project', async (context) => {
-        await testVirmatorCompilePlugin(false, context, join(testFilesDir, 'fail-compile'));
+    it('lints an invalid project', async (context) => {
+        await testVirmatorLintPlugin(false, context, join(testFilesDir, 'bad-repo'));
     });
 
-    it('works in a mono-repo', async (context) => {
-        const dir = join(testFilesDir, 'mono-repo');
-        await runShellCommand('npm i', {cwd: dir, rejectOnError: true});
-        await testVirmatorCompilePlugin(true, context, dir);
+    it('fixes an invalid project', async (context) => {
+        await testVirmatorLintPlugin(false, context, join(testFilesDir, 'bad-repo'), 'fix');
     });
 });

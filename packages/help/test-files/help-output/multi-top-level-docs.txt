@@ -16,8 +16,9 @@
 
     Actually this command does nothing.
 
-    -   Example 1: [36mvirmator example1[0m
-    -   [36mvirmator example1[0m
+    -   Examples
+        -   Example 1: [36mvirmator example1[0m
+        -   [36mvirmator example1[0m
 
 -   [1mexample2[22m[0m
 
@@ -25,8 +26,9 @@
 
     Actually this command does nothing.
 
-    -   Example 2: [36mvirmator example2[0m
-    -   [36mvirmator example2[0m
+    -   Examples
+        -   Example 2: [36mvirmator example2[0m
+        -   [36mvirmator example2[0m
 
 [1m[36mVirmator Flags[0m
 
@@ -34,3 +36,4 @@ All virmator flags are optional and typically not needed.
 
 -   [1m--no-configs[22m: Prevents command config files from being copied.
 -   [1m--no-deps[22m: Prevents command npm deps from being installed.
+-   [1m--help[22m: Print the help message.

@@ -6,5 +6,6 @@
 
     Automatically compiles a mono-repo's sub packages in the correct order if called from a mono-repo root.
 
-    -   `virmator compile`
-    -   With tsc flags: `virmator compile --noEmit`
+    -   Examples
+        -   `virmator compile`
+        -   With tsc flags: `virmator compile --noEmit`

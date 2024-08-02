@@ -74,7 +74,7 @@ exports[`Init > initializes a mono-package web package 1`] = `
 exports[`Init > initializes a mono-root node package 1`] = `
 {
   "logs": {
-    "stdout": "Copied .gitattributes\\nCopied .gitignore\\nCopied .nvmrc\\nCopied .prettierignore\\nCopied build-for-gh-pages.yml\\nCopied cspell.config.cjs\\nCopied dep-cruiser.config.cts\\nCopied LICENSE-CC0\\nCopied LICENSE-MIT\\nCopied ncu.config.ts\\nCopied package.json\\nCopied prettier.config.mjs\\nCopied tagged-release.yml\\nCopied tests.yml\\nCopied tsconfig.base.json\\ninit finished."
+    "stdout": "Copied .gitattributes\\nCopied .gitignore\\nCopied .nvmrc\\nCopied .prettierignore\\nCopied build-for-gh-pages.yml\\nCopied cspell.config.cjs\\nCopied dep-cruiser.config.cts\\nCopied eslint.config.mjs\\nCopied LICENSE-CC0\\nCopied LICENSE-MIT\\nCopied ncu.config.ts\\nCopied package.json\\nCopied prettier.config.mjs\\nCopied tagged-release.yml\\nCopied tests.yml\\nCopied tsconfig.base.json\\nCopied tsconfig.eslint.json\\ninit finished."
   },
   "cwd": "packages/virmator/test-files/mono-root",
   "contentsDiff": {
@@ -84,9 +84,11 @@ exports[`Init > initializes a mono-root node package 1`] = `
     "configs": {
       "dep-cruiser.config.cts": "import {generateDepCruiserConfig} from '@virmator/deps/configs/dep-cruiser.config.base';\\nimport type {IConfiguration} from 'dependency-cruiser';\\n\\nconst baseConfig = generateDepCruiserConfig({\\n    fileExceptions: {\\n        // enter file exceptions by rule name here\\n        'no-orphans': {\\n            from: [\\n                'src/index.ts',\\n            ],\\n        },\\n    },\\n    omitRules: [\\n        // enter rule names here to omit\\n    ],\\n});\\n\\nconst depCruiserConfig: IConfiguration = {\\n    ...baseConfig,\\n};\\n\\nmodule.exports = depCruiserConfig;\\n",
       "ncu.config.ts": "import {baseNcuConfig} from '@virmator/deps/configs/ncu.config.base';\\nimport {RunOptions} from 'npm-check-updates';\\n\\nexport const ncuConfig: RunOptions = {\\n    ...baseNcuConfig,\\n    // exclude these\\n    reject: [\\n        ...baseNcuConfig.reject,\\n    ],\\n    // include only these\\n    filter: [],\\n};\\n",
-      "tsconfig.base.json": "{\\n    \\"compilerOptions\\": {\\n        \\"composite\\": true\\n    },\\n    \\"extends\\": \\"@virmator/compile/configs/tsconfig.base.json\\"\\n}\\n"
+      "tsconfig.base.json": "{\\n    \\"compilerOptions\\": {\\n        \\"composite\\": true\\n    },\\n    \\"extends\\": \\"@virmator/compile/configs/tsconfig.base.json\\"\\n}\\n",
+      "tsconfig.eslint.json": "{\\n    \\"compilerOptions\\": {\\n        \\"rootDir\\": \\"..\\"\\n    },\\n    \\"extends\\": \\"./tsconfig.base.json\\",\\n    \\"include\\": [\\"../packages/**/*.ts\\"]\\n}\\n"
     },
     "cspell.config.cjs": "const {baseConfig} = require('@virmator/spellcheck/configs/cspell.config.base.cjs');\\n\\nmodule.exports = {\\n    ...baseConfig,\\n    ignorePaths: [\\n        ...baseConfig.ignorePaths,\\n    ],\\n    words: [\\n        ...baseConfig.words,\\n    ],\\n};\\n",
+    "eslint.config.mjs": "import {defineEslintConfig} from '@virmator/lint/configs/eslint.config.base.mjs';\\n\\nexport default defineEslintConfig(import.meta.dirname);\\n",
     "prettier.config.mjs": "import {basePrettierConfig} from '@virmator/format/configs/prettier.config.base.mjs';\\n\\n/**\\n * @typedef {import('prettier-plugin-multiline-arrays').MultilineArrayOptions} MultilineOptions\\n *\\n * @typedef {import('prettier').Options} PrettierOptions\\n * @type {PrettierOptions & MultilineOptions}\\n */\\nconst prettierConfig = {\\n    ...basePrettierConfig,\\n};\\n\\nexport default prettierConfig;\\n"
   }
 }
@@ -95,7 +97,7 @@ exports[`Init > initializes a mono-root node package 1`] = `
 exports[`Init > initializes a mono-root web package 1`] = `
 {
   "logs": {
-    "stdout": "Copied .gitattributes\\nCopied .gitignore\\nCopied .nvmrc\\nCopied .prettierignore\\nCopied build-for-gh-pages.yml\\nCopied cspell.config.cjs\\nCopied dep-cruiser.config.cts\\nCopied LICENSE-CC0\\nCopied LICENSE-MIT\\nCopied ncu.config.ts\\nCopied package.json\\nCopied prettier.config.mjs\\nCopied tagged-release.yml\\nCopied tests.yml\\nCopied tsconfig.base.json\\ninit finished."
+    "stdout": "Copied .gitattributes\\nCopied .gitignore\\nCopied .nvmrc\\nCopied .prettierignore\\nCopied build-for-gh-pages.yml\\nCopied cspell.config.cjs\\nCopied dep-cruiser.config.cts\\nCopied eslint.config.mjs\\nCopied LICENSE-CC0\\nCopied LICENSE-MIT\\nCopied ncu.config.ts\\nCopied package.json\\nCopied prettier.config.mjs\\nCopied tagged-release.yml\\nCopied tests.yml\\nCopied tsconfig.base.json\\nCopied tsconfig.eslint.json\\ninit finished."
   },
   "cwd": "packages/virmator/test-files/mono-root",
   "contentsDiff": {
@@ -105,9 +107,11 @@ exports[`Init > initializes a mono-root web package 1`] = `
     "configs": {
       "dep-cruiser.config.cts": "import {generateDepCruiserConfig} from '@virmator/deps/configs/dep-cruiser.config.base';\\nimport type {IConfiguration} from 'dependency-cruiser';\\n\\nconst baseConfig = generateDepCruiserConfig({\\n    fileExceptions: {\\n        // enter file exceptions by rule name here\\n        'no-orphans': {\\n            from: [\\n                'src/index.ts',\\n            ],\\n        },\\n    },\\n    omitRules: [\\n        // enter rule names here to omit\\n    ],\\n});\\n\\nconst depCruiserConfig: IConfiguration = {\\n    ...baseConfig,\\n};\\n\\nmodule.exports = depCruiserConfig;\\n",
       "ncu.config.ts": "import {baseNcuConfig} from '@virmator/deps/configs/ncu.config.base';\\nimport {RunOptions} from 'npm-check-updates';\\n\\nexport const ncuConfig: RunOptions = {\\n    ...baseNcuConfig,\\n    // exclude these\\n    reject: [\\n        ...baseNcuConfig.reject,\\n    ],\\n    // include only these\\n    filter: [],\\n};\\n",
-      "tsconfig.base.json": "{\\n    \\"compilerOptions\\": {\\n        \\"composite\\": true\\n    },\\n    \\"extends\\": \\"@virmator/compile/configs/tsconfig.base.json\\"\\n}\\n"
+      "tsconfig.base.json": "{\\n    \\"compilerOptions\\": {\\n        \\"composite\\": true\\n    },\\n    \\"extends\\": \\"@virmator/compile/configs/tsconfig.base.json\\"\\n}\\n",
+      "tsconfig.eslint.json": "{\\n    \\"compilerOptions\\": {\\n        \\"rootDir\\": \\"..\\"\\n    },\\n    \\"extends\\": \\"./tsconfig.base.json\\",\\n    \\"include\\": [\\"../packages/**/*.ts\\"]\\n}\\n"
     },
     "cspell.config.cjs": "const {baseConfig} = require('@virmator/spellcheck/configs/cspell.config.base.cjs');\\n\\nmodule.exports = {\\n    ...baseConfig,\\n    ignorePaths: [\\n        ...baseConfig.ignorePaths,\\n    ],\\n    words: [\\n        ...baseConfig.words,\\n    ],\\n};\\n",
+    "eslint.config.mjs": "import {defineEslintConfig} from '@virmator/lint/configs/eslint.config.base.mjs';\\n\\nexport default defineEslintConfig(import.meta.dirname);\\n",
     "prettier.config.mjs": "import {basePrettierConfig} from '@virmator/format/configs/prettier.config.base.mjs';\\n\\n/**\\n * @typedef {import('prettier-plugin-multiline-arrays').MultilineArrayOptions} MultilineOptions\\n *\\n * @typedef {import('prettier').Options} PrettierOptions\\n * @type {PrettierOptions & MultilineOptions}\\n */\\nconst prettierConfig = {\\n    ...basePrettierConfig,\\n};\\n\\nexport default prettierConfig;\\n"
   }
 }
@@ -116,7 +120,7 @@ exports[`Init > initializes a mono-root web package 1`] = `
 exports[`Init > initializes a top-level node package 1`] = `
 {
   "logs": {
-    "stdout": "Installing tsx@4.16.3...\\nCopied .gitattributes\\nCopied .gitignore\\nCopied .npmignore\\nCopied .nvmrc\\nCopied .prettierignore\\nCopied build-for-gh-pages.yml\\nCopied c8.config.json\\nCopied cspell.config.cjs\\nCopied dep-cruiser.config.cts\\nCopied LICENSE-CC0\\nCopied LICENSE-MIT\\nCopied ncu.config.ts\\nCopied package.json\\nCopied prettier.config.mjs\\nCopied tagged-release.yml\\nCopied tests.yml\\nCopied tsconfig.json\\nCopied typedoc.config.ts\\ninit finished."
+    "stdout": "Installing tsx@4.16.3...\\nCopied .gitattributes\\nCopied .gitignore\\nCopied .npmignore\\nCopied .nvmrc\\nCopied .prettierignore\\nCopied build-for-gh-pages.yml\\nCopied c8.config.json\\nCopied cspell.config.cjs\\nCopied dep-cruiser.config.cts\\nCopied eslint.config.mjs\\nCopied LICENSE-CC0\\nCopied LICENSE-MIT\\nCopied ncu.config.ts\\nCopied package.json\\nCopied prettier.config.mjs\\nCopied tagged-release.yml\\nCopied tests.yml\\nCopied tsconfig.json\\nCopied typedoc.config.ts\\ninit finished."
   },
   "cwd": "packages/virmator/test-files/top-package",
   "contentsDiff": {
@@ -131,6 +135,7 @@ exports[`Init > initializes a top-level node package 1`] = `
       "typedoc.config.ts": "import {baseTypedocConfig} from '@virmator/docs/configs/typedoc.config.base';\\nimport {join, resolve} from 'path';\\nimport type {TypeDocOptions} from 'typedoc';\\n\\nconst repoRoot = resolve(\\n    __dirname,\\n    /** Go up two directories because this gets compiled into \`node_modules/.virmator\` */\\n    '..',\\n    '..',\\n);\\nconst indexTsFile = join(repoRoot, 'src', 'index.ts');\\n\\nexport const typeDocConfig: Partial<TypeDocOptions> = {\\n    ...baseTypedocConfig,\\n    out: join(repoRoot, 'dist-docs'),\\n    entryPoints: [\\n        indexTsFile,\\n    ],\\n    intentionallyNotExported: [],\\n    defaultCategory: 'MISSING CATEGORY',\\n    categoryOrder: [\\n        'Main',\\n        'Internal',\\n    ],\\n};\\n"
     },
     "cspell.config.cjs": "const {baseConfig} = require('@virmator/spellcheck/configs/cspell.config.base.cjs');\\n\\nmodule.exports = {\\n    ...baseConfig,\\n    ignorePaths: [\\n        ...baseConfig.ignorePaths,\\n    ],\\n    words: [\\n        ...baseConfig.words,\\n    ],\\n};\\n",
+    "eslint.config.mjs": "import {defineEslintConfig} from '@virmator/lint/configs/eslint.config.base.mjs';\\n\\nexport default defineEslintConfig(import.meta.dirname);\\n",
     "prettier.config.mjs": "import {basePrettierConfig} from '@virmator/format/configs/prettier.config.base.mjs';\\n\\n/**\\n * @typedef {import('prettier-plugin-multiline-arrays').MultilineArrayOptions} MultilineOptions\\n *\\n * @typedef {import('prettier').Options} PrettierOptions\\n * @type {PrettierOptions & MultilineOptions}\\n */\\nconst prettierConfig = {\\n    ...basePrettierConfig,\\n};\\n\\nexport default prettierConfig;\\n",
     "tsconfig.json": "{\\n    \\"compilerOptions\\": {\\n        \\"outDir\\": \\"./dist/\\",\\n        \\"rootDir\\": \\"./src/\\"\\n    },\\n    \\"exclude\\": [\\n        \\"./configs/\\",\\n        \\"./coverage/\\",\\n        \\"./dist/\\",\\n        \\"./dist-*/\\",\\n        \\"./node_modules/\\",\\n        \\"./test-files/\\"\\n    ],\\n    \\"extends\\": \\"@virmator/compile/configs/tsconfig.base.json\\"\\n}\\n"
   }
@@ -140,7 +145,7 @@ exports[`Init > initializes a top-level node package 1`] = `
 exports[`Init > initializes a top-level web package 1`] = `
 {
   "logs": {
-    "stdout": "Installing element-vir@22.2.2...\\nCopied _redirects\\nCopied .gitattributes\\nCopied .gitignore\\nCopied .npmignore\\nCopied .nvmrc\\nCopied .prettierignore\\nCopied build-for-gh-pages.yml\\nCopied cspell.config.cjs\\nCopied dep-cruiser.config.cts\\nCopied index.css\\nCopied index.html\\nCopied LICENSE-CC0\\nCopied LICENSE-MIT\\nCopied ncu.config.ts\\nCopied package.json\\nCopied prettier.config.mjs\\nCopied tagged-release.yml\\nCopied tests.yml\\nCopied tsconfig.json\\nCopied typedoc.config.ts\\nCopied vir-app.element.ts\\nCopied vite.config.ts\\nCopied web-test-runner.config.mjs\\ninit finished."
+    "stdout": "Installing element-vir@22.2.2...\\nCopied _redirects\\nCopied .gitattributes\\nCopied .gitignore\\nCopied .npmignore\\nCopied .nvmrc\\nCopied .prettierignore\\nCopied build-for-gh-pages.yml\\nCopied cspell.config.cjs\\nCopied dep-cruiser.config.cts\\nCopied eslint.config.mjs\\nCopied index.css\\nCopied index.html\\nCopied LICENSE-CC0\\nCopied LICENSE-MIT\\nCopied ncu.config.ts\\nCopied package.json\\nCopied prettier.config.mjs\\nCopied tagged-release.yml\\nCopied tests.yml\\nCopied tsconfig.json\\nCopied typedoc.config.ts\\nCopied vir-app.element.ts\\nCopied vite.config.ts\\nCopied web-test-runner.config.mjs\\ninit finished."
   },
   "cwd": "packages/virmator/test-files/top-package",
   "contentsDiff": {
@@ -156,6 +161,7 @@ exports[`Init > initializes a top-level web package 1`] = `
       "web-test-runner.config.mjs": "import {getWebTestRunnerConfigWithCoveragePercent} from '@virmator/test/configs/web-test-runner.config.base.mjs';\\nimport {dirname} from 'path';\\nimport {fileURLToPath, pathToFileURL} from 'url';\\n\\nconst baseConfig = getWebTestRunnerConfigWithCoveragePercent({\\n    coveragePercent: 100,\\n    packageRootDirPath: dirname(dirname(fileURLToPath(import.meta.url))),\\n    extraScreenshotOptions: {},\\n});\\n\\n/** @type {import('@web/test-runner').TestRunnerConfig} */\\nconst webTestRunnerConfig = {\\n    ...baseConfig,\\n};\\n\\nexport default webTestRunnerConfig;\\n\\n/** Log the full config if this file file is run directly as a script, for debugging. */\\nif (import.meta.url === pathToFileURL(process.argv[1]).href) {\\n    console.info(JSON.stringify(webTestRunnerConfig, null, 4));\\n}\\n"
     },
     "cspell.config.cjs": "const {baseConfig} = require('@virmator/spellcheck/configs/cspell.config.base.cjs');\\n\\nmodule.exports = {\\n    ...baseConfig,\\n    ignorePaths: [\\n        ...baseConfig.ignorePaths,\\n    ],\\n    words: [\\n        ...baseConfig.words,\\n    ],\\n};\\n",
+    "eslint.config.mjs": "import {defineEslintConfig} from '@virmator/lint/configs/eslint.config.base.mjs';\\n\\nexport default defineEslintConfig(import.meta.dirname);\\n",
     "prettier.config.mjs": "import {basePrettierConfig} from '@virmator/format/configs/prettier.config.base.mjs';\\n\\n/**\\n * @typedef {import('prettier-plugin-multiline-arrays').MultilineArrayOptions} MultilineOptions\\n *\\n * @typedef {import('prettier').Options} PrettierOptions\\n * @type {PrettierOptions & MultilineOptions}\\n */\\nconst prettierConfig = {\\n    ...basePrettierConfig,\\n};\\n\\nexport default prettierConfig;\\n",
     "src": {
       "index.html": "<!doctype html>\\n<html>\\n    <head>\\n        <title>Page Name</title>\\n        <meta name=\\"viewport\\" content=\\"width=device-width, minimum-scale=1.0, maximum-scale=1.0\\" />\\n        <script type=\\"module\\" src=\\"./ui/elements/vir-app.element.ts\\"></script>\\n        <link rel=\\"stylesheet\\" type=\\"text/css\\" href=\\"/index.css\\" />\\n    </head>\\n    <body>\\n        <vir-app></vir-app>\\n    </body>\\n</html>\\n",

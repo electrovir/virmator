@@ -1,9 +1,10 @@
 import {addSuffix, wrapInTry} from '@augment-vir/common';
+import {PackageType, VirmatorEnv} from '@virmator/core';
 import assert from 'node:assert/strict';
 import {readFile, writeFile} from 'node:fs/promises';
 import {join, resolve} from 'node:path';
 import {describe, it} from 'node:test';
-import {VirmatorPluginCliCommands} from '../../core/src/plugin/plugin-init';
+import {NpmDepType, VirmatorPluginCliCommands} from '../../core/src/plugin/plugin-init';
 import {createFormatter, generateHelpMessage, HelpMessageSyntax, wrapLines} from './help-message';
 
 const helpPluginDir = resolve(import.meta.dirname, '..');
@@ -279,6 +280,57 @@ describe(generateHelpMessage.name, () => {
             ],
             'without-virmator',
             true,
+        );
+    });
+    it('includes configs and deps', async () => {
+        await testHelpMessage(
+            [
+                {
+                    compile: {
+                        doc: {
+                            sections: [
+                                `
+                                    Type checks TypeScript files and compiles them into JS outputs using the
+                                    TypeScript compiler. Any extra args are passed directly to tsc.
+                                `,
+                                `
+                                    Automatically compiles a mono-repo's sub packages in the correct order
+                                    if called from a mono-repo root.
+                                `,
+                            ],
+                            examples: [
+                                {
+                                    content: 'virmator compile',
+                                },
+                                {
+                                    title: 'With tsc flags',
+                                    content: 'virmator compile --noEmit',
+                                },
+                            ],
+                        },
+                        configFiles: {
+                            someConfig: {
+                                copyFromPath: 'path',
+                                copyToPath: 'path',
+                                env: [VirmatorEnv.Node],
+                                packageType: [
+                                    PackageType.MonoPackage,
+                                ],
+                                required: true,
+                                configFlags: ['--flag'],
+                            },
+                        },
+                        npmDeps: {
+                            'element-vir': {
+                                env: [VirmatorEnv.Node],
+                                packageType: [PackageType.MonoPackage],
+                                type: NpmDepType.Dev,
+                            },
+                        },
+                    },
+                },
+            ],
+            'configs-and-deps',
         );
     });
 });

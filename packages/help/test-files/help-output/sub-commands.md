@@ -14,24 +14,31 @@
 
     Actually this command does nothing.
 
-    -   Example 1: `virmator example1`
-    -   `virmator example1`
-    -   **nested1**
+    -   Examples
+        -   Example 1: `virmator example1`
+        -   `virmator example1`
+    -   Sub Commands
 
-        This command does stuff.
-
-        Actually this command does nothing.
-
-        -   Nested 1: `virmator example1 nested1`
-        -   `virmator example1 nested1`
-        -   **nested2**
+        -   **nested1**
 
             This command does stuff.
 
             Actually this command does nothing.
 
-            -   Nested 2: `virmator example1 nested1 nested2`
-            -   `virmator example1 nested1 nested2`
+            -   Examples
+                -   Nested 1: `virmator example1 nested1`
+                -   `virmator example1 nested1`
+            -   Sub Commands
+
+                -   **nested2**
+
+                    This command does stuff.
+
+                    Actually this command does nothing.
+
+                    -   Examples
+                        -   Nested 2: `virmator example1 nested1 nested2`
+                        -   `virmator example1 nested1 nested2`
 
 -   **example2**
 
@@ -39,8 +46,9 @@
 
     Actually this command does nothing.
 
-    -   Example 2: `virmator example2`
-    -   `virmator example2`
+    -   Examples
+        -   Example 2: `virmator example2`
+        -   `virmator example2`
 
 ## Virmator Flags
 
@@ -48,3 +56,4 @@ All virmator flags are optional and typically not needed.
 
 -   **--no-configs**: Prevents command config files from being copied.
 -   **--no-deps**: Prevents command npm deps from being installed.
+-   **--help**: Print the help message.

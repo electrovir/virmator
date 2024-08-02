@@ -5,6 +5,7 @@ import prettierEslintRecommended from 'eslint-plugin-prettier/recommended';
 import sonarJsEslint from 'eslint-plugin-sonarjs';
 import globals from 'globals';
 import {existsSync} from 'node:fs';
+import {join} from 'node:path';
 import tsEslint from 'typescript-eslint';
 
 const globalVars = {

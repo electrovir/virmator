@@ -14,8 +14,9 @@
 
     Actually this command does nothing.
 
-    -   Example 1: `virmator example`
-    -   `virmator example`
+    -   Examples
+        -   Example 1: `virmator example`
+        -   `virmator example`
 
 ## Virmator Flags
 
@@ -23,3 +24,4 @@ All virmator flags are optional and typically not needed.
 
 -   **--no-configs**: Prevents command config files from being copied.
 -   **--no-deps**: Prevents command npm deps from being installed.
+-   **--help**: Print the help message.

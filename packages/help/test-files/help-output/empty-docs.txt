@@ -18,3 +18,4 @@ All virmator flags are optional and typically not needed.
 
 -   [1m--no-configs[22m: Prevents command config files from being copied.
 -   [1m--no-deps[22m: Prevents command npm deps from being installed.
+-   [1m--help[22m: Print the help message.
