@@ -36,7 +36,7 @@ describe(virmatorTestPlugin.name, () => {
             false,
             context,
             join(testFilesDir, 'browser-tests'),
-            'web  --one-browser',
+            'web --one-browser',
         );
     });
     it('tests a specific web file', async (context) => {
@@ -44,7 +44,7 @@ describe(virmatorTestPlugin.name, () => {
             true,
             context,
             join(testFilesDir, 'browser-tests'),
-            'web src/good.test.ts  --one-browser',
+            'web src/good.test.ts --one-browser',
         );
     });
     it('tests web coverage', async (context) => {

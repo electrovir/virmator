@@ -50,10 +50,10 @@
         "@virmator/publish": "^13.0.0",
         "@virmator/spellcheck": "^13.0.0",
         "@virmator/test": "^13.0.0",
-        "tsx": "^4.16.2"
+        "tsx": "^4.16.5"
     },
     "devDependencies": {
-        "@types/node": "^20.14.12",
+        "@types/node": "^22.1.0",
         "c8": "^10.1.2",
         "istanbul-smart-text-reporter": "^1.1.4"
     }

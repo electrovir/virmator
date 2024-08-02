@@ -1,14 +1,11 @@
 exports[`Frontend > builds 1`] = `
 {
   "logs": {
-    "stdout": "Copied vite.config.ts\\nInstalling typescript@5.5.4 vite@5.3.4...\\nBuilding...\\n> NODE_OPTIONS=\\"--import tsx\\" npx vite build --config configs/vite.config.ts\\npublic dir: www-static\\nroot dir:   src\\nout dir:    dist\\nbase path:  /\\nvite v5.3.4 building for production...\\ntransforming...\\n✓ 3 modules transformed.\\nrendering chunks...\\ncomputing gzip size...\\n../dist/index.html                0.29 kB │ gzip: 0.21 kB\\n../dist/assets/index-mfONQ4jQ.js  0.80 kB │ gzip: 0.45 kB\\n✓ built\\nCreating 404 page...\\nfrontend finished."
+    "stdout": "Installing typescript@5.5.4 vite@5.3.5...\\nBuilding...\\n> NODE_OPTIONS=\\"--import tsx\\" npx vite build --config configs/vite.config.ts\\npublic dir: www-static\\nroot dir:   src\\nout dir:    dist\\nbase path:  /\\nvite v5.3.5 building for production...\\ntransforming...\\n✓ 3 modules transformed.\\nrendering chunks...\\ncomputing gzip size...\\n../dist/index.html                0.29 kB │ gzip: 0.21 kB\\n../dist/assets/index-mfONQ4jQ.js  0.80 kB │ gzip: 0.45 kB\\n✓ built\\nCreating 404 page...\\nfrontend finished."
   },
   "cwd": "packages/frontend/test-files/valid-frontend",
   "contentsDiff": {
-    "package.json": "{\\n    \\"type\\": \\"module\\",\\n    \\"devDependencies\\": {\\n        \\"typescript\\": \\"^5.5.4\\",\\n        \\"vite\\": \\"^5.3.4\\"\\n    }\\n}\\n",
-    "configs": {
-      "vite.config.ts": "import {defineConfig} from '@virmator/frontend/configs/vite.config.base.ts';\\nimport {resolve} from 'node:path';\\n\\nexport default defineConfig(\\n    {\\n        forGitHubPages: true,\\n        packageDirPath: resolve(import.meta.dirname, '..'),\\n    },\\n    (baseConfig) => {\\n        return {\\n            ...baseConfig,\\n        };\\n    },\\n);\\n"
-    },
+    "package.json": "{\\n    \\"type\\": \\"module\\",\\n    \\"devDependencies\\": {\\n        \\"typescript\\": \\"^5.5.4\\",\\n        \\"vite\\": \\"^5.3.5\\"\\n    }\\n}\\n",
     "dist": {
       "404.html": "<!doctype html>\\n<html>\\n    <head>\\n        <title>Test File</title>\\n        <meta name=\\"viewport\\" content=\\"width=device-width, minimum-scale=1.0, maximum-scale=1.0\\" />\\n      <script type=\\"module\\" crossorigin src=\\"/assets/index-mfONQ4jQ.js\\"></script>\\n    </head>\\n    <body></body>\\n</html>\\n",
       "assets": {

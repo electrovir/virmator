@@ -44,7 +44,7 @@
         "url-vir": "^1.5.0"
     },
     "devDependencies": {
-        "@types/node": "^22.0.0",
+        "@types/node": "^22.1.0",
         "@types/semver": "^7.5.8",
         "markdown-code-example-inserter": "^1.0.0",
         "type-fest": "^4.23.0",

@@ -151,7 +151,6 @@ const baseConfig = {
         'magadan',
         'mahe',
         'manaus',
-        'marvinpinto',
         'mcmurdo',
         'mdast',
         'mergeable',
