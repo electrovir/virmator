@@ -1,11 +1,17 @@
 import {VirmatorPluginConfigFile} from './plugin-configs';
 import {PackageType, VirmatorEnv} from './plugin-env';
 
-/** Documentation for a virmator plugin command. */
-export type PluginCommandDoc = Readonly<{
+/** A single doc entry for {@link PluginCommandDocs}. */
+export type PluginDocEntry = Readonly<{
     title?: string;
     content: string;
 }>;
+
+/** Documentation for a virmator plugin command. */
+export type PluginCommandDocs = {
+    sections: ReadonlyArray<string>;
+    examples: ReadonlyArray<PluginDocEntry>;
+};
 
 /** A list of npm deps. Used for virmator plugin command lists. */
 export type PluginNpmDeps = Record<
@@ -23,10 +29,7 @@ export type IndividualPluginCommand = {
      * Documentation for this command which will be printed to the terminal when `virmator help` is
      * used.
      */
-    doc: {
-        sections: ReadonlyArray<PluginCommandDoc>;
-        examples: ReadonlyArray<PluginCommandDoc>;
-    };
+    doc: PluginCommandDocs;
     configFiles?: Readonly<Record<string, VirmatorPluginConfigFile>>;
     subCommands?: VirmatorPluginCliCommands;
     /** Dependencies that this command needs to be installed in the host repo. */

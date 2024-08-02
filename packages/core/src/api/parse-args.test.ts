@@ -12,11 +12,9 @@ describe(calculateUsedCommands.name, () => {
                     deps: {
                         doc: {
                             sections: [
-                                {
-                                    content: `
-                                Various dependency commands. A sub command must be provided.
-                            `,
-                                },
+                                `
+                                    Various dependency commands. A sub command must be provided.
+                                `,
                             ],
                             examples: [
                                 {
@@ -31,11 +29,9 @@ describe(calculateUsedCommands.name, () => {
                             check: {
                                 doc: {
                                     sections: [
-                                        {
-                                            content: `
-                                        Checks that dependencies all pass your dependency cruiser config.
-                                    `,
-                                        },
+                                        `
+                                            Checks that dependencies all pass your dependency cruiser config.
+                                        `,
                                     ],
                                     examples: [
                                         {
@@ -124,12 +120,9 @@ describe(calculateUsedCommands.name, () => {
                             },
                         ],
                         sections: [
-                            {
-                                content:
-                                    '\n' +
-                                    '                                Various dependency commands. A sub command must be provided.\n' +
-                                    '                            ',
-                            },
+                            `
+                                    Various dependency commands. A sub command must be provided.
+                                `,
                         ],
                     },
                     subCommands: {
@@ -156,12 +149,9 @@ describe(calculateUsedCommands.name, () => {
                                     },
                                 ],
                                 sections: [
-                                    {
-                                        content:
-                                            '\n' +
-                                            '                                        Checks that dependencies all pass your dependency cruiser config.\n' +
-                                            '                                    ',
-                                    },
+                                    `
+                                            Checks that dependencies all pass your dependency cruiser config.
+                                        `,
                                 ],
                             },
                             npmDeps: {

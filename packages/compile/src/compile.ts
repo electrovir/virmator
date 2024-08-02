@@ -22,16 +22,14 @@ export const virmatorCompilePlugin = defineVirmatorPlugin(
             compile: {
                 doc: {
                     sections: [
-                        {
-                            content: `
-                                Type checks TypeScript files and compiles them into JS outputs using
-                                the TypeScript compiler.
-                                Any extra args are passed directly to tsc.
-                                
-                                Automatically compiles a mono-repo's sub packages in the correct order
-                                if called from a mono-repo root.
-                            `,
-                        },
+                        `
+                            Type checks TypeScript files and compiles them into JS outputs using the
+                            TypeScript compiler. Any extra args are passed directly to tsc.
+                        `,
+                        `
+                            Automatically compiles a mono-repo's sub packages in the correct order
+                            if called from a mono-repo root.
+                        `,
                     ],
                     examples: [
                         {

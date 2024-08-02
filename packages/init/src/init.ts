@@ -67,11 +67,9 @@ export const virmatorInitPlugin = defineVirmatorPlugin(
             init: {
                 doc: {
                     sections: [
-                        {
-                            content: `
-                                Init all default configs. Needs env and package type args.
-                            `,
-                        },
+                        `
+                            Init all default configs. Needs env and package type args.
+                        `,
                     ],
                     examples: [
                         {

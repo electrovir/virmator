@@ -1,16 +1,11 @@
 {
-    "name": "virmator",
+    "name": "@virmator/help",
     "version": "13.0.0",
-    "description": "Handle common package configs, commands, and dependencies.",
+    "description": "Default help plugin for virmator.",
     "keywords": [
-        "automation",
-        "config",
-        "configs",
-        "formatting",
-        "publish",
-        "spellcheck",
-        "template",
-        "vir"
+        "virmator",
+        "cli",
+        "help"
     ],
     "homepage": "https://github.com/electrovir/virmator",
     "bugs": {
@@ -29,7 +24,6 @@
     "main": "src/index.ts",
     "module": "src/index.ts",
     "types": "src/index.ts",
-    "bin": "src/cli.ts",
     "scripts": {
         "compile": "virmator compile",
         "test": "virmator test node",
@@ -37,22 +31,14 @@
         "test:update": "npm test update"
     },
     "dependencies": {
+        "@augment-vir/common": "^29.3.0",
         "@augment-vir/node-js": "^29.3.0",
-        "@virmator/compile": "^13.0.0",
-        "@virmator/core": "^13.0.0",
-        "@virmator/deps": "^13.0.0",
-        "@virmator/docs": "^13.0.0",
-        "@virmator/format": "^13.0.0",
-        "@virmator/frontend": "^13.0.0",
-        "@virmator/help": "^13.0.0",
-        "@virmator/init": "^13.0.0",
-        "@virmator/publish": "^13.0.0",
-        "@virmator/spellcheck": "^13.0.0",
-        "@virmator/test": "^13.0.0",
-        "tsx": "^4.16.2",
-        "type-fest": "^4.23.0"
+        "run-time-assertions": "^1.5.2"
     },
     "devDependencies": {
-        "@types/node": "^20.14.12"
+        "@types/node": "^22.0.2"
+    },
+    "publishConfig": {
+        "access": "public"
     }
 }

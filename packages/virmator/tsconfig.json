@@ -13,35 +13,15 @@
     ],
     "extends": "../../configs/tsconfig.base.json",
     "references": [
-        {
-            "path": "../core"
-        },
-        {
-            "path": "../spellcheck"
-        },
-        {
-            "path": "../frontend"
-        },
-        {
-            "path": "../deps"
-        },
-        {
-            "path": "../init"
-        },
-        {
-            "path": "../test"
-        },
-        {
-            "path": "../publish"
-        },
-        {
-            "path": "../docs"
-        },
-        {
-            "path": "../format"
-        },
-        {
-            "path": "../compile"
-        }
-    ]
+        {"path": "../compile"},
+        {"path": "../core"},
+        {"path": "../deps"},
+        {"path": "../docs"},
+        {"path": "../format"},
+        {"path": "../frontend"},
+        {"path": "../help"},
+        {"path": "../init"},
+        {"path": "../publish"},
+        {"path": "../spellcheck"},
+        {"path": "../test"}]
 }

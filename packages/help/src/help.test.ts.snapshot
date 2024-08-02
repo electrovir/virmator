@@ -1,0 +1,8 @@
+exports[`Help > prints help 1`] = `
+{
+  "logs": {
+    "stdout": "virmator usage\\n\\n[npx] virmator [--flags] command subCommand [...optional args]\\n\\n-   npx is needed when the command is run directly from the terminal (not called from\\n    within an npm script) unless virmator has been globally installed (which I recommend against).\\n-   [--flags] is any of the optional virmator flags. See Virmator Flags below.\\n-   command, subCommand, and [...optional args] depend on the specific\\n    command you're running. See Available Commands below.\\n\\nAvailable commands\\n\\n-   help\\n\\n    Prints help messages for all supported plugins/commands.\\n\\n    -   virmator help\\n\\nVirmator Flags\\n\\nAll virmator flags are optional and typically not needed.\\n\\n-   --no-configs: Prevents command config files from being copied.\\n-   --no-deps: Prevents command npm deps from being installed.\\nhelp finished."
+  },
+  "cwd": "packages/help/test-files/help-test"
+}
+`;

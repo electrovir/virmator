@@ -21,13 +21,12 @@ export const virmatorTestPlugin = defineVirmatorPlugin(
             test: {
                 doc: {
                     sections: [
-                        {
-                            content: `
-                                Runs tests. An environment is required.
-                                
-                                This cannot be run in a mono-repo root, it can only be run for mono-repo sub-packages or a top-level singular package.
-                            `,
-                        },
+                        `
+                            Runs tests. An environment is required.
+                        `,
+                        `
+                            This cannot be run in a mono-repo root, it can only be run for mono-repo sub-packages or a top-level singular package.
+                        `,
                     ],
                     examples: [
                         {
@@ -44,11 +43,9 @@ export const virmatorTestPlugin = defineVirmatorPlugin(
                     web: {
                         doc: {
                             sections: [
-                                {
-                                    content: `
-                                        Runs web tests in a browser using web-test-runner.
-                                    `,
-                                },
+                                `
+                                    Runs web tests in a browser using web-test-runner.
+                                `,
                             ],
                             examples: [
                                 {
@@ -60,9 +57,9 @@ export const virmatorTestPlugin = defineVirmatorPlugin(
                             coverage: {
                                 doc: {
                                     sections: [
-                                        {
-                                            content: 'Run tests and calculate code coverage.',
-                                        },
+                                        `
+                                            Run tests and calculate code coverage.
+                                        `,
                                     ],
                                     examples: [
                                         {
@@ -172,11 +169,9 @@ export const virmatorTestPlugin = defineVirmatorPlugin(
                     node: {
                         doc: {
                             sections: [
-                                {
-                                    content: `
-                                        Runs backend tests in Node.js using its built-in test runner.
-                                    `,
-                                },
+                                `
+                                    Runs backend tests in Node.js using its built-in test runner.
+                                `,
                             ],
                             examples: [
                                 {
@@ -188,9 +183,9 @@ export const virmatorTestPlugin = defineVirmatorPlugin(
                             coverage: {
                                 doc: {
                                     sections: [
-                                        {
-                                            content: 'Run tests and calculate code coverage.',
-                                        },
+                                        `
+                                            Run tests and calculate code coverage.
+                                        `,
                                     ],
                                     examples: [
                                         {
@@ -238,9 +233,9 @@ export const virmatorTestPlugin = defineVirmatorPlugin(
                             update: {
                                 doc: {
                                     sections: [
-                                        {
-                                            content: 'Run tests and update snapshots.',
-                                        },
+                                        `
+                                            Run tests and update snapshots.
+                                        `,
                                     ],
                                     examples: [
                                         {

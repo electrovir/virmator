@@ -139,10 +139,7 @@ describe(flattenConfigs.name, () => {
                     deps: {
                         doc: {
                             sections: [
-                                {
-                                    content:
-                                        '\n                                Various dependency commands. A sub command must be provided.\n                            ',
-                                },
+                                '',
                             ],
                             examples: [
                                 {
@@ -157,10 +154,7 @@ describe(flattenConfigs.name, () => {
                             check: {
                                 doc: {
                                     sections: [
-                                        {
-                                            content:
-                                                '\n                                        Checks that dependencies all pass your dependency cruiser config.\n                                    ',
-                                        },
+                                        '',
                                     ],
                                     examples: [
                                         {

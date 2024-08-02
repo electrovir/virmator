@@ -1,8 +1,8 @@
--   help command (built into /core?)
--   help command or flag that can be passed into any command (`virmator compile --help` or maybe `virmator --help compile` or **`virmator help compile`**)
 -   fill in README for each sub package
     -   do this with the help plugin
 -   add lint command
 -   only copy configs if the user hasn't specified a manual config path (like in spellcheck)
+-   add configs and deps to help message for each command
 
 -   update `markdown-code-example-inserter` package
+-   update `@augment-vir` packages

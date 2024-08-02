@@ -24,12 +24,10 @@ export const virmatorDocsPlugin = defineVirmatorPlugin(
             docs: {
                 doc: {
                     sections: [
-                        {
-                            content: `
-                                Generates documentation using the typedoc package and inserts code examples
-                                into README files using the markdown-code-example-inserter package.
-                            `,
-                        },
+                        `
+                            Generates documentation using the typedoc package and inserts code examples
+                            into README files using the markdown-code-example-inserter package.
+                        `,
                     ],
                     examples: [
                         {
@@ -41,12 +39,10 @@ export const virmatorDocsPlugin = defineVirmatorPlugin(
                     check: {
                         doc: {
                             sections: [
-                                {
-                                    content: `
-                                        Checks that documentation is valid and passes all checks without
-                                        generating documentation outputs.
-                                    `,
-                                },
+                                `
+                                    Checks that documentation is valid and passes all checks without
+                                    generating documentation outputs.
+                                `,
                             ],
                             examples: [
                                 {

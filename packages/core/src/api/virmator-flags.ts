@@ -1,10 +1,10 @@
 /** Supported virmator flags. */
 export const virmatorFlags = {
     '--no-configs': {
-        doc: 'Prevents config files from being copied for the following command.',
+        doc: 'Prevents command config files from being copied.',
     },
     '--no-deps': {
-        doc: 'Prevents npm deps from being installed for the following command.',
+        doc: 'Prevents command npm deps from being installed.',
     },
 } as const;
 

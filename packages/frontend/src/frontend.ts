@@ -14,11 +14,9 @@ export const virmatorFrontendPlugin = defineVirmatorPlugin(
             frontend: {
                 doc: {
                     sections: [
-                        {
-                            content: `
-                                Runs a frontend dev server with Vite.
-                            `,
-                        },
+                        `
+                            Runs a frontend dev server with Vite.
+                        `,
                     ],
                     examples: [
                         {
@@ -30,11 +28,9 @@ export const virmatorFrontendPlugin = defineVirmatorPlugin(
                     build: {
                         doc: {
                             sections: [
-                                {
-                                    content: `
-                                        Builds a frontend for deployment using Vite (and Rollup).
-                                    `,
-                                },
+                                `
+                                    Builds a frontend for deployment using Vite (and Rollup).
+                                `,
                             ],
                             examples: [
                                 {
@@ -46,11 +42,9 @@ export const virmatorFrontendPlugin = defineVirmatorPlugin(
                     preview: {
                         doc: {
                             sections: [
-                                {
-                                    content: `
-                                        Builds a frontend and previews that build in a local dev server.
-                                    `,
-                                },
+                                `
+                                    Builds a frontend and previews that build in a local dev server.
+                                `,
                             ],
                             examples: [
                                 {

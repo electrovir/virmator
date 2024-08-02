@@ -36,20 +36,18 @@ export const virmatorPublishPlugin = defineVirmatorPlugin(
             publish: {
                 doc: {
                     sections: [
-                        {
-                            content: `
-                                Publish a package or mono-repo to NPM with an optional test script and auto-incrementing package version.
-                            `,
-                        },
+                        `
+                            Publish a package or mono-repo to NPM with an optional test script and auto-incrementing package version.
+                        `,
                     ],
                     examples: [
                         {
-                            title: 'Run without tests',
-                            content: 'virmator publish',
+                            title: 'With tests',
+                            content: 'virmator publish npm test',
                         },
                         {
-                            title: 'Run with tests',
-                            content: 'virmator publish npm test',
+                            title: 'Without tests',
+                            content: 'virmator publish',
                         },
                     ],
                 },

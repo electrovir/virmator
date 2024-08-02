@@ -3,6 +3,7 @@ import {virmatorDepsPlugin} from '@virmator/deps';
 import {virmatorDocsPlugin} from '@virmator/docs';
 import {virmatorFormatPlugin} from '@virmator/format';
 import {virmatorFrontendPlugin} from '@virmator/frontend';
+import {virmatorHelpPlugin} from '@virmator/help';
 import {virmatorInitPlugin} from '@virmator/init';
 import {virmatorPublishPlugin} from '@virmator/publish';
 import {virmatorSpellcheckPlugin} from '@virmator/spellcheck';
@@ -15,6 +16,7 @@ export const defaultVirmatorPlugins = [
     virmatorDocsPlugin,
     virmatorFormatPlugin,
     virmatorFrontendPlugin,
+    virmatorHelpPlugin,
     virmatorInitPlugin,
     virmatorPublishPlugin,
     virmatorSpellcheckPlugin,

@@ -23,11 +23,9 @@ export const virmatorDepsPlugin = defineVirmatorPlugin(
             deps: {
                 doc: {
                     sections: [
-                        {
-                            content: `
-                                Various dependency commands. A sub-command must be provided.
-                            `,
-                        },
+                        `
+                            Various dependency commands. A sub-command must be provided.
+                        `,
                     ],
                     examples: [
                         {
@@ -48,13 +46,11 @@ export const virmatorDepsPlugin = defineVirmatorPlugin(
                     check: {
                         doc: {
                             sections: [
-                                {
-                                    content: `
-                                        Checks that import dependencies pass your dependency cruiser config.
-                                        The base configuration blocks typical import errors such as
-                                        circular dependencies and importing test files.
-                                    `,
-                                },
+                                `
+                                    Checks that import dependencies pass your dependency cruiser config.
+                                    The base configuration blocks typical import errors such as
+                                    circular dependencies and importing test files.
+                                `,
                             ],
                             examples: [
                                 {
@@ -106,13 +102,11 @@ export const virmatorDepsPlugin = defineVirmatorPlugin(
                     upgrade: {
                         doc: {
                             sections: [
-                                {
-                                    content: `
-                                        Upgrades dependencies using npm-check-update.
-                                        Does not automatically run 'npm i'.
-                                        It is recommended to run 'virmator deps regen' instead.
-                                    `,
-                                },
+                                `
+                                    Upgrades dependencies using npm-check-update.
+                                    Does not automatically run 'npm i'.
+                                    It is recommended to run 'virmator deps regen' instead.
+                                `,
                             ],
                             examples: [
                                 {
@@ -152,13 +146,11 @@ export const virmatorDepsPlugin = defineVirmatorPlugin(
                     regen: {
                         doc: {
                             sections: [
-                                {
-                                    content: `
-                                        Force regeneration of all all dependencies by deleting all
-                                        node_modules directories and package-lock.json and then
-                                        running 'npm i'.
-                                    `,
-                                },
+                                `
+                                    Force regeneration of all all dependencies by deleting all
+                                    node_modules directories and package-lock.json and then
+                                    running 'npm i'.
+                                `,
                             ],
                             examples: [
                                 {

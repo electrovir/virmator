@@ -13,12 +13,10 @@ export const virmatorSpellcheckPlugin = defineVirmatorPlugin(
             spellcheck: {
                 doc: {
                     sections: [
-                        {
-                            content: `
-                                Checks spelling for all files using the cspell package.
-                                All arguments are passed directly to cspell.
-                            `,
-                        },
+                        `
+                            Checks spelling for all files using the cspell package.
+                            All arguments are passed directly to cspell.
+                        `,
                     ],
                     examples: [
                         {

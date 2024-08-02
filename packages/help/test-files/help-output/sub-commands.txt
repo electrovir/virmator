@@ -1,0 +1,52 @@
+[36mvirmator usage[0m
+
+[36m[npx] virmator [--flags] command subCommand [...optional args][0m
+
+-   [36mnpx[0m is needed when the command is run directly from the terminal (not called from
+    within an npm script) unless virmator has been globally installed (which I recommend against).
+-   [36m[--flags][0m is any of the optional virmator flags. See Virmator Flags below.
+-   [36mcommand[0m, [36msubCommand[0m, and [36m[...optional args][0m depend on the specific
+    command you're running. See Available Commands below.
+
+[1m[36mAvailable commands[0m
+
+-   [1mexample1[22m[0m
+
+    This command does stuff.
+
+    Actually this command does nothing.
+
+    -   Example 1: [36mvirmator example1[0m
+    -   [36mvirmator example1[0m
+    -   [1mnested1[22m[0m
+
+        This command does stuff.
+
+        Actually this command does nothing.
+
+        -   Nested 1: [36mvirmator example1 nested1[0m
+        -   [36mvirmator example1 nested1[0m
+        -   [1mnested2[22m[0m
+
+            This command does stuff.
+
+            Actually this command does nothing.
+
+            -   Nested 2: [36mvirmator example1 nested1 nested2[0m
+            -   [36mvirmator example1 nested1 nested2[0m
+
+-   [1mexample2[22m[0m
+
+    This command does stuff.
+
+    Actually this command does nothing.
+
+    -   Example 2: [36mvirmator example2[0m
+    -   [36mvirmator example2[0m
+
+[1m[36mVirmator Flags[0m
+
+All virmator flags are optional and typically not needed.
+
+-   [1m--no-configs[22m: Prevents command config files from being copied.
+-   [1m--no-deps[22m: Prevents command npm deps from being installed.

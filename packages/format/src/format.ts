@@ -31,11 +31,9 @@ export const virmatorFormatPlugin = defineVirmatorPlugin(
             format: {
                 doc: {
                     sections: [
-                        {
-                            content: `
-                                Formats with prettier.
-                            `,
-                        },
+                        `
+                            Formats with prettier.
+                        `,
                     ],
                     examples: [
                         {
@@ -47,11 +45,9 @@ export const virmatorFormatPlugin = defineVirmatorPlugin(
                     check: {
                         doc: {
                             sections: [
-                                {
-                                    content: `
-                                        Checks that formatting is all valid.
-                                    `,
-                                },
+                                `
+                                    Checks that formatting is all valid.
+                                `,
                             ],
                             examples: [
                                 {
