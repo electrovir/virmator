@@ -22,6 +22,7 @@ export type VirmatorPluginConfigFile = {
      * config doesn't exist, unless `'--no-configs'` was set.
      */
     required: boolean;
+    configFlags?: string[];
 };
 
 /** {@link VirmatorPluginConfigFile} but with resolved paths too. */

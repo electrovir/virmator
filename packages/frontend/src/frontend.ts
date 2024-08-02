@@ -66,6 +66,7 @@ export const virmatorFrontendPlugin = defineVirmatorPlugin(
                             PackageType.MonoPackage,
                         ],
                         required: true,
+                        configFlags: ['--config'],
                     },
                 },
                 npmDeps: {

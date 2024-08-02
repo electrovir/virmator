@@ -21,6 +21,7 @@
         {"path": "../frontend"},
         {"path": "../help"},
         {"path": "../init"},
+        {"path": "../lint"},
         {"path": "../publish"},
         {"path": "../spellcheck"},
         {"path": "../test"}]

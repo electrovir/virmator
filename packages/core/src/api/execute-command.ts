@@ -261,10 +261,11 @@ export async function executeVirmatorCommand({
     const monoRepoPackages =
         packageType === PackageType.MonoRoot ? await getMonoRepoPackages(cwdPackagePath) : [];
     const outerMaxProcesses = params.concurrency || cpus().length - 1 || 1;
+    const filteredArgs = args.filteredCommandArgs.filter(isTruthy);
 
     const executorParams: VirmatorPluginExecutorParams<any> = {
         cliInputs: {
-            filteredArgs: args.filteredCommandArgs.filter(isTruthy),
+            filteredArgs,
             usedCommands: args.usedCommands,
         },
         log,
@@ -409,6 +410,7 @@ export async function executeVirmatorCommand({
             packageType,
             monoRepoPackages,
             log,
+            filteredArgs,
         );
     }
     if (!args.virmatorFlags['--no-deps']) {

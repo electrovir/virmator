@@ -1,0 +1,40 @@
+{
+    "name": "@virmator/lint",
+    "version": "13.0.0",
+    "description": "Default ESLint linting plugin for virmator.",
+    "keywords": [
+        "virmator",
+        "lint",
+        "eslint"
+    ],
+    "homepage": "https://github.com/electrovir/virmator",
+    "bugs": {
+        "url": "https://github.com/electrovir/virmator/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/electrovir/virmator.git"
+    },
+    "license": "(MIT or CC0 1.0)",
+    "author": {
+        "name": "electrovir",
+        "url": "https://github.com/electrovir"
+    },
+    "type": "module",
+    "main": "src/lint.ts",
+    "module": "src/lint.ts",
+    "types": "src/lint.ts",
+    "scripts": {
+        "compile": "virmator compile",
+        "test": "virmator test node",
+        "test:coverage": "npm test coverage",
+        "test:update": "npm test update"
+    },
+    "dependencies": {
+        "@augment-vir/common": "^29.3.0",
+        "mri": "^1.2.0"
+    },
+    "publishConfig": {
+        "access": "public"
+    }
+}

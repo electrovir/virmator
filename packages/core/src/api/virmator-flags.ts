@@ -6,6 +6,9 @@ export const virmatorFlags = {
     '--no-deps': {
         doc: 'Prevents command npm deps from being installed.',
     },
+    '--help': {
+        doc: 'Print the help message.',
+    },
 } as const;
 
 /** Each supported virmator flag mapped to a boolean. */

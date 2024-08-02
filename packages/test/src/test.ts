@@ -81,6 +81,7 @@ export const virmatorTestPlugin = defineVirmatorPlugin(
                                     PackageType.TopPackage,
                                 ],
                                 required: true,
+                                configFlags: ['--config'],
                             },
                         },
                         npmDeps: {

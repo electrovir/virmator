@@ -1,4 +1,4 @@
-import {awaitedBlockingMap, extractErrorMessage, MaybePromise} from '@augment-vir/common';
+import {awaitedForEach, extractErrorMessage, MaybePromise} from '@augment-vir/common';
 import {existsSync} from 'node:fs';
 import {mkdir, readFile, writeFile} from 'node:fs/promises';
 import {basename, dirname, join} from 'node:path';
@@ -48,13 +48,16 @@ export async function copyPluginConfigs(
     packageType: PackageType,
     monoRepoPackages: MonoRepoPackage[],
     log: PluginLogger,
+    filteredArgs: string[],
 ) {
     const configs = flattenConfigs(usedCommands, resolvedConfigs).sort((a, b) =>
         basename(a.copyToPath).localeCompare(basename(b.copyToPath)),
     );
 
-    await awaitedBlockingMap(Object.values(configs), async (config) => {
-        if (
+    await awaitedForEach(Object.values(configs), async (config) => {
+        if ((config.configFlags || []).some((configFlag) => filteredArgs.includes(configFlag))) {
+            return;
+        } else if (
             packageType === PackageType.MonoRoot &&
             !config.packageType.includes(PackageType.MonoRoot) &&
             config.packageType.includes(PackageType.MonoPackage)

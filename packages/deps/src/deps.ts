@@ -127,6 +127,7 @@ export const virmatorDepsPlugin = defineVirmatorPlugin(
                                     PackageType.TopPackage,
                                 ],
                                 required: true,
+                                configFlags: ['--config'],
                             },
                         },
                         npmDeps: {

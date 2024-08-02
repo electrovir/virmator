@@ -21,7 +21,6 @@ export type ParsedArgs = {
     commands: [string, ...string[]];
     filteredCommandArgs: string[];
     plugin: Readonly<VirmatorPlugin> | undefined;
-    topLevelCommands: ReadonlyArray<string>;
     usedCommands: UsedVirmatorPluginCommands;
 };
 
@@ -179,10 +178,15 @@ export function parseCliArgs({
             commands: [] as string[] as ParsedArgs['commands'],
             filteredCommandArgs: [],
             plugin: undefined,
-            topLevelCommands: Object.keys(mappedPlugins),
             usedCommands: {},
         },
     );
+
+    if (parsedArgs.virmatorFlags['--help']) {
+        parsedArgs.commands = ['help'];
+        parsedArgs.filteredCommandArgs = [];
+        parsedArgs.plugin = mappedPlugins['help']?.plugin;
+    }
 
     parsedArgs.usedCommands = calculateUsedCommands(
         parsedArgs.plugin?.cliCommands || {},

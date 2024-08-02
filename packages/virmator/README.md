@@ -98,6 +98,17 @@ A package for centralizing and automating mind-numbingly repetitive repo tasks a
     -   `virmator init web mono-repo`
     -   `virmator init node package`
 
+-   **lint**
+
+    Runs ESLint.
+
+    -   `virmator lint`
+    -   **fix**
+
+        Auto fix all fixable ESLint issues.
+
+        -   `virmator lint fix`
+
 -   **publish**
 
     Publish a package or mono-repo to NPM with an optional test script and auto-incrementing package version.
@@ -154,3 +165,4 @@ All virmator flags are optional and typically not needed.
 
 -   **--no-configs**: Prevents command config files from being copied.
 -   **--no-deps**: Prevents command npm deps from being installed.
+-   **--help**: Print the help message.

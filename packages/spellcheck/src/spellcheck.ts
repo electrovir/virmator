@@ -41,6 +41,10 @@ export const virmatorSpellcheckPlugin = defineVirmatorPlugin(
                             PackageType.TopPackage,
                         ],
                         required: true,
+                        configFlags: [
+                            '-c',
+                            '--config',
+                        ],
                     },
                 },
                 npmDeps: {
