@@ -1,0 +1,41 @@
+{
+    "name": "@virmator/scripts",
+    "version": "13.0.0",
+    "private": true,
+    "description": "Internal virmator scripts.",
+    "keywords": [
+        "virmator"
+    ],
+    "homepage": "https://github.com/electrovir/virmator",
+    "bugs": {
+        "url": "https://github.com/electrovir/virmator/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/electrovir/virmator.git"
+    },
+    "license": "(MIT or CC0 1.0)",
+    "author": {
+        "name": "electrovir",
+        "url": "https://github.com/electrovir"
+    },
+    "type": "module",
+    "scripts": {
+        "start": "tsx src/cli.ts",
+        "test": "tsx src/cli.ts check",
+        "test:coverage": "npm test",
+        "test:update": "npm test"
+    },
+    "dependencies": {
+        "@augment-vir/common": "^29.3.0",
+        "@augment-vir/node-js": "^29.3.0",
+        "mri": "^1.2.0",
+        "virmator": "*"
+    },
+    "devDependencies": {
+        "@types/node": "^22.0.2"
+    },
+    "publishConfig": {
+        "access": "public"
+    }
+}

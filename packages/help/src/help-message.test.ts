@@ -16,6 +16,7 @@ describe(generateHelpMessage.name, () => {
     async function testHelpMessage(
         plugins: ReadonlyArray<Readonly<VirmatorPluginCliCommands>>,
         name: string,
+        hideVirmatorExplanations = false,
     ) {
         const outputMarkdownPath = join(outputDir, addSuffix({value: name, suffix: '.md'}));
         const outputCliPath = join(outputDir, addSuffix({value: name, suffix: '.txt'}));
@@ -28,8 +29,16 @@ describe(generateHelpMessage.name, () => {
             {fallbackValue: ''},
         );
 
-        const newMarkdown = generateHelpMessage(plugins, HelpMessageSyntax.Markdown);
-        const newCli = generateHelpMessage(plugins, HelpMessageSyntax.Cli);
+        const newMarkdown = generateHelpMessage(
+            plugins,
+            HelpMessageSyntax.Markdown,
+            hideVirmatorExplanations,
+        );
+        const newCli = generateHelpMessage(
+            plugins,
+            HelpMessageSyntax.Cli,
+            hideVirmatorExplanations,
+        );
 
         await writeFile(outputMarkdownPath, newMarkdown);
         await writeFile(outputCliPath, newCli);
@@ -205,6 +214,71 @@ describe(generateHelpMessage.name, () => {
                 },
             ],
             'sub-commands',
+        );
+    });
+    it('formats docs from the compile plugin correctly', async () => {
+        await testHelpMessage(
+            [
+                {
+                    compile: {
+                        doc: {
+                            sections: [
+                                `
+                            Type checks TypeScript files and compiles them into JS outputs using the
+                            TypeScript compiler. Any extra args are passed directly to tsc.
+                        `,
+                                `
+                            Automatically compiles a mono-repo's sub packages in the correct order
+                            if called from a mono-repo root.
+                        `,
+                            ],
+                            examples: [
+                                {
+                                    content: 'virmator compile',
+                                },
+                                {
+                                    title: 'With tsc flags',
+                                    content: 'virmator compile --noEmit',
+                                },
+                            ],
+                        },
+                    },
+                },
+            ],
+            'compile-plugin',
+        );
+    });
+    it('can ignore virmator intro message', async () => {
+        await testHelpMessage(
+            [
+                {
+                    compile: {
+                        doc: {
+                            sections: [
+                                `
+                                    Type checks TypeScript files and compiles them into JS outputs using the
+                                    TypeScript compiler. Any extra args are passed directly to tsc.
+                                `,
+                                `
+                                    Automatically compiles a mono-repo's sub packages in the correct order
+                                    if called from a mono-repo root.
+                                `,
+                            ],
+                            examples: [
+                                {
+                                    content: 'virmator compile',
+                                },
+                                {
+                                    title: 'With tsc flags',
+                                    content: 'virmator compile --noEmit',
+                                },
+                            ],
+                        },
+                    },
+                },
+            ],
+            'without-virmator',
+            true,
         );
     });
 });

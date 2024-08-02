@@ -32,11 +32,13 @@ function flattenCommands(
 export function generateHelpMessageFromPlugins(
     plugins: ReadonlyArray<Readonly<Pick<VirmatorPlugin, 'cliCommands'>>>,
     syntax: HelpMessageSyntax,
+    hideVirmatorExplanations = false,
     cliWrapIfMoreThanThisManyColumns = 100,
 ) {
     return generateHelpMessage(
         plugins.map((plugin) => plugin.cliCommands),
         syntax,
+        hideVirmatorExplanations,
         cliWrapIfMoreThanThisManyColumns,
     );
 }
@@ -48,6 +50,7 @@ export function generateHelpMessageFromPlugins(
 export function generateHelpMessage(
     cliCommands: ReadonlyArray<Readonly<VirmatorPluginCliCommands>>,
     syntax: HelpMessageSyntax,
+    hideVirmatorExplanations = false,
     cliWrapIfMoreThanThisManyColumns = 100,
 ) {
     const allCommands = flattenCommands(cliCommands);
@@ -67,7 +70,12 @@ export function generateHelpMessage(
         )
         .join('\n');
 
-    const helpMessage = combineHelpMessage(commandsMessage.trim(), format).trim() + '\n';
+    const commandsText =
+        `${format.h2}Available commands${format.reset}${format.newLine}${commandsMessage}`.trim();
+
+    const helpMessage = hideVirmatorExplanations
+        ? commandsText + '\n'
+        : combineHelpMessage(commandsText, format).trim() + '\n';
 
     return syntax === HelpMessageSyntax.Cli
         ? wrapLines(helpMessage, cliWrapIfMoreThanThisManyColumns, format)
@@ -161,12 +169,14 @@ function commandToHelpString(
     const title = `${indent(indentCount, format)}${format.bullet}${bold(commandName, format)}${format.reset}`;
 
     const description = commandDocToString(command.doc, format, indentCount);
-    const subCommandDescriptions = getObjectTypedEntries(command.subCommands || {}).map(
-        ([
-            subCommandName,
-            subCommand,
-        ]) => commandToHelpString(subCommandName, subCommand, format, indentCount + 1),
-    );
+    const subCommandDescriptions = getObjectTypedEntries(command.subCommands || {})
+        .map(
+            ([
+                subCommandName,
+                subCommand,
+            ]) => commandToHelpString(subCommandName, subCommand, format, indentCount + 1),
+        )
+        .join('\n');
 
     return `${title}\n\n${description}\n${subCommandDescriptions}`;
 }
@@ -182,7 +192,8 @@ function docEntryToString(
     format: Formatter,
 ): string {
     const title = entry.title ? `${entry.title}: ` : '';
-    const content = useBullets ? code(collapseWhiteSpace(entry.content), format) : entry.content;
+    const trimmedEntry = collapseWhiteSpace(entry.content);
+    const content = useBullets ? code(trimmedEntry, format) : trimmedEntry;
 
     return `${indent(indentCount + 1, format)}${useBullets ? format.bullet : ''}${title}${content}`;
 }
@@ -213,7 +224,7 @@ ${format.bullet}${code(
         '[--flags]',
         format,
     )} is any of the optional virmator flags. See Virmator Flags below.
-${format.bullet}${code('command', format)}, ${code('subCommand', format)}, and ${code('[...optional args]', format)} depend on the specific command you're running. See Available Commands below.${format.newLine}${format.h2}Available commands${format.reset}${format.newLine}${commandsText}${format.newLine}${format.h2}Virmator Flags${format.reset}${format.newLine}All virmator flags are optional and typically not needed.${format.newLine}${flagsText}\n`;
+${format.bullet}${code('command', format)}, ${code('subCommand', format)}, and ${code('[...optional args]', format)} depend on the specific command you're running. See Available Commands below.${format.newLine}${commandsText}${format.newLine}${format.h2}Virmator Flags${format.reset}${format.newLine}All virmator flags are optional and typically not needed.${format.newLine}${flagsText}`;
 }
 
 function getIndent(line: string, format: Formatter): string {

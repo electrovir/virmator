@@ -1,7 +1,3 @@
-# @virmator/compile
-
-A default plugin for [virmator](https://www.npmjs.com/package/virmator).
-
 ## Available commands
 
 -   **compile**
