@@ -53,15 +53,13 @@ export async function readAllDirContents(
         }),
     );
 
-    const mappedFileContents = fileNames.reduce((accum: DirContents, fileName, index) => {
+    return fileNames.reduce((accum: DirContents, fileName, index) => {
         if (allFileContents[index] != undefined) {
             const fileContents = allFileContents[index];
             accum[fileName] = fileContents;
         }
         return accum;
     }, {});
-
-    return mappedFileContents;
 }
 
 /** Deletes and entire directory and resets it to the given contents. */

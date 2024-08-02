@@ -1,4 +1,4 @@
-import {b} from '../valid-deps/b';
+import {b} from './b';
 
 export function a() {
     return 5;

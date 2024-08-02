@@ -43,6 +43,7 @@
         "c8": "^10.1.2",
         "concurrently": "^8.2.2",
         "cspell": "^8.12.1",
+        "istanbul-smart-text-reporter": "^1.1.4",
         "tsx": "^4.16.2"
     },
     "publishConfig": {

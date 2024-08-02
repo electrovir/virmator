@@ -21,7 +21,7 @@ export const virmatorHelpPlugin = defineVirmatorPlugin(
             },
         },
     },
-    async ({virmator: {allPlugins}, log}) => {
+    ({virmator: {allPlugins}, log}) => {
         log.plain(generateHelpMessageFromPlugins(allPlugins, HelpMessageSyntax.Cli));
     },
 );

@@ -1,5 +1,5 @@
-import {MaybePromise} from '@augment-vir/common';
-import {unlink} from 'node:fs/promises';
+import {MaybePromise, wrapInTry} from '@augment-vir/common';
+import {rm} from 'node:fs/promises';
 import {basename, join} from 'node:path';
 import {findClosestNodeModulesDir} from '../augments/index';
 
@@ -22,9 +22,7 @@ export async function withImportedTsFile<T>(
 
         return await callback(loadedConfig);
     } finally {
-        try {
-            await unlink(compiledPath);
-        } catch (error) {}
+        await wrapInTry(() => rm(compiledPath, {force: true}));
     }
 }
 
@@ -45,9 +43,7 @@ export async function withCompiledTsFile<T>(
     try {
         return await callback(compiledPath);
     } finally {
-        try {
-            await unlink(compiledPath);
-        } catch (error) {}
+        await wrapInTry(() => rm(compiledPath, {force: true}));
     }
 }
 

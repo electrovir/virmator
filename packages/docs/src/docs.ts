@@ -234,7 +234,7 @@ async function runTypedoc(
         log.plain(app.toString());
         return true;
     } else if (app.options.getValue('help')) {
-        log.plain(app.options.getHelp);
+        log.plain(app.options.getHelp(app.i18n));
         return true;
     } else if (app.options.getValue('showConfig')) {
         log.plain(app.options.getRawValues());
@@ -251,9 +251,7 @@ async function runTypedoc(
 
     const project = await app.convert();
 
-    if (!project) {
-        return false;
-    } else if (app.options.getValue('treatWarningsAsErrors') && app.logger.hasWarnings()) {
+    if (!project || (app.options.getValue('treatWarningsAsErrors') && app.logger.hasWarnings())) {
         return false;
     }
     const preValidationWarnCount = app.logger.warningCount;
@@ -276,9 +274,10 @@ async function runTypedoc(
         if (json) {
             await app.generateJson(project, json);
         }
-        if (app.logger.hasErrors()) {
-            return false;
-        } else if (app.options.getValue('treatWarningsAsErrors') && app.logger.hasWarnings()) {
+        if (
+            app.logger.hasErrors() ||
+            (app.options.getValue('treatWarningsAsErrors') && app.logger.hasWarnings())
+        ) {
             return false;
         }
     }

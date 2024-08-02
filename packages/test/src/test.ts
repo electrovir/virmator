@@ -363,7 +363,7 @@ async function createTestThatImportsAllFilesForCoverage(
     cwd: string,
     allFilesTestFilePath: string,
 ) {
-    const coverageInclude = webTestRunnerConfig?.coverageConfig?.include;
+    const coverageInclude = webTestRunnerConfig.coverageConfig?.include;
     const filesToIncludeInCoverage = coverageInclude
         ? Array.isArray(coverageInclude)
             ? coverageInclude
@@ -371,7 +371,7 @@ async function createTestThatImportsAllFilesForCoverage(
         : [];
 
     const ignoreList = [
-        ...(webTestRunnerConfig?.coverageConfig?.exclude || []),
+        ...(webTestRunnerConfig.coverageConfig?.exclude || []),
         allFilesTestFilePath,
     ];
 

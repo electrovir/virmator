@@ -20,5 +20,6 @@ export type TerminalColor = ArrayElement<typeof terminalColors>;
 
 /** Gets a supported virmator terminal color, with support for overflowing indexes. */
 export function getTerminalColor(index: number): TerminalColor {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     return terminalColors[index % terminalColors.length]!;
 }

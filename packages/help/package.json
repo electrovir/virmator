@@ -36,7 +36,9 @@
         "run-time-assertions": "^1.5.2"
     },
     "devDependencies": {
-        "@types/node": "^22.0.2"
+        "@types/node": "^22.0.2",
+        "c8": "^10.1.2",
+        "istanbul-smart-text-reporter": "^1.1.4"
     },
     "publishConfig": {
         "access": "public"

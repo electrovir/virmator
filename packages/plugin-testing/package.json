@@ -39,6 +39,8 @@
     },
     "devDependencies": {
         "@types/node": "^20.14.12",
+        "c8": "^10.1.2",
+        "istanbul-smart-text-reporter": "^1.1.4",
         "tsx": "^4.16.2",
         "typescript": "^5.5.4"
     },

@@ -21,6 +21,7 @@ import {
 } from '@virmator/core';
 import {readFile, writeFile} from 'node:fs/promises';
 import {join, relative, resolve} from 'node:path';
+import {assertDefined} from 'run-time-assertions';
 import semver, {SemVer} from 'semver';
 import simpleGit, {SimpleGit} from 'simple-git';
 import {PackageJson, SetRequired} from 'type-fest';
@@ -234,7 +235,9 @@ export const virmatorPublishPlugin = defineVirmatorPlugin(
 );
 
 async function updateGit(packageDirPath: string): Promise<void> {
-    const newVersion: string = (await readPackageJson(packageDirPath)).version!;
+    const newVersion: string | undefined = (await readPackageJson(packageDirPath)).version;
+
+    assertDefined(newVersion);
 
     if (await doChangesExist(packageDirPath)) {
         await runShellCommand(`git commit -a --amend --no-edit`, {
@@ -302,7 +305,7 @@ async function getGitCommitVersion(decrement: number, git: Readonly<SimpleGit>) 
     ] = output.split(gitCommitFormatDelimiter);
 
     const tags = maybeTag
-        ? Array.from(maybeTag.matchAll(/tag: ([^\),]+)(?:\)|,)/g))
+        ? Array.from(maybeTag.matchAll(/tag: ([^),]+)(?:\)|,)/g))
               .map((entry) => entry[1])
               .filter(isTruthy)
         : [];
@@ -355,7 +358,7 @@ async function determineNextVersion(git: SimpleGit): Promise<string> {
         return latestVersion.inc('major').raw;
     } else if (changeMarkers[ChangeMarker.Minor]) {
         return latestVersion.inc('minor').raw;
-    } else if (changeMarkers[ChangeMarker.Minor]) {
+    } else if (changeMarkers[ChangeMarker.Patch]) {
         return latestVersion.inc('patch').raw;
     } else {
         throw new Error('No change markers fround since last tagged version.');

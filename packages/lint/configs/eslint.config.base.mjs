@@ -35,8 +35,9 @@ export function defineEslintConfig(repoDir) {
                 '*.sql',
                 '*.yml',
                 '**/configs/',
-                'cspell.config.cjs',
+                '**/coverage/',
                 '**/dist/',
+                'cspell.config.cjs',
                 'package-lock.json',
             ],
         },
@@ -58,19 +59,44 @@ export function defineEslintConfig(repoDir) {
                 '@jsdoc': jsdoc,
             },
             rules: {
-                'prettier/prettier': 'off',
-                '@jsdoc/no-undefined-types': 'error',
                 '@typescript-eslint/no-dynamic-delete': 'off',
-                '@typescript-eslint/no-unused-vars': 'error',
+                '@typescript-eslint/no-explicit-any': 'off',
+                '@typescript-eslint/no-invalid-void-type': 'off',
+                '@typescript-eslint/no-unnecessary-type-parameters': 'off',
+                '@typescript-eslint/no-unsafe-argument': 'off',
                 '@typescript-eslint/no-unsafe-assignment': 'off',
+                '@typescript-eslint/no-unsafe-call': 'off',
+                '@typescript-eslint/no-unsafe-enum-comparison': 'off',
+                '@typescript-eslint/no-unsafe-member-access': 'off',
+                'prettier/prettier': 'off',
+                'sonarjs/no-duplicate-string': 'off',
+
+                '@jsdoc/no-undefined-types': 'error',
                 '@typescript-eslint/await-thenable': 'error',
+                '@typescript-eslint/no-unused-vars': 'error',
+
+                '@typescript-eslint/no-floating-promises': [
+                    'error',
+                    {
+                        allowForKnownSafeCalls: [
+                            {
+                                from: 'package',
+                                package: 'node:test',
+                                name: [
+                                    'describe',
+                                    'it',
+                                ],
+                            },
+                        ],
+                        checkThenables: true,
+                    },
+                ],
                 '@typescript-eslint/no-confusing-void-expression': [
                     'error',
                     {
                         ignoreArrowShorthand: true,
                     },
                 ],
-                'sonarjs/no-duplicate-string': 'off',
                 '@stylistic/padding-line-between-statements': [
                     'error',
                     /** Require new lines between imports and everything else. */
@@ -92,7 +118,6 @@ export function defineEslintConfig(repoDir) {
                         allowNumber: true,
                     },
                 ],
-                '@typescript-eslint/no-unsafe-enum-comparison': 'off',
                 'no-console': [
                     'error',
                     {

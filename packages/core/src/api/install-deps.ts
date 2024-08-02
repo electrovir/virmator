@@ -133,7 +133,7 @@ function combineDeps(packageJson: Readonly<PackageJson>) {
 }
 
 function flattenDeps(usedCommands: Readonly<UsedVirmatorPluginCommands>): PluginNpmDeps {
-    return Object.values(usedCommands).reduce((accum, usedCommand) => {
+    return Object.values(usedCommands).reduce((accum: PluginNpmDeps, usedCommand) => {
         if (!usedCommand) {
             return accum;
         }
@@ -142,9 +142,9 @@ function flattenDeps(usedCommands: Readonly<UsedVirmatorPluginCommands>): Plugin
 
         if (Object.keys(usedCommand.subCommands).length) {
             const subDeps = flattenDeps(usedCommand.subCommands);
-            Object.assign(accum, usedCommand.npmDeps);
+            Object.assign(accum, subDeps);
         }
 
         return accum;
-    }, {} as PluginNpmDeps);
+    }, {});
 }

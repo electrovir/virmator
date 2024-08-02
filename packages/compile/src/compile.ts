@@ -106,7 +106,7 @@ export const virmatorCompilePlugin = defineVirmatorPlugin(
     },
     async (params) => {
         const {
-            package: {packageType, cwdPackagePath},
+            package: {packageType},
             log,
             runShellCommand,
             runPerPackage,

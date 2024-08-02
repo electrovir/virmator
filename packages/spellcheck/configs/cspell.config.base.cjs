@@ -253,6 +253,7 @@ const baseConfig = {
         'tabindex',
         'tablist',
         'tel_aviv',
+        'thenables',
         'thingie',
         'threejs',
         'tiktok',

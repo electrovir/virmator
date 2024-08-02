@@ -8,6 +8,10 @@ const __dirname = dirname(__filename);
 export default [
     ...defineEslintConfig(__dirname),
     {
-        ignores: [],
+        ignores: [
+            'packages/lint/test-files/bad-repo/',
+            'test-files/',
+            'packages/spellcheck/test-files/custom-config/custom-cspell.config.cjs',
+        ],
     },
 ];

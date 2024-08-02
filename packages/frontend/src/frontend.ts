@@ -155,7 +155,7 @@ export const virmatorFrontendPlugin = defineVirmatorPlugin(
             await cp(indexPath, dist404Path);
 
             /** Run preview. */
-            if (usedCommands.frontend?.subCommands.preview) {
+            if (usedCommands.frontend.subCommands.preview) {
                 const previewCommand = [
                     ...baseViteCommands,
                     'preview',

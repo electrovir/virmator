@@ -16,7 +16,7 @@ async function cli() {
     }
 }
 
-cli().catch((error) => {
+cli().catch((error: unknown) => {
     log.error(extractErrorMessage(error));
     process.exit(1);
 });

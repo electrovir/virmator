@@ -171,7 +171,6 @@ export const virmatorDepsPlugin = defineVirmatorPlugin(
         log,
         runPerPackage,
         runShellCommand,
-        cwd,
     }) => {
         if (usedCommands.deps?.subCommands.check) {
             const args = mri(filteredArgs);

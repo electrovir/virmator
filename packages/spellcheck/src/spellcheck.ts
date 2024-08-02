@@ -73,7 +73,7 @@ export const virmatorSpellcheckPlugin = defineVirmatorPlugin(
         const configPath = isRunTimeType(args.config, 'string')
             ? args.config
             : relative(cwd, join(cwdPackagePath, configs.spellcheck.configs.cspell.copyToPath));
-        const filesArg = args.file ? '' : args._.length ? `--file ${args._}` : '.';
+        const filesArg = args.file ? '' : args._.length ? `--file ${args._.join(' ')}` : '.';
 
         const fullCommand = [
             'npx',

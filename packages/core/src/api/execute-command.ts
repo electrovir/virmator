@@ -6,13 +6,7 @@ import {
     PartialAndUndefined,
     wrapInTry,
 } from '@augment-vir/common';
-import {
-    logColors,
-    LogOutputType,
-    readPackageJson,
-    runShellCommand,
-    type createLogger,
-} from '@augment-vir/node-js';
+import {logColors, LogOutputType, readPackageJson, runShellCommand} from '@augment-vir/node-js';
 import chalk from 'chalk';
 import concurrently, {CloseEvent, ConcurrentlyCommandInput} from 'concurrently';
 import {getRelativePosixPackagePathsInDependencyOrder} from 'mono-vir';
@@ -85,14 +79,7 @@ export type ExecuteCommandParams = {
      * @default ''
      */
     entryPointFilePath: string;
-    /**
-     * Set the logger for use with this execution.
-     *
-     * - See {@link log} from the `@augment-vir/node-js` npm package for the default logger.
-     * - Use {@link createLogger} from the `@augment-vir/node-js` npm package to easily create a custom
-     *   logger.
-     * - Use {@link emptyLogger} from the `@virmator/core` npm package to easily block all logging.
-     */
+    /** Set the logger for use with this execution. */
     log: PluginLogger;
     /**
      * The maximum number of concurrent processes that can run at the same time when running a
@@ -287,7 +274,8 @@ export async function executeVirmatorCommand({
             pluginPackagePath,
         },
         async runShellCommand(command, options, extraOptions) {
-            log.faint(`${extraOptions?.logPrefix ? `${extraOptions.logPrefix} ` : ''}> ${command}`);
+            const prefix = extraOptions?.logPrefix ? `${extraOptions.logPrefix} ` : '';
+            log.faint(`${prefix}> ${command}`);
             const result = await runShellCommand(command, {
                 cwd,
                 shell: 'bash',
@@ -347,9 +335,8 @@ export async function executeVirmatorCommand({
                         if (!command) {
                             return undefined;
                         }
-                        log.faint(
-                            `${color(`[${monoRepoPackage.packageName}]`)}${logColors.faint} > ${command}`,
-                        );
+                        const prefix = color(`[${monoRepoPackage.packageName}]`);
+                        log.faint(`${prefix}${logColors.faint} > ${command}`);
                         return {
                             command,
                             cwd: absolutePackagePath,

@@ -182,7 +182,6 @@ export const virmatorFormatPlugin = defineVirmatorPlugin(
         cliInputs: {filteredArgs, usedCommands},
         package: {cwdPackagePath},
         runShellCommand,
-        cwd,
     }) => {
         const args = mri(filteredArgs);
 
@@ -191,7 +190,7 @@ export const virmatorFormatPlugin = defineVirmatorPlugin(
 
         const formatString = args._.length
             ? ''
-            : `\"./**/*.+(${defaultFormatExtensions.join('|')})\"`;
+            : `'./**/*.+(${defaultFormatExtensions.join('|')})'`;
         const listDifferentFlag = shouldCheckOnly ? '' : '--list-different';
 
         const prettierCommand = [

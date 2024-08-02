@@ -14,4 +14,4 @@ export class VirmatorNoTraceError extends Error {
  * Used for debugging. Set to `false` to see error traces. Should always be set back to `true` for
  * publishing.
  */
-export const hideNoTraceTraces = true;
+export const hideNoTraceTraces = true as boolean;

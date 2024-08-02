@@ -10,7 +10,7 @@ import type {LogOptions, PluginOption} from 'vite';
  * path to the symlink itself AND the path to the symlink target or the path will still be watched.
  */
 function mapToActualPaths(paths: Readonly<string[]>): Readonly<string[]> {
-    return paths.reduce((accum, path) => {
+    return paths.reduce((accum: string[], path) => {
         if (existsSync(path)) {
             if (lstatSync(path).isSymbolicLink()) {
                 console.info('reading symlink from', path);
@@ -22,7 +22,7 @@ function mapToActualPaths(paths: Readonly<string[]>): Readonly<string[]> {
         } else {
             return accum;
         }
-    }, [] as string[]);
+    }, []);
 }
 
 /**
@@ -47,6 +47,7 @@ export function alwaysReloadPlugin(
             const {inclusions = [], exclusions = []} = config;
             let callingAlready = false;
 
+            // eslint-disable-next-line @typescript-eslint/unbound-method
             const oldInfoLog = logger.info;
 
             function customInfoLog(message: string, options: LogOptions) {

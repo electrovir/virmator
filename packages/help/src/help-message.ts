@@ -37,7 +37,7 @@ export function generateHelpMessageFromPlugins(
     cliWrapIfMoreThanThisManyColumns = 100,
 ) {
     return generateHelpMessage(
-        plugins.map((plugin) => plugin.cliCommands),
+        plugins.map((plugin) => plugin.cliCommands as VirmatorPluginCliCommands),
         syntax,
         hideVirmatorExplanations,
         cliWrapIfMoreThanThisManyColumns,
@@ -86,7 +86,7 @@ export function generateHelpMessage(
 /** All supported formats for help messages. */
 export const formats = {
     h1: {
-        [HelpMessageSyntax.Cli]: `${logColors.info}`,
+        [HelpMessageSyntax.Cli]: logColors.info,
         [HelpMessageSyntax.Markdown]: '# ',
     },
     h2: {

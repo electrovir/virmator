@@ -16,7 +16,7 @@ executeVirmatorCommand({
     plugins: defaultVirmatorPlugins,
     entryPointFilePath: fileURLToPath(import.meta.url),
     log,
-}).catch((error) => {
+}).catch((error: unknown) => {
     if (error instanceof VirmatorNoTraceError && hideNoTraceTraces) {
         if (error.message) {
             log.error(error.message);

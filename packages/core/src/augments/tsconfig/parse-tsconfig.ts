@@ -12,6 +12,7 @@ import {
 /** Parsed the nearest ancestor TS Config file, if one can be found. */
 export function parseTsConfig(cwd: string): ParsedCommandLine | undefined {
     try {
+        // eslint-disable-next-line @typescript-eslint/unbound-method
         const tsConfigPath = findConfigFile(cwd, sys.fileExists);
 
         /** It'll be quite hard to setup a test where `tsConfigPath` is defined but does not exist. */
@@ -20,6 +21,7 @@ export function parseTsConfig(cwd: string): ParsedCommandLine | undefined {
             return undefined;
         }
 
+        // eslint-disable-next-line @typescript-eslint/unbound-method
         const configFile = readConfigFile(tsConfigPath, sys.readFile);
         return parseJsonConfigFileContent(configFile.config, sys, dirname(tsConfigPath));
         /* node:coverage ignore next 4 */
