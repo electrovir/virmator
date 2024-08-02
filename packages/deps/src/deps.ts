@@ -239,11 +239,8 @@ export const virmatorDepsPlugin = defineVirmatorPlugin(
                     const config = configFile.ncuConfig as RunOptions;
 
                     /** C8 incorrectly thinks these imports are uncovered branches. */
-                    /* node:coverage ignore next 2 */
+                    /* node:coverage ignore next */
                     const ncu = await import('npm-check-updates');
-                    const chalk = await import('npm-check-updates/build/src/lib/chalk');
-                    /** This is needed otherwise ncu breaks. */
-                    await chalk.chalkInit(true);
 
                     await ncu.run(
                         {
