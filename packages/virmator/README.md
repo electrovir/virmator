@@ -163,6 +163,7 @@ A package for centralizing and automating mind-numbingly repetitive repo tasks a
         -   .github/workflows/tagged-release.yml
         -   .github/workflows/tests.yml
         -   .github/workflows/tests.yml
+        -   .vscode/settings.json
         -   src/ui/elements/vir-app.element.ts
         -   src/index.html
         -   www-static/index.css

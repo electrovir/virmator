@@ -1,6 +1,6 @@
 {
     "name": "virmator",
-    "version": "13.0.3",
+    "version": "13.0.4",
     "description": "Handle common package configs, commands, and dependencies.",
     "keywords": [
         "automation",
@@ -38,18 +38,18 @@
     },
     "dependencies": {
         "@augment-vir/node-js": "^29.3.0",
-        "@virmator/compile": "^13.0.3",
-        "@virmator/core": "^13.0.3",
-        "@virmator/deps": "^13.0.3",
-        "@virmator/docs": "^13.0.3",
-        "@virmator/format": "^13.0.3",
-        "@virmator/frontend": "^13.0.3",
-        "@virmator/help": "^13.0.3",
-        "@virmator/init": "^13.0.3",
-        "@virmator/lint": "^13.0.3",
-        "@virmator/publish": "^13.0.3",
-        "@virmator/spellcheck": "^13.0.3",
-        "@virmator/test": "^13.0.3",
+        "@virmator/compile": "^13.0.4",
+        "@virmator/core": "^13.0.4",
+        "@virmator/deps": "^13.0.4",
+        "@virmator/docs": "^13.0.4",
+        "@virmator/format": "^13.0.4",
+        "@virmator/frontend": "^13.0.4",
+        "@virmator/help": "^13.0.4",
+        "@virmator/init": "^13.0.4",
+        "@virmator/lint": "^13.0.4",
+        "@virmator/publish": "^13.0.4",
+        "@virmator/spellcheck": "^13.0.4",
+        "@virmator/test": "^13.0.4",
         "tsx": "^4.16.5"
     },
     "devDependencies": {

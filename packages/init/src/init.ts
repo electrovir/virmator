@@ -84,7 +84,7 @@ export const virmatorInitPlugin = defineVirmatorPlugin(
                     ghPages: {
                         copyFromPath: join(
                             'configs',
-                            '.github',
+                            'github',
                             'workflows',
                             'build-for-gh-pages.yml',
                         ),
@@ -100,7 +100,7 @@ export const virmatorInitPlugin = defineVirmatorPlugin(
                         required: false,
                     },
                     ghTaggedRelease: {
-                        copyFromPath: join('configs', '.github', 'workflows', 'tagged-release.yml'),
+                        copyFromPath: join('configs', 'github', 'workflows', 'tagged-release.yml'),
                         copyToPath: join('.github', 'workflows', 'tagged-release.yml'),
                         env: [
                             VirmatorEnv.Node,
@@ -113,7 +113,7 @@ export const virmatorInitPlugin = defineVirmatorPlugin(
                         required: false,
                     },
                     ghTestsNode: {
-                        copyFromPath: join('configs', '.github', 'workflows', 'tests-node.yml'),
+                        copyFromPath: join('configs', 'github', 'workflows', 'tests-node.yml'),
                         copyToPath: join('.github', 'workflows', 'tests.yml'),
                         env: [
                             VirmatorEnv.Node,
@@ -125,10 +125,23 @@ export const virmatorInitPlugin = defineVirmatorPlugin(
                         required: false,
                     },
                     ghTestsWeb: {
-                        copyFromPath: join('configs', '.github', 'workflows', 'tests-web.yml'),
+                        copyFromPath: join('configs', 'github', 'workflows', 'tests-web.yml'),
                         copyToPath: join('.github', 'workflows', 'tests.yml'),
                         env: [
                             VirmatorEnv.Web,
+                        ],
+                        packageType: [
+                            PackageType.TopPackage,
+                            PackageType.MonoRoot,
+                        ],
+                        required: false,
+                    },
+                    vscodeSettings: {
+                        copyFromPath: join('configs', 'vscode', 'settings.json'),
+                        copyToPath: join('.vscode', 'settings.json'),
+                        env: [
+                            VirmatorEnv.Web,
+                            VirmatorEnv.Node,
                         ],
                         packageType: [
                             PackageType.TopPackage,
@@ -191,7 +204,7 @@ export const virmatorInitPlugin = defineVirmatorPlugin(
                         required: false,
                     },
                     gitAttributes: {
-                        copyFromPath: join('configs', '.gitattributes'),
+                        copyFromPath: join('configs', 'gitattributes.txt'),
                         copyToPath: join('.gitattributes'),
                         env: [
                             VirmatorEnv.Web,
@@ -204,7 +217,7 @@ export const virmatorInitPlugin = defineVirmatorPlugin(
                         required: false,
                     },
                     nvmrc: {
-                        copyFromPath: join('configs', '.nvmrc'),
+                        copyFromPath: join('configs', 'nvmrc.txt'),
                         copyToPath: join('.nvmrc'),
                         env: [
                             VirmatorEnv.Web,

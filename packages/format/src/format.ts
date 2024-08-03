@@ -72,7 +72,7 @@ export const virmatorFormatPlugin = defineVirmatorPlugin(
                         required: true,
                     },
                     prettierIgnore: {
-                        copyFromPath: join('configs', '.prettierignore'),
+                        copyFromPath: join('configs', 'prettierignore.txt'),
                         copyToPath: '.prettierignore',
                         env: [
                             VirmatorEnv.Node,
