@@ -1,6 +1,6 @@
 {
     "name": "@virmator/init",
-    "version": "13.0.2",
+    "version": "13.0.3",
     "description": "Default init plugin for virmator.",
     "keywords": [
         "virmator",

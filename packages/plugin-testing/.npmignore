@@ -9,7 +9,6 @@
 .*
 .not-committed/
 /Icon?
-/configs/
 /coverage/
 /cspell.config.cjs
 /graphics/
