@@ -20,5 +20,4 @@ generated-config-*
 index.html
 test-files/
 todo.md
-tsconfig*.json
 tsconfig.tsbuildinfo

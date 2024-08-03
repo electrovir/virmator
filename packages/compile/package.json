@@ -1,6 +1,6 @@
 {
     "name": "@virmator/compile",
-    "version": "13.0.4",
+    "version": "13.0.5",
     "description": "Default TS compile plugin for virmator.",
     "keywords": [
         "virmator",
@@ -33,12 +33,12 @@
     "dependencies": {
         "@augment-vir/common": "^29.3.0",
         "@augment-vir/node-js": "^29.3.0",
-        "@virmator/core": "^13.0.4",
+        "@virmator/core": "^13.0.5",
         "run-time-assertions": "^1.5.2"
     },
     "devDependencies": {
         "@types/node": "^22.1.0",
-        "@virmator/plugin-testing": "^13.0.4",
+        "@virmator/plugin-testing": "^13.0.5",
         "c8": "^10.1.2",
         "chalk": "^5.3.0",
         "concurrently": "^8.2.2",

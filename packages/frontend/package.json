@@ -1,6 +1,6 @@
 {
     "name": "@virmator/frontend",
-    "version": "13.0.4",
+    "version": "13.0.5",
     "description": "Default frontend plugin for virmator.",
     "keywords": [
         "virmator",
@@ -36,7 +36,7 @@
     "dependencies": {
         "@augment-vir/common": "^29.3.0",
         "@augment-vir/node-js": "^29.3.0",
-        "@virmator/core": "^13.0.4",
+        "@virmator/core": "^13.0.5",
         "mri": "^1.2.0"
     },
     "devDependencies": {
