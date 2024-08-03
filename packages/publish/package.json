@@ -1,6 +1,6 @@
 {
     "name": "@virmator/publish",
-    "version": "13.0.0",
+    "version": "13.0.1",
     "description": "Default publish plugin for virmator.",
     "keywords": [
         "virmator",
@@ -23,9 +23,9 @@
         "url": "https://github.com/electrovir"
     },
     "type": "module",
-    "main": "src/publish.ts",
-    "module": "src/publish.ts",
-    "types": "src/publish.ts",
+    "main": "dist/publish.js",
+    "module": "dist/publish.js",
+    "types": "dist/publish.d.ts",
     "scripts": {
         "compile": "virmator compile",
         "test": "exit 0",
@@ -35,7 +35,7 @@
     "dependencies": {
         "@augment-vir/common": "^29.3.0",
         "@augment-vir/node-js": "^29.3.0",
-        "@virmator/core": "^13.0.0",
+        "@virmator/core": "^13.0.1",
         "chalk": "^5.3.0",
         "mri": "^1.2.0",
         "run-time-assertions": "^1.5.2",

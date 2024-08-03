@@ -81,7 +81,9 @@ export const virmatorPublishPlugin = defineVirmatorPlugin(
                 'Git changes exist, cannot run publish. Commit or stash the changes.',
             );
         }
-        const isDryRun = filteredArgs.includes('--dry-run');
+
+        const flagArgs = filteredArgs.filter((arg) => arg.startsWith('--'));
+        const isDryRun = flagArgs.includes('--dry-run');
 
         const monoRepoPackageJsonFiles: ReadonlyArray<Readonly<ValidPackageJson>> =
             await Promise.all(
@@ -149,7 +151,7 @@ export const virmatorPublishPlugin = defineVirmatorPlugin(
             `${inVirmatorEnvKey}=true`,
             'npm',
             'publish',
-            ...filteredArgs,
+            ...flagArgs,
         ]
             .filter(isTruthy)
             .join(' ');
@@ -287,7 +289,7 @@ async function isPublished({name, version}: {name: string; version: string}) {
     const output = await runHiddenShellCommand(`npm show ${name}@${version}`);
     return output.exitCode === 0;
 }
-const gitCommitFormatDelimiter = ' <**..**> ';
+const gitCommitFormatDelimiter = '<**..**>';
 
 enum ChangeMarker {
     Patch = 'patch',
@@ -297,7 +299,7 @@ enum ChangeMarker {
 
 async function getGitCommitVersion(decrement: number, git: Readonly<SimpleGit>) {
     const output = await git.raw(
-        `show HEAD~${decrement} --pretty='%D${gitCommitFormatDelimiter}%s' -s`,
+        `show HEAD~${decrement} --pretty='%D${gitCommitFormatDelimiter}%s' -s`.split(' '),
     );
     const [
         maybeTag,
@@ -320,7 +322,7 @@ async function getGitCommitVersion(decrement: number, git: Readonly<SimpleGit>) 
     const [
         ,
         rawChangeMarker,
-    ] = message ? safeMatch(message.trim(), /^[(^\]+)]/) : [];
+    ] = message ? safeMatch(message.trim(), /^\[([^\]]+)]/) : [];
 
     const changeMarker =
         rawChangeMarker && isEnumValue(rawChangeMarker, ChangeMarker) ? rawChangeMarker : undefined;
@@ -345,10 +347,10 @@ async function determineNextVersion(git: SimpleGit): Promise<string> {
         }
 
         const {changeMarker, version} = await getGitCommitVersion(decrement, git);
+
         if (version) {
             latestVersion = version;
-        }
-        if (changeMarker) {
+        } else if (changeMarker) {
             changeMarkers[changeMarker]++;
         }
         decrement++;

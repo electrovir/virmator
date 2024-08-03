@@ -1,6 +1,6 @@
 {
     "name": "@virmator/docs",
-    "version": "13.0.0",
+    "version": "13.0.1",
     "description": "Default TS docs plugin for virmator.",
     "keywords": [
         "virmator",
@@ -22,9 +22,9 @@
         "url": "https://github.com/electrovir"
     },
     "type": "module",
-    "main": "src/docs.ts",
-    "module": "src/docs.ts",
-    "types": "src/docs.ts",
+    "main": "dist/docs.js",
+    "module": "dist/docs.js",
+    "types": "dist/docs.d.ts",
     "scripts": {
         "compile": "virmator compile",
         "test": "virmator test node",
@@ -34,7 +34,7 @@
     "dependencies": {
         "@augment-vir/common": "^29.3.0",
         "@augment-vir/node-js": "^29.3.0",
-        "@virmator/core": "^13.0.0",
+        "@virmator/core": "^13.0.1",
         "chalk": "^5.3.0",
         "mri": "^1.2.0",
         "run-time-assertions": "^1.5.2"

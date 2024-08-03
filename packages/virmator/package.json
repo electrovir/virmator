@@ -1,6 +1,6 @@
 {
     "name": "virmator",
-    "version": "13.0.0",
+    "version": "13.0.1",
     "description": "Handle common package configs, commands, and dependencies.",
     "keywords": [
         "automation",
@@ -26,9 +26,9 @@
         "url": "https://github.com/electrovir"
     },
     "type": "module",
-    "main": "src/index.ts",
-    "module": "src/index.ts",
-    "types": "src/index.ts",
+    "main": "dist/index.js",
+    "module": "dist/index.js",
+    "types": "dist/index.d.ts",
     "bin": "src/cli.ts",
     "scripts": {
         "compile": "virmator compile",
@@ -38,18 +38,18 @@
     },
     "dependencies": {
         "@augment-vir/node-js": "^29.3.0",
-        "@virmator/compile": "^13.0.0",
-        "@virmator/core": "^13.0.0",
-        "@virmator/deps": "^13.0.0",
-        "@virmator/docs": "^13.0.0",
-        "@virmator/format": "^13.0.0",
-        "@virmator/frontend": "^13.0.0",
-        "@virmator/help": "^13.0.0",
-        "@virmator/init": "^13.0.0",
-        "@virmator/lint": "^13.0.0",
-        "@virmator/publish": "^13.0.0",
-        "@virmator/spellcheck": "^13.0.0",
-        "@virmator/test": "^13.0.0",
+        "@virmator/compile": "^13.0.1",
+        "@virmator/core": "^13.0.1",
+        "@virmator/deps": "^13.0.1",
+        "@virmator/docs": "^13.0.1",
+        "@virmator/format": "^13.0.1",
+        "@virmator/frontend": "^13.0.1",
+        "@virmator/help": "^13.0.1",
+        "@virmator/init": "^13.0.1",
+        "@virmator/lint": "^13.0.1",
+        "@virmator/publish": "^13.0.1",
+        "@virmator/spellcheck": "^13.0.1",
+        "@virmator/test": "^13.0.1",
         "tsx": "^4.16.5"
     },
     "devDependencies": {

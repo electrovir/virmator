@@ -1,6 +1,6 @@
 {
     "name": "@virmator/init",
-    "version": "13.0.0",
+    "version": "13.0.1",
     "description": "Default init plugin for virmator.",
     "keywords": [
         "virmator",
@@ -20,9 +20,9 @@
         "url": "https://github.com/electrovir"
     },
     "type": "module",
-    "main": "src/init.ts",
-    "module": "src/init.ts",
-    "types": "src/init.ts",
+    "main": "dist/init.js",
+    "module": "dist/init.js",
+    "types": "dist/init.d.ts",
     "scripts": {
         "compile": "virmator compile",
         "test": "exit 0",

@@ -1,6 +1,6 @@
 {
     "name": "@virmator/mono-repo-root",
-    "version": "13.0.0",
+    "version": "13.0.1",
     "private": true,
     "type": "module",
     "workspaces": [
@@ -11,7 +11,7 @@
         "docs": "virmator docs",
         "format": "virmator format",
         "lint": "virmator lint fix",
-        "publish": "virmator publish \"npm run compile && npm run test:all\"",
+        "publish": "virmator publish npm run test:all",
         "test": "mono-vir for-each-async npm run test",
         "test:all": "npm run compile && concurrently --colors --kill-others-on-fail -c auto --names tests,spelling,format,docs,deps,lint \"npm run test:coverage\" \"npm run test:spelling\" \"npm run test:format\" \"npm run test:docs\" \"npm run test:deps\" \"npm run test:lint\"",
         "test:coverage": "mono-vir for-each-async npm run test:coverage",
