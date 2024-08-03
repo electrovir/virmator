@@ -1,6 +1,7 @@
 import {MaybePromise, wrapInTry} from '@augment-vir/common';
+import {toPosixPath} from '@augment-vir/node-js';
 import {rm} from 'node:fs/promises';
-import {basename, join} from 'node:path';
+import {basename, join, relative} from 'node:path';
 import {findClosestNodeModulesDir} from '../augments/index';
 
 /**
@@ -18,7 +19,7 @@ export async function withImportedTsFile<T>(
         moduleType,
     });
     try {
-        const loadedConfig = await import(compiledPath);
+        const loadedConfig = await import(toPosixPath(relative(import.meta.dirname, compiledPath)));
 
         return await callback(loadedConfig);
     } finally {

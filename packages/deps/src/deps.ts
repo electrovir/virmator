@@ -1,4 +1,5 @@
 import {awaitedBlockingMap, isTruthy} from '@augment-vir/common';
+import {toPosixPath} from '@augment-vir/node-js';
 import {
     defineVirmatorPlugin,
     JsModuleType,
@@ -171,6 +172,7 @@ export const virmatorDepsPlugin = defineVirmatorPlugin(
         log,
         runPerPackage,
         runShellCommand,
+        cwd,
     }) => {
         if (usedCommands.deps?.subCommands.check) {
             const args = mri(filteredArgs);
@@ -197,7 +199,7 @@ export const virmatorDepsPlugin = defineVirmatorPlugin(
                             ? ['']
                             : [
                                   '--config',
-                                  relative(relativeTo, configPath),
+                                  toPosixPath(relative(relativeTo, configPath)),
                               ];
 
                         return [
@@ -216,7 +218,7 @@ export const virmatorDepsPlugin = defineVirmatorPlugin(
                             return defineCommand(packageCwd);
                         });
                     } else {
-                        await runShellCommand(defineCommand(cwdPackagePath));
+                        await runShellCommand(defineCommand(cwd));
                     }
                 },
             );

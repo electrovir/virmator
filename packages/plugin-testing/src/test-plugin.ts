@@ -9,7 +9,7 @@ import {
     wrapInTry,
     wrapString,
 } from '@augment-vir/common';
-import {LogOutputType} from '@augment-vir/node-js';
+import {LogOutputType, toPosixPath} from '@augment-vir/node-js';
 import {
     createPluginLogger,
     executeVirmatorCommand,
@@ -160,9 +160,9 @@ export async function testPlugin(
 
         const result: TestPluginResult = {
             logs: mapObjectValues(logs, (logType, logs) => {
-                return logTransform(logType, logs.join('\n'));
+                return toPosixPath(logTransform(logType, logs.join('\n')));
             }),
-            cwd: relative(monoRepoDir, cwd),
+            cwd: toPosixPath(relative(monoRepoDir, cwd)),
             contentsDiff,
             ...(error ? {error} : {}),
         };

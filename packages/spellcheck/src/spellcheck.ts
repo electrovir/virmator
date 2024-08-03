@@ -1,4 +1,5 @@
 import {isTruthy} from '@augment-vir/common';
+import {toPosixPath} from '@augment-vir/node-js';
 import {defineVirmatorPlugin, NpmDepType, PackageType, VirmatorEnv} from '@virmator/core';
 import mri from 'mri';
 import {join, relative} from 'node:path';
@@ -72,7 +73,9 @@ export const virmatorSpellcheckPlugin = defineVirmatorPlugin(
 
         const configPath = isRunTimeType(args.config, 'string')
             ? args.config
-            : relative(cwd, join(cwdPackagePath, configs.spellcheck.configs.cspell.copyToPath));
+            : toPosixPath(
+                  relative(cwd, join(cwdPackagePath, configs.spellcheck.configs.cspell.copyToPath)),
+              );
         const filesArg = args.file ? '' : args._.length ? `--file ${args._.join(' ')}` : '.';
 
         const fullCommand = [

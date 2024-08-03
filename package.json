@@ -22,6 +22,7 @@
         "test:spelling": "virmator spellcheck",
         "test:update": "mono-vir for-each-async npm run test:update"
     },
+    "dependencies": {},
     "devDependencies": {
         "@eslint/js": "^9.8.0",
         "@stylistic/eslint-plugin": "^2.6.1",

@@ -26,6 +26,10 @@ export async function checkPluginReadmes() {
                 await readFile(join(monoRepoPath, relativePath, 'README.md'))
             ).toString();
             if (currentContents !== content) {
+                console.error('expected');
+                console.error(content);
+                console.error('actual');
+                console.error(currentContents);
                 throw new Error(
                     `README mismatch in ${relativePath}.\n${logColors.info}Run \`cd packages/scripts && npm start\` to update.${logColors.reset}`,
                 );

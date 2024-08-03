@@ -15,6 +15,10 @@ const virmatorReadme =
 export async function checkVirmatorReadme() {
     const currentContents = (await readFile(join(virmatorPath, 'README.md'))).toString();
     if (currentContents !== virmatorReadme) {
+        console.error('expected');
+        console.error(virmatorReadme);
+        console.error('actual');
+        console.error(currentContents);
         throw new Error(
             `README mismatch in virmator.\n${logColors.info}Run \`cd packages/scripts && npm start\` to update.${logColors.reset}`,
         );

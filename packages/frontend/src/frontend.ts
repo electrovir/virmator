@@ -1,4 +1,5 @@
 import {isTruthy, MaybePromise} from '@augment-vir/common';
+import {toPosixPath} from '@augment-vir/node-js';
 import {defineVirmatorPlugin, NpmDepType, PackageType, VirmatorEnv} from '@virmator/core';
 import mri from 'mri';
 import {cp, rm} from 'node:fs/promises';
@@ -117,7 +118,7 @@ export const virmatorFrontendPlugin = defineVirmatorPlugin(
             ? []
             : [
                   '--config',
-                  relative(cwd, configPath),
+                  toPosixPath(relative(cwd, configPath)),
               ];
 
         const baseViteCommands = [

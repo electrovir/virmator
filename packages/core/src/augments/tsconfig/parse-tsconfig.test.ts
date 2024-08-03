@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import {join} from 'node:path';
+import {basename, join} from 'node:path';
 import {describe, it} from 'node:test';
 import {assertDefined} from 'run-time-assertions';
 import {coreTestFilesDir, monoRepoTestFilesDir} from '../../file-paths.mock';
@@ -23,7 +23,7 @@ describe(parseTsConfig.name, () => {
         assertDefined(parsedOptions);
 
         assert.strictEqual(parsedOptions.allowJs, true);
-        assert.strictEqual(parsedOptions.outDir || '', join(tsConfigsPath, 'not-dist'));
+        assert.strictEqual(basename(parsedOptions.outDir || ''), 'not-dist');
     });
     it('handles missing tsconfig', () => {
         const parsedOptions = parseTsConfig(join(monoRepoTestFilesDir, 'no-ts-configs'));

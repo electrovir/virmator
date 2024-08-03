@@ -129,8 +129,8 @@ describe(calculateUsedCommands.name, () => {
                         check: {
                             configFiles: {
                                 depCruiser: {
-                                    copyFromPath: 'configs/dep-cruiser.config.ts',
-                                    copyToPath: 'configs/dep-cruiser.config.ts',
+                                    copyFromPath: join('configs', 'dep-cruiser.config.ts'),
+                                    copyToPath: join('configs', 'dep-cruiser.config.ts'),
                                     env: [
                                         'node',
                                         'web',

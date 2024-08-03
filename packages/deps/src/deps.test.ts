@@ -1,4 +1,5 @@
 import {runShellCommand} from '@augment-vir/node-js';
+import {virmatorFlags} from '@virmator/core';
 import {testPlugin} from '@virmator/plugin-testing';
 import {join, resolve} from 'node:path';
 import {describe, it, type TestContext} from 'node:test';
@@ -15,7 +16,18 @@ describe(virmatorDepsPlugin.name, () => {
         dir: string,
         extraCommand: string,
     ) {
-        await testPlugin(shouldPass, context, virmatorDepsPlugin, `deps ${extraCommand}`, dir);
+        await testPlugin(
+            shouldPass,
+            context,
+            virmatorDepsPlugin,
+            `${virmatorFlags['--no-deps'].name} deps ${extraCommand}`,
+            dir,
+            {
+                logTransform(logType, arg) {
+                    return arg.replaceAll('\r', '');
+                },
+            },
+        );
     }
 
     it('passes valid deps', async (context) => {

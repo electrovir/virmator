@@ -5,7 +5,7 @@ import {
     mapObjectValues,
     safeMatch,
 } from '@augment-vir/common';
-import {logColors} from '@augment-vir/node-js';
+import {logColors, toPosixPath} from '@augment-vir/node-js';
 import {
     IndividualPluginCommand,
     virmatorFlags,
@@ -218,7 +218,7 @@ function commandDocToString(
         : '';
 
     const configs = Object.values(command.configFiles || {}).map((configFile) => {
-        const escaped = configFile.copyToPath.replaceAll(/(_)/g, `${format.escape}$1`);
+        const escaped = toPosixPath(configFile.copyToPath).replaceAll(/(_)/g, `${format.escape}$1`);
         return `${indent(indentCount + 2, format)}${format.bullet}${escaped}`;
     });
 
