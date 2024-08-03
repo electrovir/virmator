@@ -220,6 +220,11 @@ export const virmatorPublishPlugin = defineVirmatorPlugin(
 
                 await runShellCommand(publishCommand);
             }
+            await Promise.all(
+                alteredPackageJsonFiles.map(async (alteredFile) => {
+                    await writeFile(alteredFile.path, alteredFile.original);
+                }),
+            );
 
             if (!isDryRun) {
                 await updateGit(monoRepoRootPath);

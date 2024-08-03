@@ -1,6 +1,6 @@
 {
     "name": "@virmator/help",
-    "version": "13.0.1",
+    "version": "13.0.2",
     "description": "Default help plugin for virmator.",
     "keywords": [
         "virmator",
@@ -21,9 +21,9 @@
         "url": "https://github.com/electrovir"
     },
     "type": "module",
-    "main": "dist/index.js",
-    "module": "dist/index.js",
-    "types": "dist/index.d.ts",
+    "main": "src/index.ts",
+    "module": "src/index.ts",
+    "types": "src/index.ts",
     "scripts": {
         "compile": "virmator compile",
         "test": "virmator test node",

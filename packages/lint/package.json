@@ -1,6 +1,6 @@
 {
     "name": "@virmator/lint",
-    "version": "13.0.1",
+    "version": "13.0.2",
     "description": "Default ESLint linting plugin for virmator.",
     "keywords": [
         "virmator",
@@ -21,9 +21,9 @@
         "url": "https://github.com/electrovir"
     },
     "type": "module",
-    "main": "dist/lint.js",
-    "module": "dist/lint.js",
-    "types": "dist/lint.d.ts",
+    "main": "src/lint.ts",
+    "module": "src/lint.ts",
+    "types": "src/lint.ts",
     "scripts": {
         "compile": "virmator compile",
         "test": "virmator test node",

@@ -1,6 +1,6 @@
 {
     "name": "@virmator/frontend",
-    "version": "13.0.1",
+    "version": "13.0.2",
     "description": "Default frontend plugin for virmator.",
     "keywords": [
         "virmator",
@@ -24,9 +24,9 @@
         "url": "https://github.com/electrovir"
     },
     "type": "module",
-    "main": "dist/frontend.js",
-    "module": "dist/frontend.js",
-    "types": "dist/frontend.d.ts",
+    "main": "src/frontend.ts",
+    "module": "src/frontend.ts",
+    "types": "src/frontend.ts",
     "scripts": {
         "compile": "virmator compile",
         "test": "virmator test node",
@@ -36,7 +36,7 @@
     "dependencies": {
         "@augment-vir/common": "^29.3.0",
         "@augment-vir/node-js": "^29.3.0",
-        "@virmator/core": "^13.0.1",
+        "@virmator/core": "^13.0.2",
         "mri": "^1.2.0"
     },
     "devDependencies": {

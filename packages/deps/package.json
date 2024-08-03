@@ -1,6 +1,6 @@
 {
     "name": "@virmator/deps",
-    "version": "13.0.1",
+    "version": "13.0.2",
     "description": "Default TS deps plugin for virmator.",
     "keywords": [
         "virmator",
@@ -23,9 +23,9 @@
         "url": "https://github.com/electrovir"
     },
     "type": "module",
-    "main": "dist/deps.js",
-    "module": "dist/deps.js",
-    "types": "dist/deps.d.ts",
+    "main": "src/deps.ts",
+    "module": "src/deps.ts",
+    "types": "src/deps.ts",
     "scripts": {
         "compile": "virmator compile",
         "test": "virmator test node",
@@ -35,7 +35,7 @@
     "dependencies": {
         "@augment-vir/common": "^29.3.0",
         "@augment-vir/node-js": "^29.3.0",
-        "@virmator/core": "^13.0.1",
+        "@virmator/core": "^13.0.2",
         "mri": "^1.2.0"
     },
     "devDependencies": {
