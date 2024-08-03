@@ -1,0 +1,59 @@
+exports[`Format > does nothing in an already-formatted repo 1`] = `
+{
+  "logs": {
+    "stdout": "Copied .prettierignore\\nCopied prettier.config.mjs\\nInstalling prettier@3.3.3 prettier-plugin-jsdoc@1.3.0 prettier-plugin-multiline-arrays@3.0.6 prettier-plugin-organize-imports@4.0.0 prettier-plugin-packagejson@2.5.1 prettier-plugin-sort-json@4.0.0 prettier-plugin-toml@2.0.1 prettier-plugin-interpolated-html-tags@1.0.5...\\n> npx prettier --color --cache --cache-strategy content --list-different --write './**/*.+(cjs|css|graphql|html|js|json|jsx|less|md|mjs|scss|toml|ts|tsx|yaml|yml)'\\nformat finished."
+  },
+  "cwd": "packages/format/test-files/good-format",
+  "contentsDiff": {
+    "package.json": "{\\n    \\"name\\": \\"good-format\\",\\n    \\"devDependencies\\": {\\n        \\"prettier\\": \\"^3.3.3\\",\\n        \\"prettier-plugin-interpolated-html-tags\\": \\"^1.0.5\\",\\n        \\"prettier-plugin-jsdoc\\": \\"^1.3.0\\",\\n        \\"prettier-plugin-multiline-arrays\\": \\"^3.0.6\\",\\n        \\"prettier-plugin-organize-imports\\": \\"^4.0.0\\",\\n        \\"prettier-plugin-packagejson\\": \\"^2.5.1\\",\\n        \\"prettier-plugin-sort-json\\": \\"^4.0.0\\",\\n        \\"prettier-plugin-toml\\": \\"^2.0.1\\"\\n    }\\n}\\n",
+    ".prettierignore": "**/all-files-for-code-coverage.test.ts\\n**/coverage/\\n**/dist-*/\\n**/dist/\\n**/generated-config-*\\n**/graphics/\\n**/node_modules/\\n**/package-lock.json\\n**/tsconfig.tsbuildinfo\\n/Icon?",
+    "prettier.config.mjs": "import {basePrettierConfig} from '@virmator/format/configs/prettier.config.base.mjs';\\n\\n/**\\n * @typedef {import('prettier-plugin-multiline-arrays').MultilineArrayOptions} MultilineOptions\\n *\\n * @typedef {import('prettier').Options} PrettierOptions\\n * @type {PrettierOptions & MultilineOptions}\\n */\\nconst prettierConfig = {\\n    ...basePrettierConfig,\\n};\\n\\nexport default prettierConfig;\\n"
+  }
+}
+`;
+
+exports[`Format > fails an unformatted repo 1`] = `
+{
+  "logs": {
+    "stdout": "Copied .prettierignore\\nCopied prettier.config.mjs\\nInstalling prettier@3.3.3 prettier-plugin-jsdoc@1.3.0 prettier-plugin-multiline-arrays@3.0.6 prettier-plugin-organize-imports@4.0.0 prettier-plugin-packagejson@2.5.1 prettier-plugin-sort-json@4.0.0 prettier-plugin-toml@2.0.1 prettier-plugin-interpolated-html-tags@1.0.5...\\n> npx prettier --color --cache --cache-strategy content --check  './**/*.+(cjs|css|graphql|html|js|json|jsx|less|md|mjs|scss|toml|ts|tsx|yaml|yml)'",
+    "stderr": "[warn] a.ts\\nformat failed."
+  },
+  "cwd": "packages/format/test-files/bad-format",
+  "contentsDiff": {
+    "package.json": "{\\n    \\"name\\": \\"bad-format\\",\\n    \\"devDependencies\\": {\\n        \\"prettier\\": \\"^3.3.3\\",\\n        \\"prettier-plugin-interpolated-html-tags\\": \\"^1.0.5\\",\\n        \\"prettier-plugin-jsdoc\\": \\"^1.3.0\\",\\n        \\"prettier-plugin-multiline-arrays\\": \\"^3.0.6\\",\\n        \\"prettier-plugin-organize-imports\\": \\"^4.0.0\\",\\n        \\"prettier-plugin-packagejson\\": \\"^2.5.1\\",\\n        \\"prettier-plugin-sort-json\\": \\"^4.0.0\\",\\n        \\"prettier-plugin-toml\\": \\"^2.0.1\\"\\n    }\\n}\\n",
+    ".prettierignore": "**/all-files-for-code-coverage.test.ts\\n**/coverage/\\n**/dist-*/\\n**/dist/\\n**/generated-config-*\\n**/graphics/\\n**/node_modules/\\n**/package-lock.json\\n**/tsconfig.tsbuildinfo\\n/Icon?",
+    "prettier.config.mjs": "import {basePrettierConfig} from '@virmator/format/configs/prettier.config.base.mjs';\\n\\n/**\\n * @typedef {import('prettier-plugin-multiline-arrays').MultilineArrayOptions} MultilineOptions\\n *\\n * @typedef {import('prettier').Options} PrettierOptions\\n * @type {PrettierOptions & MultilineOptions}\\n */\\nconst prettierConfig = {\\n    ...basePrettierConfig,\\n};\\n\\nexport default prettierConfig;\\n"
+  },
+  "error": {
+    "name": "VirmatorNoTraceError"
+  }
+}
+`;
+
+exports[`Format > formats a specific file 1`] = `
+{
+  "logs": {
+    "stdout": "Copied .prettierignore\\nCopied prettier.config.mjs\\nInstalling prettier@3.3.3 prettier-plugin-jsdoc@1.3.0 prettier-plugin-multiline-arrays@3.0.6 prettier-plugin-organize-imports@4.0.0 prettier-plugin-packagejson@2.5.1 prettier-plugin-sort-json@4.0.0 prettier-plugin-toml@2.0.1 prettier-plugin-interpolated-html-tags@1.0.5...\\n> npx prettier --color --cache --cache-strategy content --list-different --write package.json\\nformat finished."
+  },
+  "cwd": "packages/format/test-files/bad-format",
+  "contentsDiff": {
+    "package.json": "{\\n    \\"name\\": \\"bad-format\\",\\n    \\"devDependencies\\": {\\n        \\"prettier\\": \\"^3.3.3\\",\\n        \\"prettier-plugin-interpolated-html-tags\\": \\"^1.0.5\\",\\n        \\"prettier-plugin-jsdoc\\": \\"^1.3.0\\",\\n        \\"prettier-plugin-multiline-arrays\\": \\"^3.0.6\\",\\n        \\"prettier-plugin-organize-imports\\": \\"^4.0.0\\",\\n        \\"prettier-plugin-packagejson\\": \\"^2.5.1\\",\\n        \\"prettier-plugin-sort-json\\": \\"^4.0.0\\",\\n        \\"prettier-plugin-toml\\": \\"^2.0.1\\"\\n    }\\n}\\n",
+    ".prettierignore": "**/all-files-for-code-coverage.test.ts\\n**/coverage/\\n**/dist-*/\\n**/dist/\\n**/generated-config-*\\n**/graphics/\\n**/node_modules/\\n**/package-lock.json\\n**/tsconfig.tsbuildinfo\\n/Icon?",
+    "prettier.config.mjs": "import {basePrettierConfig} from '@virmator/format/configs/prettier.config.base.mjs';\\n\\n/**\\n * @typedef {import('prettier-plugin-multiline-arrays').MultilineArrayOptions} MultilineOptions\\n *\\n * @typedef {import('prettier').Options} PrettierOptions\\n * @type {PrettierOptions & MultilineOptions}\\n */\\nconst prettierConfig = {\\n    ...basePrettierConfig,\\n};\\n\\nexport default prettierConfig;\\n"
+  }
+}
+`;
+
+exports[`Format > passes check on an already-formatted repo 1`] = `
+{
+  "logs": {
+    "stdout": "Copied .prettierignore\\nCopied prettier.config.mjs\\nInstalling prettier@3.3.3 prettier-plugin-jsdoc@1.3.0 prettier-plugin-multiline-arrays@3.0.6 prettier-plugin-organize-imports@4.0.0 prettier-plugin-packagejson@2.5.1 prettier-plugin-sort-json@4.0.0 prettier-plugin-toml@2.0.1 prettier-plugin-interpolated-html-tags@1.0.5...\\n> npx prettier --color --cache --cache-strategy content --check  './**/*.+(cjs|css|graphql|html|js|json|jsx|less|md|mjs|scss|toml|ts|tsx|yaml|yml)'\\nformat finished."
+  },
+  "cwd": "packages/format/test-files/good-format",
+  "contentsDiff": {
+    "package.json": "{\\n    \\"name\\": \\"good-format\\",\\n    \\"devDependencies\\": {\\n        \\"prettier\\": \\"^3.3.3\\",\\n        \\"prettier-plugin-interpolated-html-tags\\": \\"^1.0.5\\",\\n        \\"prettier-plugin-jsdoc\\": \\"^1.3.0\\",\\n        \\"prettier-plugin-multiline-arrays\\": \\"^3.0.6\\",\\n        \\"prettier-plugin-organize-imports\\": \\"^4.0.0\\",\\n        \\"prettier-plugin-packagejson\\": \\"^2.5.1\\",\\n        \\"prettier-plugin-sort-json\\": \\"^4.0.0\\",\\n        \\"prettier-plugin-toml\\": \\"^2.0.1\\"\\n    }\\n}\\n",
+    ".prettierignore": "**/all-files-for-code-coverage.test.ts\\n**/coverage/\\n**/dist-*/\\n**/dist/\\n**/generated-config-*\\n**/graphics/\\n**/node_modules/\\n**/package-lock.json\\n**/tsconfig.tsbuildinfo\\n/Icon?",
+    "prettier.config.mjs": "import {basePrettierConfig} from '@virmator/format/configs/prettier.config.base.mjs';\\n\\n/**\\n * @typedef {import('prettier-plugin-multiline-arrays').MultilineArrayOptions} MultilineOptions\\n *\\n * @typedef {import('prettier').Options} PrettierOptions\\n * @type {PrettierOptions & MultilineOptions}\\n */\\nconst prettierConfig = {\\n    ...basePrettierConfig,\\n};\\n\\nexport default prettierConfig;\\n"
+  }
+}
+`;

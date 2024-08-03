@@ -1,0 +1,85 @@
+exports[`CSpell Spellcheck > rejects an invalid project 1`] = `
+{
+  "logs": {
+    "stdout": "Copied cspell.config.cjs\\nInstalling cspell@8.13.1...\\n> npx cspell --config cspell.config.cjs --dot --color --unique --no-progress --cache-strategy content .\\ntypo-file.txt:1:1 - Unknown word (fdaslkjfkldsa)",
+    "stderr": "CSpell: Files checked: 4, Issues found: 1 in 1 file.\\nspellcheck failed."
+  },
+  "cwd": "packages/spellcheck/test-files/fail-spellcheck",
+  "contentsDiff": {
+    "package.json": "{\\n  \\"devDependencies\\": {\\n    \\"cspell\\": \\"^8.13.1\\"\\n  }\\n}\\n",
+    "cspell.config.cjs": "const {baseConfig} = require('@virmator/spellcheck/configs/cspell.config.base.cjs');\\n\\nmodule.exports = {\\n    ...baseConfig,\\n    ignorePaths: [\\n        ...baseConfig.ignorePaths,\\n    ],\\n    words: [\\n        ...baseConfig.words,\\n    ],\\n};\\n"
+  },
+  "error": {
+    "name": "VirmatorNoTraceError"
+  }
+}
+`;
+
+exports[`CSpell Spellcheck > spellchecks a valid package 1`] = `
+{
+  "logs": {
+    "stdout": "Copied cspell.config.cjs\\nInstalling cspell@8.13.1...\\n> npx cspell --config cspell.config.cjs --dot --color --unique --no-progress --cache-strategy content .\\nspellcheck finished.",
+    "stderr": "CSpell: Files checked: 3, Issues found: 0 in 0 files."
+  },
+  "cwd": "packages/spellcheck/test-files/pass-spellcheck",
+  "contentsDiff": {
+    "package.json": "{\\n  \\"devDependencies\\": {\\n    \\"cspell\\": \\"^8.13.1\\"\\n  }\\n}\\n",
+    "cspell.config.cjs": "const {baseConfig} = require('@virmator/spellcheck/configs/cspell.config.base.cjs');\\n\\nmodule.exports = {\\n    ...baseConfig,\\n    ignorePaths: [\\n        ...baseConfig.ignorePaths,\\n    ],\\n    words: [\\n        ...baseConfig.words,\\n    ],\\n};\\n"
+  }
+}
+`;
+
+exports[`CSpell Spellcheck > spellchecks only at the current directory 1`] = `
+{
+  "logs": {
+    "stdout": "Copied cspell.config.cjs\\nInstalling cspell@8.13.1...\\n> npx cspell --config ../cspell.config.cjs --dot --color --unique --no-progress --cache-strategy content .\\nspellcheck finished.",
+    "stderr": "CSpell: Files checked: 1, Issues found: 0 in 0 files."
+  },
+  "cwd": "packages/spellcheck/test-files/fail-spellcheck/nested",
+  "contentsDiff": {
+    "package.json": "{\\n  \\"devDependencies\\": {\\n    \\"cspell\\": \\"^8.13.1\\"\\n  }\\n}\\n",
+    "cspell.config.cjs": "const {baseConfig} = require('@virmator/spellcheck/configs/cspell.config.base.cjs');\\n\\nmodule.exports = {\\n    ...baseConfig,\\n    ignorePaths: [\\n        ...baseConfig.ignorePaths,\\n    ],\\n    words: [\\n        ...baseConfig.words,\\n    ],\\n};\\n"
+  }
+}
+`;
+
+exports[`CSpell Spellcheck > uses a custom config 1`] = `
+{
+  "logs": {
+    "stdout": "Installing cspell@8.13.1...\\n> npx cspell --config custom-cspell.config.cjs --dot --color --unique --no-progress --cache-strategy content --config custom-cspell.config.cjs .\\nspellcheck finished.",
+    "stderr": "CSpell: Files checked: 3, Issues found: 0 in 0 files."
+  },
+  "cwd": "packages/spellcheck/test-files/custom-config",
+  "contentsDiff": {
+    "package.json": "{\\n  \\"devDependencies\\": {\\n    \\"cspell\\": \\"^8.13.1\\"\\n  }\\n}\\n"
+  }
+}
+`;
+
+exports[`CSpell Spellcheck > uses custom file list 1`] = `
+{
+  "logs": {
+    "stdout": "Copied cspell.config.cjs\\nInstalling cspell@8.13.1...\\n> npx cspell --config cspell.config.cjs --dot --color --unique --no-progress --cache-strategy content nested/file.txt --file nested/file.txt\\nspellcheck finished.",
+    "stderr": "CSpell: Files checked: 1, Issues found: 0 in 0 files."
+  },
+  "cwd": "packages/spellcheck/test-files/fail-spellcheck",
+  "contentsDiff": {
+    "package.json": "{\\n  \\"devDependencies\\": {\\n    \\"cspell\\": \\"^8.13.1\\"\\n  }\\n}\\n",
+    "cspell.config.cjs": "const {baseConfig} = require('@virmator/spellcheck/configs/cspell.config.base.cjs');\\n\\nmodule.exports = {\\n    ...baseConfig,\\n    ignorePaths: [\\n        ...baseConfig.ignorePaths,\\n    ],\\n    words: [\\n        ...baseConfig.words,\\n    ],\\n};\\n"
+  }
+}
+`;
+
+exports[`CSpell Spellcheck > uses file flag 1`] = `
+{
+  "logs": {
+    "stdout": "Copied cspell.config.cjs\\nInstalling cspell@8.13.1...\\n> npx cspell --config cspell.config.cjs --dot --color --unique --no-progress --cache-strategy content --file nested/file.txt\\nspellcheck finished.",
+    "stderr": "CSpell: Files checked: 1, Issues found: 0 in 0 files."
+  },
+  "cwd": "packages/spellcheck/test-files/fail-spellcheck",
+  "contentsDiff": {
+    "package.json": "{\\n  \\"devDependencies\\": {\\n    \\"cspell\\": \\"^8.13.1\\"\\n  }\\n}\\n",
+    "cspell.config.cjs": "const {baseConfig} = require('@virmator/spellcheck/configs/cspell.config.base.cjs');\\n\\nmodule.exports = {\\n    ...baseConfig,\\n    ignorePaths: [\\n        ...baseConfig.ignorePaths,\\n    ],\\n    words: [\\n        ...baseConfig.words,\\n    ],\\n};\\n"
+  }
+}
+`;

@@ -1,0 +1,75 @@
+exports[`testPlugin > errors on shouldPass mismatch 1`] = `
+{
+  "logs": {
+    "stderr": "example no trace\\nexample failed."
+  },
+  "cwd": "packages/plugin-testing/test-files/dir-contents-test",
+  "error": {
+    "name": "VirmatorNoTraceError"
+  }
+}
+`;
+
+exports[`testPlugin > errors on shouldPass mismatch 2`] = `
+{
+  "logs": {
+    "stdout": "4\\n{ something: true }\\n> echo \\"hi\\"; >&2 echo \\"error\\";\\nhi\\nexample finished.",
+    "stderr": "error"
+  },
+  "cwd": "packages/plugin-testing/test-files/dir-contents-test"
+}
+`;
+
+exports[`testPlugin > handles a cleanup callback 1`] = `
+{
+  "logs": {
+    "stdout": "4\\n{ something: true }\\n> echo \\"hi\\"; >&2 echo \\"error\\";\\nhi\\nexample finished.",
+    "stderr": "error"
+  },
+  "cwd": "packages/plugin-testing/test-files/dir-contents-test"
+}
+`;
+
+exports[`testPlugin > handles a no trace error 1`] = `
+{
+  "logs": {
+    "stderr": "example no trace\\nexample failed."
+  },
+  "cwd": "packages/plugin-testing/test-files/dir-contents-test",
+  "error": {
+    "name": "VirmatorNoTraceError"
+  }
+}
+`;
+
+exports[`testPlugin > handles a plugin array 1`] = `
+{
+  "logs": {
+    "stdout": "4\\n{ something: true }\\n> echo \\"hi\\"; >&2 echo \\"error\\";\\nhi\\nexample finished.",
+    "stderr": "error"
+  },
+  "cwd": "packages/plugin-testing/test-files/dir-contents-test"
+}
+`;
+
+exports[`testPlugin > handles empty no trace error 1`] = `
+{
+  "logs": {
+    "stderr": "example failed."
+  },
+  "cwd": "packages/plugin-testing/test-files/dir-contents-test",
+  "error": {
+    "name": "VirmatorNoTraceError"
+  }
+}
+`;
+
+exports[`testPlugin > tests a plugin 1`] = `
+{
+  "logs": {
+    "stdout": "4\\n{ something: true }\\n> echo \\"hi\\"; >&2 echo \\"error\\";\\nhi\\nexample finished.",
+    "stderr": "error"
+  },
+  "cwd": "packages/plugin-testing/test-files/dir-contents-test"
+}
+`;

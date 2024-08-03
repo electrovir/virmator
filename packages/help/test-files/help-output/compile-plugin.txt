@@ -1,0 +1,31 @@
+[36mvirmator usage[0m
+
+[36m[npx] virmator [--flags] command subCommand [...optional args][0m
+
+-   [36mnpx[0m is needed when the command is run directly from the terminal (not called from
+    within an npm script) unless virmator has been globally installed (which I recommend against).
+-   [36m[--flags][0m is any of the optional virmator flags. See Virmator Flags below.
+-   [36mcommand[0m, [36msubCommand[0m, and [36m[...optional args][0m depend on the specific
+    command you're running. See Available Commands below.
+
+[1m[36mAvailable commands[0m
+
+-   [1mcompile[22m[0m
+
+    Type checks TypeScript files and compiles them into JS outputs using the TypeScript compiler.
+    Any extra args are passed directly to tsc.
+
+    Automatically compiles a mono-repo's sub packages in the correct order if called from a
+    mono-repo root.
+
+    -   Examples
+        -   [36mvirmator compile[0m
+        -   With tsc flags: [36mvirmator compile --noEmit[0m
+
+[1m[36mVirmator Flags[0m
+
+All virmator flags are optional and typically not needed.
+
+-   [1m--no-configs[22m: Prevents command config files from being copied.
+-   [1m--no-deps[22m: Prevents command npm deps from being installed.
+-   [1m--help[22m: Print the help message.

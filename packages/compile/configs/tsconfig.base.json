@@ -1,0 +1,26 @@
+{
+    "compilerOptions": {
+        "alwaysStrict": true,
+        "declaration": true,
+        "esModuleInterop": true,
+        "exactOptionalPropertyTypes": true,
+        "forceConsistentCasingInFileNames": true,
+        "importHelpers": true,
+        "isolatedModules": true,
+        "module": "ES2022",
+        "moduleResolution": "Node",
+        "noEmitOnError": false,
+        "noImplicitAny": true,
+        "noImplicitOverride": true,
+        "noImplicitReturns": true,
+        "noImplicitThis": true,
+        "noUncheckedIndexedAccess": true,
+        "pretty": true,
+        "resolveJsonModule": true,
+        "skipDefaultLibCheck": true,
+        "skipLibCheck": true,
+        "strict": true,
+        "target": "ES2022",
+        "useDefineForClassFields": true
+    }
+}

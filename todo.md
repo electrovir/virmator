@@ -1,3 +1,2 @@
--   switch to ESM support
--   upgrade to Node.js v22
--   add lint command (using ESLint)
+-   update `markdown-code-example-inserter` package
+-   update `@augment-vir` packages

@@ -1,0 +1,60 @@
+{
+    "name": "virmator",
+    "version": "13.0.0",
+    "description": "Handle common package configs, commands, and dependencies.",
+    "keywords": [
+        "automation",
+        "config",
+        "configs",
+        "formatting",
+        "publish",
+        "spellcheck",
+        "template",
+        "vir"
+    ],
+    "homepage": "https://github.com/electrovir/virmator",
+    "bugs": {
+        "url": "https://github.com/electrovir/virmator/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/electrovir/virmator.git"
+    },
+    "license": "(MIT or CC0 1.0)",
+    "author": {
+        "name": "electrovir",
+        "url": "https://github.com/electrovir"
+    },
+    "type": "module",
+    "main": "src/index.ts",
+    "module": "src/index.ts",
+    "types": "src/index.ts",
+    "bin": "src/cli.ts",
+    "scripts": {
+        "compile": "virmator compile",
+        "test": "virmator test node",
+        "test:coverage": "npm test coverage",
+        "test:update": "npm test update"
+    },
+    "dependencies": {
+        "@augment-vir/node-js": "^29.3.0",
+        "@virmator/compile": "^13.0.0",
+        "@virmator/core": "^13.0.0",
+        "@virmator/deps": "^13.0.0",
+        "@virmator/docs": "^13.0.0",
+        "@virmator/format": "^13.0.0",
+        "@virmator/frontend": "^13.0.0",
+        "@virmator/help": "^13.0.0",
+        "@virmator/init": "^13.0.0",
+        "@virmator/lint": "^13.0.0",
+        "@virmator/publish": "^13.0.0",
+        "@virmator/spellcheck": "^13.0.0",
+        "@virmator/test": "^13.0.0",
+        "tsx": "^4.16.5"
+    },
+    "devDependencies": {
+        "@types/node": "^22.1.0",
+        "c8": "^10.1.2",
+        "istanbul-smart-text-reporter": "^1.1.4"
+    }
+}

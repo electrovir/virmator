@@ -1,0 +1,56 @@
+{
+    "name": "@virmator/publish",
+    "version": "13.0.0",
+    "description": "Default publish plugin for virmator.",
+    "keywords": [
+        "virmator",
+        "npm",
+        "publish",
+        "deploy",
+        "pipeline"
+    ],
+    "homepage": "https://github.com/electrovir/virmator",
+    "bugs": {
+        "url": "https://github.com/electrovir/virmator/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/electrovir/virmator.git"
+    },
+    "license": "(MIT or CC0 1.0)",
+    "author": {
+        "name": "electrovir",
+        "url": "https://github.com/electrovir"
+    },
+    "type": "module",
+    "main": "src/publish.ts",
+    "module": "src/publish.ts",
+    "types": "src/publish.ts",
+    "scripts": {
+        "compile": "virmator compile",
+        "test": "exit 0",
+        "test:coverage": "npm test",
+        "test:update": "npm test"
+    },
+    "dependencies": {
+        "@augment-vir/common": "^29.3.0",
+        "@augment-vir/node-js": "^29.3.0",
+        "@virmator/core": "^13.0.0",
+        "chalk": "^5.3.0",
+        "mri": "^1.2.0",
+        "run-time-assertions": "^1.5.2",
+        "semver": "^7.6.3",
+        "simple-git": "^3.25.0",
+        "url-vir": "^1.5.0"
+    },
+    "devDependencies": {
+        "@types/node": "^22.1.0",
+        "@types/semver": "^7.5.8",
+        "markdown-code-example-inserter": "^1.0.0",
+        "type-fest": "^4.23.0",
+        "typedoc": "^0.26.5"
+    },
+    "publishConfig": {
+        "access": "public"
+    }
+}

@@ -1,0 +1,53 @@
+{
+    "name": "@virmator/format",
+    "version": "13.0.0",
+    "description": "Default format plugin for virmator.",
+    "keywords": [
+        "virmator",
+        "format",
+        "prettier"
+    ],
+    "homepage": "https://github.com/electrovir/virmator",
+    "bugs": {
+        "url": "https://github.com/electrovir/virmator/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/electrovir/virmator.git"
+    },
+    "license": "(MIT or CC0 1.0)",
+    "author": {
+        "name": "electrovir",
+        "url": "https://github.com/electrovir"
+    },
+    "type": "module",
+    "main": "src/format.ts",
+    "module": "src/format.ts",
+    "types": "src/format.ts",
+    "scripts": {
+        "compile": "virmator compile",
+        "test": "virmator test node",
+        "test:coverage": "npm test coverage",
+        "test:update": "npm test update"
+    },
+    "dependencies": {
+        "@augment-vir/common": "^29.3.0",
+        "@virmator/core": "^13.0.0",
+        "mri": "^1.2.0"
+    },
+    "devDependencies": {
+        "c8": "^10.1.2",
+        "istanbul-smart-text-reporter": "^1.1.4",
+        "prettier": "^3.3.3",
+        "prettier-plugin-interpolated-html-tags": "^1.0.5",
+        "prettier-plugin-jsdoc": "^1.3.0",
+        "prettier-plugin-multiline-arrays": "^3.0.6",
+        "prettier-plugin-organize-imports": "^4.0.0",
+        "prettier-plugin-packagejson": "^2.5.1",
+        "prettier-plugin-sort-json": "^4.0.0",
+        "prettier-plugin-toml": "^2.0.1"
+    },
+    "publishConfig": {
+        "access": "public"
+    }
+}

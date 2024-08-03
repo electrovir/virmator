@@ -1,0 +1,28 @@
+{
+    "compilerOptions": {
+        "outDir": "./dist",
+        "rootDir": "./src"
+    },
+    "exclude": [
+        "./configs",
+        "./coverage",
+        "./dist",
+        "./dist-*",
+        "./node_modules",
+        "./test-files"
+    ],
+    "extends": "../../configs/tsconfig.base.json",
+    "references": [
+        {"path": "../compile"},
+        {"path": "../core"},
+        {"path": "../deps"},
+        {"path": "../docs"},
+        {"path": "../format"},
+        {"path": "../frontend"},
+        {"path": "../help"},
+        {"path": "../init"},
+        {"path": "../lint"},
+        {"path": "../publish"},
+        {"path": "../spellcheck"},
+        {"path": "../test"}]
+}

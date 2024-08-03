@@ -1,0 +1,52 @@
+{
+    "name": "@virmator/spellcheck",
+    "version": "13.0.0",
+    "description": "Default spellcheck plugin for virmator",
+    "keywords": [
+        "virmator",
+        "spellcheck",
+        "cspell"
+    ],
+    "homepage": "https://github.com/electrovir/virmator",
+    "bugs": {
+        "url": "https://github.com/electrovir/virmator/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/electrovir/virmator.git"
+    },
+    "license": "(MIT or CC0 1.0)",
+    "author": {
+        "name": "electrovir",
+        "url": "https://github.com/electrovir"
+    },
+    "type": "module",
+    "main": "src/spellcheck.ts",
+    "module": "src/spellcheck.ts",
+    "types": "src/spellcheck.ts",
+    "scripts": {
+        "compile": "virmator compile",
+        "test": "virmator test node",
+        "test:coverage": "npm test coverage",
+        "test:update": "npm test update"
+    },
+    "dependencies": {
+        "@augment-vir/common": "^29.3.0",
+        "@augment-vir/node-js": "^29.3.0",
+        "@virmator/core": "^13.0.0",
+        "mri": "^1.2.0",
+        "run-time-assertions": "^1.5.2"
+    },
+    "devDependencies": {
+        "@types/node": "^22.1.0",
+        "@virmator/plugin-testing": "^13.0.0",
+        "c8": "^10.1.2",
+        "concurrently": "^8.2.2",
+        "cspell": "^8.13.1",
+        "istanbul-smart-text-reporter": "^1.1.4",
+        "tsx": "^4.16.5"
+    },
+    "publishConfig": {
+        "access": "public"
+    }
+}

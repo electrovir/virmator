@@ -1,0 +1,18 @@
+exports[`Frontend > builds 1`] = `
+{
+  "logs": {
+    "stdout": "Installing typescript@5.5.4 vite@5.3.5...\\nBuilding...\\n> NODE_OPTIONS=\\"--import tsx\\" npx vite build --config configs/vite.config.ts\\npublic dir: www-static\\nroot dir:   src\\nout dir:    dist\\nbase path:  /\\nvite v5.3.5 building for production...\\ntransforming...\\n✓ 3 modules transformed.\\nrendering chunks...\\ncomputing gzip size...\\n../dist/index.html                0.29 kB │ gzip: 0.21 kB\\n../dist/assets/index-mfONQ4jQ.js  0.80 kB │ gzip: 0.45 kB\\n✓ built\\nCreating 404 page...\\nfrontend finished."
+  },
+  "cwd": "packages/frontend/test-files/valid-frontend",
+  "contentsDiff": {
+    "package.json": "{\\n    \\"type\\": \\"module\\",\\n    \\"devDependencies\\": {\\n        \\"typescript\\": \\"^5.5.4\\",\\n        \\"vite\\": \\"^5.3.5\\"\\n    }\\n}\\n",
+    "dist": {
+      "404.html": "<!doctype html>\\n<html>\\n    <head>\\n        <title>Test File</title>\\n        <meta name=\\"viewport\\" content=\\"width=device-width, minimum-scale=1.0, maximum-scale=1.0\\" />\\n      <script type=\\"module\\" crossorigin src=\\"/assets/index-mfONQ4jQ.js\\"></script>\\n    </head>\\n    <body></body>\\n</html>\\n",
+      "assets": {
+        "index-mfONQ4jQ.js": "(function(){const r=document.createElement(\\"link\\").relList;if(r&&r.supports&&r.supports(\\"modulepreload\\"))return;for(const e of document.querySelectorAll('link[rel=\\"modulepreload\\"]'))n(e);new MutationObserver(e=>{for(const t of e)if(t.type===\\"childList\\")for(const o of t.addedNodes)o.tagName===\\"LINK\\"&&o.rel===\\"modulepreload\\"&&n(o)}).observe(document,{childList:!0,subtree:!0});function i(e){const t={};return e.integrity&&(t.integrity=e.integrity),e.referrerPolicy&&(t.referrerPolicy=e.referrerPolicy),e.crossOrigin===\\"use-credentials\\"?t.credentials=\\"include\\":e.crossOrigin===\\"anonymous\\"?t.credentials=\\"omit\\":t.credentials=\\"same-origin\\",t}function n(e){if(e.ep)return;e.ep=!0;const t=i(e);fetch(e.href,t)}})();document.addEventListener(\\"DOMContentLoaded\\",function(){document.write(\\"hello there!\\")});\\n"
+      },
+      "index.html": "<!doctype html>\\n<html>\\n    <head>\\n        <title>Test File</title>\\n        <meta name=\\"viewport\\" content=\\"width=device-width, minimum-scale=1.0, maximum-scale=1.0\\" />\\n      <script type=\\"module\\" crossorigin src=\\"/assets/index-mfONQ4jQ.js\\"></script>\\n    </head>\\n    <body></body>\\n</html>\\n"
+    }
+  }
+}
+`;

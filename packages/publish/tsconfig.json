@@ -1,0 +1,20 @@
+{
+    "compilerOptions": {
+        "outDir": "./dist",
+        "rootDir": "./src"
+    },
+    "exclude": [
+        "./configs",
+        "./coverage",
+        "./dist",
+        "./dist-*",
+        "./node_modules",
+        "./test-files"
+    ],
+    "extends": "../../configs/tsconfig.base.json",
+    "references": [
+        {
+            "path": "../core"
+        }
+    ]
+}
