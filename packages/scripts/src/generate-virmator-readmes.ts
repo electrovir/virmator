@@ -8,8 +8,8 @@ const monoRepoPath = resolve(import.meta.dirname, '..', '..', '..');
 const virmatorPath = join(monoRepoPath, 'packages', 'virmator');
 
 const virmatorReadme =
-    `# @virmator\n\n` +
-    'A package for centralizing and automating mind-numbingly repetitive repo tasks and checks. New commands can easily be added through a plugin system.\n\n' +
+    `# virmator\n\n` +
+    'A package for centralizing and automating mind-numbingly repetitive repo tasks and checks. New commands can easily be added through a plugin system.\n\nNote that as of v13, this package is now in ESM.\n\n' +
     generateHelpMessageFromPlugins(defaultVirmatorPlugins, HelpMessageSyntax.Markdown);
 
 export async function checkVirmatorReadme() {

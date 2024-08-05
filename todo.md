@@ -1,4 +1,4 @@
--   fix `@virmator` title in generated `virmator` README
+-   better automated release notes in the tagged-release GitHub Actions workflow
 -   update `@augment-vir` packages
 
 # in progress

@@ -1,6 +1,8 @@
-# @virmator
+# virmator
 
 A package for centralizing and automating mind-numbingly repetitive repo tasks and checks. New commands can easily be added through a plugin system.
+
+Note that as of v13, this package is now in ESM.
 
 # virmator usage
 
