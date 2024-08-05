@@ -141,6 +141,8 @@ export const virmatorPublishPlugin = defineVirmatorPlugin(
                 });
             }
 
+            log.info(`Publishing version ${nextVersion}...`);
+
             await updateVersions(nextVersion, monoRepoRootPath, monoRepoPackages, log);
 
             await runHiddenShellCommand('npm i');
