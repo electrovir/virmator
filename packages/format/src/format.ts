@@ -59,7 +59,7 @@ export const virmatorFormatPlugin = defineVirmatorPlugin(
                 },
                 configFiles: {
                     prettier: {
-                        copyFromPath: join('configs', 'prettier.config.mjs'),
+                        copyFromPath: join('configs', 'prettier.config.share.mjs'),
                         copyToPath: 'prettier.config.mjs',
                         env: [
                             VirmatorEnv.Node,

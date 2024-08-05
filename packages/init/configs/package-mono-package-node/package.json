@@ -1,4 +1,6 @@
 {
+    "description": "",
+    "keywords": [],
     "license": "(MIT or CC0 1.0)",
     "type": "module",
     "main": "src/index.ts",

@@ -1,7 +1,11 @@
 {
+    "version": "0.0.0",
     "private": true,
     "license": "(MIT or CC0 1.0)",
     "type": "module",
+    "workspaces": [
+        "packages/*"
+    ],
     "scripts": {
         "compile": "virmator compile",
         "format": "virmator format",
