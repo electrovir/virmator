@@ -1,9 +1,9 @@
 {
     "license": "(MIT or CC0 1.0)",
     "type": "module",
-    "main": "dist/index.ts",
-    "module": "dist/index.ts",
-    "types": "dist/index.ts",
+    "main": "src/index.ts",
+    "module": "src/index.ts",
+    "types": "src/index.ts",
     "scripts": {
         "compile": "virmator compile",
         "docs": "virmator docs",
