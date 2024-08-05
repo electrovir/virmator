@@ -1,6 +1,6 @@
 {
     "name": "@virmator/init",
-    "version": "13.0.5",
+    "version": "13.1.0",
     "description": "Default init plugin for virmator.",
     "keywords": [
         "virmator",
@@ -37,7 +37,11 @@
     "devDependencies": {
         "@types/node": "^22.1.0",
         "element-vir": "^22.2.2",
-        "tsx": "^4.16.5"
+        "tsx": "^4.16.5",
+        "type-fest": "^4.23.0"
+    },
+    "engines": {
+        "node": ">=22"
     },
     "publishConfig": {
         "access": "public"

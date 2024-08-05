@@ -312,7 +312,7 @@ async function getGitCommitVersion(decrement: number, git: Readonly<SimpleGit>) 
     ] = output.split(gitCommitFormatDelimiter);
 
     const tags = maybeTag
-        ? Array.from(maybeTag.matchAll(/tag: ([^),]+)(?:\)|,)/g))
+        ? Array.from(maybeTag.matchAll(/tag: ([^),]+)[),]/g))
               .map((entry) => entry[1])
               .filter(isTruthy)
         : [];

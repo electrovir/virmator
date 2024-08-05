@@ -1,7 +1,7 @@
 import {testPlugin} from '@virmator/plugin-testing';
 import {join, resolve} from 'node:path';
 import {describe, it, type TestContext} from 'node:test';
-import {virmatorFormatPlugin} from './format';
+import {virmatorFormatPlugin} from './format.js';
 
 const packageDir = resolve(import.meta.dirname, '..');
 

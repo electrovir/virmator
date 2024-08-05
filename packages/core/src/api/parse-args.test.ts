@@ -2,7 +2,7 @@ import {NpmDepType, PackageType, VirmatorEnv} from '@virmator/core';
 import assert from 'node:assert/strict';
 import {join} from 'node:path';
 import {describe, it} from 'node:test';
-import {calculateUsedCommands} from './parse-args';
+import {calculateUsedCommands} from './parse-args.js';
 
 describe(calculateUsedCommands.name, () => {
     it('calculates correctly', () => {

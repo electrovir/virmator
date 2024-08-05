@@ -2,7 +2,7 @@ import {PackageType, VirmatorEnv} from '@virmator/core';
 import {virmatorInitPlugin} from '@virmator/init';
 import {join, resolve} from 'node:path';
 import {describe, it, type TestContext} from 'node:test';
-import {testVirmator} from './test-virmator.mock';
+import {testVirmator} from './test-virmator.mock.js';
 
 const packageDir = resolve(import.meta.dirname, '..', '..');
 

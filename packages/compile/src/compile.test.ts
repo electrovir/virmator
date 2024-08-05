@@ -2,8 +2,8 @@ import {LogOutputType, runShellCommand} from '@augment-vir/node-js';
 import {testPlugin} from '@virmator/plugin-testing';
 import {join} from 'node:path';
 import {describe, it, TestContext} from 'node:test';
-import {virmatorCompilePlugin} from './compile';
-import {testFilesDir} from './file-paths.mock';
+import {virmatorCompilePlugin} from './compile.js';
+import {testFilesDir} from './file-paths.mock.js';
 
 describe(virmatorCompilePlugin.name, () => {
     async function testVirmatorCompilePlugin(

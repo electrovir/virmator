@@ -7,9 +7,9 @@ export function accessAtKeys<T extends AnyObject>(
 ): T | undefined {
     if (!parent) {
         return undefined;
-    } else if (!isLengthAtLeast(keys, 1)) {
-        return parent;
-    } else {
+    } else if (isLengthAtLeast(keys, 1)) {
         return accessAtKeys(parent[keys[0]], keys.slice(1));
+    } else {
+        return parent;
     }
 }

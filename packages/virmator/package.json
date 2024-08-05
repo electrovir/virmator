@@ -1,6 +1,6 @@
 {
     "name": "virmator",
-    "version": "13.0.5",
+    "version": "13.1.0",
     "description": "Handle common package configs, commands, and dependencies.",
     "keywords": [
         "automation",
@@ -38,23 +38,26 @@
     },
     "dependencies": {
         "@augment-vir/node-js": "^29.3.0",
-        "@virmator/compile": "^13.0.5",
-        "@virmator/core": "^13.0.5",
-        "@virmator/deps": "^13.0.5",
-        "@virmator/docs": "^13.0.5",
-        "@virmator/format": "^13.0.5",
-        "@virmator/frontend": "^13.0.5",
-        "@virmator/help": "^13.0.5",
-        "@virmator/init": "^13.0.5",
-        "@virmator/lint": "^13.0.5",
-        "@virmator/publish": "^13.0.5",
-        "@virmator/spellcheck": "^13.0.5",
-        "@virmator/test": "^13.0.5",
+        "@virmator/compile": "^13.1.0",
+        "@virmator/core": "^13.1.0",
+        "@virmator/deps": "^13.1.0",
+        "@virmator/docs": "^13.1.0",
+        "@virmator/format": "^13.1.0",
+        "@virmator/frontend": "^13.1.0",
+        "@virmator/help": "^13.1.0",
+        "@virmator/init": "^13.1.0",
+        "@virmator/lint": "^13.1.0",
+        "@virmator/publish": "^13.1.0",
+        "@virmator/spellcheck": "^13.1.0",
+        "@virmator/test": "^13.1.0",
         "tsx": "^4.16.5"
     },
     "devDependencies": {
         "@types/node": "^22.1.0",
         "c8": "^10.1.2",
         "istanbul-smart-text-reporter": "^1.1.4"
+    },
+    "engines": {
+        "node": ">=22"
     }
 }

@@ -1,6 +1,6 @@
 import {describe, it} from 'node:test';
 import {assertRunTimeType} from 'run-time-assertions';
-import {getTerminalColor, terminalColors} from './colors';
+import {getTerminalColor, terminalColors} from './colors.js';
 
 describe(getTerminalColor.name, () => {
     it('gets a color', () => {

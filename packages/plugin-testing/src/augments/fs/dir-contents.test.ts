@@ -4,8 +4,8 @@ import {existsSync} from 'node:fs';
 import {mkdir, writeFile} from 'node:fs/promises';
 import {dirname, join, sep} from 'node:path';
 import {describe, it} from 'node:test';
-import {dirContentsTestPath} from '../../file-paths';
-import {readAllDirContents, resetDirContents} from './dir-contents';
+import {dirContentsTestPath} from '../../file-paths.js';
+import {readAllDirContents, resetDirContents} from './dir-contents.js';
 
 describe(readAllDirContents.name, () => {
     it('reads contents', async () => {

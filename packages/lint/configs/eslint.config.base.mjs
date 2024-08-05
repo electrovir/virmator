@@ -1,8 +1,10 @@
+import {FlatCompat} from '@eslint/eslintrc';
 import jsEslint from '@eslint/js';
 import stylistic from '@stylistic/eslint-plugin';
 import jsdoc from 'eslint-plugin-jsdoc';
 import prettierEslintRecommended from 'eslint-plugin-prettier/recommended';
 import sonarJsEslint from 'eslint-plugin-sonarjs';
+import eslintPluginUnicorn from 'eslint-plugin-unicorn';
 import globals from 'globals';
 import {existsSync} from 'node:fs';
 import {join} from 'node:path';
@@ -25,7 +27,13 @@ function determineTsconfigPath(repoDir) {
 }
 
 export function defineEslintConfig(repoDir) {
+    const compat = new FlatCompat({
+        baseDirectory: repoDir,
+    });
+
     return [
+        ...compat.plugins('require-extensions'),
+        ...compat.extends('plugin:require-extensions/recommended'),
         {
             ignores: [
                 '*.graphql',
@@ -57,6 +65,7 @@ export function defineEslintConfig(repoDir) {
             plugins: {
                 '@stylistic': stylistic,
                 '@jsdoc': jsdoc,
+                unicorn: eslintPluginUnicorn,
             },
             rules: {
                 '@typescript-eslint/no-dynamic-delete': 'off',
@@ -70,6 +79,59 @@ export function defineEslintConfig(repoDir) {
                 '@typescript-eslint/no-unsafe-member-access': 'off',
                 'prettier/prettier': 'off',
                 'sonarjs/no-duplicate-string': 'off',
+
+                'no-lonely-if': 'error',
+
+                'unicorn/new-for-builtins': 'error',
+                'unicorn/no-array-push-push': 'error',
+                'unicorn/no-await-in-promise-methods': 'error',
+                'unicorn/no-document-cookie': 'error',
+                'unicorn/no-empty-file': 'error',
+                'unicorn/no-for-loop': 'error',
+                'unicorn/no-instanceof-array': 'error',
+                'unicorn/no-invalid-fetch-options': 'error',
+                'unicorn/no-invalid-remove-event-listener': 'error',
+                'unicorn/no-length-as-slice-end': 'error',
+                'unicorn/no-lonely-if': 'error',
+                'unicorn/no-negated-condition': 'error',
+                'unicorn/no-negation-in-equality-check': 'error',
+                'unicorn/no-useless-length-check': 'error',
+                'unicorn/no-single-promise-in-promise-methods': 'error',
+                'unicorn/no-thenable': 'error',
+                /** Not sure on this one. */
+                'unicorn/no-unnecessary-await': 'error',
+                'unicorn/no-unnecessary-polyfills': 'error',
+                'unicorn/no-unreadable-iife': 'error',
+                'unicorn/no-useless-fallback-in-spread': 'error',
+                'unicorn/no-useless-promise-resolve-reject': 'error',
+                'unicorn/no-useless-spread': 'error',
+                'unicorn/no-useless-switch-case': 'error',
+                'unicorn/no-zero-fractions': 'error',
+                'unicorn/number-literal-case': 'error',
+                'unicorn/prefer-logical-operator-over-ternary': 'error',
+                'unicorn/numeric-separators-style': 'error',
+                'unicorn/prefer-array-find': 'error',
+                'unicorn/prefer-array-flat': 'error',
+                'unicorn/prefer-array-flat-map': 'error',
+                'unicorn/prefer-array-index-of': 'error',
+                'unicorn/prefer-array-some': 'error',
+                'unicorn/prefer-blob-reading-methods': 'error',
+                'unicorn/prefer-code-point': 'error',
+                'unicorn/prefer-date-now': 'error',
+                'unicorn/prefer-dom-node-append': 'error',
+                'unicorn/prefer-dom-node-remove': 'error',
+                'unicorn/prefer-event-target': 'error',
+                'unicorn/prefer-export-from': 'error',
+                'unicorn/prefer-includes': 'error',
+                'unicorn/prefer-modern-dom-apis': 'error',
+                'unicorn/prefer-module': 'error',
+                'unicorn/prefer-modern-math-apis': 'error',
+                'unicorn/prefer-set-size': 'error',
+                'unicorn/prefer-string-raw': 'error',
+                'unicorn/prefer-string-slice': 'error',
+                'unicorn/prefer-type-error': 'error',
+                'unicorn/throw-new-error': 'error',
+                'unicorn/prefer-node-protocol': 'error',
 
                 '@jsdoc/no-undefined-types': 'error',
                 '@typescript-eslint/await-thenable': 'error',

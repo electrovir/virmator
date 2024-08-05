@@ -2,7 +2,7 @@ import {PackageType, VirmatorEnv} from '@virmator/core';
 import assert from 'node:assert/strict';
 import {join} from 'node:path';
 import {describe, it} from 'node:test';
-import {flattenConfigs} from './copy-configs';
+import {flattenConfigs} from './copy-configs.js';
 
 describe(flattenConfigs.name, () => {
     it('flattens the compile configs', () => {

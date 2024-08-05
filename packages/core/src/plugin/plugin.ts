@@ -1,10 +1,10 @@
 import {existsSync} from 'node:fs';
 import {join} from 'node:path';
-import {searchUpwardsForDir} from '../augments/fs/search';
-import {VirmatorPlugin, VirmatorPluginExecutor} from './plugin-executor';
-import {VirmatorPluginCliCommands, VirmatorPluginInit} from './plugin-init';
+import {searchUpwardsForDir} from '../augments/fs/search.js';
+import {VirmatorPlugin, VirmatorPluginExecutor} from './plugin-executor.js';
+import {VirmatorPluginCliCommands, VirmatorPluginInit} from './plugin-init.js';
 
-export type {VirmatorPlugin} from './plugin-executor';
+export type {VirmatorPlugin} from './plugin-executor.js';
 
 /** Define a virmator plugin. */
 export function defineVirmatorPlugin<const Commands extends VirmatorPluginCliCommands>(

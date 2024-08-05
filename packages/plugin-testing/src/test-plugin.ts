@@ -22,8 +22,8 @@ import {
 import {relative, sep} from 'node:path';
 import {TestContext} from 'node:test';
 import {diffObjects} from 'run-time-assertions';
-import {DirContents, readAllDirContents, resetDirContents} from './augments/index';
-import {monoRepoDir} from './file-paths';
+import {DirContents, readAllDirContents, resetDirContents} from './augments/index.js';
+import {monoRepoDir} from './file-paths.js';
 
 /** Log string transformer. */
 export type LogTransform = (logType: LogOutputType, arg: string) => string;

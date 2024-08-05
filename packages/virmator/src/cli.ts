@@ -7,7 +7,7 @@ import {
     VirmatorNoTraceError,
 } from '@virmator/core';
 import {fileURLToPath} from 'node:url';
-import {defaultVirmatorPlugins} from './index';
+import {defaultVirmatorPlugins} from './index.js';
 
 const log = createPluginLogger(process);
 

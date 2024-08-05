@@ -1,5 +1,5 @@
-import {VirmatorPluginConfigFile} from './plugin-configs';
-import {PackageType, VirmatorEnv} from './plugin-env';
+import {VirmatorPluginConfigFile} from './plugin-configs.js';
+import {PackageType, VirmatorEnv} from './plugin-env.js';
 
 /** A single doc entry for {@link PluginCommandDocs}. */
 export type PluginDocEntry = Readonly<{

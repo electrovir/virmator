@@ -13,6 +13,9 @@
         "test:coverage": "npm run test coverage",
         "test:docs": "virmator docs check"
     },
+    "engines": {
+        "node": ">=22"
+    },
     "publishConfig": {
         "access": "public"
     }

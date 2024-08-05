@@ -1,6 +1,6 @@
 {
     "name": "@virmator/help",
-    "version": "13.0.5",
+    "version": "13.1.0",
     "description": "Default help plugin for virmator.",
     "keywords": [
         "virmator",
@@ -39,6 +39,9 @@
         "@types/node": "^22.1.0",
         "c8": "^10.1.2",
         "istanbul-smart-text-reporter": "^1.1.4"
+    },
+    "engines": {
+        "node": ">=22"
     },
     "publishConfig": {
         "access": "public"

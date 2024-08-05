@@ -1,5 +1,5 @@
 import {ColorKey, Logger, LogOutputType, toLogString} from '@augment-vir/node-js';
-import {Socket} from 'net';
+import {Socket} from 'node:net';
 
 /** An extensions of `@augment-vir/node-js`'s logger with a `plain` log command. */
 export type PluginLogger = Logger & {plain: Logger['faint']};

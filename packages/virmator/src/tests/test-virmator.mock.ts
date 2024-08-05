@@ -1,6 +1,6 @@
 import {testPlugin, TestPluginOptions} from '@virmator/plugin-testing';
 import {TestContext} from 'node:test';
-import {defaultVirmatorPlugins} from '../index';
+import {defaultVirmatorPlugins} from '../index.js';
 
 export async function testVirmator(
     shouldPass: boolean,

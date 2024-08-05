@@ -1,4 +1,4 @@
-import {PackageType, VirmatorEnv} from './plugin-env';
+import {PackageType, VirmatorEnv} from './plugin-env.js';
 
 /** Definition for a plugin's config file. */
 export type VirmatorPluginConfigFile = {

@@ -1,5 +1,5 @@
-import {Writable} from 'stream';
-import {PluginLogger} from '../../plugin/plugin-logger';
+import {Writable} from 'node:stream';
+import {PluginLogger} from '../../plugin/plugin-logger.js';
 
 /** A {@link Writable} implementation that writes to the provided plugin logger. */
 export class CallbackWritable extends Writable {

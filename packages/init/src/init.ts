@@ -9,6 +9,7 @@ import {
     getEnumTypedValues,
     isEnumValue,
     joinWithFinalConjunction,
+    pickObjectKeys,
 } from '@augment-vir/common';
 import {readPackageJson, writeJson} from '@augment-vir/node-js';
 import {
@@ -26,6 +27,7 @@ import {
 } from '@virmator/core';
 import {basename, join} from 'node:path';
 import {simpleGit} from 'simple-git';
+import {PackageJson} from 'type-fest';
 
 const deps: PluginNpmDeps = {
     'mono-vir': {
@@ -345,7 +347,7 @@ export const virmatorInitPlugin = defineVirmatorPlugin(
     },
     async ({
         cliInputs: {filteredArgs},
-        package: {cwdPackagePath},
+        package: {cwdPackagePath, cwdPackageJson},
         virmator: {allPlugins},
         log,
         runInstallDeps,
@@ -379,11 +381,11 @@ export const virmatorInitPlugin = defineVirmatorPlugin(
             await copyConfigFile(config, log, true);
         });
 
-        await writePackageJson(cwdPackagePath);
+        await writePackageJson(cwdPackageJson, cwdPackagePath);
     },
 );
 
-async function writePackageJson(packagePath: string) {
+async function writePackageJson(originalPackageJson: Readonly<PackageJson>, packagePath: string) {
     const currentPackageJson = await readPackageJson(packagePath);
     const git = simpleGit(packagePath);
     const remotes = await git.getRemotes(true);
@@ -394,6 +396,12 @@ async function writePackageJson(packagePath: string) {
         name: basename(packagePath),
         ...gitProperties,
         ...currentPackageJson,
+        ...pickObjectKeys(originalPackageJson, [
+            'dependencies',
+            'devDependencies',
+            'overrides',
+            'peerDependencies',
+        ]),
     };
 
     await writeJson(join(packagePath, 'package.json'), packageJson);

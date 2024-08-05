@@ -1,5 +1,5 @@
 import {defineVirmatorPlugin} from '@virmator/core';
-import {generateHelpMessageFromPlugins, HelpMessageSyntax} from './help-message';
+import {generateHelpMessageFromPlugins, HelpMessageSyntax} from './help-message.js';
 
 /** A virmator plugin for printing help messages from other plugins. */
 export const virmatorHelpPlugin = defineVirmatorPlugin(

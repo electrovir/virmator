@@ -2,8 +2,8 @@ import assert from 'node:assert/strict';
 import {basename, join} from 'node:path';
 import {describe, it} from 'node:test';
 import {assertDefined} from 'run-time-assertions';
-import {coreTestFilesDir, monoRepoTestFilesDir} from '../../file-paths.mock';
-import {parseTsConfig} from './parse-tsconfig';
+import {coreTestFilesDir, monoRepoTestFilesDir} from '../../file-paths.mock.js';
+import {parseTsConfig} from './parse-tsconfig.js';
 
 const tsConfigsPath = join(coreTestFilesDir, 'ts-configs');
 

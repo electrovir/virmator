@@ -1,7 +1,7 @@
 import {testPlugin} from '@virmator/plugin-testing';
 import {join, resolve} from 'node:path';
 import {describe, it, type TestContext} from 'node:test';
-import {virmatorSpellcheckPlugin} from './spellcheck';
+import {virmatorSpellcheckPlugin} from './spellcheck.js';
 
 const packageDir = resolve(import.meta.dirname, '..');
 

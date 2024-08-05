@@ -22,9 +22,3 @@ jobs:
               uses: softprops/action-gh-release@v2.0.8
               with:
                   make_latest: true
-
-            - name: latest version
-              uses: softprops/action-gh-release@v2.0.8
-              with:
-                  make_latest: false
-                  tag_name: latest

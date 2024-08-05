@@ -1,4 +1,4 @@
-import {A} from './aa';
+import {A} from './aa.js';
 
 export const value: A = {
     here: 'yo',

@@ -2,8 +2,8 @@ import {defineVirmatorPlugin, VirmatorNoTraceError} from '@virmator/core';
 import assert from 'node:assert/strict';
 import {describe, it, TestContext} from 'node:test';
 import {assertThrows} from 'run-time-assertions';
-import {dirContentsTestPath} from './file-paths';
-import {testPlugin} from './test-plugin';
+import {dirContentsTestPath} from './file-paths.js';
+import {testPlugin} from './test-plugin.js';
 
 describe(testPlugin.name, () => {
     const virmatorExamplePlugin = defineVirmatorPlugin(

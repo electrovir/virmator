@@ -2,7 +2,7 @@ import {collapseWhiteSpace, wrapString} from '@augment-vir/common';
 import {testPlugin} from '@virmator/plugin-testing';
 import {join, resolve, sep} from 'node:path';
 import {describe, it, type TestContext} from 'node:test';
-import {virmatorTestPlugin} from './test';
+import {virmatorTestPlugin} from './test.js';
 
 const packageDir = resolve(import.meta.dirname, '..');
 

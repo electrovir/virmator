@@ -1,8 +1,8 @@
 import {extractErrorMessage} from '@augment-vir/common';
 import {log} from '@augment-vir/node-js';
 import mri from 'mri';
-import {checkPluginReadmes, writePluginReadmes} from './generate-plugin-readmes';
-import {checkVirmatorReadme, writeVirmatorReadme} from './generate-virmator-readmes';
+import {checkPluginReadmes, writePluginReadmes} from './generate-plugin-readmes.js';
+import {checkVirmatorReadme, writeVirmatorReadme} from './generate-virmator-readmes.js';
 
 async function cli() {
     const args = mri(process.argv);

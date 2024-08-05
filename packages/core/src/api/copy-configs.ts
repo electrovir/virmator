@@ -2,14 +2,14 @@ import {awaitedForEach, extractErrorMessage, MaybePromise} from '@augment-vir/co
 import {existsSync} from 'node:fs';
 import {mkdir, readFile, writeFile} from 'node:fs/promises';
 import {basename, dirname, join} from 'node:path';
-import {VirmatorPluginResolvedConfigFile} from '../plugin/plugin-configs';
-import {PackageType} from '../plugin/plugin-env';
+import {VirmatorPluginResolvedConfigFile} from '../plugin/plugin-configs.js';
+import {PackageType} from '../plugin/plugin-env.js';
 import {
     MonoRepoPackage,
     UsedVirmatorPluginCommands,
     VirmatorPluginResolvedConfigs,
-} from '../plugin/plugin-executor';
-import {PluginLogger} from '../plugin/plugin-logger';
+} from '../plugin/plugin-executor.js';
+import {PluginLogger} from '../plugin/plugin-logger.js';
 
 /**
  * Extracts a 1d array of virmator plugin config files from previously calculated used commands and

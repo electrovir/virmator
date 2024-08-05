@@ -8,12 +8,12 @@ import {
 import {extractRelevantArgs} from 'cli-args-vir';
 import {isRunTimeType} from 'run-time-assertions';
 import {Writable} from 'type-fest';
-import {accessAtKeys} from '../augments/object/access';
-import {VirmatorPlugin} from '../plugin/plugin';
-import {UsedVirmatorPluginCommands} from '../plugin/plugin-executor';
-import {VirmatorPluginCliCommands} from '../plugin/plugin-init';
-import {PluginLogger} from '../plugin/plugin-logger';
-import {SetVirmatorFlags, virmatorFlags} from './virmator-flags';
+import {accessAtKeys} from '../augments/object/access.js';
+import {UsedVirmatorPluginCommands} from '../plugin/plugin-executor.js';
+import {VirmatorPluginCliCommands} from '../plugin/plugin-init.js';
+import {PluginLogger} from '../plugin/plugin-logger.js';
+import {VirmatorPlugin} from '../plugin/plugin.js';
+import {SetVirmatorFlags, virmatorFlags} from './virmator-flags.js';
 
 /** All supported sets of args for virmator. */
 export type ParsedArgs = {

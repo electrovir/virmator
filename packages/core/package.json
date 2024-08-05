@@ -1,6 +1,6 @@
 {
     "name": "@virmator/core",
-    "version": "13.0.5",
+    "version": "13.1.0",
     "description": "Shared core functionality for all virmator plugins and the virmator CLI.",
     "keywords": [
         "automation",
@@ -47,6 +47,9 @@
         "@types/node": "^22.1.0",
         "@types/semver": "^7.5.8",
         "esbuild": "^0.23.0"
+    },
+    "engines": {
+        "node": ">=22"
     },
     "publishConfig": {
         "access": "public"

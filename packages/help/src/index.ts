@@ -1,2 +1,2 @@
-export * from './help';
-export * from './help-message';
+export * from './help-message.js';
+export * from './help.js';

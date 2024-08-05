@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import {describe, it} from 'node:test';
-import {accessAtKeys} from './access';
+import {accessAtKeys} from './access.js';
 
 describe(accessAtKeys.name, () => {
     it('accesses a top member', () => {

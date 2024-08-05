@@ -2,7 +2,7 @@ import {MaybePromise, wrapInTry} from '@augment-vir/common';
 import {toPosixPath} from '@augment-vir/node-js';
 import {rm} from 'node:fs/promises';
 import {basename, join, relative} from 'node:path';
-import {findClosestNodeModulesDir} from '../augments/index';
+import {findClosestNodeModulesDir} from '../augments/index.js';
 
 /**
  * Compiles and imports a TS file so it can be used within JS contexts. After the given callback is

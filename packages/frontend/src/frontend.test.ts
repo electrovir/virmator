@@ -1,7 +1,7 @@
 import {testPlugin} from '@virmator/plugin-testing';
 import {join, resolve} from 'node:path';
 import {describe, it, type TestContext} from 'node:test';
-import {virmatorFrontendPlugin} from './frontend';
+import {virmatorFrontendPlugin} from './frontend.js';
 
 const packageDir = resolve(import.meta.dirname, '..');
 

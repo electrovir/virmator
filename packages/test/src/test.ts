@@ -229,6 +229,16 @@ export const virmatorTestPlugin = defineVirmatorPlugin(
                                         ],
                                         type: NpmDepType.Dev,
                                     },
+                                    '@types/node': {
+                                        env: [
+                                            VirmatorEnv.Node,
+                                        ],
+                                        packageType: [
+                                            PackageType.MonoPackage,
+                                            PackageType.TopPackage,
+                                        ],
+                                        type: NpmDepType.Dev,
+                                    },
                                 },
                             },
                             update: {
@@ -347,7 +357,7 @@ export const virmatorTestPlugin = defineVirmatorPlugin(
             await runShellCommand(testCommand, {
                 env: {
                     ...process.env,
-                    FORCE_COLOR: '1',
+                    FORCE_COLOR: '2',
                 },
             });
         } else {

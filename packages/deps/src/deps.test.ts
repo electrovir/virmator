@@ -3,7 +3,7 @@ import {virmatorFlags} from '@virmator/core';
 import {testPlugin} from '@virmator/plugin-testing';
 import {join, resolve} from 'node:path';
 import {describe, it, type TestContext} from 'node:test';
-import {virmatorDepsPlugin} from './deps';
+import {virmatorDepsPlugin} from './deps.js';
 
 const packageDir = resolve(import.meta.dirname, '..');
 

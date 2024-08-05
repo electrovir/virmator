@@ -16,5 +16,8 @@
         "test:lint": "virmator lint",
         "test:spelling": "virmator spellcheck",
         "test:update": "mono-vir for-each-async npm run test:update"
+    },
+    "engines": {
+        "node": ">=22"
     }
 }

@@ -13,6 +13,9 @@
         "test:docs": "virmator docs check",
         "test:update": "npm test update"
     },
+    "engines": {
+        "node": ">=22"
+    },
     "publishConfig": {
         "access": "public"
     }

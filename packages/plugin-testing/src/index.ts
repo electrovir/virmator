@@ -1,2 +1,2 @@
-export * from './augments/index';
-export * from './test-plugin';
+export * from './augments/index.js';
+export * from './test-plugin.js';

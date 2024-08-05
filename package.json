@@ -1,6 +1,6 @@
 {
     "name": "@virmator/mono-repo-root",
-    "version": "13.0.5",
+    "version": "13.1.0",
     "private": true,
     "type": "module",
     "workspaces": [
@@ -22,8 +22,8 @@
         "test:spelling": "virmator spellcheck",
         "test:update": "mono-vir for-each-async npm run test:update"
     },
-    "dependencies": {},
     "devDependencies": {
+        "@eslint/eslintrc": "^3.1.0",
         "@eslint/js": "^9.8.0",
         "@stylistic/eslint-plugin": "^2.6.1",
         "@stylistic/eslint-plugin-ts": "^2.6.1",
@@ -34,9 +34,9 @@
         "eslint": "^9.8.0",
         "eslint-config-prettier": "^9.1.0",
         "eslint-plugin-jsdoc": "^48.11.0",
-        "eslint-plugin-mocha": "^10.5.0",
         "eslint-plugin-playwright": "^1.6.2",
         "eslint-plugin-prettier": "^5.2.1",
+        "eslint-plugin-require-extensions": "^0.1.3",
         "eslint-plugin-sonarjs": "^1.0.4",
         "markdown-code-example-inserter": "^1.0.0",
         "mono-vir": "^1.0.1",
@@ -51,6 +51,9 @@
         "prettier-plugin-toml": "^2.0.1",
         "typescript-eslint": "^8.0.0",
         "virmator": "./"
+    },
+    "engines": {
+        "node": ">=22"
     },
     "overrides": {
         "virmator": "*"

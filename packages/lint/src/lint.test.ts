@@ -1,7 +1,7 @@
 import {testPlugin} from '@virmator/plugin-testing';
 import {join, resolve} from 'node:path';
 import {describe, it, TestContext} from 'node:test';
-import {virmatorLintPlugin} from './lint';
+import {virmatorLintPlugin} from './lint.js';
 
 const testFilesDir = resolve(import.meta.dirname, '..', 'test-files');
 

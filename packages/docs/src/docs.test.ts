@@ -5,7 +5,7 @@ import assert from 'node:assert/strict';
 import {existsSync} from 'node:fs';
 import {join, resolve, sep} from 'node:path';
 import {describe, it, type TestContext} from 'node:test';
-import {virmatorDocsPlugin} from './docs';
+import {virmatorDocsPlugin} from './docs.js';
 
 const packageDir = resolve(import.meta.dirname, '..');
 

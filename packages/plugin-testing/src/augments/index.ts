@@ -1,1 +1,1 @@
-export * from './fs/dir-contents';
+export * from './fs/dir-contents.js';

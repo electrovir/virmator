@@ -60,6 +60,7 @@ A default plugin for [virmator](https://www.npmjs.com/package/virmator).
                     -   Deps
                         -   [c8](https://npmjs.com/package/c8)
                         -   [istanbul-smart-text-reporter](https://npmjs.com/package/istanbul-smart-text-reporter)
+                        -   [@types/node](https://npmjs.com/package/@types/node)
 
                 -   **update**
 

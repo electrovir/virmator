@@ -14,25 +14,25 @@ import {cpus} from 'node:os';
 import {join, resolve} from 'node:path';
 import {isRunTimeType} from 'run-time-assertions';
 import {PackageJson} from 'type-fest';
-import {findClosestPackageDir} from '../augments/index';
-import {CallbackWritable} from '../augments/stream/callback-writable';
-import {getTerminalColor} from '../colors';
-import {hideNoTraceTraces, VirmatorNoTraceError} from '../errors/virmator-no-trace.error';
-import {VirmatorPlugin} from '../plugin/plugin';
-import {VirmatorPluginResolvedConfigFile} from '../plugin/plugin-configs';
-import {PackageType} from '../plugin/plugin-env';
+import {findClosestPackageDir} from '../augments/index.js';
+import {CallbackWritable} from '../augments/stream/callback-writable.js';
+import {getTerminalColor} from '../colors.js';
+import {hideNoTraceTraces, VirmatorNoTraceError} from '../errors/virmator-no-trace.error.js';
+import {VirmatorPluginResolvedConfigFile} from '../plugin/plugin-configs.js';
+import {PackageType} from '../plugin/plugin-env.js';
 import {
     ExtraRunShellCommandOptions,
     MonoRepoPackage,
     ValidPackageJson,
     VirmatorPluginExecutorParams,
     VirmatorPluginResolvedConfigs,
-} from '../plugin/plugin-executor';
-import {VirmatorPluginCliCommands} from '../plugin/plugin-init';
-import {createPluginLogger, PluginLogger} from '../plugin/plugin-logger';
-import {copyPluginConfigs} from './copy-configs';
-import {installNpmDeps, installPluginNpmDeps} from './install-deps';
-import {parseCliArgs} from './parse-args';
+} from '../plugin/plugin-executor.js';
+import {VirmatorPluginCliCommands} from '../plugin/plugin-init.js';
+import {createPluginLogger, PluginLogger} from '../plugin/plugin-logger.js';
+import {VirmatorPlugin} from '../plugin/plugin.js';
+import {copyPluginConfigs} from './copy-configs.js';
+import {installNpmDeps, installPluginNpmDeps} from './install-deps.js';
+import {parseCliArgs} from './parse-args.js';
 
 /** Params for executing a plugin command. */
 export type ExecuteCommandParams = {
@@ -132,7 +132,7 @@ async function determinePackageType(
                 const parentPackages = await getMonoRepoPackages(monoRepoRootPath);
 
                 if (
-                    parentPackages.find((monoPackage) => {
+                    parentPackages.some((monoPackage) => {
                         return join(monoRepoRootPath, monoPackage.relativePath) === cwdPackagePath;
                     })
                 ) {
@@ -179,7 +179,7 @@ async function findMonoRepoDir(cwdPackagePath: string) {
         const parentPackages = await getMonoRepoPackages(parentPackageDir);
 
         if (
-            parentPackages.find((monoPackage) => {
+            parentPackages.some((monoPackage) => {
                 return join(parentPackageDir, monoPackage.relativePath) === cwdPackagePath;
             })
         ) {
@@ -350,7 +350,7 @@ export async function executeVirmatorCommand({
             const writeStream = new CallbackWritable(log);
 
             /** Force concurrently to use color even though it's being run as a subscript. */
-            process.env.FORCE_COLOR = '1';
+            process.env.FORCE_COLOR = '2';
 
             let concurrentlyResults: ReadonlyArray<CloseEvent> = [];
             let failed = false;

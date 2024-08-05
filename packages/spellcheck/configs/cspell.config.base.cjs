@@ -115,6 +115,7 @@ const baseConfig = {
         'htmliframeelement',
         'iframe',
         'iframes',
+        'iife',
         'inconsolata',
         'indexeddb',
         'inuvik',

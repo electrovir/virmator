@@ -7,15 +7,15 @@ import type {
 import type {LogOutputType, runShellCommand} from '@augment-vir/node-js';
 import {ChalkInstance} from 'chalk';
 import {EmptyObject, PackageJson, SetRequired} from 'type-fest';
-import {VirmatorPluginResolvedConfigFile} from './plugin-configs';
-import {PackageType} from './plugin-env';
+import {VirmatorPluginResolvedConfigFile} from './plugin-configs.js';
+import {PackageType} from './plugin-env.js';
 import {
     IndividualPluginCommand,
     PluginNpmDeps,
     VirmatorPluginCliCommands,
     VirmatorPluginInit,
-} from './plugin-init';
-import {PluginLogger} from './plugin-logger';
+} from './plugin-init.js';
+import {PluginLogger} from './plugin-logger.js';
 
 /** A picked nesting of commands based on which commands are currently in use. */
 export type UsedVirmatorPluginCommands<

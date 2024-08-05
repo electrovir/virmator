@@ -20,5 +20,8 @@
         "test:lint": "virmator lint",
         "test:spelling": "virmator spellcheck",
         "test:update": "npm run test update"
+    },
+    "engines": {
+        "node": ">=22"
     }
 }
