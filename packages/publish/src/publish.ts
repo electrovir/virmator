@@ -19,6 +19,7 @@ import {
     ValidPackageJson,
     VirmatorNoTraceError,
 } from '@virmator/core';
+import {existsSync} from 'node:fs';
 import {readFile, writeFile} from 'node:fs/promises';
 import {join, relative, resolve} from 'node:path';
 import {assertDefined} from 'run-time-assertions';
@@ -193,6 +194,33 @@ export const virmatorPublishPlugin = defineVirmatorPlugin(
             if (packageJsonContents !== alteredJsonFile.original) {
                 alteredPackageJsonFiles.push(alteredJsonFile);
                 await writeFile(alteredJsonFile.path, packageJsonContents);
+            }
+
+            const updatedPackageJson = await readPackageJson(packagePath);
+
+            if (
+                updatedPackageJson.main &&
+                !existsSync(join(packagePath, updatedPackageJson.main))
+            ) {
+                throw new Error(
+                    `Missing 'main' file '${updatedPackageJson.main}' from '${relative(monoRepoRootPath, packageJsonPath)}'.`,
+                );
+            }
+            if (
+                updatedPackageJson.module &&
+                !existsSync(join(packagePath, updatedPackageJson.module))
+            ) {
+                throw new Error(
+                    `Missing 'module' file '${updatedPackageJson.module}' from '${relative(monoRepoRootPath, packageJsonPath)}'.`,
+                );
+            }
+            if (
+                updatedPackageJson.types &&
+                !existsSync(join(packagePath, updatedPackageJson.types))
+            ) {
+                throw new Error(
+                    `Missing 'types' file '${updatedPackageJson.types}' from '${relative(monoRepoRootPath, packageJsonPath)}'.`,
+                );
             }
         }
         try {
