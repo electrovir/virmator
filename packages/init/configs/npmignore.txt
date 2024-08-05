@@ -17,9 +17,10 @@
 /www-static/
 bash-scripts/
 dist-docs/
+eslint.config.mjs
 generated-config-*
 index.html
+prettier.config.mjs
 test-files/
 todo.md
-tsconfig.tsbuildinfo
-tsconfig*.json
+tsconfig.*

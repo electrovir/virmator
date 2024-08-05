@@ -52,7 +52,7 @@ export const virmatorLintPlugin = defineVirmatorPlugin(
                         required: true,
                     },
                     eslint: {
-                        copyFromPath: join('configs', 'eslint.config.mjs'),
+                        copyFromPath: join('configs', 'eslint.config.share.mjs'),
                         copyToPath: join('eslint.config.mjs'),
                         env: [
                             VirmatorEnv.Node,
