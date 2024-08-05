@@ -92,6 +92,17 @@ export const virmatorLintPlugin = defineVirmatorPlugin(
                             PackageType.MonoRoot,
                         ],
                     },
+                    'eslint-plugin-unicorn': {
+                        type: NpmDepType.Dev,
+                        env: [
+                            VirmatorEnv.Node,
+                            VirmatorEnv.Web,
+                        ],
+                        packageType: [
+                            PackageType.TopPackage,
+                            PackageType.MonoRoot,
+                        ],
+                    },
                     '@eslint/js': {
                         type: NpmDepType.Dev,
                         env: [

@@ -16,6 +16,7 @@ A default plugin for [virmator](https://www.npmjs.com/package/virmator).
     -   Deps
         -   [eslint](https://npmjs.com/package/eslint)
         -   [eslint-plugin-require-extensions](https://npmjs.com/package/eslint-plugin-require-extensions)
+        -   [eslint-plugin-unicorn](https://npmjs.com/package/eslint-plugin-unicorn)
         -   [@eslint/js](https://npmjs.com/package/@eslint/js)
         -   [@eslint/eslintrc](https://npmjs.com/package/@eslint/eslintrc)
         -   [@stylistic/eslint-plugin](https://npmjs.com/package/@stylistic/eslint-plugin)

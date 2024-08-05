@@ -7,6 +7,16 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 export default [
     ...defineEslintConfig(__dirname),
     {
-        ignores: [],
+        ignores: [
+            /** Add file globs that should be ignored. */
+        ],
+    },
+    {
+        rules: {
+            /**
+             * Turn off or on specific rules. See {@link defineEslintConfig} for which plugins are
+             * already enabled.
+             */
+        },
     },
 ];
