@@ -1,12 +1,12 @@
 exports[`Docs > allows custom file inputs 1`] = `
 {
   "logs": {
-    "stdout": "Copied typedoc.config.ts\\nInstalling markdown-code-example-inserter@1.0.0 typedoc@0.26.5 esbuild@0.23.0...\\n> npx md-code --check something-else.md\\ndocs finished.",
+    "stdout": "Copied typedoc.config.ts\\nInstalling markdown-code-example-inserter@2.0.2 typedoc@0.26.5 esbuild@0.23.0...\\n> npx md-code --check something-else.md\\ndocs finished.",
     "stderr": "No markdown files given to insert code into."
   },
   "cwd": "packages/docs/test-files/valid-docs",
   "contentsDiff": {
-    "package.json": "{\\n  \\"devDependencies\\": {\\n    \\"esbuild\\": \\"^0.23.0\\",\\n    \\"markdown-code-example-inserter\\": \\"^1.0.0\\",\\n    \\"typedoc\\": \\"^0.26.5\\"\\n  }\\n}\\n",
+    "package.json": "{\\n  \\"devDependencies\\": {\\n    \\"esbuild\\": \\"^0.23.0\\",\\n    \\"markdown-code-example-inserter\\": \\"^2.0.2\\",\\n    \\"typedoc\\": \\"^0.26.5\\"\\n  }\\n}\\n",
     "configs": {
       "typedoc.config.ts": "import {baseTypedocConfig} from '@virmator/docs/configs/typedoc.config.base';\\nimport {join, resolve} from 'node:path';\\nimport type {TypeDocOptions} from 'typedoc';\\n\\nconst repoRoot = resolve(\\n    __dirname,\\n    /** Go up two directories because this gets compiled into \`node_modules/.virmator\` */\\n    '..',\\n    '..',\\n);\\nconst indexTsFile = join(repoRoot, 'src', 'index.ts');\\n\\nexport const typeDocConfig: Partial<TypeDocOptions> = {\\n    ...baseTypedocConfig,\\n    out: join(repoRoot, 'dist-docs'),\\n    entryPoints: [\\n        indexTsFile,\\n    ],\\n    intentionallyNotExported: [],\\n    defaultCategory: 'MISSING CATEGORY',\\n    categoryOrder: [\\n        'Main',\\n        'Internal',\\n    ],\\n};\\n"
     }
@@ -17,12 +17,12 @@ exports[`Docs > allows custom file inputs 1`] = `
 exports[`Docs > does not error on missing markdown files 1`] = `
 {
   "logs": {
-    "stdout": "Copied typedoc.config.ts\\nInstalling markdown-code-example-inserter@1.0.0 typedoc@0.26.5 esbuild@0.23.0...\\n> npx md-code 'README.md'\\ndocs finished.",
+    "stdout": "Copied typedoc.config.ts\\nInstalling markdown-code-example-inserter@2.0.2 typedoc@0.26.5 esbuild@0.23.0...\\n> npx md-code 'README.md'\\ndocs finished.",
     "stderr": "No markdown files given to insert code into."
   },
   "cwd": "packages/docs/test-files/mono-repo/packages/c",
   "contentsDiff": {
-    "package.json": "{\\n    \\"name\\": \\"c\\",\\n    \\"devDependencies\\": {\\n        \\"esbuild\\": \\"^0.23.0\\",\\n        \\"markdown-code-example-inserter\\": \\"^1.0.0\\",\\n        \\"typedoc\\": \\"^0.26.5\\"\\n    }\\n}\\n",
+    "package.json": "{\\n    \\"name\\": \\"c\\",\\n    \\"devDependencies\\": {\\n        \\"esbuild\\": \\"^0.23.0\\",\\n        \\"markdown-code-example-inserter\\": \\"^2.0.2\\",\\n        \\"typedoc\\": \\"^0.26.5\\"\\n    }\\n}\\n",
     "configs": {
       "typedoc.config.ts": "import {baseTypedocConfig} from '@virmator/docs/configs/typedoc.config.base';\\nimport {join, resolve} from 'node:path';\\nimport type {TypeDocOptions} from 'typedoc';\\n\\nconst repoRoot = resolve(\\n    __dirname,\\n    /** Go up two directories because this gets compiled into \`node_modules/.virmator\` */\\n    '..',\\n    '..',\\n);\\nconst indexTsFile = join(repoRoot, 'src', 'index.ts');\\n\\nexport const typeDocConfig: Partial<TypeDocOptions> = {\\n    ...baseTypedocConfig,\\n    out: join(repoRoot, 'dist-docs'),\\n    entryPoints: [\\n        indexTsFile,\\n    ],\\n    intentionallyNotExported: [],\\n    defaultCategory: 'MISSING CATEGORY',\\n    categoryOrder: [\\n        'Main',\\n        'Internal',\\n    ],\\n};\\n"
     }
@@ -33,12 +33,12 @@ exports[`Docs > does not error on missing markdown files 1`] = `
 exports[`Docs > fails typedoc check 1`] = `
 {
   "logs": {
-    "stdout": "Copied typedoc.config.ts\\nInstalling markdown-code-example-inserter@1.0.0 typedoc@0.26.5 esbuild@0.23.0...\\n> npx md-code --check 'README.md'",
+    "stdout": "Copied typedoc.config.ts\\nInstalling markdown-code-example-inserter@2.0.2 typedoc@0.26.5 esbuild@0.23.0...\\n> npx md-code --check 'README.md'",
     "stderr": "No markdown files given to insert code into.\\ndocs failed."
   },
   "cwd": "packages/docs/test-files/invalid-typedoc",
   "contentsDiff": {
-    "package.json": "{\\n  \\"devDependencies\\": {\\n    \\"esbuild\\": \\"^0.23.0\\",\\n    \\"markdown-code-example-inserter\\": \\"^1.0.0\\",\\n    \\"typedoc\\": \\"^0.26.5\\"\\n  }\\n}\\n",
+    "package.json": "{\\n  \\"devDependencies\\": {\\n    \\"esbuild\\": \\"^0.23.0\\",\\n    \\"markdown-code-example-inserter\\": \\"^2.0.2\\",\\n    \\"typedoc\\": \\"^0.26.5\\"\\n  }\\n}\\n",
     "configs": {
       "typedoc.config.ts": "import {baseTypedocConfig} from '@virmator/docs/configs/typedoc.config.base';\\nimport {join, resolve} from 'node:path';\\nimport type {TypeDocOptions} from 'typedoc';\\n\\nconst repoRoot = resolve(\\n    __dirname,\\n    /** Go up two directories because this gets compiled into \`node_modules/.virmator\` */\\n    '..',\\n    '..',\\n);\\nconst indexTsFile = join(repoRoot, 'src', 'index.ts');\\n\\nexport const typeDocConfig: Partial<TypeDocOptions> = {\\n    ...baseTypedocConfig,\\n    out: join(repoRoot, 'dist-docs'),\\n    entryPoints: [\\n        indexTsFile,\\n    ],\\n    intentionallyNotExported: [],\\n    defaultCategory: 'MISSING CATEGORY',\\n    categoryOrder: [\\n        'Main',\\n        'Internal',\\n    ],\\n};\\n"
     }
@@ -52,12 +52,12 @@ exports[`Docs > fails typedoc check 1`] = `
 exports[`Docs > fails unfinished readme 1`] = `
 {
   "logs": {
-    "stdout": "Copied typedoc.config.ts\\nInstalling markdown-code-example-inserter@1.0.0 typedoc@0.26.5 esbuild@0.23.0...\\n> npx md-code --check 'README.md'\\nChecking that code in markdown is up to date:",
+    "stdout": "Copied typedoc.config.ts\\nInstalling markdown-code-example-inserter@2.0.2 typedoc@0.26.5 esbuild@0.23.0...\\n> npx md-code --check 'README.md'\\nChecking that code in markdown is up to date:",
     "stderr": "    README.md: NOT up to date\\nCode in Markdown file(s) is out of date. Run without the \\"check\\" sub-command to update.\\ndocs failed."
   },
   "cwd": "packages/docs/test-files/unfinished-readme",
   "contentsDiff": {
-    "package.json": "{\\n  \\"devDependencies\\": {\\n    \\"esbuild\\": \\"^0.23.0\\",\\n    \\"markdown-code-example-inserter\\": \\"^1.0.0\\",\\n    \\"typedoc\\": \\"^0.26.5\\"\\n  }\\n}\\n",
+    "package.json": "{\\n  \\"devDependencies\\": {\\n    \\"esbuild\\": \\"^0.23.0\\",\\n    \\"markdown-code-example-inserter\\": \\"^2.0.2\\",\\n    \\"typedoc\\": \\"^0.26.5\\"\\n  }\\n}\\n",
     "configs": {
       "typedoc.config.ts": "import {baseTypedocConfig} from '@virmator/docs/configs/typedoc.config.base';\\nimport {join, resolve} from 'node:path';\\nimport type {TypeDocOptions} from 'typedoc';\\n\\nconst repoRoot = resolve(\\n    __dirname,\\n    /** Go up two directories because this gets compiled into \`node_modules/.virmator\` */\\n    '..',\\n    '..',\\n);\\nconst indexTsFile = join(repoRoot, 'src', 'index.ts');\\n\\nexport const typeDocConfig: Partial<TypeDocOptions> = {\\n    ...baseTypedocConfig,\\n    out: join(repoRoot, 'dist-docs'),\\n    entryPoints: [\\n        indexTsFile,\\n    ],\\n    intentionallyNotExported: [],\\n    defaultCategory: 'MISSING CATEGORY',\\n    categoryOrder: [\\n        'Main',\\n        'Internal',\\n    ],\\n};\\n"
     }
@@ -71,11 +71,11 @@ exports[`Docs > fails unfinished readme 1`] = `
 exports[`Docs > passes docs check 1`] = `
 {
   "logs": {
-    "stdout": "Copied typedoc.config.ts\\nInstalling markdown-code-example-inserter@1.0.0 typedoc@0.26.5 esbuild@0.23.0...\\n> npx md-code --check 'README.md'\\nChecking that code in markdown is up to date:\\n    README.md: up to date\\ndocs finished."
+    "stdout": "Copied typedoc.config.ts\\nInstalling markdown-code-example-inserter@2.0.2 typedoc@0.26.5 esbuild@0.23.0...\\n> npx md-code --check 'README.md'\\nChecking that code in markdown is up to date:\\n    README.md: up to date\\ndocs finished."
   },
   "cwd": "packages/docs/test-files/valid-docs",
   "contentsDiff": {
-    "package.json": "{\\n  \\"devDependencies\\": {\\n    \\"esbuild\\": \\"^0.23.0\\",\\n    \\"markdown-code-example-inserter\\": \\"^1.0.0\\",\\n    \\"typedoc\\": \\"^0.26.5\\"\\n  }\\n}\\n",
+    "package.json": "{\\n  \\"devDependencies\\": {\\n    \\"esbuild\\": \\"^0.23.0\\",\\n    \\"markdown-code-example-inserter\\": \\"^2.0.2\\",\\n    \\"typedoc\\": \\"^0.26.5\\"\\n  }\\n}\\n",
     "configs": {
       "typedoc.config.ts": "import {baseTypedocConfig} from '@virmator/docs/configs/typedoc.config.base';\\nimport {join, resolve} from 'node:path';\\nimport type {TypeDocOptions} from 'typedoc';\\n\\nconst repoRoot = resolve(\\n    __dirname,\\n    /** Go up two directories because this gets compiled into \`node_modules/.virmator\` */\\n    '..',\\n    '..',\\n);\\nconst indexTsFile = join(repoRoot, 'src', 'index.ts');\\n\\nexport const typeDocConfig: Partial<TypeDocOptions> = {\\n    ...baseTypedocConfig,\\n    out: join(repoRoot, 'dist-docs'),\\n    entryPoints: [\\n        indexTsFile,\\n    ],\\n    intentionallyNotExported: [],\\n    defaultCategory: 'MISSING CATEGORY',\\n    categoryOrder: [\\n        'Main',\\n        'Internal',\\n    ],\\n};\\n"
     }
@@ -86,12 +86,12 @@ exports[`Docs > passes docs check 1`] = `
 exports[`Docs > runs on mono-repo packages 1`] = `
 {
   "logs": {
-    "stdout": "Copied typedoc.config.ts\\nCopied typedoc.config.ts\\nCopied typedoc.config.ts\\nInstalling markdown-code-example-inserter@1.0.0...\\n[packages/a]  > npx md-code 'README.md'",
+    "stdout": "Copied typedoc.config.ts\\nCopied typedoc.config.ts\\nCopied typedoc.config.ts\\nInstalling markdown-code-example-inserter@2.0.2...\\n[packages/a]  > npx md-code 'README.md'",
     "stderr": "[packages/a] No markdown files given to insert code into.\\ndocs failed."
   },
   "cwd": "packages/docs/test-files/mono-repo",
   "contentsDiff": {
-    "package.json": "{\\n    \\"private\\": true,\\n    \\"workspaces\\": [\\n        \\"packages/*\\"\\n    ],\\n    \\"devDependencies\\": {\\n        \\"markdown-code-example-inserter\\": \\"^1.0.0\\"\\n    }\\n}\\n",
+    "package.json": "{\\n    \\"private\\": true,\\n    \\"workspaces\\": [\\n        \\"packages/*\\"\\n    ],\\n    \\"devDependencies\\": {\\n        \\"markdown-code-example-inserter\\": \\"^2.0.2\\"\\n    }\\n}\\n",
     "packages": {
       "a": {
         "configs": {
@@ -119,12 +119,12 @@ exports[`Docs > runs on mono-repo packages 1`] = `
 exports[`Docs > runs typedoc and md-code 1`] = `
 {
   "logs": {
-    "stdout": "Copied typedoc.config.ts\\nInstalling markdown-code-example-inserter@1.0.0 typedoc@0.26.5 esbuild@0.23.0...\\n> npx md-code 'README.md'\\nInserting code into markdown:\\n    README.md\\ndocs finished."
+    "stdout": "Copied typedoc.config.ts\\nInstalling markdown-code-example-inserter@2.0.2 typedoc@0.26.5 esbuild@0.23.0...\\n> npx md-code 'README.md'\\nInserting code into markdown:\\n    README.md\\ndocs finished."
   },
   "cwd": "packages/docs/test-files/unfinished-readme",
   "contentsDiff": {
     "README.md": "here's a markdown code block\\n\\n<!-- example-link: src/readme-examples/thing.example.ts -->\\n\\n\`\`\`TypeScript\\nfunction doThing() {\\n    console.info('hi');\\n    return 'bye';\\n}\\n\\ndoThing();\\n\`\`\`\\n",
-    "package.json": "{\\n  \\"devDependencies\\": {\\n    \\"esbuild\\": \\"^0.23.0\\",\\n    \\"markdown-code-example-inserter\\": \\"^1.0.0\\",\\n    \\"typedoc\\": \\"^0.26.5\\"\\n  }\\n}\\n",
+    "package.json": "{\\n  \\"devDependencies\\": {\\n    \\"esbuild\\": \\"^0.23.0\\",\\n    \\"markdown-code-example-inserter\\": \\"^2.0.2\\",\\n    \\"typedoc\\": \\"^0.26.5\\"\\n  }\\n}\\n",
     "configs": {
       "typedoc.config.ts": "import {baseTypedocConfig} from '@virmator/docs/configs/typedoc.config.base';\\nimport {join, resolve} from 'node:path';\\nimport type {TypeDocOptions} from 'typedoc';\\n\\nconst repoRoot = resolve(\\n    __dirname,\\n    /** Go up two directories because this gets compiled into \`node_modules/.virmator\` */\\n    '..',\\n    '..',\\n);\\nconst indexTsFile = join(repoRoot, 'src', 'index.ts');\\n\\nexport const typeDocConfig: Partial<TypeDocOptions> = {\\n    ...baseTypedocConfig,\\n    out: join(repoRoot, 'dist-docs'),\\n    entryPoints: [\\n        indexTsFile,\\n    ],\\n    intentionallyNotExported: [],\\n    defaultCategory: 'MISSING CATEGORY',\\n    categoryOrder: [\\n        'Main',\\n        'Internal',\\n    ],\\n};\\n"
     }
@@ -135,12 +135,12 @@ exports[`Docs > runs typedoc and md-code 1`] = `
 exports[`Docs > skips private repo typedoc 1`] = `
 {
   "logs": {
-    "stdout": "Copied typedoc.config.ts\\nInstalling markdown-code-example-inserter@1.0.0 typedoc@0.26.5 esbuild@0.23.0...\\n> npx md-code 'README.md'\\nSkipping typedoc generation in private repo b\\ndocs finished.",
+    "stdout": "Copied typedoc.config.ts\\nInstalling markdown-code-example-inserter@2.0.2 typedoc@0.26.5 esbuild@0.23.0...\\n> npx md-code 'README.md'\\nSkipping typedoc generation in private repo b\\ndocs finished.",
     "stderr": "No markdown files given to insert code into."
   },
   "cwd": "packages/docs/test-files/mono-repo/packages/b",
   "contentsDiff": {
-    "package.json": "{\\n    \\"name\\": \\"b\\",\\n    \\"private\\": true,\\n    \\"devDependencies\\": {\\n        \\"esbuild\\": \\"^0.23.0\\",\\n        \\"markdown-code-example-inserter\\": \\"^1.0.0\\",\\n        \\"typedoc\\": \\"^0.26.5\\"\\n    }\\n}\\n",
+    "package.json": "{\\n    \\"name\\": \\"b\\",\\n    \\"private\\": true,\\n    \\"devDependencies\\": {\\n        \\"esbuild\\": \\"^0.23.0\\",\\n        \\"markdown-code-example-inserter\\": \\"^2.0.2\\",\\n        \\"typedoc\\": \\"^0.26.5\\"\\n    }\\n}\\n",
     "configs": {
       "typedoc.config.ts": "import {baseTypedocConfig} from '@virmator/docs/configs/typedoc.config.base';\\nimport {join, resolve} from 'node:path';\\nimport type {TypeDocOptions} from 'typedoc';\\n\\nconst repoRoot = resolve(\\n    __dirname,\\n    /** Go up two directories because this gets compiled into \`node_modules/.virmator\` */\\n    '..',\\n    '..',\\n);\\nconst indexTsFile = join(repoRoot, 'src', 'index.ts');\\n\\nexport const typeDocConfig: Partial<TypeDocOptions> = {\\n    ...baseTypedocConfig,\\n    out: join(repoRoot, 'dist-docs'),\\n    entryPoints: [\\n        indexTsFile,\\n    ],\\n    intentionallyNotExported: [],\\n    defaultCategory: 'MISSING CATEGORY',\\n    categoryOrder: [\\n        'Main',\\n        'Internal',\\n    ],\\n};\\n"
     }

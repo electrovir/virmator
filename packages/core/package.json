@@ -1,6 +1,6 @@
 {
     "name": "@virmator/core",
-    "version": "13.2.0",
+    "version": "13.2.1",
     "description": "Shared core functionality for all virmator plugins and the virmator CLI.",
     "keywords": [
         "automation",
