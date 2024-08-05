@@ -334,7 +334,7 @@ enum ChangeMarker {
 
 async function getGitCommitVersion(decrement: number, git: Readonly<SimpleGit>) {
     const output = await git.raw(
-        `show HEAD~${decrement} --pretty='%D${gitCommitFormatDelimiter}%s' -s`.split(' '),
+        `show HEAD~${decrement} --pretty='%d${gitCommitFormatDelimiter}%s' -s`.split(' '),
     );
     const [
         maybeTag,
