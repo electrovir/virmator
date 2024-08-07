@@ -80,6 +80,7 @@ export function defineEslintConfig(repoDir) {
                 '@typescript-eslint/no-unsafe-enum-comparison': 'off',
                 '@typescript-eslint/no-unsafe-member-access': 'off',
                 '@typescript-eslint/no-unsafe-return': 'off',
+                '@typescript-eslint/prefer-reduce-type-parameter': 'off',
 
                 'no-async-promise-executor': 'off',
                 'prettier/prettier': 'off',
