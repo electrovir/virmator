@@ -81,6 +81,7 @@ export function defineEslintConfig(repoDir) {
                 '@typescript-eslint/no-unsafe-member-access': 'off',
                 '@typescript-eslint/no-unsafe-return': 'off',
 
+                'no-async-promise-executor': 'off',
                 'prettier/prettier': 'off',
                 'sonarjs/no-duplicate-string': 'off',
 
@@ -104,7 +105,6 @@ export function defineEslintConfig(repoDir) {
                 'unicorn/no-unreadable-iife': 'error',
                 'unicorn/no-useless-fallback-in-spread': 'error',
                 'unicorn/no-useless-length-check': 'error',
-                'unicorn/no-useless-promise-resolve-reject': 'error',
                 'unicorn/no-useless-spread': 'error',
                 'unicorn/no-useless-switch-case': 'error',
                 'unicorn/no-zero-fractions': 'error',
@@ -195,6 +195,14 @@ export function defineEslintConfig(repoDir) {
                 '**/*.mjs',
             ],
             ...tsEslint.configs.disableTypeChecked,
+        },
+        {
+            files: [
+                '**/*.test.ts',
+            ],
+            rules: {
+                '@typescript-eslint/no-unused-vars': 'off',
+            },
         },
     ];
 }
