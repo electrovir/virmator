@@ -73,6 +73,7 @@ export function defineEslintConfig(repoDir) {
                 '@typescript-eslint/no-dynamic-delete': 'off',
                 '@typescript-eslint/no-explicit-any': 'off',
                 '@typescript-eslint/no-invalid-void-type': 'off',
+                '@typescript-eslint/no-misused-promises': 'off',
                 '@typescript-eslint/no-unnecessary-type-parameters': 'off',
                 '@typescript-eslint/no-unsafe-argument': 'off',
                 '@typescript-eslint/no-unsafe-assignment': 'off',
@@ -83,6 +84,7 @@ export function defineEslintConfig(repoDir) {
                 '@typescript-eslint/prefer-reduce-type-parameter': 'off',
 
                 'no-async-promise-executor': 'off',
+                'no-prototype-builtins': 'off',
                 'prettier/prettier': 'off',
                 'sonarjs/no-duplicate-string': 'off',
 

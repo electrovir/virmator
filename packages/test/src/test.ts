@@ -95,16 +95,6 @@ export const virmatorTestPlugin = defineVirmatorPlugin(
                                 ],
                                 type: NpmDepType.Dev,
                             },
-                            '@types/mocha': {
-                                env: [
-                                    VirmatorEnv.Web,
-                                ],
-                                packageType: [
-                                    PackageType.MonoPackage,
-                                    PackageType.TopPackage,
-                                ],
-                                type: NpmDepType.Dev,
-                            },
                             '@web/dev-server-esbuild': {
                                 env: [
                                     VirmatorEnv.Web,
