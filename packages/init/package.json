@@ -36,10 +36,11 @@
         "simple-git": "^3.25.0"
     },
     "devDependencies": {
-        "@types/node": "^22.1.0",
+        "@types/node": "^22.2.0",
         "element-vir": "^22.2.2",
-        "tsx": "^4.16.5",
-        "type-fest": "^4.23.0"
+        "mono-vir": "^1.0.1",
+        "tsx": "^4.17.0",
+        "type-fest": "^4.24.0"
     },
     "engines": {
         "node": ">=22"

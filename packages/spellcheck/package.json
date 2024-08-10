@@ -38,13 +38,13 @@
         "run-time-assertions": "^1.5.2"
     },
     "devDependencies": {
-        "@types/node": "^22.1.0",
+        "@types/node": "^22.2.0",
         "@virmator/plugin-testing": "^13.2.5",
         "c8": "^10.1.2",
         "concurrently": "^8.2.2",
-        "cspell": "^8.13.1",
+        "cspell": "^8.13.2",
         "istanbul-smart-text-reporter": "^1.1.4",
-        "tsx": "^4.16.5"
+        "tsx": "^4.17.0"
     },
     "engines": {
         "node": ">=22"

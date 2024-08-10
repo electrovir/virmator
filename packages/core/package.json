@@ -39,12 +39,12 @@
         "mono-vir": "^1.0.1",
         "run-time-assertions": "^1.5.2",
         "semver": "^7.6.3",
-        "type-fest": "^4.23.0",
+        "type-fest": "^4.24.0",
         "typescript": "^5.5.4"
     },
     "devDependencies": {
         "@augment-vir/testing": "^29.3.0",
-        "@types/node": "^22.1.0",
+        "@types/node": "^22.2.0",
         "@types/semver": "^7.5.8",
         "esbuild": "^0.23.0"
     },
