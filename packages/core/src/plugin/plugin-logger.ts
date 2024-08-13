@@ -90,7 +90,7 @@ export function createPluginLogger(
 }
 
 /** A {@link PluginLogger} implementation that does nothing. */
-export const emptyLogger: PluginLogger = createPluginLogger({
+export const emptyLog: PluginLogger = createPluginLogger({
     stderr: {
         write() {
             return true;

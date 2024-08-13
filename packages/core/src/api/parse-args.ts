@@ -144,7 +144,9 @@ export function parseCliArgs({
 
     const parsedArgs = relevantArgs.reduce(
         (parsedArgs: ParsedArgs, arg) => {
-            if (parsedArgs.filteredCommandArgs.length) {
+            if (hasKey(virmatorFlags, arg)) {
+                parsedArgs.virmatorFlags[arg] = true;
+            } else if (parsedArgs.filteredCommandArgs.length) {
                 parsedArgs.filteredCommandArgs.push(arg);
             } else if (isLengthAtLeast(parsedArgs.commands, 1)) {
                 const mainCommand = parsedArgs.commands[0];
@@ -164,8 +166,6 @@ export function parseCliArgs({
                 if (commandPlugin) {
                     (parsedArgs.commands as string[]).push(arg);
                     parsedArgs.plugin = commandPlugin.plugin;
-                } else if (hasKey(virmatorFlags, arg)) {
-                    parsedArgs.virmatorFlags[arg] = true;
                 } else {
                     log.warning(`Ignored unknown flag: '${arg}'`);
                 }

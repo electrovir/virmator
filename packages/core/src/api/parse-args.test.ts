@@ -1,8 +1,9 @@
-import {NpmDepType, PackageType, VirmatorEnv} from '@virmator/core';
+import {emptyLog, NpmDepType, PackageType, VirmatorEnv} from '@virmator/core';
 import assert from 'node:assert/strict';
 import {join} from 'node:path';
 import {describe, it} from 'node:test';
-import {calculateUsedCommands} from './parse-args.js';
+import {VirmatorPlugin} from '../plugin/plugin.js';
+import {calculateUsedCommands, parseCliArgs} from './parse-args.js';
 
 describe(calculateUsedCommands.name, () => {
     it('calculates correctly', () => {
@@ -184,5 +185,53 @@ describe(calculateUsedCommands.name, () => {
                 },
             },
         );
+    });
+});
+
+describe(parseCliArgs.name, () => {
+    const examplePlugins = [
+        {
+            cliCommands: {
+                fake: {},
+            },
+            name: 'fake plugin',
+        } satisfies Pick<
+            VirmatorPlugin,
+            | 'name'
+            | 'cliCommands'
+        > as VirmatorPlugin,
+    ] as const satisfies ReadonlyArray<Readonly<VirmatorPlugin>>;
+
+    function testParseCliArgs(cliCommand: string) {
+        return parseCliArgs({
+            cliCommand,
+            entryPointFilePath: '',
+            plugins: examplePlugins,
+            log: emptyLog,
+        });
+    }
+
+    it('parses command name', () => {
+        assert.deepStrictEqual(testParseCliArgs('fake'), {
+            commands: ['fake'],
+            filteredCommandArgs: [],
+            plugin: examplePlugins[0],
+            usedCommands: {fake: {subCommands: {}}},
+            virmatorFlags: {},
+        });
+    });
+    it('parses multiple args', () => {
+        assert.deepStrictEqual(testParseCliArgs('fake --no-deps some-arg --more-arg'), {
+            commands: ['fake'],
+            filteredCommandArgs: [
+                'some-arg',
+                '--more-arg',
+            ],
+            plugin: examplePlugins[0],
+            usedCommands: {fake: {subCommands: {}}},
+            virmatorFlags: {
+                '--no-deps': true,
+            },
+        });
     });
 });
