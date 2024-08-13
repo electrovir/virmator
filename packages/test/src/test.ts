@@ -259,6 +259,7 @@ export const virmatorTestPlugin = defineVirmatorPlugin(
         package: {packageType},
     }) => {
         const args = mri(filteredArgs);
+        const flagArgs = filteredArgs.filter((arg) => !args._.includes(arg));
 
         if (packageType === PackageType.MonoRoot) {
             throw new VirmatorNoTraceError(
@@ -338,6 +339,7 @@ export const virmatorTestPlugin = defineVirmatorPlugin(
                 '--experimental-test-snapshots',
                 '--test-reporter',
                 'spec',
+                ...flagArgs,
                 ...updateSnapshotsArgs,
                 ...filesArgs,
             ]
