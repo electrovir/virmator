@@ -64,7 +64,7 @@ function createScreenshotsPlugin(extraOptions, repoDir) {
     ];
 }
 
-export function getWebTestRunnerConfigWithCoveragePercent({
+export function defineConfig({
     coveragePercent = 0,
     packageRootDirPath = '',
     extraScreenshotOptions,
