@@ -82,6 +82,7 @@ export function defineEslintConfig(repoDir) {
                 '@typescript-eslint/no-unsafe-member-access': 'off',
                 '@typescript-eslint/no-unsafe-return': 'off',
                 '@typescript-eslint/prefer-reduce-type-parameter': 'off',
+                '@typescript-eslint/unified-signatures': 'off', // this rule is always wrong
 
                 'no-async-promise-executor': 'off',
                 'no-prototype-builtins': 'off',

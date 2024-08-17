@@ -3,6 +3,10 @@
 -   support `virmator init` in a dir without any package.json yet
     -   don't run init inside of non-top-level package dir to prevent accidents
 -   better automated release notes in the tagged-release GitHub Actions workflow
+    -   ditch the current action, make my own
+    -   current action does not list all commits since last release (example https://github.com/electrovir/git-vir/releases/tag/v2.0.0)
+-   ditch using c8, use `--experimental-test-coverage --test-coverage-include 'src/**/*.ts' --test-coverage-exclude '**/*.test.ts'` with built-in Node.js test runner instead
+    -   however, I might need to make a custom reporter to force the test to fail when coverage is not met
 
 # in progress
 
