@@ -1,6 +1,6 @@
 {
     "name": "@virmator/core",
-    "version": "13.2.7",
+    "version": "13.2.8",
     "description": "Shared core functionality for all virmator plugins and the virmator CLI.",
     "keywords": [
         "automation",
@@ -39,14 +39,14 @@
         "mono-vir": "^1.0.1",
         "run-time-assertions": "^1.5.2",
         "semver": "^7.6.3",
-        "type-fest": "^4.24.0",
+        "type-fest": "^4.25.0",
         "typescript": "^5.5.4"
     },
     "devDependencies": {
         "@augment-vir/testing": "^29.3.0",
-        "@types/node": "^22.2.0",
+        "@types/node": "^22.4.0",
         "@types/semver": "^7.5.8",
-        "esbuild": "^0.23.0"
+        "esbuild": "^0.23.1"
     },
     "engines": {
         "node": ">=22"

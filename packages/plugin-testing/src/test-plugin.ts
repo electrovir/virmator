@@ -167,7 +167,6 @@ export async function testPlugin(
             ...(error ? {error} : {}),
         };
 
-        // @ts-expect-error: `TestContext.assert` isn't in `@types/node` yet
         context.assert.snapshot(result);
 
         if (shouldPass && error) {
