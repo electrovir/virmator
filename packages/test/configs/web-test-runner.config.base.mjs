@@ -121,7 +121,6 @@ export function defineConfig({
             exclude: [
                 '**/*.test.ts',
                 '**/*.example.ts',
-                '**/*.test-helper.ts',
             ],
             threshold: {
                 statements: coveragePercent,

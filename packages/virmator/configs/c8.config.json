@@ -6,7 +6,6 @@
     "exclude": [
         "**/*.test.ts",
         "**/*.example.ts",
-        "**/*.test-helper.ts",
         "src/cli.ts"
     ],
     "include": [

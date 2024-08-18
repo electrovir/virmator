@@ -1,14 +1,11 @@
 .*
 .not-committed/
-*.book-helper.*
 *.book.*
 *.d.ts.map
-*.test-helper.*
+*.example.ts
 *.test.*
 *.tgz
-**/*/readme-examples/
 **/*/test/
-/configs/
 /coverage/
 /cspell.config.cjs
 /graphics/

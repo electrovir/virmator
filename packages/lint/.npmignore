@@ -1,12 +1,10 @@
 .*
 .not-committed/
-*.book-helper.*
 *.book.*
 *.d.ts.map
-*.test-helper.*
+*.example.ts
 *.test.*
 *.tgz
-**/*/readme-examples/
 **/*/test/
 /coverage/
 /cspell.config.cjs
@@ -22,5 +20,4 @@ index.html
 prettier.config.mjs
 test-files/
 todo.md
-tsconfig.json
-tsconfig.tsbuildinfo
+tsconfig.*
