@@ -1,6 +1,6 @@
 {
     "name": "@virmator/frontend",
-    "version": "13.2.9",
+    "version": "13.2.10",
     "description": "Default frontend plugin for virmator.",
     "keywords": [
         "virmator",
@@ -36,13 +36,13 @@
     "dependencies": {
         "@augment-vir/common": "^29.3.0",
         "@augment-vir/node-js": "^29.3.0",
-        "@virmator/core": "^13.2.9",
+        "@virmator/core": "^13.2.10",
         "mri": "^1.2.0"
     },
     "devDependencies": {
-        "@types/node": "^22.4.0",
+        "@types/node": "^22.5.0",
         "typescript": "^5.5.4",
-        "vite": "^5.4.1",
+        "vite": "^5.4.2",
         "vite-tsconfig-paths": "^5.0.1"
     },
     "engines": {
