@@ -152,11 +152,14 @@ export function defineConfig({
             },
         },
         {
-            name: 'not-from-mock',
+            name: 'not-to-mock',
             comment: `This non-test file depends on a mock file. Do not do this.`,
             severity: 'error',
             from: {
-                pathNot: '\\.test\\.ts$',
+                pathNot: [
+                    '\\.test\\.ts$',
+                    '\\.mock\\.ts$',
+                ],
             },
             to: {
                 path: '\\.mock\\.ts$',
