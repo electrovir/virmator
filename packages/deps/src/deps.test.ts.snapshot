@@ -6,7 +6,7 @@ exports[`Deps > checks a custom path 1`] = `
   "cwd": "packages/deps/test-files/valid-deps",
   "contentsDiff": {
     "configs": {
-      "dep-cruiser.config.cts": "import {generateDepCruiserConfig} from '@virmator/deps/configs/dep-cruiser.config.base';\\nimport type {IConfiguration} from 'dependency-cruiser';\\n\\nconst baseConfig = generateDepCruiserConfig({\\n    fileExceptions: {\\n        // enter file exceptions by rule name here\\n        'no-orphans': {\\n            from: [\\n                'src/index.ts',\\n            ],\\n        },\\n    },\\n    omitRules: [\\n        // enter rule names here to omit\\n    ],\\n});\\n\\nconst depCruiserConfig: IConfiguration = {\\n    ...baseConfig,\\n};\\n\\nmodule.exports = depCruiserConfig;\\n"
+      "dep-cruiser.config.cts": "import {defineConfig} from '@virmator/deps/configs/dep-cruiser.config.base';\\nimport type {IConfiguration} from 'dependency-cruiser';\\n\\nconst baseConfig = defineConfig({\\n    fileExceptions: {\\n        // enter file exceptions by rule name here\\n        'no-orphans': {\\n            from: [\\n                'src/index.ts',\\n            ],\\n        },\\n    },\\n    omitRules: [\\n        // enter rule names here to omit\\n    ],\\n});\\n\\nconst depCruiserConfig: IConfiguration = {\\n    ...baseConfig,\\n};\\n\\nmodule.exports = depCruiserConfig;\\n"
     }
   }
 }
@@ -21,7 +21,7 @@ exports[`Deps > fails invalid deps 1`] = `
   "cwd": "packages/deps/test-files/invalid-deps",
   "contentsDiff": {
     "configs": {
-      "dep-cruiser.config.cts": "import {generateDepCruiserConfig} from '@virmator/deps/configs/dep-cruiser.config.base';\\nimport type {IConfiguration} from 'dependency-cruiser';\\n\\nconst baseConfig = generateDepCruiserConfig({\\n    fileExceptions: {\\n        // enter file exceptions by rule name here\\n        'no-orphans': {\\n            from: [\\n                'src/index.ts',\\n            ],\\n        },\\n    },\\n    omitRules: [\\n        // enter rule names here to omit\\n    ],\\n});\\n\\nconst depCruiserConfig: IConfiguration = {\\n    ...baseConfig,\\n};\\n\\nmodule.exports = depCruiserConfig;\\n"
+      "dep-cruiser.config.cts": "import {defineConfig} from '@virmator/deps/configs/dep-cruiser.config.base';\\nimport type {IConfiguration} from 'dependency-cruiser';\\n\\nconst baseConfig = defineConfig({\\n    fileExceptions: {\\n        // enter file exceptions by rule name here\\n        'no-orphans': {\\n            from: [\\n                'src/index.ts',\\n            ],\\n        },\\n    },\\n    omitRules: [\\n        // enter rule names here to omit\\n    ],\\n});\\n\\nconst depCruiserConfig: IConfiguration = {\\n    ...baseConfig,\\n};\\n\\nmodule.exports = depCruiserConfig;\\n"
     }
   },
   "error": {
@@ -39,7 +39,7 @@ exports[`Deps > fails invalid mono repo deps 1`] = `
   "cwd": "packages/deps/test-files/invalid-mono-repo",
   "contentsDiff": {
     "configs": {
-      "dep-cruiser.config.cts": "import {generateDepCruiserConfig} from '@virmator/deps/configs/dep-cruiser.config.base';\\nimport type {IConfiguration} from 'dependency-cruiser';\\n\\nconst baseConfig = generateDepCruiserConfig({\\n    fileExceptions: {\\n        // enter file exceptions by rule name here\\n        'no-orphans': {\\n            from: [\\n                'src/index.ts',\\n            ],\\n        },\\n    },\\n    omitRules: [\\n        // enter rule names here to omit\\n    ],\\n});\\n\\nconst depCruiserConfig: IConfiguration = {\\n    ...baseConfig,\\n};\\n\\nmodule.exports = depCruiserConfig;\\n"
+      "dep-cruiser.config.cts": "import {defineConfig} from '@virmator/deps/configs/dep-cruiser.config.base';\\nimport type {IConfiguration} from 'dependency-cruiser';\\n\\nconst baseConfig = defineConfig({\\n    fileExceptions: {\\n        // enter file exceptions by rule name here\\n        'no-orphans': {\\n            from: [\\n                'src/index.ts',\\n            ],\\n        },\\n    },\\n    omitRules: [\\n        // enter rule names here to omit\\n    ],\\n});\\n\\nconst depCruiserConfig: IConfiguration = {\\n    ...baseConfig,\\n};\\n\\nmodule.exports = depCruiserConfig;\\n"
     }
   },
   "error": {
@@ -56,7 +56,7 @@ exports[`Deps > passes valid deps 1`] = `
   "cwd": "packages/deps/test-files/valid-deps",
   "contentsDiff": {
     "configs": {
-      "dep-cruiser.config.cts": "import {generateDepCruiserConfig} from '@virmator/deps/configs/dep-cruiser.config.base';\\nimport type {IConfiguration} from 'dependency-cruiser';\\n\\nconst baseConfig = generateDepCruiserConfig({\\n    fileExceptions: {\\n        // enter file exceptions by rule name here\\n        'no-orphans': {\\n            from: [\\n                'src/index.ts',\\n            ],\\n        },\\n    },\\n    omitRules: [\\n        // enter rule names here to omit\\n    ],\\n});\\n\\nconst depCruiserConfig: IConfiguration = {\\n    ...baseConfig,\\n};\\n\\nmodule.exports = depCruiserConfig;\\n"
+      "dep-cruiser.config.cts": "import {defineConfig} from '@virmator/deps/configs/dep-cruiser.config.base';\\nimport type {IConfiguration} from 'dependency-cruiser';\\n\\nconst baseConfig = defineConfig({\\n    fileExceptions: {\\n        // enter file exceptions by rule name here\\n        'no-orphans': {\\n            from: [\\n                'src/index.ts',\\n            ],\\n        },\\n    },\\n    omitRules: [\\n        // enter rule names here to omit\\n    ],\\n});\\n\\nconst depCruiserConfig: IConfiguration = {\\n    ...baseConfig,\\n};\\n\\nmodule.exports = depCruiserConfig;\\n"
     }
   }
 }
@@ -70,7 +70,7 @@ exports[`Deps > passes valid mono repo deps 1`] = `
   "cwd": "packages/deps/test-files/valid-mono-repo",
   "contentsDiff": {
     "configs": {
-      "dep-cruiser.config.cts": "import {generateDepCruiserConfig} from '@virmator/deps/configs/dep-cruiser.config.base';\\nimport type {IConfiguration} from 'dependency-cruiser';\\n\\nconst baseConfig = generateDepCruiserConfig({\\n    fileExceptions: {\\n        // enter file exceptions by rule name here\\n        'no-orphans': {\\n            from: [\\n                'src/index.ts',\\n            ],\\n        },\\n    },\\n    omitRules: [\\n        // enter rule names here to omit\\n    ],\\n});\\n\\nconst depCruiserConfig: IConfiguration = {\\n    ...baseConfig,\\n};\\n\\nmodule.exports = depCruiserConfig;\\n"
+      "dep-cruiser.config.cts": "import {defineConfig} from '@virmator/deps/configs/dep-cruiser.config.base';\\nimport type {IConfiguration} from 'dependency-cruiser';\\n\\nconst baseConfig = defineConfig({\\n    fileExceptions: {\\n        // enter file exceptions by rule name here\\n        'no-orphans': {\\n            from: [\\n                'src/index.ts',\\n            ],\\n        },\\n    },\\n    omitRules: [\\n        // enter rule names here to omit\\n    ],\\n});\\n\\nconst depCruiserConfig: IConfiguration = {\\n    ...baseConfig,\\n};\\n\\nmodule.exports = depCruiserConfig;\\n"
     }
   }
 }
@@ -84,7 +84,7 @@ exports[`Deps > passes with custom config 1`] = `
   "cwd": "packages/deps/test-files/with-config",
   "contentsDiff": {
     "configs": {
-      "dep-cruiser.config.cts": "import {generateDepCruiserConfig} from '@virmator/deps/configs/dep-cruiser.config.base';\\nimport type {IConfiguration} from 'dependency-cruiser';\\n\\nconst baseConfig = generateDepCruiserConfig({\\n    fileExceptions: {\\n        // enter file exceptions by rule name here\\n        'no-orphans': {\\n            from: [\\n                'src/index.ts',\\n            ],\\n        },\\n    },\\n    omitRules: [\\n        // enter rule names here to omit\\n    ],\\n});\\n\\nconst depCruiserConfig: IConfiguration = {\\n    ...baseConfig,\\n};\\n\\nmodule.exports = depCruiserConfig;\\n"
+      "dep-cruiser.config.cts": "import {defineConfig} from '@virmator/deps/configs/dep-cruiser.config.base';\\nimport type {IConfiguration} from 'dependency-cruiser';\\n\\nconst baseConfig = defineConfig({\\n    fileExceptions: {\\n        // enter file exceptions by rule name here\\n        'no-orphans': {\\n            from: [\\n                'src/index.ts',\\n            ],\\n        },\\n    },\\n    omitRules: [\\n        // enter rule names here to omit\\n    ],\\n});\\n\\nconst depCruiserConfig: IConfiguration = {\\n    ...baseConfig,\\n};\\n\\nmodule.exports = depCruiserConfig;\\n"
     }
   }
 }

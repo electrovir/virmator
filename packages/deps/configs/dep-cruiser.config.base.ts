@@ -1,6 +1,6 @@
 import type {IConfiguration, IForbiddenRuleType} from 'dependency-cruiser';
 
-export function generateDepCruiserConfig({
+export function defineConfig({
     fileExceptions,
     omitRules,
 }: {
@@ -39,6 +39,7 @@ export function generateDepCruiserConfig({
                 orphan: true,
                 pathNot: [
                     '\\.d\\.ts$', // TypeScript declaration files
+                    '\\.test\\.ts$',
                 ],
             },
             to: {},
