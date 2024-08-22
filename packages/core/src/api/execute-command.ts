@@ -1,12 +1,19 @@
 import {
     awaitedBlockingMap,
+    extractErrorMessage,
     filterMap,
     isTruthy,
     mapObjectValues,
     PartialAndUndefined,
     wrapInTry,
 } from '@augment-vir/common';
-import {logColors, LogOutputType, readPackageJson, runShellCommand} from '@augment-vir/node-js';
+import {
+    log,
+    logColors,
+    LogOutputType,
+    readPackageJson,
+    runShellCommand,
+} from '@augment-vir/node-js';
 import chalk from 'chalk';
 import concurrently, {CloseEvent, ConcurrentlyCommandInput} from 'concurrently';
 import {getRelativePosixPackagePathsInDependencyOrder} from 'mono-vir';
@@ -152,7 +159,10 @@ async function getMonoRepoPackages(cwdPackagePath: string): Promise<MonoRepoPack
     const relativePackagePathsInOrder = await wrapInTry(
         () => getRelativePosixPackagePathsInDependencyOrder(cwdPackagePath),
         {
-            fallbackValue: [],
+            handleError(error) {
+                log.error(extractErrorMessage(error) + '\n');
+                return [];
+            },
         },
     );
 

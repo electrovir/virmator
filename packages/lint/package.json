@@ -1,6 +1,6 @@
 {
     "name": "@virmator/lint",
-    "version": "13.2.8",
+    "version": "13.2.9",
     "description": "Default ESLint linting plugin for virmator.",
     "keywords": [
         "virmator",
@@ -32,7 +32,7 @@
     },
     "dependencies": {
         "@augment-vir/common": "^29.3.0",
-        "@virmator/core": "^13.2.8",
+        "@virmator/core": "^13.2.9",
         "mri": "^1.2.0"
     },
     "devDependencies": {
@@ -46,6 +46,7 @@
         "eslint": "^9.9.0",
         "eslint-config-prettier": "^9.1.0",
         "eslint-plugin-jsdoc": "^50.2.2",
+        "eslint-plugin-monorepo-cop": "^1.0.2",
         "eslint-plugin-playwright": "^1.6.2",
         "eslint-plugin-prettier": "^5.2.1",
         "eslint-plugin-require-extensions": "^0.1.3",

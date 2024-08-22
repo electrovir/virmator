@@ -1,10 +1,9 @@
 import {addSuffix, wrapInTry} from '@augment-vir/common';
-import {PackageType, VirmatorEnv} from '@virmator/core';
+import {NpmDepType, PackageType, VirmatorEnv, VirmatorPluginCliCommands} from '@virmator/core';
 import assert from 'node:assert/strict';
 import {readFile, writeFile} from 'node:fs/promises';
 import {join, resolve} from 'node:path';
 import {describe, it} from 'node:test';
-import {NpmDepType, VirmatorPluginCliCommands} from '../../core/src/plugin/plugin-init.js';
 import {
     createFormatter,
     generateHelpMessage,

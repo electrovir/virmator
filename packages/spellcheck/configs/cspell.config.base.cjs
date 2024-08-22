@@ -73,6 +73,7 @@ const baseConfig = {
         'devs',
         'dexie',
         'dili',
+        'distros',
         'dmmf',
         'docgen',
         'dodgerblue',

@@ -34,6 +34,12 @@ export function defineEslintConfig(repoDir) {
     return [
         ...compat.plugins('require-extensions'),
         ...compat.extends('plugin:require-extensions/recommended'),
+        ...compat.config({
+            plugins: ['monorepo-cop'],
+            rules: {
+                'monorepo-cop/no-relative-import-outside-package': 'error',
+            },
+        }),
         {
             ignores: [
                 '*.graphql',
@@ -83,6 +89,7 @@ export function defineEslintConfig(repoDir) {
                 '@typescript-eslint/no-unsafe-return': 'off',
                 '@typescript-eslint/prefer-reduce-type-parameter': 'off',
                 '@typescript-eslint/unified-signatures': 'off', // this rule is always wrong
+                '@typescript-eslint/no-useless-constructor': 'off', // this rule is always wrong
 
                 'no-async-promise-executor': 'off',
                 'no-prototype-builtins': 'off',
