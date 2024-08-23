@@ -91,10 +91,25 @@ export function defineEslintConfig(repoDir) {
                 '@typescript-eslint/unified-signatures': 'off', // this rule is always wrong
                 '@typescript-eslint/no-useless-constructor': 'off', // this rule is always wrong
 
+                'sonarjs/cognitive-complexity': 'off',
+                'sonarjs/no-empty-test-file': 'off', // this rule is wrong
+                'sonarjs/no-misused-promises': 'off', // this rule is wrong
+                'sonarjs/different-types-comparison': 'off', // this rule is wrong
+                'sonarjs/no-useless-constructor': 'off', // this rule is wrong
+                'sonarjs/no-nested-functions': 'off',
+                'sonarjs/no-alphabetical-sort': 'off',
+                'sonarjs/no-nested-conditional': 'off',
+                'sonarjs/no-redundant-optional': 'off',
+                'sonarjs/publicly-writable-directories': 'off',
+                'sonarjs/prefer-nullish-coalescing': 'off',
+                'sonarjs/void-use': 'off',
+                'sonarjs/function-return-type': 'off',
+                'sonarjs/use-type-alias': 'off',
+                'sonarjs/no-duplicate-string': 'off',
+
                 'no-async-promise-executor': 'off',
                 'no-prototype-builtins': 'off',
                 'prettier/prettier': 'off',
-                'sonarjs/no-duplicate-string': 'off',
 
                 'unicorn/new-for-builtins': 'error',
                 'unicorn/no-array-push-push': 'error',
@@ -209,11 +224,15 @@ export function defineEslintConfig(repoDir) {
         },
         {
             files: [
+                /** Be much more lenient with test files. */
                 '**/*.test.ts',
             ],
             rules: {
                 '@typescript-eslint/no-unused-vars': 'off',
                 '@typescript-eslint/no-unused-expressions': 'off',
+                'sonarjs/redundant-type-aliases': 'off',
+                'sonarjs/no-dead-store': 'off',
+                'sonarjs/sonar-no-unused-vars': 'off',
             },
         },
     ];
