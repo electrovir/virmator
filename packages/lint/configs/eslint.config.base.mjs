@@ -87,25 +87,27 @@ export function defineEslintConfig(repoDir) {
                 '@typescript-eslint/no-unsafe-enum-comparison': 'off',
                 '@typescript-eslint/no-unsafe-member-access': 'off',
                 '@typescript-eslint/no-unsafe-return': 'off',
+                '@typescript-eslint/no-useless-constructor': 'off', // this rule is always wrong
                 '@typescript-eslint/prefer-reduce-type-parameter': 'off',
                 '@typescript-eslint/unified-signatures': 'off', // this rule is always wrong
-                '@typescript-eslint/no-useless-constructor': 'off', // this rule is always wrong
 
                 'sonarjs/cognitive-complexity': 'off',
+                'sonarjs/different-types-comparison': 'off', // this rule is wrong
+                'sonarjs/function-return-type': 'off',
+                'sonarjs/no-alphabetical-sort': 'off',
+                'sonarjs/no-duplicate-string': 'off',
                 'sonarjs/no-empty-test-file': 'off', // this rule is wrong
                 'sonarjs/no-misused-promises': 'off', // this rule is wrong
-                'sonarjs/different-types-comparison': 'off', // this rule is wrong
-                'sonarjs/no-useless-constructor': 'off', // this rule is wrong
-                'sonarjs/no-nested-functions': 'off',
-                'sonarjs/no-alphabetical-sort': 'off',
                 'sonarjs/no-nested-conditional': 'off',
+                'sonarjs/no-nested-functions': 'off',
                 'sonarjs/no-redundant-optional': 'off',
-                'sonarjs/publicly-writable-directories': 'off',
+                'sonarjs/no-undefined-argument': 'off',
+                'sonarjs/no-useless-constructor': 'off', // this rule is wrong
                 'sonarjs/prefer-nullish-coalescing': 'off',
-                'sonarjs/void-use': 'off',
-                'sonarjs/function-return-type': 'off',
+                'sonarjs/publicly-writable-directories': 'off',
+                'sonarjs/sonar-prefer-regexp-exec': 'off',
                 'sonarjs/use-type-alias': 'off',
-                'sonarjs/no-duplicate-string': 'off',
+                'sonarjs/void-use': 'off',
 
                 'no-async-promise-executor': 'off',
                 'no-prototype-builtins': 'off',
@@ -228,10 +230,14 @@ export function defineEslintConfig(repoDir) {
                 '**/*.test.ts',
             ],
             rules: {
-                '@typescript-eslint/no-unused-vars': 'off',
                 '@typescript-eslint/no-unused-expressions': 'off',
-                'sonarjs/redundant-type-aliases': 'off',
+                '@typescript-eslint/no-unused-vars': 'off',
+                'no-sparse-arrays': 'off',
                 'sonarjs/no-dead-store': 'off',
+                'sonarjs/no-empty-function': 'off',
+                'sonarjs/no-unused-expressions': 'off',
+                'sonarjs/pseudo-random': 'off',
+                'sonarjs/redundant-type-aliases': 'off',
                 'sonarjs/sonar-no-unused-vars': 'off',
             },
         },
