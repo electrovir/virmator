@@ -19,6 +19,7 @@ import {
     ValidPackageJson,
     VirmatorNoTraceError,
 } from '@virmator/core';
+import mri from 'mri';
 import {existsSync} from 'node:fs';
 import {readFile, writeFile} from 'node:fs/promises';
 import {join, relative, resolve} from 'node:path';
@@ -83,8 +84,10 @@ export const virmatorPublishPlugin = defineVirmatorPlugin(
             );
         }
 
-        const flagArgs = filteredArgs.filter((arg) => arg.startsWith('--'));
-        const isDryRun = flagArgs.includes('--dry-run');
+        const nonFlagArgs = mri(filteredArgs)._;
+
+        const publishArgs = filteredArgs.filter((arg) => !nonFlagArgs.includes(arg));
+        const isDryRun = publishArgs.includes('--dry-run');
 
         const monoRepoPackageJsonFiles: ReadonlyArray<Readonly<ValidPackageJson>> =
             await Promise.all(
@@ -154,7 +157,7 @@ export const virmatorPublishPlugin = defineVirmatorPlugin(
             `${inVirmatorEnvKey}=true`,
             'npm',
             'publish',
-            ...flagArgs,
+            ...publishArgs,
         ]
             .filter(isTruthy)
             .join(' ');
