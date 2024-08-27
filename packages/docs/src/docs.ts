@@ -3,13 +3,11 @@ import {readPackageJson} from '@augment-vir/node-js';
 import {
     defaultPluginLogger,
     defineVirmatorPlugin,
-    JsModuleType,
     NpmDepType,
     PackageType,
     PluginLogger,
     VirmatorEnv,
     VirmatorNoTraceError,
-    withImportedTsFile,
 } from '@virmator/core';
 import {ChalkInstance} from 'chalk';
 import mri from 'mri';
@@ -92,18 +90,6 @@ export const virmatorDocsPlugin = defineVirmatorPlugin(
                             PackageType.MonoPackage,
                         ],
                     },
-                    /** Needed to compile the TS dep-cruiser config file. */
-                    esbuild: {
-                        type: NpmDepType.Dev,
-                        env: [
-                            VirmatorEnv.Node,
-                            VirmatorEnv.Web,
-                        ],
-                        packageType: [
-                            PackageType.TopPackage,
-                            PackageType.MonoPackage,
-                        ],
-                    },
                 },
             },
         },
@@ -173,10 +159,15 @@ export const virmatorDocsPlugin = defineVirmatorPlugin(
                 return;
             }
 
+            // dynamic imports are not branches
+            /* node:coverage ignore next 2 */
+            const config = (await import(join(packageDir, configs.docs.configs.typedoc.copyToPath)))
+                .typeDocConfig as Typedoc.TypeDocOptions;
+
             await runTypedoc({
                 checkOnly,
                 packageDir,
-                configPath: join(packageDir, configs.docs.configs.typedoc.copyToPath),
+                config,
                 log,
             });
         }
@@ -203,13 +194,13 @@ export const virmatorDocsPlugin = defineVirmatorPlugin(
 
 /** Runs TypeDoc with a TypeScript config file just like `@virmator/docs` does. */
 export async function runTypedoc({
-    configPath,
+    config,
     packageDir,
     checkOnly = false,
     log = defaultPluginLogger,
 }: {
-    /** Path to TS typedoc config file. */
-    configPath: string;
+    /** Full typedoc options object. */
+    config: Partial<Typedoc.TypeDocOptions>;
     /**
      * Path to the npm package which is running typedoc. This should be a path to a directory that
      * directly contains a `package.json` file.
@@ -220,30 +211,23 @@ export async function runTypedoc({
     /** Optionally override the logger. */
     log?: PluginLogger | undefined;
 }) {
-    await withImportedTsFile(
-        {
-            inputPath: configPath,
-            outputPath: join(packageDir, 'node_modules', '.virmator', 'typedoc.config.cjs'),
-        },
-        JsModuleType.Cjs,
-        async (loadedConfig) => {
-            const typedocOptions: Typedoc.TypeDocOptions = loadedConfig.typeDocConfig;
+    // dynamic imports are not branches
+    /* node:coverage ignore next */
+    const typedoc = await import('typedoc');
 
-            // dynamic imports are not branches
-            /* node:coverage ignore next */
-            const typedoc = await import('typedoc');
+    const combinedConfig: Partial<Typedoc.TypeDocOptions> = {
+        tsconfig: join(packageDir, 'tsconfig.json'),
+        ...config,
+        ...(checkOnly
+            ? {
+                  emit: typedoc.Configuration.EmitStrategy.none,
+              }
+            : {}),
+    };
 
-            const fullTypedocOptions: Typedoc.TypeDocOptions = {
-                ...typedocOptions,
-                ...(checkOnly ? {emit: typedoc.Configuration.EmitStrategy.none} : {}),
-                tsconfig: join(packageDir, 'tsconfig.json'),
-            };
-
-            if (!(await runTypedocInternal(fullTypedocOptions, typedoc, log))) {
-                throw new VirmatorNoTraceError();
-            }
-        },
-    );
+    if (!(await runTypedocInternal(combinedConfig, typedoc, log))) {
+        throw new VirmatorNoTraceError();
+    }
 }
 
 async function runTypedocInternal(
