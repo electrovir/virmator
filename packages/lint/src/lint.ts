@@ -246,7 +246,7 @@ export const virmatorLintPlugin = defineVirmatorPlugin(
     }) => {
         const args = mri(filteredArgs);
 
-        const dirPath = args._.length ? '' : 'src';
+        const dirPath = args._.length ? '' : '.';
 
         const eslintCommand = [
             'npx',

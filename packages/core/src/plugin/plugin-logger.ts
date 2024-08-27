@@ -102,3 +102,12 @@ export const emptyLog: PluginLogger = createPluginLogger({
         },
     },
 });
+
+/**
+ * The default implementation of a {@link PluginLogger} which simply logs to the running process
+ * pipelines.
+ */
+export const defaultPluginLogger: PluginLogger = createPluginLogger({
+    stderr: process.stderr,
+    stdout: process.stdout,
+});

@@ -19,6 +19,10 @@ describe(virmatorLintPlugin.name, () => {
         await testVirmatorLintPlugin(true, context, join(testFilesDir, 'good-repo'));
     });
 
+    it('works with a custom path', async (context) => {
+        await testVirmatorLintPlugin(true, context, join(testFilesDir, 'good-repo'), 'src/a.ts');
+    });
+
     it('lints an invalid project', async (context) => {
         await testVirmatorLintPlugin(false, context, join(testFilesDir, 'bad-repo'));
     });

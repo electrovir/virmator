@@ -1,6 +1,7 @@
 import {ensureError, isTruthy} from '@augment-vir/common';
 import {readPackageJson} from '@augment-vir/node-js';
 import {
+    defaultPluginLogger,
     defineVirmatorPlugin,
     JsModuleType,
     NpmDepType,
@@ -172,30 +173,12 @@ export const virmatorDocsPlugin = defineVirmatorPlugin(
                 return;
             }
 
-            await withImportedTsFile(
-                {
-                    inputPath: join(packageDir, configs.docs.configs.typedoc.copyToPath),
-                    outputPath: join(packageDir, 'node_modules', '.virmator', 'typedoc.config.cjs'),
-                },
-                JsModuleType.Cjs,
-                async (loadedConfig) => {
-                    const typedocOptions: Typedoc.TypeDocOptions = loadedConfig.typeDocConfig;
-
-                    // dynamic imports are not branches
-                    /* node:coverage ignore next */
-                    const typedoc = await import('typedoc');
-
-                    const fullTypedocOptions: Typedoc.TypeDocOptions = {
-                        ...typedocOptions,
-                        ...(checkOnly ? {emit: typedoc.Configuration.EmitStrategy.none} : {}),
-                        tsconfig: join(packageDir, 'tsconfig.json'),
-                    };
-
-                    if (!(await runTypedoc(fullTypedocOptions, typedoc, log))) {
-                        throw new VirmatorNoTraceError();
-                    }
-                },
-            );
+            await runTypedoc({
+                checkOnly,
+                packageDir,
+                configPath: join(packageDir, configs.docs.configs.typedoc.copyToPath),
+                log,
+            });
         }
 
         /**
@@ -218,7 +201,52 @@ export const virmatorDocsPlugin = defineVirmatorPlugin(
     },
 );
 
-async function runTypedoc(
+/** Runs TypeDoc with a TypeScript config file just like `@virmator/docs` does. */
+export async function runTypedoc({
+    configPath,
+    packageDir,
+    checkOnly = false,
+    log = defaultPluginLogger,
+}: {
+    /** Path to TS typedoc config file. */
+    configPath: string;
+    /**
+     * Path to the npm package which is running typedoc. This should be a path to a directory that
+     * directly contains a `package.json` file.
+     */
+    packageDir: string;
+    /** Set to `true` to only check current doc comments, rather than generating HTML from them. */
+    checkOnly?: boolean | undefined;
+    /** Optionally override the logger. */
+    log?: PluginLogger | undefined;
+}) {
+    await withImportedTsFile(
+        {
+            inputPath: configPath,
+            outputPath: join(packageDir, 'node_modules', '.virmator', 'typedoc.config.cjs'),
+        },
+        JsModuleType.Cjs,
+        async (loadedConfig) => {
+            const typedocOptions: Typedoc.TypeDocOptions = loadedConfig.typeDocConfig;
+
+            // dynamic imports are not branches
+            /* node:coverage ignore next */
+            const typedoc = await import('typedoc');
+
+            const fullTypedocOptions: Typedoc.TypeDocOptions = {
+                ...typedocOptions,
+                ...(checkOnly ? {emit: typedoc.Configuration.EmitStrategy.none} : {}),
+                tsconfig: join(packageDir, 'tsconfig.json'),
+            };
+
+            if (!(await runTypedocInternal(fullTypedocOptions, typedoc, log))) {
+                throw new VirmatorNoTraceError();
+            }
+        },
+    );
+}
+
+async function runTypedocInternal(
     options: Partial<Typedoc.TypeDocOptions>,
     typeDoc: typeof Typedoc,
     log: PluginLogger,
