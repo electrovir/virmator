@@ -264,6 +264,7 @@ const baseConfig = {
         'transpiling',
         'truetype',
         'tsbuildinfo',
+        'tsdoc',
         'typeof',
         'ulaanbaatar',
         'uncompiled',

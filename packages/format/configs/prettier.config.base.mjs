@@ -22,6 +22,7 @@ export const basePrettierConfig = {
         'prettier-plugin-interpolated-html-tags',
     ],
     printWidth: 100,
+    tsdoc: true,
     singleQuote: true,
     tabWidth: 4,
     trailingComma: 'all',
