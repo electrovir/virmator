@@ -246,10 +246,13 @@ export const virmatorLintPlugin = defineVirmatorPlugin(
     }) => {
         const args = mri(filteredArgs);
 
+        const dirPath = args._.length ? '' : 'src';
+
         const eslintCommand = [
             'npx',
             'eslint',
             usedCommands.lint?.subCommands.fix && !args.fix ? '--fix' : '',
+            dirPath,
             ...filteredArgs,
         ]
             .filter(isTruthy)
