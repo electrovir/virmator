@@ -228,6 +228,7 @@ export function defineEslintConfig(repoDir) {
             files: [
                 /** Be much more lenient with test files. */
                 '**/*.test.ts',
+                '**/*.example.ts',
             ],
             rules: {
                 '@typescript-eslint/no-unused-expressions': 'off',
