@@ -52,6 +52,7 @@ export function defineEslintConfig(repoDir) {
                 '**/coverage/',
                 '**/dist-*/',
                 '**/dist/',
+                '**/test-files/',
                 'cspell.config.cjs',
                 'package-lock.json',
             ],

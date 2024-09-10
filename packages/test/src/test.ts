@@ -1,4 +1,5 @@
 import {isTruthy} from '@augment-vir/common';
+import {interpolationSafeWindowsPath} from '@augment-vir/node-js';
 import {
     defineVirmatorPlugin,
     NpmDepType,
@@ -319,10 +320,12 @@ export const virmatorTestPlugin = defineVirmatorPlugin(
                       'c8',
                       '--color',
                       '--config',
-                      relative(
-                          cwd,
-                          configs.test.subCommands.node.subCommands.coverage.configs.c8
-                              .fullCopyToPath,
+                      interpolationSafeWindowsPath(
+                          relative(
+                              cwd,
+                              configs.test.subCommands.node.subCommands.coverage.configs.c8
+                                  .fullCopyToPath,
+                          ),
                       ),
                   ]
                 : [];
