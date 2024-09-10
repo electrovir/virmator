@@ -1,6 +1,6 @@
 {
     "name": "@virmator/mono-repo-root",
-    "version": "13.3.9",
+    "version": "13.3.10",
     "private": true,
     "type": "module",
     "workspaces": [

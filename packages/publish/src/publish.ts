@@ -87,6 +87,9 @@ export const virmatorPublishPlugin = defineVirmatorPlugin(
         const nonFlagArgs = mri(filteredArgs)._;
 
         const publishArgs = filteredArgs.filter((arg) => !nonFlagArgs.includes(arg));
+        if (Object.keys(publishArgs).length) {
+            log.faint({publishArgs});
+        }
         const isDryRun = publishArgs.includes('--dry-run');
 
         const monoRepoPackageJsonFiles: ReadonlyArray<Readonly<ValidPackageJson>> =
