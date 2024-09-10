@@ -109,8 +109,6 @@ export function alwaysReloadPlugin(
                 watcher.on('add', reloadCallback);
                 watcher.on('unlink', reloadCallback);
             }
-            // // for debugging. Note that this isn't actually reliable, test the actual reloads.
-            // console.info({watched: watcher.getWatched()});
         },
     };
 }

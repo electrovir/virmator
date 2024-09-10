@@ -1,7 +1,10 @@
 import {Writable} from 'node:stream';
 import {PluginLogger} from '../../plugin/plugin-logger.js';
 
-/** A {@link Writable} implementation that writes to the provided plugin logger. */
+/**
+ * A [Writable](https://nodejs.org/api/stream.html#class-streamwritable) implementation that writes
+ * to the provided plugin logger.
+ */
 export class CallbackWritable extends Writable {
     private chunks: string[] = [];
 

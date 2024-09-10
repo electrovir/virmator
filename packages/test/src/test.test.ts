@@ -23,7 +23,7 @@ describe(virmatorTestPlugin.name, () => {
             dir,
             {
                 logTransform(logType, arg) {
-                    return collapseWhiteSpace(arg).replaceAll(/[\s\n]/g, ' ');
+                    return collapseWhiteSpace(arg).replaceAll(/\s+/g, ' ');
                 },
                 excludeContents: [wrapString({value: 'coverage', wrapper: sep})],
             },

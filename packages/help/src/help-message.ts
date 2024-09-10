@@ -29,7 +29,7 @@ function flattenCommands(
     }, {});
 }
 
-/** Generate a help message from a list of {@link VirmatorPlugin} instances. */
+/** Generate a help message from a list of `VirmatorPlugin` instances. */
 export function generateHelpMessageFromPlugins(
     plugins: ReadonlyArray<Readonly<Pick<VirmatorPlugin, 'cliCommands'>>>,
     syntax: HelpMessageSyntax,
@@ -45,7 +45,7 @@ export function generateHelpMessageFromPlugins(
 }
 
 /**
- * Generate a help message directly from {@link VirmatorPluginCliCommands}. Used by
+ * Generate a help message directly from `VirmatorPluginCliCommands`. Used by
  * {@link generateHelpMessageFromPlugins}.
  */
 export function generateHelpMessage(

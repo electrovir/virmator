@@ -10,6 +10,7 @@ import {
     isEnumValue,
     joinWithFinalConjunction,
     pickObjectKeys,
+    safeMatch,
 } from '@augment-vir/common';
 import {readPackageJson, writeJson} from '@augment-vir/node-js';
 import {
@@ -408,13 +409,17 @@ async function writePackageJson(originalPackageJson: Readonly<PackageJson>, pack
 }
 
 function createGitUrls(ref: string) {
+    // looks like `https://github.com/electrovir/augment-vir`
     const repoPath = ref
         .replace(/(\w):(\w)/g, '$1/$2')
         .replace(/\.git$/, '')
         .replace(/^git@/g, 'https://');
     const isGitHub = repoPath.includes('github.com');
     const issuesUrl = isGitHub ? `${repoPath}/issues` : '';
-    const username = repoPath.replace(/^.+\.com\//, '').replace(/\/.+$/, '');
+    const [
+        ,
+        username,
+    ] = safeMatch(repoPath, /\.com\/([^/]+)\//);
     const bugsObject = issuesUrl ? {bugs: {url: issuesUrl}} : {};
     const userUrlObject = isGitHub
         ? {

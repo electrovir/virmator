@@ -77,6 +77,7 @@ export function defineEslintConfig(repoDir) {
             },
             rules: {
                 '@typescript-eslint/no-confusing-void-expression': 'off',
+                '@typescript-eslint/no-duplicate-type-constituents': 'off',
                 '@typescript-eslint/no-dynamic-delete': 'off',
                 '@typescript-eslint/no-explicit-any': 'off',
                 '@typescript-eslint/no-invalid-void-type': 'off',
