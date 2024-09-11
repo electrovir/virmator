@@ -22,7 +22,7 @@ describe(virmatorFrontendPlugin.name, () => {
             dir,
             {
                 logTransform(logType, log) {
-                    return log.replace(/built in [\dm]+s/, 'built');
+                    return log.replace(/built in [\d.m]+s/g, 'built');
                 },
             },
         );

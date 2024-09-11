@@ -18,7 +18,7 @@ describe(virmatorCompilePlugin.name, () => {
                  * are stable.
                  */
                 if (logType === LogOutputType.standard) {
-                    return arg.replace(/ Version.+/, '');
+                    return arg;
                 }
                 return arg;
             },

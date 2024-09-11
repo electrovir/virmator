@@ -160,7 +160,7 @@ export async function testPlugin(
 
         const result: TestPluginResult = {
             logs: mapObjectValues(logs, (logType, logs) => {
-                return toPosixPath(logTransform(logType, logs.join('\n')));
+                return toPosixPath(logTransform(logType, logs.join('\n'))).replaceAll('\r', '');
             }),
             cwd: toPosixPath(relative(monoRepoDir, cwd)),
             contentsDiff,

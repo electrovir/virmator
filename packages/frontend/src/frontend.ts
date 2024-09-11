@@ -4,6 +4,7 @@ import {defineVirmatorPlugin, NpmDepType, PackageType, VirmatorEnv} from '@virma
 import mri from 'mri';
 import {cp, rm} from 'node:fs/promises';
 import {join, relative, resolve} from 'node:path';
+import {pathToFileURL} from 'node:url';
 import type {UserConfig} from 'vite';
 
 /** A virmator plugin for running and building frontend packages. */
@@ -109,7 +110,9 @@ export const virmatorFrontendPlugin = defineVirmatorPlugin(
             usedCommands.frontend?.subCommands.build || usedCommands.frontend?.subCommands.preview;
         const configPath = args.config || configs.frontend.configs.vite.fullCopyToPath;
 
-        const viteConfig = await ((await import(configPath)).default as MaybePromise<UserConfig>);
+        const viteConfig = await ((
+            await import(pathToFileURL(configPath).toString())
+        ).default as MaybePromise<UserConfig>);
 
         const rootDir: string = viteConfig.root ? resolve(cwd, viteConfig.root) : cwd;
         const outDir: string = resolve(rootDir, viteConfig.build?.outDir || 'dist');

@@ -12,6 +12,7 @@ import {
 import {ChalkInstance} from 'chalk';
 import mri from 'mri';
 import {basename, join} from 'node:path';
+import {pathToFileURL} from 'node:url';
 import type * as Typedoc from 'typedoc';
 
 /** A virmator plugin for checking and generating documentation. */
@@ -160,9 +161,14 @@ export const virmatorDocsPlugin = defineVirmatorPlugin(
             }
 
             // dynamic imports are not branches
-            /* node:coverage ignore next 2 */
-            const config = (await import(join(packageDir, configs.docs.configs.typedoc.copyToPath)))
-                .typeDocConfig as Typedoc.TypeDocOptions;
+            /* node:coverage ignore next 7 */
+            const config = (
+                await import(
+                    pathToFileURL(
+                        join(packageDir, configs.docs.configs.typedoc.copyToPath),
+                    ).toString()
+                )
+            ).typeDocConfig as Typedoc.TypeDocOptions;
 
             await runTypedoc({
                 checkOnly,

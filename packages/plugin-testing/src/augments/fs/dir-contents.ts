@@ -20,7 +20,7 @@ export async function readAllDirContents(
         excludeList?: ReadonlyArray<string | RegExp> | undefined;
     },
 ): Promise<DirContents> {
-    const fileNames = await readdir(dir);
+    const fileNames = (await readdir(dir)).sort();
 
     const allFileContents = await Promise.all(
         fileNames.map(async (fileName) => {

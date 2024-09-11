@@ -1,5 +1,6 @@
+import {safeMatch} from '@augment-vir/common';
 import {testPlugin} from '@virmator/plugin-testing';
-import {join, resolve} from 'node:path';
+import {basename, join, resolve} from 'node:path';
 import {describe, it, TestContext} from 'node:test';
 import {virmatorLintPlugin} from './lint.js';
 
@@ -12,7 +13,19 @@ describe(virmatorLintPlugin.name, () => {
         cwd: string,
         extraCommand = '',
     ) {
-        await testPlugin(shouldPass, context, virmatorLintPlugin, `lint ${extraCommand}`, cwd);
+        await testPlugin(shouldPass, context, virmatorLintPlugin, `lint ${extraCommand}`, cwd, {
+            logTransform(logType, arg) {
+                const [
+                    ,
+                    fileName,
+                ] = safeMatch(arg, /\s(\S*packages[/\\].+?\.ts)\s/);
+
+                if (fileName) {
+                    return arg.replace(fileName, basename(fileName));
+                }
+                return arg;
+            },
+        });
     }
 
     it('lints a valid project', async (context) => {

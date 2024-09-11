@@ -15,7 +15,7 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
-                os: [ubuntu-latest, windows-latest, macos-latest]
+                os: [macos-latest, ubuntu-latest, windows-latest]
         steps:
             - uses: actions/checkout@v4.1.7
             - name: Use Node.js ${{ matrix.node-version }}
@@ -23,13 +23,16 @@ jobs:
               with:
                   node-version-file: '.nvmrc'
             # handle NPM / Node.js repeatedly bricking their npm setup on Windows
+            # Note that this won't work if it uses --no-save
             - if: runner.os == 'Windows'
               shell: bash
               run: |
-                  npm install npm
+                  npm i npm
+            # format package.json is to account for the above `npm i npm` command
             - name: run test
               shell: bash
               run: |
                   npm ci
                   npx playwright install --with-deps
+                  npm run format package.json
                   npm run test:all

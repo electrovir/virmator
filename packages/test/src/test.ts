@@ -12,6 +12,7 @@ import {glob} from 'glob';
 import mri from 'mri';
 import {rm, writeFile} from 'node:fs/promises';
 import {join, relative} from 'node:path';
+import {pathToFileURL} from 'node:url';
 
 /** A virmator plugin for running tests. */
 export const virmatorTestPlugin = defineVirmatorPlugin(
@@ -274,15 +275,18 @@ export const virmatorTestPlugin = defineVirmatorPlugin(
             try {
                 const configPath =
                     args.config ||
-                    configs.test.subCommands.web.configs.webTestRunner.fullCopyToPath;
+                    relative(
+                        cwd,
+                        configs.test.subCommands.web.configs.webTestRunner.fullCopyToPath,
+                    );
                 const configArgs = args.config
                     ? []
                     : [
                           '--config',
-                          configPath,
+                          interpolationSafeWindowsPath(configPath),
                       ];
 
-                const webTestRunnerConfig = (await import(configPath))
+                const webTestRunnerConfig = (await import(pathToFileURL(configPath).toString()))
                     .default as Partial<TestRunnerConfig>;
 
                 const includeCoverage = usedCommands.test.subCommands.web.subCommands.coverage;

@@ -1,6 +1,6 @@
 {
     "name": "@virmator/mono-repo-root",
-    "version": "13.3.10",
+    "version": "13.3.11",
     "private": true,
     "type": "module",
     "workspaces": [
@@ -58,6 +58,7 @@
         "node": ">=22"
     },
     "overrides": {
+        "playwright": "1.46.1",
         "virmator": "*"
     }
 }
