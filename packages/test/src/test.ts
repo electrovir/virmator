@@ -1,5 +1,5 @@
 import {isTruthy} from '@augment-vir/common';
-import {interpolationSafeWindowsPath} from '@augment-vir/node-js';
+import {interpolationSafeWindowsPath, toPosixPath} from '@augment-vir/node-js';
 import {
     defineVirmatorPlugin,
     NpmDepType,
@@ -410,10 +410,9 @@ async function createTestThatImportsAllFilesForCoverage(
             .map((file, index) => {
                 const importName = `import${index}`;
                 importNames.push(importName);
-                return `import * as ${importName} from './${relative('src', file).replace(
-                    /\.ts$/,
-                    '',
-                )}';`;
+                return `import * as ${importName} from './${toPosixPath(
+                    relative('src', file),
+                ).replace(/\.ts$/, '')}';`;
             })
             .join('\n');
         const usedImports = importNames.map((importName) => `    ${importName},`);
