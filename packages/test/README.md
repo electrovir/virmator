@@ -24,7 +24,6 @@ A default plugin for [virmator](https://www.npmjs.com/package/virmator).
             -   Configs
                 -   configs/web-test-runner.config.mjs
             -   Deps
-                -   [@open-wc/testing](https://npmjs.com/package/@open-wc/testing)
                 -   [@web/dev-server-esbuild](https://npmjs.com/package/@web/dev-server-esbuild)
                 -   [@web/test-runner-commands](https://npmjs.com/package/@web/test-runner-commands)
                 -   [@web/test-runner-playwright](https://npmjs.com/package/@web/test-runner-playwright)

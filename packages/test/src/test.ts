@@ -82,16 +82,6 @@ export const virmatorTestPlugin = defineVirmatorPlugin(
                             },
                         },
                         npmDeps: {
-                            '@open-wc/testing': {
-                                env: [
-                                    RuntimeEnv.Web,
-                                ],
-                                packageType: [
-                                    PackageType.MonoPackage,
-                                    PackageType.TopPackage,
-                                ],
-                                type: NpmDepType.Dev,
-                            },
                             '@web/dev-server-esbuild': {
                                 env: [
                                     RuntimeEnv.Web,
