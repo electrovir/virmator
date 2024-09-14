@@ -48,6 +48,7 @@ export function defineEslintConfig(repoDir) {
                 '*.sh',
                 '*.sql',
                 '*.yml',
+                '**/all-files-for-code-coverage.test.ts',
                 '**/configs/',
                 '**/coverage/',
                 '**/dist-*/',
