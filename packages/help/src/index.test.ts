@@ -1,10 +1,10 @@
-import {describe, it} from 'node:test';
-import {assertDefined} from 'run-time-assertions';
+import {assert} from '@augment-vir/assert';
+import {describe, it} from '@augment-vir/test';
 import * as indexExports from './index.js';
 
 describe('index', () => {
     it('exports expected stuff', () => {
-        assertDefined(indexExports.generateHelpMessage);
-        assertDefined(indexExports.virmatorHelpPlugin);
+        assert.isDefined(indexExports.generateHelpMessage);
+        assert.isDefined(indexExports.virmatorHelpPlugin);
     });
 });

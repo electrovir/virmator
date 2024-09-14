@@ -1,9 +1,9 @@
-import assert from 'node:assert/strict';
-import {describe, it} from 'node:test';
+import {assert} from '@augment-vir/assert';
+import {describe, it} from '@augment-vir/test';
 import {hideNoTraceTraces} from './virmator-no-trace.error.js';
 
 describe('hideNoTraceTraces', () => {
     it('should be true', () => {
-        assert.strictEqual(hideNoTraceTraces, true);
+        assert.strictEquals(hideNoTraceTraces, true);
     });
 });

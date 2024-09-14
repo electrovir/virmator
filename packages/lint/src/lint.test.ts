@@ -1,7 +1,7 @@
 import {safeMatch} from '@augment-vir/common';
+import {describe, it, type UniversalTestContext} from '@augment-vir/test';
 import {testPlugin} from '@virmator/plugin-testing';
 import {basename, join, resolve} from 'node:path';
-import {describe, it, TestContext} from 'node:test';
 import {virmatorLintPlugin} from './lint.js';
 
 const testFilesDir = resolve(import.meta.dirname, '..', 'test-files');
@@ -9,7 +9,7 @@ const testFilesDir = resolve(import.meta.dirname, '..', 'test-files');
 describe(virmatorLintPlugin.name, () => {
     async function testVirmatorLintPlugin(
         shouldPass: boolean,
-        context: TestContext,
+        context: UniversalTestContext,
         cwd: string,
         extraCommand = '',
     ) {

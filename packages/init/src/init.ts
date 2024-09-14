@@ -3,16 +3,17 @@
  * missed without the other packages.
  */
 
+import {check} from '@augment-vir/assert';
 import {
     awaitedBlockingMap,
     filterObject,
-    getEnumTypedValues,
-    isEnumValue,
+    getEnumValues,
     joinWithFinalConjunction,
     pickObjectKeys,
+    RuntimeEnv,
     safeMatch,
 } from '@augment-vir/common';
-import {readPackageJson, writeJson} from '@augment-vir/node-js';
+import {readPackageJson, writeJsonFile} from '@augment-vir/node';
 import {
     copyConfigFile,
     defineVirmatorPlugin,
@@ -20,7 +21,6 @@ import {
     NpmDepType,
     PackageType,
     PluginNpmDeps,
-    VirmatorEnv,
     VirmatorNoTraceError,
     VirmatorPlugin,
     VirmatorPluginCliCommands,
@@ -33,15 +33,15 @@ import {PackageJson} from 'type-fest';
 const deps: PluginNpmDeps = {
     'mono-vir': {
         env: [
-            VirmatorEnv.Node,
-            VirmatorEnv.Web,
+            RuntimeEnv.Node,
+            RuntimeEnv.Web,
         ],
         packageType: [PackageType.MonoRoot],
         type: NpmDepType.Dev,
     },
     tsx: {
         env: [
-            VirmatorEnv.Node,
+            RuntimeEnv.Node,
         ],
         packageType: [
             PackageType.MonoPackage,
@@ -51,7 +51,7 @@ const deps: PluginNpmDeps = {
     },
     'element-vir': {
         env: [
-            VirmatorEnv.Web,
+            RuntimeEnv.Web,
         ],
         packageType: [
             PackageType.MonoPackage,
@@ -93,8 +93,8 @@ export const virmatorInitPlugin = defineVirmatorPlugin(
                         ),
                         copyToPath: join('.github', 'workflows', 'build-for-gh-pages.yml'),
                         env: [
-                            VirmatorEnv.Node,
-                            VirmatorEnv.Web,
+                            RuntimeEnv.Node,
+                            RuntimeEnv.Web,
                         ],
                         packageType: [
                             PackageType.TopPackage,
@@ -106,8 +106,8 @@ export const virmatorInitPlugin = defineVirmatorPlugin(
                         copyFromPath: join('configs', 'github', 'workflows', 'tagged-release.yml'),
                         copyToPath: join('.github', 'workflows', 'tagged-release.yml'),
                         env: [
-                            VirmatorEnv.Node,
-                            VirmatorEnv.Web,
+                            RuntimeEnv.Node,
+                            RuntimeEnv.Web,
                         ],
                         packageType: [
                             PackageType.TopPackage,
@@ -119,7 +119,7 @@ export const virmatorInitPlugin = defineVirmatorPlugin(
                         copyFromPath: join('configs', 'github', 'workflows', 'tests-node.yml'),
                         copyToPath: join('.github', 'workflows', 'tests.yml'),
                         env: [
-                            VirmatorEnv.Node,
+                            RuntimeEnv.Node,
                         ],
                         packageType: [
                             PackageType.TopPackage,
@@ -131,7 +131,7 @@ export const virmatorInitPlugin = defineVirmatorPlugin(
                         copyFromPath: join('configs', 'github', 'workflows', 'tests-web.yml'),
                         copyToPath: join('.github', 'workflows', 'tests.yml'),
                         env: [
-                            VirmatorEnv.Web,
+                            RuntimeEnv.Web,
                         ],
                         packageType: [
                             PackageType.TopPackage,
@@ -143,8 +143,8 @@ export const virmatorInitPlugin = defineVirmatorPlugin(
                         copyFromPath: join('configs', 'vscode', 'settings.json'),
                         copyToPath: join('.vscode', 'settings.json'),
                         env: [
-                            VirmatorEnv.Web,
-                            VirmatorEnv.Node,
+                            RuntimeEnv.Web,
+                            RuntimeEnv.Node,
                         ],
                         packageType: [
                             PackageType.TopPackage,
@@ -162,7 +162,7 @@ export const virmatorInitPlugin = defineVirmatorPlugin(
                         ),
                         copyToPath: join('src', 'ui', 'elements', 'vir-app.element.ts'),
                         env: [
-                            VirmatorEnv.Web,
+                            RuntimeEnv.Web,
                         ],
                         packageType: [
                             PackageType.TopPackage,
@@ -174,7 +174,7 @@ export const virmatorInitPlugin = defineVirmatorPlugin(
                         copyFromPath: join('configs', 'src', 'index.html'),
                         copyToPath: join('src', 'index.html'),
                         env: [
-                            VirmatorEnv.Web,
+                            RuntimeEnv.Web,
                         ],
                         packageType: [
                             PackageType.TopPackage,
@@ -186,7 +186,7 @@ export const virmatorInitPlugin = defineVirmatorPlugin(
                         copyFromPath: join('configs', 'www-static', 'index.css'),
                         copyToPath: join('www-static', 'index.css'),
                         env: [
-                            VirmatorEnv.Web,
+                            RuntimeEnv.Web,
                         ],
                         packageType: [
                             PackageType.TopPackage,
@@ -198,7 +198,7 @@ export const virmatorInitPlugin = defineVirmatorPlugin(
                         copyFromPath: join('configs', 'www-static', '_redirects'),
                         copyToPath: join('www-static', '_redirects'),
                         env: [
-                            VirmatorEnv.Web,
+                            RuntimeEnv.Web,
                         ],
                         packageType: [
                             PackageType.TopPackage,
@@ -210,8 +210,8 @@ export const virmatorInitPlugin = defineVirmatorPlugin(
                         copyFromPath: join('configs', 'gitattributes.txt'),
                         copyToPath: join('.gitattributes'),
                         env: [
-                            VirmatorEnv.Web,
-                            VirmatorEnv.Node,
+                            RuntimeEnv.Web,
+                            RuntimeEnv.Node,
                         ],
                         packageType: [
                             PackageType.TopPackage,
@@ -223,8 +223,8 @@ export const virmatorInitPlugin = defineVirmatorPlugin(
                         copyFromPath: join('configs', 'nvmrc.txt'),
                         copyToPath: join('.nvmrc'),
                         env: [
-                            VirmatorEnv.Web,
-                            VirmatorEnv.Node,
+                            RuntimeEnv.Web,
+                            RuntimeEnv.Node,
                         ],
                         packageType: [
                             PackageType.TopPackage,
@@ -236,8 +236,8 @@ export const virmatorInitPlugin = defineVirmatorPlugin(
                         copyFromPath: join('configs', 'gitignore.txt'),
                         copyToPath: join('.gitignore'),
                         env: [
-                            VirmatorEnv.Web,
-                            VirmatorEnv.Node,
+                            RuntimeEnv.Web,
+                            RuntimeEnv.Node,
                         ],
                         packageType: [
                             PackageType.TopPackage,
@@ -249,8 +249,8 @@ export const virmatorInitPlugin = defineVirmatorPlugin(
                         copyFromPath: join('configs', 'LICENSE-MIT'),
                         copyToPath: join('LICENSE-MIT'),
                         env: [
-                            VirmatorEnv.Web,
-                            VirmatorEnv.Node,
+                            RuntimeEnv.Web,
+                            RuntimeEnv.Node,
                         ],
                         packageType: [
                             PackageType.TopPackage,
@@ -263,8 +263,8 @@ export const virmatorInitPlugin = defineVirmatorPlugin(
                         copyFromPath: join('configs', 'LICENSE-CC0'),
                         copyToPath: join('LICENSE-CC0'),
                         env: [
-                            VirmatorEnv.Web,
-                            VirmatorEnv.Node,
+                            RuntimeEnv.Web,
+                            RuntimeEnv.Node,
                         ],
                         packageType: [
                             PackageType.TopPackage,
@@ -277,8 +277,8 @@ export const virmatorInitPlugin = defineVirmatorPlugin(
                         copyFromPath: join('configs', 'npmignore.txt'),
                         copyToPath: join('.npmignore'),
                         env: [
-                            VirmatorEnv.Web,
-                            VirmatorEnv.Node,
+                            RuntimeEnv.Web,
+                            RuntimeEnv.Node,
                         ],
                         packageType: [
                             PackageType.TopPackage,
@@ -290,7 +290,7 @@ export const virmatorInitPlugin = defineVirmatorPlugin(
                         copyFromPath: join('configs', 'package-mono-package-node', 'package.json'),
                         copyToPath: join('package.json'),
                         env: [
-                            VirmatorEnv.Node,
+                            RuntimeEnv.Node,
                         ],
                         packageType: [
                             PackageType.MonoPackage,
@@ -301,7 +301,7 @@ export const virmatorInitPlugin = defineVirmatorPlugin(
                         copyFromPath: join('configs', 'package-mono-package-web', 'package.json'),
                         copyToPath: join('package.json'),
                         env: [
-                            VirmatorEnv.Web,
+                            RuntimeEnv.Web,
                         ],
                         packageType: [
                             PackageType.MonoPackage,
@@ -312,8 +312,8 @@ export const virmatorInitPlugin = defineVirmatorPlugin(
                         copyFromPath: join('configs', 'package-mono-root', 'package.json'),
                         copyToPath: join('package.json'),
                         env: [
-                            VirmatorEnv.Web,
-                            VirmatorEnv.Node,
+                            RuntimeEnv.Web,
+                            RuntimeEnv.Node,
                         ],
                         packageType: [
                             PackageType.MonoRoot,
@@ -324,7 +324,7 @@ export const virmatorInitPlugin = defineVirmatorPlugin(
                         copyFromPath: join('configs', 'package-top-package-node', 'package.json'),
                         copyToPath: join('package.json'),
                         env: [
-                            VirmatorEnv.Node,
+                            RuntimeEnv.Node,
                         ],
                         packageType: [
                             PackageType.TopPackage,
@@ -335,7 +335,7 @@ export const virmatorInitPlugin = defineVirmatorPlugin(
                         copyFromPath: join('configs', 'package-top-package-web', 'package.json'),
                         copyToPath: join('package.json'),
                         env: [
-                            VirmatorEnv.Web,
+                            RuntimeEnv.Web,
                         ],
                         packageType: [
                             PackageType.TopPackage,
@@ -353,16 +353,16 @@ export const virmatorInitPlugin = defineVirmatorPlugin(
         log,
         runInstallDeps,
     }) => {
-        const packageType = filteredArgs.find((arg) => isEnumValue(arg, PackageType));
-        const packageEnv = filteredArgs.find((arg) => isEnumValue(arg, VirmatorEnv));
+        const packageType = filteredArgs.find((arg) => check.isEnumValue(arg, PackageType));
+        const packageEnv = filteredArgs.find((arg) => check.isEnumValue(arg, RuntimeEnv));
 
         if (!packageEnv) {
             throw new VirmatorNoTraceError(
-                `Missing env. Expected one of ${joinWithFinalConjunction(getEnumTypedValues(VirmatorEnv), 'or')}`,
+                `Missing env. Expected one of ${joinWithFinalConjunction(getEnumValues(RuntimeEnv), 'or')}`,
             );
         } else if (!packageType) {
             throw new VirmatorNoTraceError(
-                `Missing package type. Expected one of ${joinWithFinalConjunction(getEnumTypedValues(PackageType), 'or')}`,
+                `Missing package type. Expected one of ${joinWithFinalConjunction(getEnumValues(PackageType), 'or')}`,
             );
         }
 
@@ -405,7 +405,7 @@ async function writePackageJson(originalPackageJson: Readonly<PackageJson>, pack
         ]),
     };
 
-    await writeJson(join(packagePath, 'package.json'), packageJson);
+    await writeJsonFile(join(packagePath, 'package.json'), packageJson);
 }
 
 function createGitUrls(ref: string) {

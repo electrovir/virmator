@@ -1,14 +1,7 @@
-import {ensureError, isTruthy} from '@augment-vir/common';
-import {readPackageJson} from '@augment-vir/node-js';
-import {
-    defaultPluginLogger,
-    defineVirmatorPlugin,
-    NpmDepType,
-    PackageType,
-    PluginLogger,
-    VirmatorEnv,
-    VirmatorNoTraceError,
-} from '@virmator/core';
+import {check} from '@augment-vir/assert';
+import {ensureError, log as logImport, RuntimeEnv, type Logger} from '@augment-vir/common';
+import {readPackageJson} from '@augment-vir/node';
+import {defineVirmatorPlugin, NpmDepType, PackageType, VirmatorNoTraceError} from '@virmator/core';
 import {ChalkInstance} from 'chalk';
 import mri from 'mri';
 import {basename, join} from 'node:path';
@@ -57,8 +50,8 @@ export const virmatorDocsPlugin = defineVirmatorPlugin(
                         copyFromPath: join('configs', 'typedoc.config.share.ts'),
                         copyToPath: join('configs', 'typedoc.config.ts'),
                         env: [
-                            VirmatorEnv.Node,
-                            VirmatorEnv.Web,
+                            RuntimeEnv.Node,
+                            RuntimeEnv.Web,
                         ],
                         packageType: [
                             PackageType.TopPackage,
@@ -71,8 +64,8 @@ export const virmatorDocsPlugin = defineVirmatorPlugin(
                     'markdown-code-example-inserter': {
                         type: NpmDepType.Dev,
                         env: [
-                            VirmatorEnv.Node,
-                            VirmatorEnv.Web,
+                            RuntimeEnv.Node,
+                            RuntimeEnv.Web,
                         ],
                         packageType: [
                             PackageType.TopPackage,
@@ -83,8 +76,8 @@ export const virmatorDocsPlugin = defineVirmatorPlugin(
                     typedoc: {
                         type: NpmDepType.Dev,
                         env: [
-                            VirmatorEnv.Node,
-                            VirmatorEnv.Web,
+                            RuntimeEnv.Node,
+                            RuntimeEnv.Web,
                         ],
                         packageType: [
                             PackageType.TopPackage,
@@ -117,7 +110,7 @@ export const virmatorDocsPlugin = defineVirmatorPlugin(
             ...filteredArgs,
             mdFilesArg,
         ]
-            .filter(isTruthy)
+            .filter(check.isTruthy)
             .join(' ');
 
         async function runDocs(
@@ -203,7 +196,7 @@ export async function runTypedoc({
     config,
     packageDir,
     checkOnly = false,
-    log = defaultPluginLogger,
+    log = logImport,
 }: {
     /** Full typedoc options object. */
     config: Partial<Typedoc.TypeDocOptions>;
@@ -215,7 +208,7 @@ export async function runTypedoc({
     /** Set to `true` to only check current doc comments, rather than generating HTML from them. */
     checkOnly?: boolean | undefined;
     /** Optionally override the logger. */
-    log?: PluginLogger | undefined;
+    log?: Logger | undefined;
 }) {
     // dynamic imports are not branches
     /* node:coverage ignore next */
@@ -239,7 +232,7 @@ export async function runTypedoc({
 async function runTypedocInternal(
     options: Partial<Typedoc.TypeDocOptions>,
     typeDoc: typeof Typedoc,
-    log: PluginLogger,
+    log: Logger,
 ): Promise<boolean> {
     /** Lots of edge cases included in here to just make sure we fully run the typedoc API. */
     /* node:coverage disable */

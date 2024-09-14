@@ -1,6 +1,6 @@
+import {describe, it} from '@augment-vir/test';
 import {testPlugin} from '@virmator/plugin-testing';
 import {join, resolve} from 'node:path';
-import {describe, it} from 'node:test';
 import {virmatorHelpPlugin} from './help.js';
 
 const packageDir = resolve(import.meta.dirname, '..');

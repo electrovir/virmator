@@ -1,8 +1,8 @@
-import {getObjectTypedEntries, isObject} from '@augment-vir/common';
-import {writeFileAndDir} from '@augment-vir/node-js';
+import {check} from '@augment-vir/assert';
+import {getObjectTypedEntries} from '@augment-vir/common';
+import {writeFileAndDir} from '@augment-vir/node';
 import {readdir, readFile, rm, stat} from 'node:fs/promises';
 import {join} from 'node:path';
-import {isRunTimeType} from 'run-time-assertions';
 
 /** Nested contents read from a file system directory. */
 export type DirContents = {
@@ -28,7 +28,7 @@ export async function readAllDirContents(
 
             if (
                 excludeList?.some((excludeItem) => {
-                    if (isRunTimeType(excludeItem, 'string')) {
+                    if (check.isString(excludeItem)) {
                         return filePath.includes(excludeItem);
                     } else {
                         return filePath.match(excludeItem);
@@ -45,7 +45,7 @@ export async function readAllDirContents(
                   ? await readAllDirContents(filePath, {recursive, excludeList})
                   : undefined;
 
-            if (isObject(contents) && !Object.keys(contents).length) {
+            if (check.isObject(contents) && !Object.keys(contents).length) {
                 return undefined;
             }
 
@@ -86,7 +86,7 @@ export async function writeDirContents(
                 content,
             ]) => {
                 const fullPath = join(rootDir, relativePath);
-                if (isRunTimeType(content, 'string')) {
+                if (check.isString(content)) {
                     await writeFileAndDir(fullPath, content);
                 } else {
                     await writeDirContents(fullPath, content);

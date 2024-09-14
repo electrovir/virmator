@@ -1,10 +1,12 @@
 import type {
     AnyObject,
+    Logger,
+    LogOutputType,
     MaybePromise,
-    PartialAndUndefined,
+    PartialWithUndefined,
     TypedFunction,
 } from '@augment-vir/common';
-import type {LogOutputType, runShellCommand} from '@augment-vir/node-js';
+import type {runShellCommand} from '@augment-vir/node';
 import {ChalkInstance} from 'chalk';
 import {EmptyObject, PackageJson, SetRequired} from 'type-fest';
 import {VirmatorPluginResolvedConfigFile} from './plugin-configs.js';
@@ -15,7 +17,6 @@ import {
     VirmatorPluginCliCommands,
     VirmatorPluginInit,
 } from './plugin-init.js';
-import {PluginLogger} from './plugin-logger.js';
 
 /** A picked nesting of commands based on which commands are currently in use. */
 export type UsedVirmatorPluginCommands<
@@ -120,7 +121,7 @@ export type VirmatorPluginExecutorParams<
 
     /** Run a shell command with sensible defaults. */
     runShellCommand: TypedFunction<
-        [...Parameters<typeof runShellCommand>, PartialAndUndefined<ExtraRunShellCommandOptions>?],
+        [...Parameters<typeof runShellCommand>, PartialWithUndefined<ExtraRunShellCommandOptions>?],
         ReturnType<typeof runShellCommand>
     >;
     /** Runs the given command for each package within a mono repo, if it has any. */
@@ -128,7 +129,7 @@ export type VirmatorPluginExecutorParams<
     /** Installs the given list of deps within the current package directory. */
     runInstallDeps: (deps: Readonly<Partial<PluginNpmDeps>>) => Promise<void>;
 
-    log: PluginLogger;
+    log: Logger;
 
     configs: VirmatorPluginResolvedConfigs<Commands>;
 

@@ -1,4 +1,4 @@
-import {log, logColors} from '@augment-vir/node-js';
+import {log, logColors} from '@augment-vir/common';
 import {alwaysReloadPlugin} from '@virmator/frontend/src/always-reload.vite';
 import {existsSync} from 'node:fs';
 import {basename, dirname, join, relative} from 'node:path';

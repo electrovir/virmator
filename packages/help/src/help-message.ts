@@ -1,11 +1,12 @@
+import {check} from '@augment-vir/assert';
 import {
     collapseWhiteSpace,
     getObjectTypedEntries,
-    isTruthy,
+    logColors,
     mapObjectValues,
     safeMatch,
 } from '@augment-vir/common';
-import {logColors, toPosixPath} from '@augment-vir/node-js';
+import {toPosixPath} from '@augment-vir/node';
 import {
     IndividualPluginCommand,
     virmatorFlags,
@@ -98,7 +99,7 @@ export const formats = {
         [HelpMessageSyntax.Markdown]: '**',
     },
     unBold: {
-        [HelpMessageSyntax.Cli]: logColors['normal-weight'],
+        [HelpMessageSyntax.Cli]: logColors.normalWeight,
         [HelpMessageSyntax.Markdown]: '**',
     },
     code: {
@@ -238,7 +239,7 @@ function commandDocToString(
         exampleBlock,
         configsBlock,
         depsBlock,
-    ].filter(isTruthy);
+    ].filter(check.isTruthy);
 
     return blocks.join('\n');
 }

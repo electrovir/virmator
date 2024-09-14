@@ -1,11 +1,11 @@
-import {awaitedBlockingMap, isTruthy} from '@augment-vir/common';
-import {toPosixPath} from '@augment-vir/node-js';
+import {check} from '@augment-vir/assert';
+import {awaitedBlockingMap, RuntimeEnv} from '@augment-vir/common';
+import {toPosixPath} from '@augment-vir/node';
 import {
     defineVirmatorPlugin,
     JsModuleType,
     NpmDepType,
     PackageType,
-    VirmatorEnv,
     VirmatorNoTraceError,
     withCompiledTsFile,
     withImportedTsFile,
@@ -64,8 +64,8 @@ export const virmatorDepsPlugin = defineVirmatorPlugin(
                                 copyFromPath: join('configs', 'dep-cruiser.config.cts'),
                                 copyToPath: join('configs', 'dep-cruiser.config.cts'),
                                 env: [
-                                    VirmatorEnv.Node,
-                                    VirmatorEnv.Web,
+                                    RuntimeEnv.Node,
+                                    RuntimeEnv.Web,
                                 ],
                                 packageType: [
                                     PackageType.TopPackage,
@@ -78,8 +78,8 @@ export const virmatorDepsPlugin = defineVirmatorPlugin(
                             'dependency-cruiser': {
                                 type: NpmDepType.Dev,
                                 env: [
-                                    VirmatorEnv.Node,
-                                    VirmatorEnv.Web,
+                                    RuntimeEnv.Node,
+                                    RuntimeEnv.Web,
                                 ],
                                 packageType: [
                                     PackageType.TopPackage,
@@ -90,8 +90,8 @@ export const virmatorDepsPlugin = defineVirmatorPlugin(
                             esbuild: {
                                 type: NpmDepType.Dev,
                                 env: [
-                                    VirmatorEnv.Node,
-                                    VirmatorEnv.Web,
+                                    RuntimeEnv.Node,
+                                    RuntimeEnv.Web,
                                 ],
                                 packageType: [
                                     PackageType.TopPackage,
@@ -120,8 +120,8 @@ export const virmatorDepsPlugin = defineVirmatorPlugin(
                                 copyFromPath: join('configs', 'ncu.config.ts'),
                                 copyToPath: join('configs', 'ncu.config.ts'),
                                 env: [
-                                    VirmatorEnv.Node,
-                                    VirmatorEnv.Web,
+                                    RuntimeEnv.Node,
+                                    RuntimeEnv.Web,
                                 ],
                                 packageType: [
                                     PackageType.MonoRoot,
@@ -135,8 +135,8 @@ export const virmatorDepsPlugin = defineVirmatorPlugin(
                             'npm-check-updates': {
                                 type: NpmDepType.Dev,
                                 env: [
-                                    VirmatorEnv.Node,
-                                    VirmatorEnv.Web,
+                                    RuntimeEnv.Node,
+                                    RuntimeEnv.Web,
                                 ],
                                 packageType: [
                                     PackageType.TopPackage,
@@ -209,7 +209,7 @@ export const virmatorDepsPlugin = defineVirmatorPlugin(
                             pathToCheck,
                             ...filteredArgs,
                         ]
-                            .filter(isTruthy)
+                            .filter(check.isTruthy)
                             .join(' ');
                     }
 

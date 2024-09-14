@@ -1,6 +1,7 @@
+import {assert} from '@augment-vir/assert';
+import {findAncestor} from '@augment-vir/node';
 import {existsSync} from 'node:fs';
 import {join} from 'node:path';
-import {searchUpwardsForDir} from '../augments/fs/search.js';
 import {VirmatorPlugin, VirmatorPluginExecutor} from './plugin-executor.js';
 import {VirmatorPluginCliCommands, VirmatorPluginInit} from './plugin-init.js';
 
@@ -13,9 +14,11 @@ export function defineVirmatorPlugin<const Commands extends VirmatorPluginCliCom
     init: VirmatorPluginInit<Commands>,
     executor: VirmatorPluginExecutor<NoInfer<Commands>>,
 ): VirmatorPlugin<NoInfer<Commands>> {
-    const pluginPackageRootPath = searchUpwardsForDir(currentDir, (path) => {
+    const pluginPackageRootPath = findAncestor(currentDir, (path) => {
         return existsSync(join(path, 'package.json'));
     });
+
+    assert.isDefined(pluginPackageRootPath, 'Failed to find plugin package root.');
 
     return {
         ...init,

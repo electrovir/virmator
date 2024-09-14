@@ -1,21 +1,15 @@
-import {
-    awaitedBlockingMap,
-    extractErrorMessage,
-    isEnumValue,
-    isTruthy,
-    safeMatch,
-} from '@augment-vir/common';
+import {assert, check} from '@augment-vir/assert';
+import {awaitedBlockingMap, extractErrorMessage, safeMatch, type Logger} from '@augment-vir/common';
 import {
     askQuestionUntilConditionMet,
     readPackageJson,
     runShellCommand as runHiddenShellCommand,
     runShellCommand,
-} from '@augment-vir/node-js';
+} from '@augment-vir/node';
 import {
     defineVirmatorPlugin,
     MonoRepoPackage,
     parseTsConfig,
-    PluginLogger,
     ValidPackageJson,
     VirmatorNoTraceError,
 } from '@virmator/core';
@@ -23,7 +17,6 @@ import mri from 'mri';
 import {existsSync} from 'node:fs';
 import {readFile, writeFile} from 'node:fs/promises';
 import {join, relative, resolve} from 'node:path';
-import {assertDefined} from 'run-time-assertions';
 import semver, {SemVer} from 'semver';
 import simpleGit, {SimpleGit} from 'simple-git';
 import {PackageJson, SetRequired} from 'type-fest';
@@ -133,7 +126,7 @@ export const virmatorPublishPlugin = defineVirmatorPlugin(
 
             if (!nextVersion || (await isVersionPublished(nextVersion, allPackageJsonFiles))) {
                 nextVersion = await askQuestionUntilConditionMet({
-                    async conditionCallback(response): Promise<boolean> {
+                    async verifyResponseCallback(response): Promise<boolean> {
                         const version = semver.coerce(response)?.raw;
                         if (!version) {
                             return false;
@@ -162,7 +155,7 @@ export const virmatorPublishPlugin = defineVirmatorPlugin(
             'publish',
             ...publishArgs,
         ]
-            .filter(isTruthy)
+            .filter(check.isTruthy)
             .join(' ');
 
         const alteredPackageJsonFiles: {path: string; original: string}[] = [];
@@ -280,7 +273,7 @@ export const virmatorPublishPlugin = defineVirmatorPlugin(
 async function updateGit(packageDirPath: string): Promise<void> {
     const newVersion: string | undefined = (await readPackageJson(packageDirPath)).version;
 
-    assertDefined(newVersion);
+    assert.isDefined(newVersion);
 
     if (await doChangesExist(packageDirPath)) {
         await runShellCommand(`git commit -a --amend --no-edit`, {
@@ -350,13 +343,13 @@ async function getGitCommitVersion(decrement: number, git: Readonly<SimpleGit>) 
     const tags = maybeTag
         ? Array.from(maybeTag.matchAll(/tag: ([^),]+)[),]/g))
               .map((entry) => entry[1])
-              .filter(isTruthy)
+              .filter(check.isTruthy)
         : [];
     const versionTags = tags
         .map((tag) => {
             return semver.coerce(tag);
         })
-        .filter(isTruthy);
+        .filter(check.isTruthy);
     const sortedVersionTags = semver.sort(versionTags);
     const latestVersionTag = sortedVersionTags.slice(-1)[0];
 
@@ -366,7 +359,9 @@ async function getGitCommitVersion(decrement: number, git: Readonly<SimpleGit>) 
     ] = message ? safeMatch(message.trim(), /^\[([^\]]+)]/) : [];
 
     const changeMarker =
-        rawChangeMarker && isEnumValue(rawChangeMarker, ChangeMarker) ? rawChangeMarker : undefined;
+        rawChangeMarker && check.isEnumValue(rawChangeMarker, ChangeMarker)
+            ? rawChangeMarker
+            : undefined;
 
     return {
         version: latestVersionTag,
@@ -412,7 +407,7 @@ async function updateVersions(
     version: string,
     monoRepoRootPath: string,
     monoPackages: ReadonlyArray<Readonly<MonoRepoPackage>>,
-    log: PluginLogger,
+    log: Logger,
 ) {
     const packagePaths = [
         monoRepoRootPath,

@@ -1,7 +1,6 @@
+import {assert} from '@augment-vir/assert';
+import {describe, it, type UniversalTestContext} from '@augment-vir/test';
 import {defineVirmatorPlugin, VirmatorNoTraceError} from '@virmator/core';
-import assert from 'node:assert/strict';
-import {describe, it, TestContext} from 'node:test';
-import {assertThrows} from 'run-time-assertions';
 import {dirContentsTestPath} from './file-paths.js';
 import {testPlugin} from './test-plugin.js';
 
@@ -34,7 +33,7 @@ describe(testPlugin.name, () => {
 
     async function testExamplePlugin(
         shouldPass: boolean,
-        context: TestContext,
+        context: UniversalTestContext,
         extraCliArgs: string = '',
     ) {
         await testPlugin(
@@ -53,8 +52,8 @@ describe(testPlugin.name, () => {
         await testExamplePlugin(false, context, 'error');
     });
     it('errors on shouldPass mismatch', async (context) => {
-        await assertThrows(() => testExamplePlugin(true, context, 'error'));
-        await assertThrows(() => testExamplePlugin(false, context));
+        await assert.throws(() => testExamplePlugin(true, context, 'error'));
+        await assert.throws(() => testExamplePlugin(false, context));
     });
     it('handles empty no trace error', async (context) => {
         await testExamplePlugin(false, context, 'empty-error');
@@ -65,7 +64,7 @@ describe(testPlugin.name, () => {
     it('handles a cleanup callback', async (context) => {
         await testPlugin(true, context, virmatorExamplePlugin, 'example', dirContentsTestPath, {
             beforeCleanupCallback(cwd) {
-                assert.strictEqual(!!cwd, true);
+                assert.strictEquals(!!cwd, true);
             },
         });
     });

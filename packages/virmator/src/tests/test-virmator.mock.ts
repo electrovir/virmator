@@ -1,10 +1,10 @@
+import {type UniversalTestContext} from '@augment-vir/test';
 import {testPlugin, TestPluginOptions} from '@virmator/plugin-testing';
-import {TestContext} from 'node:test';
 import {defaultVirmatorPlugins} from '../index.js';
 
 export async function testVirmator(
     shouldPass: boolean,
-    context: TestContext,
+    context: UniversalTestContext,
     command: string,
     cwd: string,
     testOptions: TestPluginOptions = {},

@@ -1,5 +1,6 @@
-import {isTruthy} from '@augment-vir/common';
-import {defineVirmatorPlugin, NpmDepType, PackageType, VirmatorEnv} from '@virmator/core';
+import {check} from '@augment-vir/assert';
+import {RuntimeEnv} from '@augment-vir/common';
+import {defineVirmatorPlugin, NpmDepType, PackageType} from '@virmator/core';
 import mri from 'mri';
 import {join} from 'node:path';
 
@@ -62,8 +63,8 @@ export const virmatorFormatPlugin = defineVirmatorPlugin(
                         copyFromPath: join('configs', 'prettier.config.share.mjs'),
                         copyToPath: 'prettier.config.mjs',
                         env: [
-                            VirmatorEnv.Node,
-                            VirmatorEnv.Web,
+                            RuntimeEnv.Node,
+                            RuntimeEnv.Web,
                         ],
                         packageType: [
                             PackageType.TopPackage,
@@ -75,8 +76,8 @@ export const virmatorFormatPlugin = defineVirmatorPlugin(
                         copyFromPath: join('configs', 'prettierignore.txt'),
                         copyToPath: '.prettierignore',
                         env: [
-                            VirmatorEnv.Node,
-                            VirmatorEnv.Web,
+                            RuntimeEnv.Node,
+                            RuntimeEnv.Web,
                         ],
                         packageType: [
                             PackageType.TopPackage,
@@ -89,8 +90,8 @@ export const virmatorFormatPlugin = defineVirmatorPlugin(
                     prettier: {
                         type: NpmDepType.Dev,
                         env: [
-                            VirmatorEnv.Node,
-                            VirmatorEnv.Web,
+                            RuntimeEnv.Node,
+                            RuntimeEnv.Web,
                         ],
                         packageType: [
                             PackageType.MonoRoot,
@@ -100,8 +101,8 @@ export const virmatorFormatPlugin = defineVirmatorPlugin(
                     'prettier-plugin-jsdoc': {
                         type: NpmDepType.Dev,
                         env: [
-                            VirmatorEnv.Node,
-                            VirmatorEnv.Web,
+                            RuntimeEnv.Node,
+                            RuntimeEnv.Web,
                         ],
                         packageType: [
                             PackageType.MonoRoot,
@@ -111,8 +112,8 @@ export const virmatorFormatPlugin = defineVirmatorPlugin(
                     'prettier-plugin-multiline-arrays': {
                         type: NpmDepType.Dev,
                         env: [
-                            VirmatorEnv.Node,
-                            VirmatorEnv.Web,
+                            RuntimeEnv.Node,
+                            RuntimeEnv.Web,
                         ],
                         packageType: [
                             PackageType.MonoRoot,
@@ -122,8 +123,8 @@ export const virmatorFormatPlugin = defineVirmatorPlugin(
                     'prettier-plugin-organize-imports': {
                         type: NpmDepType.Dev,
                         env: [
-                            VirmatorEnv.Node,
-                            VirmatorEnv.Web,
+                            RuntimeEnv.Node,
+                            RuntimeEnv.Web,
                         ],
                         packageType: [
                             PackageType.MonoRoot,
@@ -133,8 +134,8 @@ export const virmatorFormatPlugin = defineVirmatorPlugin(
                     'prettier-plugin-packagejson': {
                         type: NpmDepType.Dev,
                         env: [
-                            VirmatorEnv.Node,
-                            VirmatorEnv.Web,
+                            RuntimeEnv.Node,
+                            RuntimeEnv.Web,
                         ],
                         packageType: [
                             PackageType.MonoRoot,
@@ -144,8 +145,8 @@ export const virmatorFormatPlugin = defineVirmatorPlugin(
                     'prettier-plugin-sort-json': {
                         type: NpmDepType.Dev,
                         env: [
-                            VirmatorEnv.Node,
-                            VirmatorEnv.Web,
+                            RuntimeEnv.Node,
+                            RuntimeEnv.Web,
                         ],
                         packageType: [
                             PackageType.MonoRoot,
@@ -155,8 +156,8 @@ export const virmatorFormatPlugin = defineVirmatorPlugin(
                     'prettier-plugin-toml': {
                         type: NpmDepType.Dev,
                         env: [
-                            VirmatorEnv.Node,
-                            VirmatorEnv.Web,
+                            RuntimeEnv.Node,
+                            RuntimeEnv.Web,
                         ],
                         packageType: [
                             PackageType.MonoRoot,
@@ -166,8 +167,8 @@ export const virmatorFormatPlugin = defineVirmatorPlugin(
                     'prettier-plugin-interpolated-html-tags': {
                         type: NpmDepType.Dev,
                         env: [
-                            VirmatorEnv.Node,
-                            VirmatorEnv.Web,
+                            RuntimeEnv.Node,
+                            RuntimeEnv.Web,
                         ],
                         packageType: [
                             PackageType.MonoRoot,
@@ -205,7 +206,7 @@ export const virmatorFormatPlugin = defineVirmatorPlugin(
             ...filteredArgs,
             formatString,
         ]
-            .filter(isTruthy)
+            .filter(check.isTruthy)
             .join(' ');
 
         await runShellCommand(

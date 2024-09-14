@@ -1,4 +1,4 @@
-import {logColors} from '@augment-vir/node-js';
+import {logColors} from '@augment-vir/common';
 import {generateHelpMessageFromPlugins, HelpMessageSyntax} from '@virmator/help';
 import {readFile, writeFile} from 'node:fs/promises';
 import {join, resolve} from 'node:path';

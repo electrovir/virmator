@@ -1,14 +1,15 @@
-import {LogOutputType, runShellCommand} from '@augment-vir/node-js';
+import {LogOutputType} from '@augment-vir/common';
+import {runShellCommand} from '@augment-vir/node';
+import {describe, it, type UniversalTestContext} from '@augment-vir/test';
 import {testPlugin} from '@virmator/plugin-testing';
 import {join} from 'node:path';
-import {describe, it, TestContext} from 'node:test';
 import {virmatorCompilePlugin} from './compile.js';
 import {testFilesDir} from './file-paths.mock.js';
 
 describe(virmatorCompilePlugin.name, () => {
     async function testVirmatorCompilePlugin(
         shouldPass: boolean,
-        context: TestContext,
+        context: UniversalTestContext,
         cwd: string,
     ) {
         await testPlugin(shouldPass, context, virmatorCompilePlugin, 'compile', cwd, {
@@ -17,7 +18,7 @@ describe(virmatorCompilePlugin.name, () => {
                  * This log transform removes excessive TypeScript help logging so that test results
                  * are stable.
                  */
-                if (logType === LogOutputType.standard) {
+                if (logType === LogOutputType.Standard) {
                     return arg;
                 }
                 return arg;

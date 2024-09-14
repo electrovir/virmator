@@ -1,5 +1,6 @@
+import type {RuntimeEnv} from '@augment-vir/common';
 import {VirmatorPluginConfigFile} from './plugin-configs.js';
-import {PackageType, VirmatorEnv} from './plugin-env.js';
+import {PackageType} from './plugin-env.js';
 
 /** A single doc entry for {@link PluginCommandDocs}. */
 export type PluginDocEntry = Readonly<{
@@ -19,7 +20,7 @@ export type PluginNpmDeps = Record<
     {
         type: NpmDepType;
         packageType: ReadonlyArray<PackageType>;
-        env: ReadonlyArray<VirmatorEnv>;
+        env: ReadonlyArray<RuntimeEnv>;
     }
 >;
 

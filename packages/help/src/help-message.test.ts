@@ -1,9 +1,9 @@
-import {addSuffix, wrapInTry} from '@augment-vir/common';
-import {NpmDepType, PackageType, VirmatorEnv, VirmatorPluginCliCommands} from '@virmator/core';
-import assert from 'node:assert/strict';
+import {assert} from '@augment-vir/assert';
+import {addSuffix, RuntimeEnv, wrapInTry} from '@augment-vir/common';
+import {describe, it} from '@augment-vir/test';
+import {NpmDepType, PackageType, VirmatorPluginCliCommands} from '@virmator/core';
 import {readFile, writeFile} from 'node:fs/promises';
 import {join, resolve} from 'node:path';
-import {describe, it} from 'node:test';
 import {
     createFormatter,
     generateHelpMessage,
@@ -48,8 +48,8 @@ describe(generateHelpMessage.name, () => {
         await writeFile(outputMarkdownPath, newMarkdown);
         await writeFile(outputCliPath, newCli);
 
-        assert.strictEqual(existingMarkdown, newMarkdown);
-        assert.strict(existingCli, newCli);
+        assert.strictEquals(existingMarkdown, newMarkdown);
+        assert.strictEquals(existingCli, newCli);
     }
 
     it('handles simple top level command', async () => {
@@ -316,7 +316,7 @@ describe(generateHelpMessage.name, () => {
                             someConfig: {
                                 copyFromPath: 'path',
                                 copyToPath: 'path',
-                                env: [VirmatorEnv.Node],
+                                env: [RuntimeEnv.Node],
                                 packageType: [
                                     PackageType.MonoPackage,
                                 ],
@@ -326,7 +326,7 @@ describe(generateHelpMessage.name, () => {
                         },
                         npmDeps: {
                             'element-vir': {
-                                env: [VirmatorEnv.Node],
+                                env: [RuntimeEnv.Node],
                                 packageType: [PackageType.MonoPackage],
                                 type: NpmDepType.Dev,
                             },
@@ -341,13 +341,13 @@ describe(generateHelpMessage.name, () => {
 
 describe(wrapLines.name, () => {
     it('wraps a whole word', () => {
-        assert.strictEqual(
+        assert.strictEquals(
             wrapLines('hello there', 10, createFormatter(HelpMessageSyntax.Cli)),
             'hello\nthere',
         );
     });
     it('wraps with indent', () => {
-        assert.strictEqual(
+        assert.strictEquals(
             wrapLines('    hello there', 10, createFormatter(HelpMessageSyntax.Cli)),
             '    hello\n    there',
         );

@@ -1,7 +1,6 @@
-import assert from 'node:assert/strict';
+import {assert} from '@augment-vir/assert';
+import {describe, it} from '@augment-vir/test';
 import {basename, join} from 'node:path';
-import {describe, it} from 'node:test';
-import {assertDefined} from 'run-time-assertions';
 import {coreTestFilesDir, monoRepoTestFilesDir} from '../../file-paths.mock.js';
 import {parseTsConfig} from './parse-tsconfig.js';
 
@@ -20,14 +19,14 @@ describe(parseTsConfig.name, () => {
             ),
         )?.options;
 
-        assertDefined(parsedOptions);
+        assert.isDefined(parsedOptions);
 
-        assert.strictEqual(parsedOptions.allowJs, true);
-        assert.strictEqual(basename(parsedOptions.outDir || ''), 'not-dist');
+        assert.strictEquals(parsedOptions.allowJs, true);
+        assert.strictEquals(basename(parsedOptions.outDir || ''), 'not-dist');
     });
     it('handles missing tsconfig', () => {
         const parsedOptions = parseTsConfig(join(monoRepoTestFilesDir, 'no-ts-configs'));
 
-        assert.strictEqual(parsedOptions, undefined);
+        assert.strictEquals(parsedOptions, undefined);
     });
 });

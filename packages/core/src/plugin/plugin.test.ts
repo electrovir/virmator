@@ -1,4 +1,4 @@
-import {describe, it} from 'node:test';
+import {describe, it} from '@augment-vir/test';
 import {defineVirmatorPlugin} from './plugin.js';
 
 describe(defineVirmatorPlugin.name, () => {

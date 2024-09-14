@@ -1,4 +1,5 @@
-import {PackageType, VirmatorEnv} from './plugin-env.js';
+import type {RuntimeEnv} from '@augment-vir/common';
+import {PackageType} from './plugin-env.js';
 
 /** Definition for a plugin's config file. */
 export type VirmatorPluginConfigFile = {
@@ -14,7 +15,7 @@ export type VirmatorPluginConfigFile = {
     copyToPath: string;
 
     /** The environments in which this config should be used. */
-    env: VirmatorEnv[];
+    env: RuntimeEnv[];
     /** The package type for which this config should be used. */
     packageType: PackageType[];
     /**

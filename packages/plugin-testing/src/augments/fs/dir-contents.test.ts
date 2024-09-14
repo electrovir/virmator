@@ -1,9 +1,9 @@
+import {assert} from '@augment-vir/assert';
 import {wrapString} from '@augment-vir/common';
-import assert from 'node:assert/strict';
+import {describe, it} from '@augment-vir/test';
 import {existsSync} from 'node:fs';
 import {mkdir, writeFile} from 'node:fs/promises';
 import {dirname, join, sep} from 'node:path';
-import {describe, it} from 'node:test';
 import {dirContentsTestPath} from '../../file-paths.js';
 import {readAllDirContents, resetDirContents} from './dir-contents.js';
 
@@ -13,7 +13,7 @@ describe(readAllDirContents.name, () => {
             recursive: true,
         });
 
-        assert.deepStrictEqual(output, {
+        assert.deepEquals(output, {
             'a.ts': "export function hello() {\n    return 'hi';\n}\n",
             'package.json': '{}\n',
             b: {
@@ -24,7 +24,7 @@ describe(readAllDirContents.name, () => {
     it('does not recurse', async () => {
         const output = await readAllDirContents(dirContentsTestPath, {});
 
-        assert.deepStrictEqual(output, {
+        assert.deepEquals(output, {
             'a.ts': "export function hello() {\n    return 'hi';\n}\n",
             'package.json': '{}\n',
         });
@@ -36,7 +36,7 @@ describe(readAllDirContents.name, () => {
             excludeList: [wrapString({value: 'b', wrapper: sep})],
         });
 
-        assert.deepStrictEqual(output, {
+        assert.deepEquals(output, {
             'a.ts': "export function hello() {\n    return 'hi';\n}\n",
             'package.json': '{}\n',
         });
@@ -48,7 +48,7 @@ describe(readAllDirContents.name, () => {
             excludeList: [/b/],
         });
 
-        assert.deepStrictEqual(output, {
+        assert.deepEquals(output, {
             'a.ts': "export function hello() {\n    return 'hi';\n}\n",
             'package.json': '{}\n',
         });
@@ -63,8 +63,8 @@ describe(resetDirContents.name, () => {
         await mkdir(dirname(extraFilePath), {recursive: true});
 
         await writeFile(extraFilePath, 'test');
-        assert.strictEqual(existsSync(extraFilePath), true);
+        assert.strictEquals(existsSync(extraFilePath), true);
         await resetDirContents(dirContentsTestPath, originalContents);
-        assert.strictEqual(existsSync(extraFilePath), false);
+        assert.strictEquals(existsSync(extraFilePath), false);
     });
 });

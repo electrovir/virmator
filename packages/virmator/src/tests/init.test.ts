@@ -1,7 +1,8 @@
-import {PackageType, VirmatorEnv} from '@virmator/core';
+import {RuntimeEnv} from '@augment-vir/common';
+import {describe, it, type UniversalTestContext} from '@augment-vir/test';
+import {PackageType} from '@virmator/core';
 import {virmatorInitPlugin} from '@virmator/init';
 import {join, resolve} from 'node:path';
-import {describe, it, type TestContext} from 'node:test';
 import {testVirmator} from './test-virmator.mock.js';
 
 const packageDir = resolve(import.meta.dirname, '..', '..');
@@ -11,9 +12,9 @@ const testFilesDir = join(packageDir, 'test-files');
 describe(virmatorInitPlugin.name, () => {
     async function testDocsPlugin(
         shouldPass: boolean,
-        context: TestContext,
+        context: UniversalTestContext,
         dir: string,
-        env: VirmatorEnv | undefined,
+        env: RuntimeEnv | undefined,
         packageType: PackageType | undefined,
     ) {
         await testVirmator(shouldPass, context, `init ${env || ''} ${packageType || ''}`, dir, {
@@ -37,7 +38,7 @@ describe(virmatorInitPlugin.name, () => {
             false,
             context,
             join(testFilesDir, 'top-package'),
-            VirmatorEnv.Node,
+            RuntimeEnv.Node,
             undefined,
         );
     });
@@ -46,7 +47,7 @@ describe(virmatorInitPlugin.name, () => {
             true,
             context,
             join(testFilesDir, 'top-package'),
-            VirmatorEnv.Node,
+            RuntimeEnv.Node,
             PackageType.TopPackage,
         );
     });
@@ -55,7 +56,7 @@ describe(virmatorInitPlugin.name, () => {
             true,
             context,
             join(testFilesDir, 'top-package'),
-            VirmatorEnv.Web,
+            RuntimeEnv.Web,
             PackageType.TopPackage,
         );
     });
@@ -64,7 +65,7 @@ describe(virmatorInitPlugin.name, () => {
             true,
             context,
             join(testFilesDir, 'mono-root'),
-            VirmatorEnv.Node,
+            RuntimeEnv.Node,
             PackageType.MonoRoot,
         );
     });
@@ -73,7 +74,7 @@ describe(virmatorInitPlugin.name, () => {
             true,
             context,
             join(testFilesDir, 'mono-root'),
-            VirmatorEnv.Web,
+            RuntimeEnv.Web,
             PackageType.MonoRoot,
         );
     });
@@ -82,7 +83,7 @@ describe(virmatorInitPlugin.name, () => {
             true,
             context,
             join(testFilesDir, 'mono-package'),
-            VirmatorEnv.Web,
+            RuntimeEnv.Web,
             PackageType.MonoPackage,
         );
     });
@@ -91,7 +92,7 @@ describe(virmatorInitPlugin.name, () => {
             true,
             context,
             join(testFilesDir, 'mono-package'),
-            VirmatorEnv.Node,
+            RuntimeEnv.Node,
             PackageType.MonoPackage,
         );
     });

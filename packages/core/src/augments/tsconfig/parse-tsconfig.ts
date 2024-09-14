@@ -1,4 +1,4 @@
-import {log} from '@augment-vir/node-js';
+import {log} from '@augment-vir/common';
 import {existsSync} from 'node:fs';
 import {dirname} from 'node:path';
 import {

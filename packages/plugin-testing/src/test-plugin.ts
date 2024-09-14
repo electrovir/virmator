@@ -1,43 +1,33 @@
 import {
     addSuffix,
+    createLogger,
+    diffObjects,
     getOrSet,
-    isTruthy,
+    LogOutputType,
     mapObjectValues,
     MaybePromise,
-    PartialAndUndefined,
+    PartialWithUndefined,
     removeColor,
+    RuntimeEnv,
     wrapInTry,
     wrapString,
+    type Logger,
 } from '@augment-vir/common';
-import {LogOutputType, toPosixPath} from '@augment-vir/node-js';
+import {toPosixPath} from '@augment-vir/node';
+import {assertTestContext, type UniversalTestContext} from '@augment-vir/test';
 import {
-    createPluginLogger,
     executeVirmatorCommand,
     findClosestPackageDir,
     hideNoTraceTraces,
-    PluginLogger,
     VirmatorNoTraceError,
     VirmatorPlugin,
 } from '@virmator/core';
 import {relative, sep} from 'node:path';
-import {TestContext} from 'node:test';
-import {diffObjects} from 'run-time-assertions';
 import {DirContents, readAllDirContents, resetDirContents} from './augments/index.js';
 import {monoRepoDir} from './file-paths.js';
 
 /** Log string transformer. */
 export type LogTransform = (logType: LogOutputType, arg: string) => string;
-
-function serializeLogArgs(args: unknown[]): string[] {
-    return args
-        .map((arg): string | undefined => {
-            return removeColor(String(arg)).replaceAll(
-                addSuffix({value: monoRepoDir, suffix: '/'}),
-                '',
-            );
-        })
-        .filter(isTruthy);
-}
 
 /** Results of a plugin test. */
 export type TestPluginResult = {
@@ -55,14 +45,14 @@ export type TestPluginResult = {
 };
 
 function handleWrite(
-    logs: Partial<Record<LogOutputType, string[][]>>,
+    logs: Partial<Record<LogOutputType, string[]>>,
     logType: LogOutputType,
-    args: unknown[],
+    text: string,
 ): true {
-    const serialized = serializeLogArgs(args);
+    const fixed = removeColor(text).replaceAll(addSuffix({value: monoRepoDir, suffix: '/'}), '');
 
-    if (serialized.length) {
-        getOrSet(logs, logType, () => []).push(serialized);
+    if (fixed.length) {
+        getOrSet(logs, logType, () => []).push(fixed);
     }
 
     return true;
@@ -77,7 +67,7 @@ const defaultContentsExcludeList = [
 ];
 
 /** Optional options for {@link testPlugin}. */
-export type TestPluginOptions = PartialAndUndefined<{
+export type TestPluginOptions = PartialWithUndefined<{
     /** Transforms the final log string output of a plugin's command. */
     logTransform: LogTransform;
     /** Exclude the given contents from directory reading. */
@@ -89,7 +79,7 @@ export type TestPluginOptions = PartialAndUndefined<{
 /** Tests a virmator plugin and saves a snapshot of the results. */
 export async function testPlugin(
     shouldPass: boolean,
-    context: TestContext,
+    context: UniversalTestContext,
     plugin: Readonly<VirmatorPlugin> | ReadonlyArray<Readonly<VirmatorPlugin>>,
     cliCommand: string,
     cwd: string,
@@ -99,22 +89,18 @@ export async function testPlugin(
         beforeCleanupCallback,
     }: TestPluginOptions = {},
 ): Promise<void> {
-    const logs: Partial<Record<LogOutputType, string[][]>> = {};
-    const logger: PluginLogger = createPluginLogger(
-        {
-            stderr: {
-                write(...args: unknown[]) {
-                    return handleWrite(logs, LogOutputType.error, args);
-                },
-            },
-            stdout: {
-                write(...args: unknown[]) {
-                    return handleWrite(logs, LogOutputType.standard, args);
-                },
-            },
+    assertTestContext(context, RuntimeEnv.Node);
+
+    const logs: Partial<Record<LogOutputType, string[]>> = {};
+    const logger: Logger = createLogger({
+        stderr({text}) {
+            return handleWrite(logs, LogOutputType.Error, text);
         },
-        true,
-    );
+
+        stdout({text}) {
+            return handleWrite(logs, LogOutputType.Standard, text);
+        },
+    });
 
     const fullExcludeList = [
         ...excludeContents,

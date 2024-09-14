@@ -1,13 +1,14 @@
-import {emptyLog, NpmDepType, PackageType, VirmatorEnv} from '@virmator/core';
-import assert from 'node:assert/strict';
+import {assert} from '@augment-vir/assert';
+import {emptyLog, RuntimeEnv, type AnyObject} from '@augment-vir/common';
+import {describe, it} from '@augment-vir/test';
+import {NpmDepType, PackageType} from '@virmator/core';
 import {join} from 'node:path';
-import {describe, it} from 'node:test';
 import {VirmatorPlugin} from '../plugin/plugin.js';
 import {calculateUsedCommands, parseCliArgs} from './parse-args.js';
 
 describe(calculateUsedCommands.name, () => {
     it('calculates correctly', () => {
-        assert.deepStrictEqual(
+        assert.deepEquals(
             calculateUsedCommands(
                 {
                     deps: {
@@ -45,8 +46,8 @@ describe(calculateUsedCommands.name, () => {
                                         copyFromPath: join('configs', 'dep-cruiser.config.ts'),
                                         copyToPath: join('configs', 'dep-cruiser.config.ts'),
                                         env: [
-                                            VirmatorEnv.Node,
-                                            VirmatorEnv.Web,
+                                            RuntimeEnv.Node,
+                                            RuntimeEnv.Web,
                                         ],
                                         packageType: [
                                             PackageType.TopPackage,
@@ -59,8 +60,8 @@ describe(calculateUsedCommands.name, () => {
                                     'dependency-cruiser': {
                                         type: NpmDepType.Dev,
                                         env: [
-                                            VirmatorEnv.Node,
-                                            VirmatorEnv.Web,
+                                            RuntimeEnv.Node,
+                                            RuntimeEnv.Web,
                                         ],
                                         packageType: [
                                             PackageType.TopPackage,
@@ -71,8 +72,8 @@ describe(calculateUsedCommands.name, () => {
                                     esbuild: {
                                         type: NpmDepType.Dev,
                                         env: [
-                                            VirmatorEnv.Node,
-                                            VirmatorEnv.Web,
+                                            RuntimeEnv.Node,
+                                            RuntimeEnv.Web,
                                         ],
                                         packageType: [
                                             PackageType.TopPackage,
@@ -91,8 +92,8 @@ describe(calculateUsedCommands.name, () => {
                                     'npm-check-updates': {
                                         type: NpmDepType.Dev,
                                         env: [
-                                            VirmatorEnv.Node,
-                                            VirmatorEnv.Web,
+                                            RuntimeEnv.Node,
+                                            RuntimeEnv.Web,
                                         ],
                                         packageType: [
                                             PackageType.TopPackage,
@@ -108,7 +109,7 @@ describe(calculateUsedCommands.name, () => {
                     'deps',
                     'check',
                 ],
-            ),
+            ) as AnyObject,
             {
                 deps: {
                     doc: {
@@ -192,14 +193,12 @@ describe(parseCliArgs.name, () => {
     const examplePlugins = [
         {
             cliCommands: {
-                fake: {},
+                fake: {doc: {examples: [], sections: []}},
             },
             name: 'fake plugin',
-        } satisfies Pick<
-            VirmatorPlugin,
-            | 'name'
-            | 'cliCommands'
-        > as VirmatorPlugin,
+            executor() {},
+            pluginPackageRootPath: '',
+        },
     ] as const satisfies ReadonlyArray<Readonly<VirmatorPlugin>>;
 
     function testParseCliArgs(cliCommand: string) {
@@ -212,23 +211,23 @@ describe(parseCliArgs.name, () => {
     }
 
     it('parses command name', () => {
-        assert.deepStrictEqual(testParseCliArgs('fake'), {
+        assert.deepEquals(testParseCliArgs('fake'), {
             commands: ['fake'],
             filteredCommandArgs: [],
             plugin: examplePlugins[0],
-            usedCommands: {fake: {subCommands: {}}},
+            usedCommands: {fake: {subCommands: {}, doc: {examples: [], sections: []}}},
             virmatorFlags: {},
         });
     });
     it('parses multiple args', () => {
-        assert.deepStrictEqual(testParseCliArgs('fake --no-deps some-arg --more-arg'), {
+        assert.deepEquals(testParseCliArgs('fake --no-deps some-arg --more-arg'), {
             commands: ['fake'],
             filteredCommandArgs: [
                 'some-arg',
                 '--more-arg',
             ],
             plugin: examplePlugins[0],
-            usedCommands: {fake: {subCommands: {}}},
+            usedCommands: {fake: {subCommands: {}, doc: {examples: [], sections: []}}},
             virmatorFlags: {
                 '--no-deps': true,
             },

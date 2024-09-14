@@ -1,15 +1,9 @@
 #!/usr/bin/env -S npx tsx
 
-import {
-    createPluginLogger,
-    executeVirmatorCommand,
-    hideNoTraceTraces,
-    VirmatorNoTraceError,
-} from '@virmator/core';
+import {log} from '@augment-vir/common';
+import {executeVirmatorCommand, hideNoTraceTraces, VirmatorNoTraceError} from '@virmator/core';
 import {fileURLToPath} from 'node:url';
 import {defaultVirmatorPlugins} from './index.js';
-
-const log = createPluginLogger(process);
 
 executeVirmatorCommand({
     cliCommand: process.argv,

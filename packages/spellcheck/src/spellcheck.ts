@@ -1,9 +1,9 @@
-import {isTruthy} from '@augment-vir/common';
-import {toPosixPath} from '@augment-vir/node-js';
-import {defineVirmatorPlugin, NpmDepType, PackageType, VirmatorEnv} from '@virmator/core';
+import {check} from '@augment-vir/assert';
+import {RuntimeEnv} from '@augment-vir/common';
+import {toPosixPath} from '@augment-vir/node';
+import {defineVirmatorPlugin, NpmDepType, PackageType} from '@virmator/core';
 import mri from 'mri';
 import {join, relative} from 'node:path';
-import {isRunTimeType} from 'run-time-assertions';
 
 /** A virmator package for checking spelling. */
 export const virmatorSpellcheckPlugin = defineVirmatorPlugin(
@@ -34,8 +34,8 @@ export const virmatorSpellcheckPlugin = defineVirmatorPlugin(
                         copyToPath: 'cspell.config.cjs',
                         copyFromPath: join('configs', 'cspell.config.cjs'),
                         env: [
-                            VirmatorEnv.Node,
-                            VirmatorEnv.Web,
+                            RuntimeEnv.Node,
+                            RuntimeEnv.Web,
                         ],
                         packageType: [
                             PackageType.MonoRoot,
@@ -51,8 +51,8 @@ export const virmatorSpellcheckPlugin = defineVirmatorPlugin(
                 npmDeps: {
                     cspell: {
                         env: [
-                            VirmatorEnv.Node,
-                            VirmatorEnv.Web,
+                            RuntimeEnv.Node,
+                            RuntimeEnv.Web,
                         ],
                         packageType: [
                             PackageType.MonoRoot,
@@ -71,7 +71,7 @@ export const virmatorSpellcheckPlugin = defineVirmatorPlugin(
             },
         });
 
-        const configPath = isRunTimeType(args.config, 'string')
+        const configPath = check.isString(args.config)
             ? args.config
             : toPosixPath(
                   relative(cwd, join(cwdPackagePath, configs.spellcheck.configs.cspell.copyToPath)),
@@ -92,7 +92,7 @@ export const virmatorSpellcheckPlugin = defineVirmatorPlugin(
             ...cliInputs.filteredArgs,
             filesArg,
         ]
-            .filter(isTruthy)
+            .filter(check.isTruthy)
             .join(' ');
 
         await runShellCommand(fullCommand);

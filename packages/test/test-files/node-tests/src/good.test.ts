@@ -1,8 +1,8 @@
-import assert from 'node:assert/strict';
-import {describe, it} from 'node:test';
+import {assert} from '@augment-vir/assert';
+import {describe, it} from '@augment-vir/test';
 
 describe('fake test', () => {
     it('tests a thing', () => {
-        assert.strictEqual(true, true);
+        assert.strictEquals(true, true);
     });
 });

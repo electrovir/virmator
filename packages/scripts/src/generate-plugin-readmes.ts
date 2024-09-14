@@ -1,5 +1,4 @@
-import {awaitedForEach} from '@augment-vir/common';
-import {logColors} from '@augment-vir/node-js';
+import {awaitedForEach, logColors} from '@augment-vir/common';
 import {generateHelpMessageFromPlugins, HelpMessageSyntax} from '@virmator/help';
 import {readFile, writeFile} from 'node:fs/promises';
 import {basename, join, relative, resolve} from 'node:path';

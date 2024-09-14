@@ -1,8 +1,8 @@
-import {runShellCommand} from '@augment-vir/node-js';
+import {runShellCommand} from '@augment-vir/node';
+import {describe, it, type UniversalTestContext} from '@augment-vir/test';
 import {virmatorFlags} from '@virmator/core';
 import {testPlugin} from '@virmator/plugin-testing';
 import {join, resolve} from 'node:path';
-import {describe, it, type TestContext} from 'node:test';
 import {virmatorDepsPlugin} from './deps.js';
 
 const packageDir = resolve(import.meta.dirname, '..');
@@ -12,7 +12,7 @@ const testFilesDir = join(packageDir, 'test-files');
 describe(virmatorDepsPlugin.name, () => {
     async function testDepsPlugin(
         shouldPass: boolean,
-        context: TestContext,
+        context: UniversalTestContext,
         dir: string,
         extraCommand: string,
     ) {

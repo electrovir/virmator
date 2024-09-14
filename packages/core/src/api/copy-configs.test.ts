@@ -1,12 +1,13 @@
-import {PackageType, VirmatorEnv} from '@virmator/core';
-import assert from 'node:assert/strict';
+import {assert} from '@augment-vir/assert';
+import {RuntimeEnv} from '@augment-vir/common';
+import {describe, it} from '@augment-vir/test';
+import {PackageType} from '@virmator/core';
 import {join} from 'node:path';
-import {describe, it} from 'node:test';
 import {flattenConfigs} from './copy-configs.js';
 
 describe(flattenConfigs.name, () => {
     it('flattens the compile configs', () => {
-        assert.deepStrictEqual(
+        assert.deepEquals(
             flattenConfigs(
                 {
                     compile: {
@@ -20,8 +21,8 @@ describe(flattenConfigs.name, () => {
                                 copyFromPath: join('configs', 'tsconfig.package.json'),
                                 copyToPath: 'tsconfig.json',
                                 env: [
-                                    VirmatorEnv.Node,
-                                    VirmatorEnv.Web,
+                                    RuntimeEnv.Node,
+                                    RuntimeEnv.Web,
                                 ],
                                 packageType: [
                                     PackageType.TopPackage,
@@ -32,8 +33,8 @@ describe(flattenConfigs.name, () => {
                                 copyFromPath: join('configs', 'tsconfig.mono.json'),
                                 copyToPath: join('configs', 'tsconfig.base.json'),
                                 env: [
-                                    VirmatorEnv.Node,
-                                    VirmatorEnv.Web,
+                                    RuntimeEnv.Node,
+                                    RuntimeEnv.Web,
                                 ],
                                 packageType: [
                                     PackageType.MonoRoot,
@@ -52,8 +53,8 @@ describe(flattenConfigs.name, () => {
                                 copyFromPath: join('configs', 'tsconfig.package.json'),
                                 copyToPath: 'tsconfig.json',
                                 env: [
-                                    VirmatorEnv.Node,
-                                    VirmatorEnv.Web,
+                                    RuntimeEnv.Node,
+                                    RuntimeEnv.Web,
                                 ],
                                 packageType: [
                                     PackageType.TopPackage,
@@ -71,8 +72,8 @@ describe(flattenConfigs.name, () => {
                                 copyFromPath: join('configs', 'tsconfig.mono.json'),
                                 copyToPath: join('configs', 'tsconfig.base.json'),
                                 env: [
-                                    VirmatorEnv.Node,
-                                    VirmatorEnv.Web,
+                                    RuntimeEnv.Node,
+                                    RuntimeEnv.Web,
                                 ],
                                 packageType: [
                                     PackageType.MonoRoot,
@@ -100,8 +101,8 @@ describe(flattenConfigs.name, () => {
                     copyFromPath: join('configs', 'tsconfig.package.json'),
                     copyToPath: 'tsconfig.json',
                     env: [
-                        VirmatorEnv.Node,
-                        VirmatorEnv.Web,
+                        RuntimeEnv.Node,
+                        RuntimeEnv.Web,
                     ],
                     packageType: [
                         PackageType.TopPackage,
@@ -119,8 +120,8 @@ describe(flattenConfigs.name, () => {
                     copyFromPath: join('configs', 'tsconfig.mono.json'),
                     copyToPath: join('configs', 'tsconfig.base.json'),
                     env: [
-                        VirmatorEnv.Node,
-                        VirmatorEnv.Web,
+                        RuntimeEnv.Node,
+                        RuntimeEnv.Web,
                     ],
                     packageType: [
                         PackageType.MonoRoot,
@@ -133,7 +134,7 @@ describe(flattenConfigs.name, () => {
         );
     });
     it('flattens the deps configs', () => {
-        assert.deepStrictEqual(
+        assert.deepEquals(
             flattenConfigs(
                 {
                     deps: {
@@ -167,8 +168,8 @@ describe(flattenConfigs.name, () => {
                                         copyFromPath: join('configs', 'dep-cruiser.config.ts'),
                                         copyToPath: join('configs', 'dep-cruiser.config.ts'),
                                         env: [
-                                            VirmatorEnv.Node,
-                                            VirmatorEnv.Web,
+                                            RuntimeEnv.Node,
+                                            RuntimeEnv.Web,
                                         ],
                                         packageType: [
                                             PackageType.MonoRoot,
@@ -193,8 +194,8 @@ describe(flattenConfigs.name, () => {
                                         copyFromPath: join('configs', 'dep-cruiser.config.ts'),
                                         copyToPath: join('configs', 'dep-cruiser.config.ts'),
                                         env: [
-                                            VirmatorEnv.Node,
-                                            VirmatorEnv.Web,
+                                            RuntimeEnv.Node,
+                                            RuntimeEnv.Web,
                                         ],
                                         packageType: [
                                             PackageType.MonoRoot,
@@ -241,8 +242,8 @@ describe(flattenConfigs.name, () => {
                         'dep-cruiser.config.ts',
                     ),
                     env: [
-                        VirmatorEnv.Node,
-                        VirmatorEnv.Web,
+                        RuntimeEnv.Node,
+                        RuntimeEnv.Web,
                     ],
                     packageType: [
                         PackageType.MonoRoot,

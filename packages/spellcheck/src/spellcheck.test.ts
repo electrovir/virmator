@@ -1,6 +1,6 @@
+import {describe, it, type UniversalTestContext} from '@augment-vir/test';
 import {testPlugin} from '@virmator/plugin-testing';
 import {join, resolve} from 'node:path';
-import {describe, it, type TestContext} from 'node:test';
 import {virmatorSpellcheckPlugin} from './spellcheck.js';
 
 const packageDir = resolve(import.meta.dirname, '..');
@@ -10,7 +10,7 @@ const testFilesDir = join(packageDir, 'test-files');
 describe(virmatorSpellcheckPlugin.name, () => {
     async function testSpellcheckPlugin(
         shouldPass: boolean,
-        context: TestContext,
+        context: UniversalTestContext,
         dir: string,
         extraCommand?: string,
     ) {

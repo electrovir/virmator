@@ -1,5 +1,5 @@
+import type {Logger} from '@augment-vir/common';
 import {Writable} from 'node:stream';
-import {PluginLogger} from '../../plugin/plugin-logger.js';
 
 /**
  * A [Writable](https://nodejs.org/api/stream.html#class-streamwritable) implementation that writes
@@ -24,7 +24,7 @@ export class CallbackWritable extends Writable {
         callback();
     }
 
-    constructor(private readonly logger: PluginLogger) {
+    constructor(private readonly logger: Logger) {
         super();
     }
 }

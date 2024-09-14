@@ -1,6 +1,7 @@
-import {isTruthy, MaybePromise} from '@augment-vir/common';
-import {toPosixPath} from '@augment-vir/node-js';
-import {defineVirmatorPlugin, NpmDepType, PackageType, VirmatorEnv} from '@virmator/core';
+import {check} from '@augment-vir/assert';
+import {MaybePromise, RuntimeEnv} from '@augment-vir/common';
+import {toPosixPath} from '@augment-vir/node';
+import {defineVirmatorPlugin, NpmDepType, PackageType} from '@virmator/core';
 import mri from 'mri';
 import {cp, rm} from 'node:fs/promises';
 import {join, relative, resolve} from 'node:path';
@@ -61,7 +62,7 @@ export const virmatorFrontendPlugin = defineVirmatorPlugin(
                         copyFromPath: join('configs', 'vite.config.ts'),
                         copyToPath: join('configs', 'vite.config.ts'),
                         env: [
-                            VirmatorEnv.Web,
+                            RuntimeEnv.Web,
                         ],
                         packageType: [
                             PackageType.TopPackage,
@@ -75,7 +76,7 @@ export const virmatorFrontendPlugin = defineVirmatorPlugin(
                     typescript: {
                         type: NpmDepType.Dev,
                         env: [
-                            VirmatorEnv.Web,
+                            RuntimeEnv.Web,
                         ],
                         packageType: [
                             PackageType.MonoPackage,
@@ -85,7 +86,7 @@ export const virmatorFrontendPlugin = defineVirmatorPlugin(
                     vite: {
                         type: NpmDepType.Dev,
                         env: [
-                            VirmatorEnv.Web,
+                            RuntimeEnv.Web,
                         ],
                         packageType: [
                             PackageType.MonoPackage,
@@ -141,7 +142,7 @@ export const virmatorFrontendPlugin = defineVirmatorPlugin(
                 ...filteredArgs,
                 ...configArgs,
             ]
-                .filter(isTruthy)
+                .filter(check.isTruthy)
                 .join(' ');
 
             log.faint('Building...');
@@ -167,7 +168,7 @@ export const virmatorFrontendPlugin = defineVirmatorPlugin(
                     ...filteredArgs,
                     ...configArgs,
                 ]
-                    .filter(isTruthy)
+                    .filter(check.isTruthy)
                     .join(' ');
                 log.faint('Previewing...');
                 await runShellCommand(previewCommand, {
@@ -184,7 +185,7 @@ export const virmatorFrontendPlugin = defineVirmatorPlugin(
                 ...filteredArgs,
                 ...configArgs,
             ]
-                .filter(isTruthy)
+                .filter(check.isTruthy)
                 .join(' ');
 
             await runShellCommand(devCommand, {

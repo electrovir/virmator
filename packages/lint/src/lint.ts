@@ -1,5 +1,6 @@
-import {isTruthy} from '@augment-vir/common';
-import {defineVirmatorPlugin, NpmDepType, PackageType, VirmatorEnv} from '@virmator/core';
+import {check} from '@augment-vir/assert';
+import {RuntimeEnv} from '@augment-vir/common';
+import {defineVirmatorPlugin, NpmDepType, PackageType} from '@virmator/core';
 import mri from 'mri';
 import {join} from 'node:path';
 
@@ -43,8 +44,8 @@ export const virmatorLintPlugin = defineVirmatorPlugin(
                         copyFromPath: join('configs', 'tsconfig.eslint.json'),
                         copyToPath: join('configs', 'tsconfig.eslint.json'),
                         env: [
-                            VirmatorEnv.Node,
-                            VirmatorEnv.Web,
+                            RuntimeEnv.Node,
+                            RuntimeEnv.Web,
                         ],
                         packageType: [
                             PackageType.MonoRoot,
@@ -55,8 +56,8 @@ export const virmatorLintPlugin = defineVirmatorPlugin(
                         copyFromPath: join('configs', 'eslint.config.share.mjs'),
                         copyToPath: join('eslint.config.mjs'),
                         env: [
-                            VirmatorEnv.Node,
-                            VirmatorEnv.Web,
+                            RuntimeEnv.Node,
+                            RuntimeEnv.Web,
                         ],
                         packageType: [
                             PackageType.MonoRoot,
@@ -73,8 +74,8 @@ export const virmatorLintPlugin = defineVirmatorPlugin(
                     eslint: {
                         type: NpmDepType.Dev,
                         env: [
-                            VirmatorEnv.Node,
-                            VirmatorEnv.Web,
+                            RuntimeEnv.Node,
+                            RuntimeEnv.Web,
                         ],
                         packageType: [
                             PackageType.TopPackage,
@@ -84,8 +85,8 @@ export const virmatorLintPlugin = defineVirmatorPlugin(
                     'eslint-plugin-require-extensions': {
                         type: NpmDepType.Dev,
                         env: [
-                            VirmatorEnv.Node,
-                            VirmatorEnv.Web,
+                            RuntimeEnv.Node,
+                            RuntimeEnv.Web,
                         ],
                         packageType: [
                             PackageType.TopPackage,
@@ -95,8 +96,8 @@ export const virmatorLintPlugin = defineVirmatorPlugin(
                     'eslint-plugin-unicorn': {
                         type: NpmDepType.Dev,
                         env: [
-                            VirmatorEnv.Node,
-                            VirmatorEnv.Web,
+                            RuntimeEnv.Node,
+                            RuntimeEnv.Web,
                         ],
                         packageType: [
                             PackageType.TopPackage,
@@ -106,8 +107,8 @@ export const virmatorLintPlugin = defineVirmatorPlugin(
                     '@eslint/js': {
                         type: NpmDepType.Dev,
                         env: [
-                            VirmatorEnv.Node,
-                            VirmatorEnv.Web,
+                            RuntimeEnv.Node,
+                            RuntimeEnv.Web,
                         ],
                         packageType: [
                             PackageType.TopPackage,
@@ -117,8 +118,8 @@ export const virmatorLintPlugin = defineVirmatorPlugin(
                     '@eslint/eslintrc': {
                         type: NpmDepType.Dev,
                         env: [
-                            VirmatorEnv.Node,
-                            VirmatorEnv.Web,
+                            RuntimeEnv.Node,
+                            RuntimeEnv.Web,
                         ],
                         packageType: [
                             PackageType.TopPackage,
@@ -128,8 +129,8 @@ export const virmatorLintPlugin = defineVirmatorPlugin(
                     '@stylistic/eslint-plugin': {
                         type: NpmDepType.Dev,
                         env: [
-                            VirmatorEnv.Node,
-                            VirmatorEnv.Web,
+                            RuntimeEnv.Node,
+                            RuntimeEnv.Web,
                         ],
                         packageType: [
                             PackageType.TopPackage,
@@ -139,8 +140,8 @@ export const virmatorLintPlugin = defineVirmatorPlugin(
                     'eslint-plugin-monorepo-cop': {
                         type: NpmDepType.Dev,
                         env: [
-                            VirmatorEnv.Node,
-                            VirmatorEnv.Web,
+                            RuntimeEnv.Node,
+                            RuntimeEnv.Web,
                         ],
                         packageType: [
                             PackageType.TopPackage,
@@ -150,8 +151,8 @@ export const virmatorLintPlugin = defineVirmatorPlugin(
                     '@stylistic/eslint-plugin-ts': {
                         type: NpmDepType.Dev,
                         env: [
-                            VirmatorEnv.Node,
-                            VirmatorEnv.Web,
+                            RuntimeEnv.Node,
+                            RuntimeEnv.Web,
                         ],
                         packageType: [
                             PackageType.TopPackage,
@@ -161,8 +162,8 @@ export const virmatorLintPlugin = defineVirmatorPlugin(
                     '@typescript-eslint/eslint-plugin': {
                         type: NpmDepType.Dev,
                         env: [
-                            VirmatorEnv.Node,
-                            VirmatorEnv.Web,
+                            RuntimeEnv.Node,
+                            RuntimeEnv.Web,
                         ],
                         packageType: [
                             PackageType.TopPackage,
@@ -172,8 +173,8 @@ export const virmatorLintPlugin = defineVirmatorPlugin(
                     'eslint-config-prettier': {
                         type: NpmDepType.Dev,
                         env: [
-                            VirmatorEnv.Node,
-                            VirmatorEnv.Web,
+                            RuntimeEnv.Node,
+                            RuntimeEnv.Web,
                         ],
                         packageType: [
                             PackageType.TopPackage,
@@ -183,8 +184,8 @@ export const virmatorLintPlugin = defineVirmatorPlugin(
                     'eslint-plugin-jsdoc': {
                         type: NpmDepType.Dev,
                         env: [
-                            VirmatorEnv.Node,
-                            VirmatorEnv.Web,
+                            RuntimeEnv.Node,
+                            RuntimeEnv.Web,
                         ],
                         packageType: [
                             PackageType.TopPackage,
@@ -194,8 +195,8 @@ export const virmatorLintPlugin = defineVirmatorPlugin(
                     'eslint-plugin-playwright': {
                         type: NpmDepType.Dev,
                         env: [
-                            VirmatorEnv.Node,
-                            VirmatorEnv.Web,
+                            RuntimeEnv.Node,
+                            RuntimeEnv.Web,
                         ],
                         packageType: [
                             PackageType.TopPackage,
@@ -205,8 +206,8 @@ export const virmatorLintPlugin = defineVirmatorPlugin(
                     'eslint-plugin-prettier': {
                         type: NpmDepType.Dev,
                         env: [
-                            VirmatorEnv.Node,
-                            VirmatorEnv.Web,
+                            RuntimeEnv.Node,
+                            RuntimeEnv.Web,
                         ],
                         packageType: [
                             PackageType.TopPackage,
@@ -216,8 +217,8 @@ export const virmatorLintPlugin = defineVirmatorPlugin(
                     'eslint-plugin-sonarjs': {
                         type: NpmDepType.Dev,
                         env: [
-                            VirmatorEnv.Node,
-                            VirmatorEnv.Web,
+                            RuntimeEnv.Node,
+                            RuntimeEnv.Web,
                         ],
                         packageType: [
                             PackageType.TopPackage,
@@ -227,8 +228,8 @@ export const virmatorLintPlugin = defineVirmatorPlugin(
                     'typescript-eslint': {
                         type: NpmDepType.Dev,
                         env: [
-                            VirmatorEnv.Node,
-                            VirmatorEnv.Web,
+                            RuntimeEnv.Node,
+                            RuntimeEnv.Web,
                         ],
                         packageType: [
                             PackageType.TopPackage,
@@ -255,7 +256,7 @@ export const virmatorLintPlugin = defineVirmatorPlugin(
             dirPath,
             ...filteredArgs,
         ]
-            .filter(isTruthy)
+            .filter(check.isTruthy)
             .join(' ');
 
         await runShellCommand(eslintCommand, {cwd: monoRepoRootPath});

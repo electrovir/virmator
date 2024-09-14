@@ -1,17 +1,10 @@
-import {
-    getObjectTypedEntries,
-    hasKey,
-    isLengthAtLeast,
-    mapObjectValues,
-    wrapInTry,
-} from '@augment-vir/common';
+import {check} from '@augment-vir/assert';
+import {getObjectTypedEntries, mapObjectValues, wrapInTry, type Logger} from '@augment-vir/common';
 import {extractRelevantArgs} from 'cli-args-vir';
-import {isRunTimeType} from 'run-time-assertions';
 import {Writable} from 'type-fest';
 import {accessAtKeys} from '../augments/object/access.js';
 import {UsedVirmatorPluginCommands} from '../plugin/plugin-executor.js';
-import {VirmatorPluginCliCommands} from '../plugin/plugin-init.js';
-import {PluginLogger} from '../plugin/plugin-logger.js';
+import {IndividualPluginCommand, VirmatorPluginCliCommands} from '../plugin/plugin-init.js';
 import {VirmatorPlugin} from '../plugin/plugin.js';
 import {SetVirmatorFlags, virmatorFlags} from './virmator-flags.js';
 
@@ -59,8 +52,8 @@ export function mapPluginsByCommand(
                 commandName,
                 command,
             ]) => {
-                if (!isRunTimeType(commandName, 'string')) {
-                    throw new Error(
+                if (!check.isString(commandName)) {
+                    throw new TypeError(
                         `Command '${String(commandName)}' in plugin '${plugin.name}' must be string.`,
                     );
                 }
@@ -75,7 +68,9 @@ export function mapPluginsByCommand(
 
                 mappedPlugins[commandName] = {
                     plugin,
-                    subCommands: extractNestedCommands(command.subCommands || {}),
+                    subCommands: extractNestedCommands(
+                        (command as IndividualPluginCommand).subCommands || {},
+                    ),
                 };
             },
         );
@@ -89,7 +84,7 @@ export function calculateUsedCommands(
     pluginCliCommands: Readonly<VirmatorPluginCliCommands>,
     commands: ReadonlyArray<string>,
 ): UsedVirmatorPluginCommands {
-    if (!isLengthAtLeast(commands, 1)) {
+    if (!check.isLengthAtLeast(commands, 1)) {
         return {};
     }
 
@@ -121,9 +116,9 @@ export function parseCliArgs({
     plugins: ReadonlyArray<Readonly<VirmatorPlugin>>;
     cliCommand: string | ReadonlyArray<string>;
     entryPointFilePath: string;
-    log: PluginLogger;
+    log: Logger;
 }): ParsedArgs {
-    const rawArgs: ReadonlyArray<string> = isRunTimeType(cliCommand, 'array')
+    const rawArgs: ReadonlyArray<string> = check.isArray(cliCommand)
         ? cliCommand
         : cliCommand.split(' ');
 
@@ -144,11 +139,11 @@ export function parseCliArgs({
 
     const parsedArgs = relevantArgs.reduce(
         (parsedArgs: ParsedArgs, arg) => {
-            if (hasKey(virmatorFlags, arg)) {
+            if (check.isKeyOf(arg, virmatorFlags)) {
                 parsedArgs.virmatorFlags[arg] = true;
             } else if (parsedArgs.filteredCommandArgs.length) {
                 parsedArgs.filteredCommandArgs.push(arg);
-            } else if (isLengthAtLeast(parsedArgs.commands, 1)) {
+            } else if (check.isLengthAtLeast(parsedArgs.commands, 1)) {
                 const mainCommand = parsedArgs.commands[0];
                 const subCommands = mappedPlugins[mainCommand]?.subCommands || {};
                 const availableSubCommands = accessAtKeys<NestedSubCommands>(

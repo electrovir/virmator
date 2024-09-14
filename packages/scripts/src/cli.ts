@@ -1,5 +1,4 @@
-import {extractErrorMessage} from '@augment-vir/common';
-import {log} from '@augment-vir/node-js';
+import {extractErrorMessage, log} from '@augment-vir/common';
 import mri from 'mri';
 import {checkPluginReadmes, writePluginReadmes} from './generate-plugin-readmes.js';
 import {checkVirmatorReadme, writeVirmatorReadme} from './generate-virmator-readmes.js';

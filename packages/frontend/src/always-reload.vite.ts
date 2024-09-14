@@ -1,4 +1,4 @@
-import {logColors} from '@augment-vir/node-js';
+import {logColors} from '@augment-vir/common';
 import {existsSync, lstatSync, readlinkSync} from 'node:fs';
 import {relative} from 'node:path';
 import type {LogOptions, PluginOption} from 'vite';

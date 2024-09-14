@@ -1,25 +1,23 @@
+import {check} from '@augment-vir/assert';
 import {
     awaitedBlockingMap,
     extractErrorMessage,
     filterMap,
-    isTruthy,
-    mapObjectValues,
-    PartialAndUndefined,
-    wrapInTry,
-} from '@augment-vir/common';
-import {
     log,
     logColors,
+    log as logImport,
     LogOutputType,
-    readPackageJson,
-    runShellCommand,
-} from '@augment-vir/node-js';
+    mapObjectValues,
+    PartialWithUndefined,
+    wrapInTry,
+    type Logger,
+} from '@augment-vir/common';
+import {readPackageJson, runShellCommand} from '@augment-vir/node';
 import chalk from 'chalk';
 import concurrently, {CloseEvent, ConcurrentlyCommandInput} from 'concurrently';
 import {getRelativePosixPackagePathsInDependencyOrder} from 'mono-vir';
 import {cpus} from 'node:os';
 import {join, resolve} from 'node:path';
-import {isRunTimeType} from 'run-time-assertions';
 import {PackageJson} from 'type-fest';
 import {findClosestPackageDir} from '../augments/index.js';
 import {CallbackWritable} from '../augments/stream/callback-writable.js';
@@ -35,7 +33,6 @@ import {
     VirmatorPluginResolvedConfigs,
 } from '../plugin/plugin-executor.js';
 import {VirmatorPluginCliCommands} from '../plugin/plugin-init.js';
-import {createPluginLogger, PluginLogger} from '../plugin/plugin-logger.js';
 import {VirmatorPlugin} from '../plugin/plugin.js';
 import {copyPluginConfigs} from './copy-configs.js';
 import {installNpmDeps, installPluginNpmDeps} from './install-deps.js';
@@ -72,7 +69,7 @@ export type ExecuteCommandParams = {
      *     ];
      */
     cliCommand: string | ReadonlyArray<string>;
-} & PartialAndUndefined<{
+} & PartialWithUndefined<{
     /**
      * The current working directory. In most cases, this can be left unset.
      *
@@ -87,7 +84,7 @@ export type ExecuteCommandParams = {
      */
     entryPointFilePath: string;
     /** Set the logger for use with this execution. */
-    log: PluginLogger;
+    log: Logger;
     /**
      * The maximum number of concurrent processes that can run at the same time when running a
      * command per mono-repo sub package.
@@ -129,7 +126,7 @@ async function determinePackageType(
     try {
         if (
             cwdPackageJson.workspaces &&
-            (isRunTimeType(cwdPackageJson.workspaces, 'array')
+            (check.isArray(cwdPackageJson.workspaces)
                 ? cwdPackageJson.workspaces.length
                 : cwdPackageJson.workspaces.packages?.length)
         ) {
@@ -201,9 +198,9 @@ async function findMonoRepoDir(cwdPackagePath: string) {
 
 function writeLog(
     arg: string,
-    log: PluginLogger,
+    log: Logger,
     logType: LogOutputType,
-    extraOptions: PartialAndUndefined<ExtraRunShellCommandOptions> | undefined,
+    extraOptions: PartialWithUndefined<ExtraRunShellCommandOptions> | undefined,
 ) {
     const transformed: string = extraOptions?.logTransform?.[logType]
         ? extraOptions.logTransform[logType](arg)
@@ -216,7 +213,7 @@ function writeLog(
         transformed.replace(/\n$/, ''),
     ].join('');
 
-    if (logType === LogOutputType.error) {
+    if (logType === LogOutputType.Error) {
         log.error(finalLog);
     } else {
         log.plain(finalLog);
@@ -230,7 +227,7 @@ export async function executeVirmatorCommand({
     cwd = process.cwd(),
     ...params
 }: ExecuteCommandParams) {
-    const log = logParam || createPluginLogger(process);
+    const log = logParam || logImport;
     const args = parseCliArgs({
         ...params,
         log,
@@ -258,7 +255,7 @@ export async function executeVirmatorCommand({
     const monoRepoPackages =
         packageType === PackageType.MonoRoot ? await getMonoRepoPackages(cwdPackagePath) : [];
     const outerMaxProcesses = params.concurrency || cpus().length - 1 || 1;
-    const filteredArgs = args.filteredCommandArgs.filter(isTruthy);
+    const filteredArgs = args.filteredCommandArgs.filter(check.isTruthy);
 
     const executorParams: VirmatorPluginExecutorParams<any> = {
         cliInputs: {
@@ -290,10 +287,10 @@ export async function executeVirmatorCommand({
                 cwd,
                 shell: 'bash',
                 stderrCallback(stderr) {
-                    writeLog(stderr, log, LogOutputType.error, extraOptions);
+                    writeLog(stderr, log, LogOutputType.Error, extraOptions);
                 },
                 stdoutCallback(stdout) {
-                    writeLog(stdout, log, LogOutputType.standard, extraOptions);
+                    writeLog(stdout, log, LogOutputType.Standard, extraOptions);
                 },
                 ...options,
             });
@@ -355,7 +352,7 @@ export async function executeVirmatorCommand({
                         };
                     },
                 )
-            ).filter(isTruthy);
+            ).filter(check.isTruthy);
 
             const writeStream = new CallbackWritable(log);
 

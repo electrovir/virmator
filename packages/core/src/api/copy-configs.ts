@@ -1,4 +1,4 @@
-import {awaitedForEach, extractErrorMessage, MaybePromise} from '@augment-vir/common';
+import {awaitedForEach, extractErrorMessage, MaybePromise, type Logger} from '@augment-vir/common';
 import {existsSync} from 'node:fs';
 import {mkdir, readFile, writeFile} from 'node:fs/promises';
 import {basename, dirname, join} from 'node:path';
@@ -9,7 +9,6 @@ import {
     UsedVirmatorPluginCommands,
     VirmatorPluginResolvedConfigs,
 } from '../plugin/plugin-executor.js';
-import {PluginLogger} from '../plugin/plugin-logger.js';
 
 /**
  * Extracts a 1d array of virmator plugin config files from previously calculated used commands and
@@ -47,7 +46,7 @@ export async function copyPluginConfigs(
     resolvedConfigs: Readonly<VirmatorPluginResolvedConfigs<any>>,
     packageType: PackageType,
     monoRepoPackages: MonoRepoPackage[],
-    log: PluginLogger,
+    log: Logger,
     filteredArgs: string[],
 ) {
     const configs = flattenConfigs(usedCommands, resolvedConfigs).sort((a, b) =>
@@ -84,7 +83,7 @@ export async function copyPluginConfigs(
 /** Copies a single virmator plugin config file. */
 export async function copyConfigFile(
     config: Readonly<Pick<VirmatorPluginResolvedConfigFile, 'fullCopyFromPath' | 'fullCopyToPath'>>,
-    log: PluginLogger,
+    log: Logger,
     /**
      * If `true`, the config will be copied even if the copy destination already exists.
      *
