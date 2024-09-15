@@ -2,7 +2,8 @@
 .not-committed/
 *.book.*
 *.d.ts.map
-*.example.ts
+*.example.*
+*.mock.*
 *.test.*
 *.tgz
 **/*/test/
