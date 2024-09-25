@@ -2,7 +2,7 @@ import {check} from '@augment-vir/assert';
 import {ensureError, log as logImport, RuntimeEnv, type Logger} from '@augment-vir/common';
 import {readPackageJson} from '@augment-vir/node';
 import {defineVirmatorPlugin, NpmDepType, PackageType, VirmatorNoTraceError} from '@virmator/core';
-import {ChalkInstance} from 'chalk';
+import {type ChalkInstance} from 'chalk';
 import mri from 'mri';
 import {basename, join} from 'node:path';
 import {pathToFileURL} from 'node:url';

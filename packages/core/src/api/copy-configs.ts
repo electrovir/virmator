@@ -1,13 +1,18 @@
-import {awaitedForEach, extractErrorMessage, MaybePromise, type Logger} from '@augment-vir/common';
+import {
+    awaitedForEach,
+    extractErrorMessage,
+    type Logger,
+    type MaybePromise,
+} from '@augment-vir/common';
 import {existsSync} from 'node:fs';
 import {mkdir, readFile, writeFile} from 'node:fs/promises';
 import {basename, dirname, join} from 'node:path';
-import {VirmatorPluginResolvedConfigFile} from '../plugin/plugin-configs.js';
+import {type VirmatorPluginResolvedConfigFile} from '../plugin/plugin-configs.js';
 import {PackageType} from '../plugin/plugin-env.js';
 import {
-    MonoRepoPackage,
-    UsedVirmatorPluginCommands,
-    VirmatorPluginResolvedConfigs,
+    type MonoRepoPackage,
+    type UsedVirmatorPluginCommands,
+    type VirmatorPluginResolvedConfigs,
 } from '../plugin/plugin-executor.js';
 
 /**

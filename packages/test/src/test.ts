@@ -2,7 +2,7 @@ import {check} from '@augment-vir/assert';
 import {RuntimeEnv} from '@augment-vir/common';
 import {interpolationSafeWindowsPath, toPosixPath} from '@augment-vir/node';
 import {defineVirmatorPlugin, NpmDepType, PackageType, VirmatorNoTraceError} from '@virmator/core';
-import {TestRunnerConfig} from '@web/test-runner';
+import {type TestRunnerConfig} from '@web/test-runner';
 import {glob} from 'glob';
 import mri from 'mri';
 import {rm, writeFile} from 'node:fs/promises';

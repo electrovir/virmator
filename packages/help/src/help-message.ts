@@ -8,12 +8,12 @@ import {
 } from '@augment-vir/common';
 import {toPosixPath} from '@augment-vir/node';
 import {
-    IndividualPluginCommand,
+    type IndividualPluginCommand,
     virmatorFlags,
-    VirmatorPlugin,
-    VirmatorPluginCliCommands,
+    type VirmatorPlugin,
+    type VirmatorPluginCliCommands,
 } from '@virmator/core';
-import {PluginDocEntry} from '@virmator/core/src/plugin/plugin-init';
+import {type PluginDocEntry} from '@virmator/core/src/plugin/plugin-init';
 
 /** Different syntaxes for each supported help message target environment. */
 export enum HelpMessageSyntax {

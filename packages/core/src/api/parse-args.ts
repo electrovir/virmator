@@ -1,12 +1,15 @@
 import {check} from '@augment-vir/assert';
 import {getObjectTypedEntries, mapObjectValues, wrapInTry, type Logger} from '@augment-vir/common';
 import {extractRelevantArgs} from 'cli-args-vir';
-import {Writable} from 'type-fest';
+import {type Writable} from 'type-fest';
 import {accessAtKeys} from '../augments/object/access.js';
-import {UsedVirmatorPluginCommands} from '../plugin/plugin-executor.js';
-import {IndividualPluginCommand, VirmatorPluginCliCommands} from '../plugin/plugin-init.js';
-import {VirmatorPlugin} from '../plugin/plugin.js';
-import {SetVirmatorFlags, virmatorFlags} from './virmator-flags.js';
+import {type UsedVirmatorPluginCommands} from '../plugin/plugin-executor.js';
+import {
+    type IndividualPluginCommand,
+    type VirmatorPluginCliCommands,
+} from '../plugin/plugin-init.js';
+import {type VirmatorPlugin} from '../plugin/plugin.js';
+import {virmatorFlags, type SetVirmatorFlags} from './virmator-flags.js';
 
 /** All supported sets of args for virmator. */
 export type ParsedArgs = {

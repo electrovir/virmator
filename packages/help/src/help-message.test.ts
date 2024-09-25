@@ -1,7 +1,7 @@
 import {assert} from '@augment-vir/assert';
 import {addSuffix, RuntimeEnv, wrapInTry} from '@augment-vir/common';
 import {describe, it} from '@augment-vir/test';
-import {NpmDepType, PackageType, VirmatorPluginCliCommands} from '@virmator/core';
+import {NpmDepType, PackageType, type VirmatorPluginCliCommands} from '@virmator/core';
 import {readFile, writeFile} from 'node:fs/promises';
 import {join, resolve} from 'node:path';
 import {

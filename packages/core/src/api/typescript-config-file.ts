@@ -1,4 +1,4 @@
-import {MaybePromise, wrapInTry} from '@augment-vir/common';
+import {type MaybePromise, wrapInTry} from '@augment-vir/common';
 import {toPosixPath} from '@augment-vir/node';
 import {rm} from 'node:fs/promises';
 import {basename, join, relative} from 'node:path';

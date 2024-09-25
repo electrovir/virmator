@@ -2,11 +2,11 @@ import {check} from '@augment-vir/assert';
 import {awaitedBlockingMap, getObjectTypedEntries, type Logger} from '@augment-vir/common';
 import {readPackageJson, runShellCommand} from '@augment-vir/node';
 import * as semver from 'semver';
-import {PackageJson} from 'type-fest';
+import {type PackageJson} from 'type-fest';
 import {VirmatorNoTraceError} from '../errors/virmator-no-trace.error.js';
 import {PackageType} from '../plugin/plugin-env.js';
-import {UsedVirmatorPluginCommands} from '../plugin/plugin-executor.js';
-import {NpmDepType, PluginNpmDeps} from '../plugin/plugin-init.js';
+import {type UsedVirmatorPluginCommands} from '../plugin/plugin-executor.js';
+import {NpmDepType, type PluginNpmDeps} from '../plugin/plugin-init.js';
 
 /** Install's a virmator plugin's listed npm deps depending on which command is being run. */
 export async function installPluginNpmDeps({

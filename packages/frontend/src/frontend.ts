@@ -1,5 +1,5 @@
 import {check} from '@augment-vir/assert';
-import {MaybePromise, RuntimeEnv} from '@augment-vir/common';
+import {type MaybePromise, RuntimeEnv} from '@augment-vir/common';
 import {toPosixPath} from '@augment-vir/node';
 import {defineVirmatorPlugin, NpmDepType, PackageType} from '@virmator/core';
 import mri from 'mri';

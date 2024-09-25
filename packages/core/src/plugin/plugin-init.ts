@@ -1,5 +1,5 @@
-import type {RuntimeEnv} from '@augment-vir/common';
-import {VirmatorPluginConfigFile} from './plugin-configs.js';
+import {type RuntimeEnv} from '@augment-vir/common';
+import {type VirmatorPluginConfigFile} from './plugin-configs.js';
 import {PackageType} from './plugin-env.js';
 
 /** A single doc entry for {@link PluginCommandDocs}. */

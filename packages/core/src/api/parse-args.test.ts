@@ -3,7 +3,7 @@ import {emptyLog, RuntimeEnv, type AnyObject} from '@augment-vir/common';
 import {describe, it} from '@augment-vir/test';
 import {NpmDepType, PackageType} from '@virmator/core';
 import {join} from 'node:path';
-import {VirmatorPlugin} from '../plugin/plugin.js';
+import {type VirmatorPlugin} from '../plugin/plugin.js';
 import {calculateUsedCommands, parseCliArgs} from './parse-args.js';
 
 describe(calculateUsedCommands.name, () => {

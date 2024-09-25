@@ -8,32 +8,32 @@ import {
     log as logImport,
     LogOutputType,
     mapObjectValues,
-    PartialWithUndefined,
     wrapInTry,
     type Logger,
+    type PartialWithUndefined,
 } from '@augment-vir/common';
 import {readPackageJson, runShellCommand} from '@augment-vir/node';
 import chalk from 'chalk';
-import concurrently, {CloseEvent, ConcurrentlyCommandInput} from 'concurrently';
+import concurrently, {type CloseEvent, type ConcurrentlyCommandInput} from 'concurrently';
 import {getRelativePosixPackagePathsInDependencyOrder} from 'mono-vir';
 import {cpus} from 'node:os';
 import {join, resolve} from 'node:path';
-import {PackageJson} from 'type-fest';
+import {type PackageJson} from 'type-fest';
 import {findClosestPackageDir} from '../augments/index.js';
 import {CallbackWritable} from '../augments/stream/callback-writable.js';
 import {getTerminalColor} from '../colors.js';
 import {hideNoTraceTraces, VirmatorNoTraceError} from '../errors/virmator-no-trace.error.js';
-import {VirmatorPluginResolvedConfigFile} from '../plugin/plugin-configs.js';
+import {type VirmatorPluginResolvedConfigFile} from '../plugin/plugin-configs.js';
 import {PackageType} from '../plugin/plugin-env.js';
 import {
-    ExtraRunShellCommandOptions,
-    MonoRepoPackage,
-    ValidPackageJson,
-    VirmatorPluginExecutorParams,
-    VirmatorPluginResolvedConfigs,
+    type ExtraRunShellCommandOptions,
+    type MonoRepoPackage,
+    type ValidPackageJson,
+    type VirmatorPluginExecutorParams,
+    type VirmatorPluginResolvedConfigs,
 } from '../plugin/plugin-executor.js';
-import {VirmatorPluginCliCommands} from '../plugin/plugin-init.js';
-import {VirmatorPlugin} from '../plugin/plugin.js';
+import {type VirmatorPluginCliCommands} from '../plugin/plugin-init.js';
+import {type VirmatorPlugin} from '../plugin/plugin.js';
 import {copyPluginConfigs} from './copy-configs.js';
 import {installNpmDeps, installPluginNpmDeps} from './install-deps.js';
 import {parseCliArgs} from './parse-args.js';

@@ -6,7 +6,7 @@ import {
     NpmDepType,
     PackageType,
     parseTsConfig,
-    VirmatorPluginExecutorParams,
+    type VirmatorPluginExecutorParams,
 } from '@virmator/core';
 import type {ChalkInstance} from 'chalk';
 import {rm} from 'node:fs/promises';

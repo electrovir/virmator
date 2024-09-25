@@ -2,8 +2,8 @@ import {assert} from '@augment-vir/assert';
 import {findAncestor} from '@augment-vir/node';
 import {existsSync} from 'node:fs';
 import {join} from 'node:path';
-import {VirmatorPlugin, VirmatorPluginExecutor} from './plugin-executor.js';
-import {VirmatorPluginCliCommands, VirmatorPluginInit} from './plugin-init.js';
+import {type VirmatorPlugin, type VirmatorPluginExecutor} from './plugin-executor.js';
+import {type VirmatorPluginCliCommands, type VirmatorPluginInit} from './plugin-init.js';
 
 export type {VirmatorPlugin} from './plugin-executor.js';
 

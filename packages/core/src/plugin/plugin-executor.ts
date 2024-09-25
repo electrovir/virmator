@@ -7,15 +7,15 @@ import type {
     TypedFunction,
 } from '@augment-vir/common';
 import type {runShellCommand} from '@augment-vir/node';
-import {ChalkInstance} from 'chalk';
-import {EmptyObject, PackageJson, SetRequired} from 'type-fest';
-import {VirmatorPluginResolvedConfigFile} from './plugin-configs.js';
+import {type ChalkInstance} from 'chalk';
+import {type EmptyObject, type PackageJson, type SetRequired} from 'type-fest';
+import {type VirmatorPluginResolvedConfigFile} from './plugin-configs.js';
 import {PackageType} from './plugin-env.js';
 import {
-    IndividualPluginCommand,
-    PluginNpmDeps,
-    VirmatorPluginCliCommands,
-    VirmatorPluginInit,
+    type IndividualPluginCommand,
+    type PluginNpmDeps,
+    type VirmatorPluginCliCommands,
+    type VirmatorPluginInit,
 } from './plugin-init.js';
 
 /** A picked nesting of commands based on which commands are currently in use. */

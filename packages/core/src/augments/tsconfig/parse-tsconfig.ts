@@ -3,7 +3,7 @@ import {existsSync} from 'node:fs';
 import {dirname} from 'node:path';
 import {
     findConfigFile,
-    ParsedCommandLine,
+    type ParsedCommandLine,
     parseJsonConfigFileContent,
     readConfigFile,
     sys,

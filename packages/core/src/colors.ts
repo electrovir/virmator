@@ -1,4 +1,4 @@
-import {ArrayElement} from '@augment-vir/common';
+import {type ArrayElement} from '@augment-vir/common';
 
 /**
  * All terminal colors passed to concurrently and other concurrent operations used within virmator

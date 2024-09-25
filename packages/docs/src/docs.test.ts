@@ -1,5 +1,5 @@
 import {assert} from '@augment-vir/assert';
-import {MaybePromise, wrapString} from '@augment-vir/common';
+import {type MaybePromise, wrapString} from '@augment-vir/common';
 import {runShellCommand} from '@augment-vir/node';
 import {describe, it, type UniversalTestContext} from '@augment-vir/test';
 import {readAllDirContents, resetDirContents, testPlugin} from '@virmator/plugin-testing';

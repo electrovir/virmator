@@ -1,5 +1,5 @@
 import {assert, check} from '@augment-vir/assert';
-import {awaitedBlockingMap, extractErrorMessage, safeMatch, type Logger} from '@augment-vir/common';
+import {awaitedBlockingMap, extractErrorMessage, type Logger, safeMatch} from '@augment-vir/common';
 import {
     askQuestionUntilConditionMet,
     readPackageJson,
@@ -8,9 +8,9 @@ import {
 } from '@augment-vir/node';
 import {
     defineVirmatorPlugin,
-    MonoRepoPackage,
+    type MonoRepoPackage,
     parseTsConfig,
-    ValidPackageJson,
+    type ValidPackageJson,
     VirmatorNoTraceError,
 } from '@virmator/core';
 import mri from 'mri';
@@ -18,8 +18,8 @@ import {existsSync} from 'node:fs';
 import {readFile, writeFile} from 'node:fs/promises';
 import {join, relative, resolve} from 'node:path';
 import semver, {SemVer} from 'semver';
-import simpleGit, {SimpleGit} from 'simple-git';
-import {PackageJson, SetRequired} from 'type-fest';
+import simpleGit, {type SimpleGit} from 'simple-git';
+import {type PackageJson, type SetRequired} from 'type-fest';
 
 const inVirmatorEnvKey = 'IN_VIRMATOR';
 

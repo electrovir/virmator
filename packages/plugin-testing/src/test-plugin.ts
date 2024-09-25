@@ -3,15 +3,15 @@ import {
     createLogger,
     diffObjects,
     getOrSet,
+    type Logger,
     LogOutputType,
     mapObjectValues,
-    MaybePromise,
-    PartialWithUndefined,
+    type MaybePromise,
+    type PartialWithUndefined,
     removeColor,
     RuntimeEnv,
     wrapInTry,
     wrapString,
-    type Logger,
 } from '@augment-vir/common';
 import {toPosixPath} from '@augment-vir/node';
 import {assertTestContext, type UniversalTestContext} from '@augment-vir/test';
@@ -20,10 +20,10 @@ import {
     findClosestPackageDir,
     hideNoTraceTraces,
     VirmatorNoTraceError,
-    VirmatorPlugin,
+    type VirmatorPlugin,
 } from '@virmator/core';
 import {relative, sep} from 'node:path';
-import {DirContents, readAllDirContents, resetDirContents} from './augments/index.js';
+import {type DirContents, readAllDirContents, resetDirContents} from './augments/index.js';
 import {monoRepoDir} from './file-paths.js';
 
 /** Log string transformer. */

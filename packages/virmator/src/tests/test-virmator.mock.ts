@@ -1,5 +1,5 @@
 import {type UniversalTestContext} from '@augment-vir/test';
-import {testPlugin, TestPluginOptions} from '@virmator/plugin-testing';
+import {testPlugin, type TestPluginOptions} from '@virmator/plugin-testing';
 import {defaultVirmatorPlugins} from '../index.js';
 
 export async function testVirmator(

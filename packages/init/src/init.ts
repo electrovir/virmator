@@ -17,18 +17,18 @@ import {readPackageJson, writeJsonFile} from '@augment-vir/node';
 import {
     copyConfigFile,
     defineVirmatorPlugin,
-    IndividualPluginCommand,
+    type IndividualPluginCommand,
     NpmDepType,
     PackageType,
-    PluginNpmDeps,
+    type PluginNpmDeps,
     VirmatorNoTraceError,
-    VirmatorPlugin,
-    VirmatorPluginCliCommands,
-    VirmatorPluginResolvedConfigFile,
+    type VirmatorPlugin,
+    type VirmatorPluginCliCommands,
+    type VirmatorPluginResolvedConfigFile,
 } from '@virmator/core';
 import {basename, join} from 'node:path';
 import {simpleGit} from 'simple-git';
-import {PackageJson} from 'type-fest';
+import {type PackageJson} from 'type-fest';
 
 const deps: PluginNpmDeps = {
     'mono-vir': {
