@@ -9,7 +9,4 @@
     -   however, I might need to make a custom reporter to force the test to fail when coverage is not met
 -   support `npx virmator test node path/to/dir/` (test all files within that dir)
 -   support passing a file path to `virmator test` that is relative to a mono-repo root, not the cwd
-
-# in progress
-
--   update `@augment-vir` packages
+-   support mono-repo-root typedoc command that combines all sub packages

@@ -108,6 +108,7 @@ export function defineEslintConfig(repoDir) {
                 'sonarjs/no-useless-constructor': 'off', // this rule is wrong
                 'sonarjs/prefer-nullish-coalescing': 'off',
                 'sonarjs/publicly-writable-directories': 'off',
+                'sonarjs/reduce-initial-value': 'off',
                 'sonarjs/sonar-prefer-regexp-exec': 'off',
                 'sonarjs/use-type-alias': 'off',
                 'sonarjs/void-use': 'off',
