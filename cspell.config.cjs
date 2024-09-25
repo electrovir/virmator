@@ -9,5 +9,6 @@ module.exports = {
     ],
     words: [
         ...baseConfig.words,
+        'htmlhint',
     ],
 };

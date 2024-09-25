@@ -1,5 +1,5 @@
 {
     "dependencies": {
-        "augment-vir": "1.0.0"
+        "htmlhint-plugin-blocked-words": "1.0.0"
     }
 }

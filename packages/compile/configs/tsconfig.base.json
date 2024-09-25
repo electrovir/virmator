@@ -21,7 +21,6 @@
         "skipLibCheck": true,
         "strict": true,
         "target": "ES2023",
-        "useDefineForClassFields": true,
-        "verbatimModuleSyntax": true
+        "useDefineForClassFields": true
     }
 }

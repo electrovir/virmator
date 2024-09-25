@@ -10,7 +10,7 @@ exports[`TS Compile > compiles a valid project 1`] = `
       "a.d.ts": "export type A = {\\n    here: string;\\n    there: number;\\n};\\nexport declare const value: A;\\n",
       "a.js": "export const value = {\\n    here: 'yo',\\n    there: 0,\\n};\\n"
     },
-    "tsconfig.json": "{\\n    \\"compilerOptions\\": {\\n        \\"outDir\\": \\"./dist/\\",\\n        \\"rootDir\\": \\"./src/\\"\\n    },\\n    \\"exclude\\": [\\n        \\"./configs/\\",\\n        \\"./coverage/\\",\\n        \\"./dist/\\",\\n        \\"./dist-*/\\",\\n        \\"./node_modules/\\",\\n        \\"./test-files/\\"\\n    ],\\n    \\"extends\\": \\"@virmator/compile/configs/tsconfig.base.json\\"\\n}\\n"
+    "tsconfig.json": "{\\n    \\"compilerOptions\\": {\\n        \\"outDir\\": \\"./dist/\\",\\n        \\"rootDir\\": \\"./src/\\"\\n    },\\n    \\"exclude\\": [\\n        \\"./configs/\\",\\n        \\"./coverage/\\",\\n        \\"./dist-*/\\",\\n        \\"./dist/\\",\\n        \\"./node_modules/\\",\\n        \\"./test-files/\\",\\n        \\"src/all-files-for-code-coverage.test.ts\\"\\n    ],\\n    \\"extends\\": \\"@virmator/compile/configs/tsconfig.base.json\\"\\n}\\n"
   }
 }
 `;
@@ -28,7 +28,7 @@ exports[`TS Compile > rejects an invalid project 1`] = `
       "a.d.ts": "export type A = {\\n    here: string;\\n    there: number;\\n};\\nexport declare const value: A;\\nexport declare const value2: A;\\n",
       "a.js": "export const value = {\\n    here: 'yo',\\n    there: 0,\\n};\\nexport const value2 = {\\n    no: 'bad',\\n};\\n"
     },
-    "tsconfig.json": "{\\n    \\"compilerOptions\\": {\\n        \\"outDir\\": \\"./dist/\\",\\n        \\"rootDir\\": \\"./src/\\"\\n    },\\n    \\"exclude\\": [\\n        \\"./configs/\\",\\n        \\"./coverage/\\",\\n        \\"./dist/\\",\\n        \\"./dist-*/\\",\\n        \\"./node_modules/\\",\\n        \\"./test-files/\\"\\n    ],\\n    \\"extends\\": \\"@virmator/compile/configs/tsconfig.base.json\\"\\n}\\n"
+    "tsconfig.json": "{\\n    \\"compilerOptions\\": {\\n        \\"outDir\\": \\"./dist/\\",\\n        \\"rootDir\\": \\"./src/\\"\\n    },\\n    \\"exclude\\": [\\n        \\"./configs/\\",\\n        \\"./coverage/\\",\\n        \\"./dist-*/\\",\\n        \\"./dist/\\",\\n        \\"./node_modules/\\",\\n        \\"./test-files/\\",\\n        \\"src/all-files-for-code-coverage.test.ts\\"\\n    ],\\n    \\"extends\\": \\"@virmator/compile/configs/tsconfig.base.json\\"\\n}\\n"
   },
   "error": {
     "name": "VirmatorNoTraceError"
@@ -50,14 +50,14 @@ exports[`TS Compile > works in a mono-repo 1`] = `
           "a.d.ts": "export type A = {\\n    here: string;\\n    there: number;\\n};\\nexport declare const value: A;\\n",
           "a.js": "export const value = {\\n    here: 'yo',\\n    there: 0,\\n};\\n"
         },
-        "tsconfig.json": "{\\n    \\"compilerOptions\\": {\\n        \\"outDir\\": \\"./dist/\\",\\n        \\"rootDir\\": \\"./src/\\"\\n    },\\n    \\"exclude\\": [\\n        \\"./configs/\\",\\n        \\"./coverage/\\",\\n        \\"./dist/\\",\\n        \\"./dist-*/\\",\\n        \\"./node_modules/\\",\\n        \\"./test-files/\\"\\n    ],\\n    \\"extends\\": \\"../../configs/tsconfig.base.json\\"\\n}\\n"
+        "tsconfig.json": "{\\n    \\"compilerOptions\\": {\\n        \\"outDir\\": \\"./dist/\\",\\n        \\"rootDir\\": \\"./src/\\"\\n    },\\n    \\"exclude\\": [\\n        \\"./configs/\\",\\n        \\"./coverage/\\",\\n        \\"./dist-*/\\",\\n        \\"./dist/\\",\\n        \\"./node_modules/\\",\\n        \\"./test-files/\\",\\n        \\"src/all-files-for-code-coverage.test.ts\\"\\n    ],\\n    \\"extends\\": \\"../../configs/tsconfig.base.json\\"\\n}\\n"
       },
       "b": {
         "dist": {
           "b.d.ts": "export type B = {\\n    here: string;\\n    there: number;\\n};\\nexport declare const value: B;\\n",
           "b.js": "export const value = {\\n    here: 'yo',\\n    there: 0,\\n};\\n"
         },
-        "tsconfig.json": "{\\n    \\"compilerOptions\\": {\\n        \\"outDir\\": \\"./dist/\\",\\n        \\"rootDir\\": \\"./src/\\"\\n    },\\n    \\"exclude\\": [\\n        \\"./configs/\\",\\n        \\"./coverage/\\",\\n        \\"./dist/\\",\\n        \\"./dist-*/\\",\\n        \\"./node_modules/\\",\\n        \\"./test-files/\\"\\n    ],\\n    \\"extends\\": \\"../../configs/tsconfig.base.json\\"\\n}\\n"
+        "tsconfig.json": "{\\n    \\"compilerOptions\\": {\\n        \\"outDir\\": \\"./dist/\\",\\n        \\"rootDir\\": \\"./src/\\"\\n    },\\n    \\"exclude\\": [\\n        \\"./configs/\\",\\n        \\"./coverage/\\",\\n        \\"./dist-*/\\",\\n        \\"./dist/\\",\\n        \\"./node_modules/\\",\\n        \\"./test-files/\\",\\n        \\"src/all-files-for-code-coverage.test.ts\\"\\n    ],\\n    \\"extends\\": \\"../../configs/tsconfig.base.json\\"\\n}\\n"
       }
     },
     "configs": {
