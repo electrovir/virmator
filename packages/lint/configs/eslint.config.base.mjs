@@ -98,6 +98,7 @@ export function defineEslintConfig(repoDir) {
                 'sonarjs/cognitive-complexity': 'off',
                 'sonarjs/different-types-comparison': 'off', // this rule is wrong
                 'sonarjs/function-return-type': 'off',
+                'sonarjs/new-cap': 'off',
                 'sonarjs/no-alphabetical-sort': 'off',
                 'sonarjs/no-duplicate-string': 'off',
                 'sonarjs/no-empty-test-file': 'off', // this rule is wrong
