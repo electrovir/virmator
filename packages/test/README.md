@@ -13,6 +13,9 @@ A default plugin for [virmator](https://www.npmjs.com/package/virmator).
     -   Examples
         -   Run tests in a browser: `virmator test web`
         -   Run tests in Node: `virmator test node`
+    -   Deps
+        -   [@augment-vir/test](https://npmjs.com/package/@augment-vir/test)
+        -   [@augment-vir/assert](https://npmjs.com/package/@augment-vir/assert)
     -   Sub Commands
 
         -   **web**
