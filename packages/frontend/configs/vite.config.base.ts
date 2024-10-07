@@ -72,6 +72,13 @@ export function createBaseConfig({forGitHubPages, packageDirPath}: BaseConfigOpt
             build: {
                 outDir,
                 emptyOutDir: true,
+                target: 'es2022', // This should be kept in sync with `@virmator/compile/configs/tsconfig.base.json`.
+                rollupOptions: {
+                    external: [
+                        // This is specified, but not used, in `@augment-vir/common`'s `log` export. It is only used inside a Node.js environment.
+                        'node:util',
+                    ],
+                },
             },
         },
         basePaths: {
