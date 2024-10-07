@@ -36,6 +36,32 @@ export const virmatorTestPlugin = defineVirmatorPlugin(
                         },
                     ],
                 },
+                npmDeps: {
+                    '@augment-vir/test': {
+                        env: [
+                            RuntimeEnv.Node,
+                            RuntimeEnv.Web,
+                        ],
+                        packageType: [
+                            PackageType.MonoPackage,
+                            PackageType.MonoRoot,
+                            PackageType.TopPackage,
+                        ],
+                        type: NpmDepType.Dev,
+                    },
+                    '@augment-vir/assert': {
+                        env: [
+                            RuntimeEnv.Node,
+                            RuntimeEnv.Web,
+                        ],
+                        packageType: [
+                            PackageType.MonoPackage,
+                            PackageType.MonoRoot,
+                            PackageType.TopPackage,
+                        ],
+                        type: NpmDepType.Regular,
+                    },
+                },
                 subCommands: {
                     web: {
                         doc: {
