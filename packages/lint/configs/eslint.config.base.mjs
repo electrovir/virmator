@@ -10,12 +10,12 @@ import {existsSync} from 'node:fs';
 import {join} from 'node:path';
 import tsEslint from 'typescript-eslint';
 
-const globalVars = {
+export const globalVars = {
     ...globals.node,
     ...globals.browser,
 };
 
-function determineTsconfigPath(repoDir) {
+export function determineTsconfigPath(repoDir) {
     const eslintTsconfig = join(repoDir, 'configs', 'tsconfig.eslint.json');
     const rootTsconfig = join(repoDir, 'tsconfig.json');
 
@@ -48,6 +48,7 @@ export function defineEslintConfig(repoDir) {
                 '*.sh',
                 '*.sql',
                 '*.yml',
+                '**/.not-committed/',
                 '**/all-files-for-code-coverage.test.ts',
                 '**/configs/',
                 '**/coverage/',
