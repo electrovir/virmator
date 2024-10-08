@@ -1,6 +1,6 @@
 {
     "name": "@virmator/docs",
-    "version": "13.5.1",
+    "version": "13.5.2",
     "description": "Default TS docs plugin for virmator.",
     "keywords": [
         "virmator",
@@ -35,7 +35,7 @@
         "@augment-vir/assert": "^30.2.0",
         "@augment-vir/common": "^30.2.0",
         "@augment-vir/node": "^30.2.0",
-        "@virmator/core": "^13.5.1",
+        "@virmator/core": "^13.5.2",
         "chalk": "^5.3.0",
         "mri": "^1.2.0"
     },

@@ -80,6 +80,14 @@ export function createBaseConfig({forGitHubPages, packageDirPath}: BaseConfigOpt
                     ],
                 },
             },
+            optimizeDeps: {
+                esbuildOptions: {
+                    target: 'es2022',
+                },
+            },
+            esbuild: {
+                target: 'es2022',
+            },
         },
         basePaths: {
             cwd,
