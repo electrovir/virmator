@@ -93,6 +93,7 @@ export function defineEslintConfig(repoDir) {
                 '@typescript-eslint/no-unsafe-return': 'off',
                 '@typescript-eslint/no-useless-constructor': 'off', // this rule is always wrong
                 '@typescript-eslint/prefer-reduce-type-parameter': 'off',
+                '@typescript-eslint/return-await': 'off',
                 '@typescript-eslint/unified-signatures': 'off', // this rule is always wrong
 
                 'sonarjs/cognitive-complexity': 'off',
@@ -105,7 +106,9 @@ export function defineEslintConfig(repoDir) {
                 'sonarjs/no-misused-promises': 'off', // this rule is wrong
                 'sonarjs/no-nested-conditional': 'off',
                 'sonarjs/no-nested-functions': 'off',
+                'sonarjs/no-redeclare': 'off', // this rule is wrong and will get caught by TS anyway
                 'sonarjs/no-redundant-optional': 'off',
+                'sonarjs/no-selector-parameter': 'off',
                 'sonarjs/no-undefined-argument': 'off',
                 'sonarjs/no-useless-constructor': 'off', // this rule is wrong
                 'sonarjs/prefer-nullish-coalescing': 'off',
@@ -207,6 +210,23 @@ export function defineEslintConfig(repoDir) {
                 '@typescript-eslint/restrict-template-expressions': [
                     'error',
                     {
+                        allow: [
+                            {
+                                from: 'package',
+                                name: 'CSSResult',
+                                package: 'element-vir',
+                            },
+                            {
+                                from: 'package',
+                                name: 'CSSResult',
+                                package: 'lit',
+                            },
+                            {
+                                from: 'package',
+                                name: 'CSSResult',
+                                package: '@lit/reactive-element',
+                            },
+                        ],
                         allowNumber: true,
                     },
                 ],
@@ -218,6 +238,12 @@ export function defineEslintConfig(repoDir) {
                             'error',
                             'warn',
                         ],
+                    },
+                ],
+                'prefer-const': [
+                    'error',
+                    {
+                        ignoreReadBeforeAssign: true,
                     },
                 ],
             },

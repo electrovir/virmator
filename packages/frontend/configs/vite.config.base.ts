@@ -59,6 +59,7 @@ export function createBaseConfig({forGitHubPages, packageDirPath}: BaseConfigOpt
     const srcDir = join(cwd, 'src');
     const staticDir = join(cwd, 'www-static');
     const outDir = join(cwd, 'dist');
+    const target = 'es2022'; // This should be kept in sync with `@virmator/compile/configs/tsconfig.base.json`.
 
     return {
         baseConfig: {
@@ -72,7 +73,7 @@ export function createBaseConfig({forGitHubPages, packageDirPath}: BaseConfigOpt
             build: {
                 outDir,
                 emptyOutDir: true,
-                target: 'es2022', // This should be kept in sync with `@virmator/compile/configs/tsconfig.base.json`.
+                target,
                 rollupOptions: {
                     external: [
                         // This is specified, but not used, in `@augment-vir/common`'s `log` export. It is only used inside a Node.js environment.
@@ -82,11 +83,11 @@ export function createBaseConfig({forGitHubPages, packageDirPath}: BaseConfigOpt
             },
             optimizeDeps: {
                 esbuildOptions: {
-                    target: 'es2022',
+                    target,
                 },
             },
             esbuild: {
-                target: 'es2022',
+                target,
             },
         },
         basePaths: {

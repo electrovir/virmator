@@ -1,6 +1,6 @@
 {
     "name": "@virmator/scripts",
-    "version": "13.5.2",
+    "version": "13.5.3",
     "private": true,
     "description": "Internal virmator scripts.",
     "keywords": [
@@ -30,7 +30,7 @@
         "@augment-vir/common": "^30.2.0",
         "@augment-vir/node": "^30.2.0",
         "mri": "^1.2.0",
-        "virmator": "^13.5.2"
+        "virmator": "^13.5.3"
     },
     "devDependencies": {
         "@types/node": "^22.7.4"
