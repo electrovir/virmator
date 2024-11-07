@@ -1,6 +1,6 @@
 {
     "name": "virmator",
-    "version": "13.5.3",
+    "version": "13.6.0",
     "description": "Handle common package configs, commands, and dependencies.",
     "keywords": [
         "automation",
@@ -37,26 +37,26 @@
         "test:update": "npm test update"
     },
     "dependencies": {
-        "@augment-vir/common": "^30.2.0",
-        "@augment-vir/node": "^30.2.0",
-        "@virmator/compile": "^13.5.3",
-        "@virmator/core": "^13.5.3",
-        "@virmator/deps": "^13.5.3",
-        "@virmator/docs": "^13.5.3",
-        "@virmator/format": "^13.5.3",
-        "@virmator/frontend": "^13.5.3",
-        "@virmator/help": "^13.5.3",
-        "@virmator/init": "^13.5.3",
-        "@virmator/lint": "^13.5.3",
-        "@virmator/publish": "^13.5.3",
-        "@virmator/spellcheck": "^13.5.3",
-        "@virmator/test": "^13.5.3",
-        "tsx": "^4.19.1"
+        "@augment-vir/common": "^30.3.0",
+        "@augment-vir/node": "^30.3.0",
+        "@virmator/compile": "^13.6.0",
+        "@virmator/core": "^13.6.0",
+        "@virmator/deps": "^13.6.0",
+        "@virmator/docs": "^13.6.0",
+        "@virmator/format": "^13.6.0",
+        "@virmator/frontend": "^13.6.0",
+        "@virmator/help": "^13.6.0",
+        "@virmator/init": "^13.6.0",
+        "@virmator/lint": "^13.6.0",
+        "@virmator/publish": "^13.6.0",
+        "@virmator/spellcheck": "^13.6.0",
+        "@virmator/test": "^13.6.0",
+        "tsx": "^4.19.2"
     },
     "devDependencies": {
-        "@augment-vir/assert": "^30.2.0",
-        "@augment-vir/test": "^30.2.0",
-        "@types/node": "^22.7.4",
+        "@augment-vir/assert": "^30.3.0",
+        "@augment-vir/test": "^30.3.0",
+        "@types/node": "^22.9.0",
         "c8": "^10.1.2",
         "istanbul-smart-text-reporter": "^1.1.5"
     },

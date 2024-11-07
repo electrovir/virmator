@@ -273,6 +273,13 @@ Note that as of v13, this package is now in ESM.
                     -   Examples
                         -   `virmator test web coverage`
 
+                -   **update**
+
+                    Run tests and update snapshots.
+
+                    -   Examples
+                        -   `virmator test web update`
+
         -   **node**
 
             Runs backend tests in Node.js using its built-in test runner.
