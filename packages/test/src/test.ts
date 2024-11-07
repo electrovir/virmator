@@ -316,7 +316,9 @@ export const virmatorTestPlugin = defineVirmatorPlugin(
                     .default as Partial<TestRunnerConfig>;
 
                 const includeCoverage = usedCommands.test.subCommands.web.subCommands.coverage;
-                const updateSnapshotsArgs = shouldUpdateSnapshots ? ['--update-snapshots'] : [];
+                const updateSnapshotsArgs = shouldUpdateSnapshots
+                    ? ['--test-update-snapshots']
+                    : [];
 
                 if (includeCoverage) {
                     await createTestThatImportsAllFilesForCoverage(

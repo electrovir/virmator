@@ -1,6 +1,6 @@
 {
     "name": "@virmator/test",
-    "version": "13.6.0",
+    "version": "13.7.0",
     "description": "Default test plugin for virmator.",
     "keywords": [
         "virmator",
@@ -28,15 +28,19 @@
     "types": "src/test.ts",
     "scripts": {
         "compile": "virmator compile",
-        "test": "virmator test node",
+        "test": "concurrently --colors --kill-others-on-fail -c red,blue --names node,web \"npm run test:node\" \"npm run test:web\"",
         "test:coverage": "npm test",
-        "test:update": "npm test update"
+        "test:node": "virmator test node src/test.test.ts",
+        "test:update": "npm run test:node update",
+        "test:web": "virmator test web src/web-snapshot-plugin/web-snapshot-plugin.test.ts"
     },
     "dependencies": {
         "@augment-vir/assert": "^30.4.0",
         "@augment-vir/common": "^30.4.0",
         "@augment-vir/node": "^30.4.0",
-        "@virmator/core": "^13.6.0",
+        "@virmator/core": "^13.7.0",
+        "@web/dev-server-core": "^0.7.4",
+        "@web/test-runner-core": "^0.13.4",
         "glob": "^11.0.0",
         "mri": "^1.2.0",
         "object-shape-tester": "^3.0.0",
@@ -53,6 +57,7 @@
         "@web/test-runner-playwright": "^0.11.0",
         "@web/test-runner-visual-regression": "^0.10.0",
         "c8": "^10.1.2",
+        "concurrently": "^9.1.0",
         "istanbul-smart-text-reporter": "^1.1.5",
         "tsx": "^4.19.2"
     },

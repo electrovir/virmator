@@ -1,3 +1,4 @@
+import {snapshotPlugin} from '@virmator/test/dist/web-snapshot-plugin/web-snapshot-plugin.js';
 import {esbuildPlugin} from '@web/dev-server-esbuild';
 import {defaultReporter, summaryReporter} from '@web/test-runner';
 import {playwrightLauncher} from '@web/test-runner-playwright';
@@ -110,6 +111,7 @@ export function defineConfig({
         plugins: [
             esbuildPlugin({ts: true}),
             ...createScreenshotsPlugin(extraScreenshotOptions, packageRootDirPath),
+            snapshotPlugin(packageRootDirPath),
         ],
         testFramework: {
             config: {

@@ -10,5 +10,6 @@ module.exports = {
     words: [
         ...baseConfig.words,
         'htmlhint',
+        'webdev',
     ],
 };
