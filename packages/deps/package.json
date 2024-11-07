@@ -33,14 +33,14 @@
         "test:update": "npm test update"
     },
     "dependencies": {
-        "@augment-vir/assert": "^30.3.0",
-        "@augment-vir/common": "^30.3.0",
-        "@augment-vir/node": "^30.3.0",
+        "@augment-vir/assert": "^30.4.0",
+        "@augment-vir/common": "^30.4.0",
+        "@augment-vir/node": "^30.4.0",
         "@virmator/core": "^13.6.0",
         "mri": "^1.2.0"
     },
     "devDependencies": {
-        "@augment-vir/test": "^30.3.0",
+        "@augment-vir/test": "^30.4.0",
         "@types/node": "^22.9.0",
         "c8": "^10.1.2",
         "dependency-cruiser": "^16.6.0",

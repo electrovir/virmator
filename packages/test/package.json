@@ -33,15 +33,17 @@
         "test:update": "npm test update"
     },
     "dependencies": {
-        "@augment-vir/assert": "^30.3.0",
-        "@augment-vir/common": "^30.3.0",
-        "@augment-vir/node": "^30.3.0",
+        "@augment-vir/assert": "^30.4.0",
+        "@augment-vir/common": "^30.4.0",
+        "@augment-vir/node": "^30.4.0",
         "@virmator/core": "^13.6.0",
         "glob": "^11.0.0",
-        "mri": "^1.2.0"
+        "mri": "^1.2.0",
+        "object-shape-tester": "^3.0.0",
+        "typed-event-target": "^4.0.2"
     },
     "devDependencies": {
-        "@augment-vir/test": "^30.3.0",
+        "@augment-vir/test": "^30.4.0",
         "@open-wc/testing": "^4.0.0",
         "@types/mocha": "^10.0.9",
         "@types/node": "^22.9.0",
