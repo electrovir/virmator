@@ -91,6 +91,20 @@ export const virmatorTestPlugin = defineVirmatorPlugin(
                                     ],
                                 },
                             },
+                            update: {
+                                doc: {
+                                    sections: [
+                                        `
+                                            Run tests and update snapshots.
+                                        `,
+                                    ],
+                                    examples: [
+                                        {
+                                            content: 'virmator test web update',
+                                        },
+                                    ],
+                                },
+                            },
                         },
                         configFiles: {
                             webTestRunner: {
@@ -282,6 +296,7 @@ export const virmatorTestPlugin = defineVirmatorPlugin(
 
         if (usedCommands.test?.subCommands.web) {
             const allFilesTestFilePath = join(cwd, 'src', 'all-files-for-code-coverage.test.ts');
+            const shouldUpdateSnapshots = usedCommands.test.subCommands.web.subCommands.update;
 
             try {
                 const configPath =
@@ -301,6 +316,7 @@ export const virmatorTestPlugin = defineVirmatorPlugin(
                     .default as Partial<TestRunnerConfig>;
 
                 const includeCoverage = usedCommands.test.subCommands.web.subCommands.coverage;
+                const updateSnapshotsArgs = shouldUpdateSnapshots ? ['--update-snapshots'] : [];
 
                 if (includeCoverage) {
                     await createTestThatImportsAllFilesForCoverage(
@@ -315,6 +331,7 @@ export const virmatorTestPlugin = defineVirmatorPlugin(
                     'web-test-runner',
                     '--color',
                     ...configArgs,
+                    ...updateSnapshotsArgs,
                     includeCoverage ? '--coverage' : '',
                     ...filteredArgs,
                 ]
