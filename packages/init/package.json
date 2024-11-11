@@ -1,6 +1,6 @@
 {
     "name": "@virmator/init",
-    "version": "13.7.0",
+    "version": "13.8.0",
     "description": "Default init plugin for virmator.",
     "keywords": [
         "virmator",
@@ -30,16 +30,16 @@
         "test:update": "npm test"
     },
     "dependencies": {
-        "@augment-vir/assert": "^30.4.0",
-        "@augment-vir/common": "^30.4.0",
-        "@augment-vir/node": "^30.4.0",
-        "@virmator/core": "^13.7.0",
+        "@augment-vir/assert": "^30.6.2",
+        "@augment-vir/common": "^30.6.2",
+        "@augment-vir/node": "^30.6.2",
+        "@virmator/core": "^13.8.0",
         "simple-git": "^3.27.0"
     },
     "devDependencies": {
         "@types/node": "^22.9.0",
         "element-vir": "^23.0.0",
-        "mono-vir": "^1.0.1",
+        "mono-vir": "^2.0.0",
         "tsx": "^4.19.2",
         "type-fest": "^4.26.1"
     },

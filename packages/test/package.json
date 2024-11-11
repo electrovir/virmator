@@ -1,6 +1,6 @@
 {
     "name": "@virmator/test",
-    "version": "13.7.0",
+    "version": "13.8.0",
     "description": "Default test plugin for virmator.",
     "keywords": [
         "virmator",
@@ -31,23 +31,23 @@
         "test": "concurrently --colors --kill-others-on-fail -c red,blue --names node,web \"npm run test:node\" \"npm run test:web\"",
         "test:coverage": "npm test",
         "test:node": "virmator test node src/test.test.ts",
-        "test:update": "npm run test:node update",
+        "test:update": "virmator test node update src/test.test.ts",
         "test:web": "virmator test web src/web-snapshot-plugin/web-snapshot-plugin.test.ts"
     },
     "dependencies": {
-        "@augment-vir/assert": "^30.4.0",
-        "@augment-vir/common": "^30.4.0",
-        "@augment-vir/node": "^30.4.0",
-        "@virmator/core": "^13.7.0",
+        "@augment-vir/assert": "^30.6.2",
+        "@augment-vir/common": "^30.6.2",
+        "@augment-vir/node": "^30.6.2",
+        "@virmator/core": "^13.8.0",
         "@web/dev-server-core": "^0.7.4",
         "@web/test-runner-core": "^0.13.4",
         "glob": "^11.0.0",
         "mri": "^1.2.0",
-        "object-shape-tester": "^3.0.0",
+        "object-shape-tester": "^3.1.0",
         "typed-event-target": "^4.0.2"
     },
     "devDependencies": {
-        "@augment-vir/test": "^30.4.0",
+        "@augment-vir/test": "^30.6.2",
         "@open-wc/testing": "^4.0.0",
         "@types/mocha": "^10.0.9",
         "@types/node": "^22.9.0",

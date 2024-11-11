@@ -9,7 +9,7 @@ const packageDir = resolve(import.meta.dirname, '..');
 const testFilesDir = join(packageDir, 'test-files');
 
 describe(virmatorTestPlugin.name, () => {
-    async function testFormatPlugin(
+    async function testTestPlugin(
         shouldPass: boolean,
         context: UniversalTestContext,
         dir: string,
@@ -32,7 +32,7 @@ describe(virmatorTestPlugin.name, () => {
     /** Can't run node tests because then node complains about nested node tests. */
 
     it('runs web tests', async (context) => {
-        await testFormatPlugin(
+        await testTestPlugin(
             false,
             context,
             join(testFilesDir, 'browser-tests'),
@@ -40,7 +40,7 @@ describe(virmatorTestPlugin.name, () => {
         );
     });
     it('tests a specific web file', async (context) => {
-        await testFormatPlugin(
+        await testTestPlugin(
             true,
             context,
             join(testFilesDir, 'browser-tests'),
@@ -48,7 +48,7 @@ describe(virmatorTestPlugin.name, () => {
         );
     });
     it('tests web coverage', async (context) => {
-        await testFormatPlugin(
+        await testTestPlugin(
             false,
             context,
             join(testFilesDir, 'coverage-browser-tests'),
@@ -56,6 +56,6 @@ describe(virmatorTestPlugin.name, () => {
         );
     });
     it('rejects missing env', async (context) => {
-        await testFormatPlugin(false, context, join(testFilesDir, 'node-tests'), '');
+        await testTestPlugin(false, context, join(testFilesDir, 'node-tests'), '');
     });
 });
