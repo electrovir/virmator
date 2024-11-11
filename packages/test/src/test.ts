@@ -5,6 +5,7 @@ import {defineVirmatorPlugin, NpmDepType, PackageType, VirmatorNoTraceError} fro
 import {type TestRunnerConfig} from '@web/test-runner';
 import {glob} from 'glob';
 import mri from 'mri';
+import {existsSync} from 'node:fs';
 import {rm, writeFile} from 'node:fs/promises';
 import {join, relative} from 'node:path';
 import {pathToFileURL} from 'node:url';
@@ -283,10 +284,23 @@ export const virmatorTestPlugin = defineVirmatorPlugin(
         runShellCommand,
         cwd,
         configs,
-        package: {packageType},
+        package: {packageType, monoRepoRootPath, cwdPackagePath},
     }) => {
         const args = mri(filteredArgs);
         const flagArgs = filteredArgs.filter((arg) => !args._.includes(arg));
+
+        const fileArgs = args._.map((arg) => {
+            const monoRepoRelativePath = join(monoRepoRootPath, arg);
+            /**
+             * Handle give test file paths that are relative to the mono repo rather than the
+             * current package.
+             */
+            if (existsSync(monoRepoRelativePath)) {
+                return relative(cwdPackagePath, monoRepoRelativePath);
+            } else {
+                return arg;
+            }
+        });
 
         if (packageType === PackageType.MonoRoot) {
             throw new VirmatorNoTraceError(
@@ -309,7 +323,7 @@ export const virmatorTestPlugin = defineVirmatorPlugin(
                     ? []
                     : [
                           '--config',
-                          interpolationSafeWindowsPath(configPath),
+                          args.config || interpolationSafeWindowsPath(configPath),
                       ];
 
                 const webTestRunnerConfig = (await import(pathToFileURL(configPath).toString()))
@@ -335,7 +349,8 @@ export const virmatorTestPlugin = defineVirmatorPlugin(
                     ...configArgs,
                     ...updateSnapshotsArgs,
                     includeCoverage ? '--coverage' : '',
-                    ...filteredArgs,
+                    ...flagArgs,
+                    ...fileArgs,
                 ]
                     .filter(check.isTruthy)
                     .join(' ');
@@ -366,7 +381,7 @@ export const virmatorTestPlugin = defineVirmatorPlugin(
 
             const updateSnapshotsArgs = shouldUpdateSnapshots ? ['--test-update-snapshots'] : [];
 
-            const filesArgs = args._.length ? args._ : ["'src/**/*.test.ts'"];
+            const testFiles = fileArgs.length ? fileArgs : ["'src/**/*.test.ts'"];
 
             const testCommand = [
                 ...coverageArgs,
@@ -378,7 +393,7 @@ export const virmatorTestPlugin = defineVirmatorPlugin(
                 'spec',
                 ...flagArgs,
                 ...updateSnapshotsArgs,
-                ...filesArgs,
+                ...testFiles,
             ]
                 .filter(check.isTruthy)
                 .join(' ');
