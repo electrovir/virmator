@@ -1,8 +1,8 @@
 import {assert} from '@augment-vir/assert';
 import {type MaybePromise, wrapString} from '@augment-vir/common';
-import {runShellCommand} from '@augment-vir/node';
+import {readAllDirContents, resetDirContents, runShellCommand} from '@augment-vir/node';
 import {describe, it, type UniversalTestContext} from '@augment-vir/test';
-import {readAllDirContents, resetDirContents, testPlugin} from '@virmator/plugin-testing';
+import {testPlugin} from '@virmator/plugin-testing';
 import {existsSync} from 'node:fs';
 import {join, resolve, sep} from 'node:path';
 import {virmatorDocsPlugin} from './docs.js';

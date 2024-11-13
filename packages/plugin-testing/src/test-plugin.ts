@@ -13,7 +13,12 @@ import {
     wrapInTry,
     wrapString,
 } from '@augment-vir/common';
-import {toPosixPath} from '@augment-vir/node';
+import {
+    type DirContents,
+    readAllDirContents,
+    resetDirContents,
+    toPosixPath,
+} from '@augment-vir/node';
 import {assertTestContext, type UniversalTestContext} from '@augment-vir/test';
 import {
     executeVirmatorCommand,
@@ -23,7 +28,6 @@ import {
     type VirmatorPlugin,
 } from '@virmator/core';
 import {relative, sep} from 'node:path';
-import {type DirContents, readAllDirContents, resetDirContents} from './augments/index.js';
 import {monoRepoDir} from './file-paths.js';
 
 /** Log string transformer. */
