@@ -1,5 +1,10 @@
 import {check} from '@augment-vir/assert';
-import {awaitedBlockingMap, getObjectTypedEntries, type Logger} from '@augment-vir/common';
+import {
+    awaitedBlockingMap,
+    awaitedForEach,
+    getObjectTypedEntries,
+    type Logger,
+} from '@augment-vir/common';
 import {readPackageJson, runShellCommand} from '@augment-vir/node';
 import * as semver from 'semver';
 import {type PackageJson} from 'type-fest';
@@ -22,11 +27,25 @@ export async function installPluginNpmDeps({
     usedCommands: Readonly<UsedVirmatorPluginCommands>;
 }): Promise<void> {
     const deps = flattenDeps(usedCommands);
+    const installCommands = flattenExtraInstallCommands(usedCommands);
 
-    await installNpmDeps({...params, deps});
+    if (await installNpmDeps({...params, deps})) {
+        await awaitedForEach(installCommands, async (command) => {
+            params.log.faint(`> ${command}`);
+            await runShellCommand(command, {
+                cwd: params.cwdPackagePath,
+                rejectOnError: true,
+                hookUpToConsole: true,
+            });
+        });
+    }
 }
 
-/** Installs a set of virmator plugin npm deps. */
+/**
+ * Installs a set of virmator plugin npm deps.
+ *
+ * @returns `true` if new deps were installed, otherwise `false`.
+ */
 export async function installNpmDeps({
     cwdPackagePath,
     cwdPackageJson,
@@ -43,11 +62,11 @@ export async function installNpmDeps({
     packageType: PackageType;
     log: Logger;
     deps: Partial<PluginNpmDeps>;
-}): Promise<void> {
+}): Promise<boolean> {
     const neededDeps = getObjectTypedEntries(deps);
 
     if (!neededDeps.length) {
-        return;
+        return false;
     }
 
     const cwdPackageDeps = combineDeps(cwdPackageJson);
@@ -93,8 +112,10 @@ export async function installNpmDeps({
         },
     );
 
+    const depsToInstallEntries = Object.entries(depsThatNeedInstalling);
+
     await awaitedBlockingMap(
-        Object.entries(depsThatNeedInstalling),
+        depsToInstallEntries,
         async ([
             depType,
             deps,
@@ -122,6 +143,8 @@ export async function installNpmDeps({
             });
         },
     );
+
+    return !!depsToInstallEntries.length;
 }
 
 function combineDeps(packageJson: Readonly<PackageJson>) {
@@ -147,4 +170,23 @@ function flattenDeps(usedCommands: Readonly<UsedVirmatorPluginCommands>): Plugin
 
         return accum;
     }, {});
+}
+
+function flattenExtraInstallCommands(usedCommands: Readonly<UsedVirmatorPluginCommands>): string[] {
+    return Object.values(usedCommands).reduce((accum: string[], usedCommand) => {
+        if (!usedCommand) {
+            return accum;
+        }
+
+        if (usedCommand.extraInstallCommand) {
+            accum.push(usedCommand.extraInstallCommand);
+        }
+
+        if (Object.keys(usedCommand.subCommands).length) {
+            const subCommands = flattenExtraInstallCommands(usedCommand.subCommands);
+            accum.push(...subCommands);
+        }
+
+        return accum;
+    }, []);
 }

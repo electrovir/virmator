@@ -33,6 +33,8 @@ export type IndividualPluginCommand = {
     doc: PluginCommandDocs;
     configFiles?: Readonly<Record<string, VirmatorPluginConfigFile>>;
     subCommands?: VirmatorPluginCliCommands;
+    /** An extra shell command that will be run after deps have been installed. */
+    extraInstallCommand?: string;
     /** Dependencies that this command needs to be installed in the host repo. */
     npmDeps?: Readonly<PluginNpmDeps>;
 };
