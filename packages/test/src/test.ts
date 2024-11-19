@@ -356,7 +356,7 @@ export const virmatorTestPlugin = defineVirmatorPlugin(
                     .filter(check.isTruthy)
                     .join(' ');
 
-                await runShellCommand(testCommand);
+                await runShellCommand(interpolationSafeWindowsPath(testCommand));
             } finally {
                 await rm(allFilesTestFilePath, {force: true});
             }

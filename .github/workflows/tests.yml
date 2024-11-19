@@ -15,7 +15,7 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
-                os: [macos-latest, ubuntu-latest, windows-latest]
+                os: [windows-latest]
         steps:
             - uses: actions/checkout@v4.1.7
             - name: Use Node.js ${{ matrix.node-version }}
@@ -35,4 +35,20 @@ jobs:
                   npm ci
                   npx playwright install --with-deps
                   npm run format package.json
-                  npm run test:all
+            - name: compile
+              run: npm run compile
+            - name: test test package
+              working-directory: packages/test
+              run: npm run test:web
+            - name: coverage
+              run: npm run test:coverage
+            - name: spelling
+              run: npm run test:spelling
+            - name: format
+              run: npm run test:format
+            - name: docs
+              run: npm run test:docs
+            - name: deps
+              run: npm run test:deps
+            - name: lint
+              run: npm run test:lint

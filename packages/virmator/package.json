@@ -29,7 +29,7 @@
     "main": "src/index.ts",
     "module": "src/index.ts",
     "types": "src/index.ts",
-    "bin": "src/cli.ts",
+    "bin": "bin.js",
     "scripts": {
         "compile": "virmator compile",
         "test": "virmator test node",

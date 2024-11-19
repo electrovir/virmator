@@ -46,7 +46,7 @@
     "devDependencies": {
         "@types/node": "^22.9.0",
         "@types/semver": "^7.5.8",
-        "markdown-code-example-inserter": "^3.0.1",
+        "markdown-code-example-inserter": "^3.0.2",
         "type-fest": "^4.27.0",
         "typedoc": "^0.26.11"
     },

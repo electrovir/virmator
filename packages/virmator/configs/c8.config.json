@@ -5,8 +5,7 @@
     "clean": true,
     "exclude": [
         "**/*.test.ts",
-        "**/*.example.ts",
-        "src/cli.ts"
+        "**/*.example.ts"
     ],
     "include": [
         "src/**/*.ts"
