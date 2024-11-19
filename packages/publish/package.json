@@ -33,9 +33,9 @@
         "test:update": "npm test"
     },
     "dependencies": {
-        "@augment-vir/assert": "^30.7.0",
-        "@augment-vir/common": "^30.7.0",
-        "@augment-vir/node": "^30.7.0",
+        "@augment-vir/assert": "^30.8.2",
+        "@augment-vir/common": "^30.8.2",
+        "@augment-vir/node": "^30.8.2",
         "@virmator/core": "^13.8.1",
         "chalk": "^5.3.0",
         "mri": "^1.2.0",
@@ -46,8 +46,8 @@
     "devDependencies": {
         "@types/node": "^22.9.0",
         "@types/semver": "^7.5.8",
-        "markdown-code-example-inserter": "^3.0.0",
-        "type-fest": "^4.26.1",
+        "markdown-code-example-inserter": "^3.0.1",
+        "type-fest": "^4.27.0",
         "typedoc": "^0.26.11"
     },
     "engines": {

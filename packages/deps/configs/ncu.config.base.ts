@@ -8,6 +8,8 @@ export const baseNcuConfig = {
     /** This option is needed otherwise ncu breaks, despite its type not requiring this property. */
     install: 'never',
     reject: [
-        // currently there are no deps to avoid updating
+        /** 9.15 breaks stuff. */
+        'eslint',
+        '@eslint/js',
     ],
 } as const satisfies ReadonlyDeep<RunOptions>;

@@ -122,7 +122,7 @@ export const virmatorTestPlugin = defineVirmatorPlugin(
                                 configFlags: ['--config'],
                             },
                         },
-                        extraInstallCommand: 'npx playwright install',
+                        extraInstallCommand: 'npx playwright install --with-deps',
                         npmDeps: {
                             '@web/dev-server-esbuild': {
                                 env: [
