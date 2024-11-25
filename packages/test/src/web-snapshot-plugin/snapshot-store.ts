@@ -2,6 +2,7 @@ import {
     getOrSet,
     PromiseQueue,
     PromiseQueueUpdateEvent,
+    wrapInTry,
     type MaybePromise,
 } from '@augment-vir/common';
 import {writeFile} from 'node:fs/promises';
@@ -39,11 +40,13 @@ export class SnapshotStore extends ListenTarget<SnapshotStoreUpdateEvent> {
     protected async getSnapshotFile(testFilePath: string): Promise<SnapshotsFile> {
         const snapshotFilePath = createSnapshotOutputPath(testFilePath);
 
-        const snapshotFile = await getOrSet(
-            this.snapshotFiles,
-            testFilePath,
-            () => import(snapshotFilePath),
-        );
+        const snapshotFile = await getOrSet(this.snapshotFiles, testFilePath, async () => {
+            const existingSnapshot = await wrapInTry(() => import(snapshotFilePath), {
+                fallbackValue: undefined,
+            });
+
+            return existingSnapshot || {};
+        });
 
         assertValidShape(
             snapshotFile,

@@ -79,7 +79,7 @@ export function snapshotPlugin(repoPath: string): TestRunnerPlugin {
                 const snapshotPath = createSnapshotOutputPath(session.testFile);
 
                 if (updated) {
-                    void snapshotStore.updateSnapshot(session.testFile, payload);
+                    await snapshotStore.updateSnapshot(session.testFile, payload);
                 }
 
                 return {
@@ -89,9 +89,9 @@ export function snapshotPlugin(repoPath: string): TestRunnerPlugin {
                     snapshotPath: relative(repoPath, snapshotPath),
                     exists: existsSync(snapshotPath),
                 } satisfies CompareCommandResult;
-            } else {
-                throw new Error(`Invalid command given: '${command}'`);
             }
+
+            return undefined;
         },
     };
 }
