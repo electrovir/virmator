@@ -1,4 +1,5 @@
 import {assert} from '@augment-vir/assert';
+import {omitObjectKeys} from '@augment-vir/common';
 import {describe} from '@augment-vir/test';
 import {executeServerCommand} from '@web/test-runner-commands';
 import {CompareCommandResult, SnapshotCommand, SnapshotPayload} from './snapshot-payload.js';
@@ -13,10 +14,11 @@ describe('snapshotPlugin', () => {
             } satisfies SnapshotPayload,
         );
 
-        assert.deepEquals(result, {
+        assert.endsWith(result.snapshotPath, 'web-snapshot-plugin.test.ts.snapshot.web');
+
+        assert.deepEquals(omitObjectKeys(result, ['snapshotPath']), {
             matches: false,
             updated: false,
-            snapshotPath: 'src/web-snapshot-plugin/web-snapshot-plugin.test.ts.snapshot.web',
             exists: false,
             savedContent: '',
         });

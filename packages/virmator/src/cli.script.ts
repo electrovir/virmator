@@ -1,4 +1,5 @@
-#!/usr/bin/env -S npx tsx
+/* node:coverage disable */
+/** This file can only be tested via the command line. */
 
 import {log} from '@augment-vir/common';
 import {executeVirmatorCommand, hideNoTraceTraces, VirmatorNoTraceError} from '@virmator/core';
