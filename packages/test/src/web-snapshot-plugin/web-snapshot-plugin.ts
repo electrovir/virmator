@@ -3,8 +3,8 @@
  * inside the web-test-runner package.
  */
 
-import {assert} from '@augment-vir/assert';
-import {DeferredPromise, getOrSet} from '@augment-vir/common';
+import {assert, check} from '@augment-vir/assert';
+import {DeferredPromise, getOrSet, wrapInTry} from '@augment-vir/common';
 import {ServerStartParams} from '@web/dev-server-core';
 import {TestRunnerPlugin} from '@web/test-runner-core';
 import {existsSync} from 'node:fs';
@@ -72,20 +72,33 @@ export function snapshotPlugin(repoPath: string): TestRunnerPlugin {
             );
 
             if (command === SnapshotCommand.CompareSnapshot) {
+                const snapshotContent: unknown = wrapInTry(() => JSON.parse(payload.content), {
+                    fallbackValue: payload.content,
+                });
+
                 const savedSnapshot = await snapshotStore.getSnapshot(session.testFile, payload);
 
-                const matches = savedSnapshot === payload.content;
+                const matches = savedSnapshot === snapshotContent;
                 const updated = !matches && snapshotUpdatesAllowed;
                 const snapshotPath = createSnapshotOutputPath(session.testFile);
 
                 if (updated) {
-                    await snapshotStore.updateSnapshot(session.testFile, payload);
+                    await snapshotStore.updateSnapshot({
+                        testFilePath: session.testFile,
+                        snapshotName: payload.name,
+                        snapshotContent,
+                    });
                 }
+
+                const savedContent: string =
+                    (check.isString(savedSnapshot)
+                        ? savedSnapshot
+                        : JSON.stringify(savedSnapshot)) || '';
 
                 return {
                     matches,
                     updated,
-                    savedContent: savedSnapshot || '',
+                    savedContent,
                     snapshotPath: relative(repoPath, snapshotPath),
                     exists: existsSync(snapshotPath),
                 } satisfies CompareCommandResult;

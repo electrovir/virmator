@@ -1,6 +1,6 @@
 {
     "name": "@virmator/test",
-    "version": "13.8.3",
+    "version": "13.9.0",
     "description": "Default test plugin for virmator.",
     "keywords": [
         "virmator",
@@ -30,15 +30,15 @@
         "compile": "virmator compile",
         "test": "concurrently --colors --kill-others-on-fail -c red,blue --names node,web \"npm run test:node\" \"npm run test:web\"",
         "test:coverage": "npm test",
-        "test:node": "virmator test node src/test.test.ts",
-        "test:update": "virmator test node update src/test.test.ts",
+        "test:node": "virmator test node src/test.test.ts src/web-snapshot-plugin/snapshot-store.test.ts",
+        "test:update": "virmator test node update src/test.test.ts src/web-snapshot-plugin/snapshot-store.test.ts",
         "test:web": "virmator test web src/web-snapshot-plugin/web-snapshot-plugin.test.ts"
     },
     "dependencies": {
         "@augment-vir/assert": "^30.8.2",
         "@augment-vir/common": "^30.8.2",
         "@augment-vir/node": "^30.8.2",
-        "@virmator/core": "^13.8.3",
+        "@virmator/core": "^13.9.0",
         "@web/dev-server-core": "^0.7.4",
         "@web/test-runner-core": "^0.13.4",
         "glob": "^11.0.0",

@@ -1,3 +1,4 @@
+import {assert} from '@augment-vir/assert';
 import {
     getOrSet,
     PromiseQueue,
@@ -6,19 +7,12 @@ import {
     type MaybePromise,
 } from '@augment-vir/common';
 import {writeFile} from 'node:fs/promises';
-import {assertValidShape, defineShape, indexedKeys} from 'object-shape-tester';
 import {defineTypedCustomEvent, ListenTarget} from 'typed-event-target';
 import type {SnapshotPayload} from './snapshot-payload.js';
 
-const snapshotsShape = defineShape(
-    indexedKeys({
-        keys: '',
-        values: '',
-        required: false,
-    }),
-);
-
-type SnapshotsFile = typeof snapshotsShape.runtimeType;
+type SnapshotsFile = {
+    [TestName in string]: unknown;
+};
 
 export function createSnapshotOutputPath(testFilePath: string) {
     return testFilePath + '.snapshot.web';
@@ -48,12 +42,7 @@ export class SnapshotStore extends ListenTarget<SnapshotStoreUpdateEvent> {
             return existingSnapshot || {};
         });
 
-        assertValidShape(
-            snapshotFile,
-            snapshotsShape,
-            undefined,
-            `Invalid snapshot file at '${snapshotFilePath}'`,
-        );
+        assert.isObject(snapshotFile, `Invalid snapshot file at '${snapshotFilePath}'`);
 
         this.snapshotFiles[testFilePath] = snapshotFile;
 
@@ -70,9 +59,10 @@ export class SnapshotStore extends ListenTarget<SnapshotStoreUpdateEvent> {
 
             return queue;
         }).add(async () => {
-            const snapshotFileText = `export default ${JSON.stringify(await this.getSnapshotFile(testFilePath), null, 4)};`;
-
-            await writeFile(createSnapshotOutputPath(testFilePath), snapshotFileText);
+            await writeFile(
+                createSnapshotOutputPath(testFilePath),
+                createOutputText(await this.getSnapshotFile(testFilePath)),
+            );
         });
     }
 
@@ -119,8 +109,16 @@ export class SnapshotStore extends ListenTarget<SnapshotStoreUpdateEvent> {
         }
     }
 
-    public async updateSnapshot(testFilePath: string, payload: Readonly<SnapshotPayload>) {
-        (await this.getSnapshotFile(testFilePath))[payload.name] = payload.content;
+    public async updateSnapshot({
+        testFilePath,
+        snapshotName,
+        snapshotContent,
+    }: {
+        testFilePath: string;
+        snapshotName: string;
+        snapshotContent: unknown;
+    }) {
+        (await this.getSnapshotFile(testFilePath))[snapshotName] = snapshotContent;
         await this.saveSnapshotFile(testFilePath);
     }
 
@@ -128,4 +126,8 @@ export class SnapshotStore extends ListenTarget<SnapshotStoreUpdateEvent> {
         super.destroy();
         Object.values(this.writeQueues).forEach((queue) => queue.destroy());
     }
+}
+
+export function createOutputText(snapshotFile: Readonly<SnapshotsFile>): string {
+    return `export default ${JSON.stringify(snapshotFile, null, 4)};`;
 }

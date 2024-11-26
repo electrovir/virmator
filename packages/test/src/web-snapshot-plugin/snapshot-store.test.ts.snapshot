@@ -1,0 +1,7 @@
+exports[`createOutputText > handles object values 1`] = `
+"export default {\\n    \\"thing > test\\": {\\n        \\"nested\\": {\\n            \\"object\\": true\\n        }\\n    }\\n};"
+`;
+
+exports[`createOutputText > handles string values 1`] = `
+"export default {\\n    \\"thing > test\\": \\"hello there\\",\\n    \\"thing > test 2\\": \\"hello there 2\\"\\n};"
+`;
