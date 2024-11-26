@@ -112,16 +112,14 @@ export async function installNpmDeps({
         },
     );
 
-    const depsToInstallEntries = Object.entries(depsThatNeedInstalling);
-
-    await awaitedBlockingMap(
-        depsToInstallEntries,
+    const installed = await awaitedBlockingMap(
+        Object.entries(depsThatNeedInstalling),
         async ([
             depType,
             deps,
         ]) => {
             if (!deps.length) {
-                return;
+                return false;
             }
 
             const installDeps: string = deps.join(' ');
@@ -141,10 +139,12 @@ export async function installNpmDeps({
                 hookUpToConsole: true,
                 rejectOnError: true,
             });
+
+            return true;
         },
     );
 
-    return !!depsToInstallEntries.length;
+    return installed.some(check.isTrue);
 }
 
 function combineDeps(packageJson: Readonly<PackageJson>) {
