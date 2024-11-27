@@ -16,7 +16,7 @@ export enum SnapshotCommand {
 export type CompareCommandResult = {
     matches: boolean;
     updated: boolean;
-    savedContent: string;
+    savedSnapshot: string;
     snapshotPath: string;
     exists: boolean;
 };

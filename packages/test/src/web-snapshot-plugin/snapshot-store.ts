@@ -1,5 +1,12 @@
 import {check} from '@augment-vir/assert';
-import {getOrSet, logColors, PromiseQueue, wrapInTry, type MaybePromise} from '@augment-vir/common';
+import {
+    ensureErrorAndPrependMessage,
+    getOrSet,
+    logColors,
+    PromiseQueue,
+    wrapInTry,
+    type MaybePromise,
+} from '@augment-vir/common';
 import {readFile, writeFile} from 'node:fs/promises';
 import {relative} from 'node:path';
 import {defineTypedCustomEvent, ListenTarget} from 'typed-event-target';
@@ -10,7 +17,7 @@ type SnapshotsFile = {
 };
 
 export function createSnapshotOutputPath(testFilePath: string) {
-    return testFilePath + '.snapshot.web';
+    return testFilePath + '.snapshot.web.mjs';
 }
 
 export class SnapshotStoreUpdateEvent extends defineTypedCustomEvent<{size: number}>()(
@@ -28,12 +35,15 @@ export class SnapshotStore extends ListenTarget<SnapshotStoreUpdateEvent> {
 
     protected async getCachedSnapshotFile(testFilePath: string): Promise<SnapshotsFile> {
         const snapshotFile = await getOrSet(this.snapshotFiles, testFilePath, async () => {
-            const existingSnapshot = await wrapInTry(
-                () => import(createSnapshotOutputPath(testFilePath)),
-                {
-                    fallbackValue: undefined,
+            const importPath = createSnapshotOutputPath(testFilePath);
+            const existingSnapshot = await wrapInTry(() => import(importPath), {
+                handleError(error) {
+                    console.error(
+                        ensureErrorAndPrependMessage(error, `Failed to import '${importPath}'`),
+                    );
+                    return undefined;
                 },
-            );
+            });
 
             if (!check.isObject(existingSnapshot)) {
                 return {};
@@ -106,13 +116,13 @@ export class SnapshotStore extends ListenTarget<SnapshotStoreUpdateEvent> {
     public async updateSnapshot({
         testFilePath,
         snapshotName,
-        snapshotContent,
+        newSnapshot,
     }: {
         testFilePath: string;
         snapshotName: string;
-        snapshotContent: unknown;
+        newSnapshot: unknown;
     }) {
-        (await this.getCachedSnapshotFile(testFilePath))[snapshotName] = snapshotContent;
+        (await this.getCachedSnapshotFile(testFilePath))[snapshotName] = newSnapshot;
     }
 
     public override destroy() {

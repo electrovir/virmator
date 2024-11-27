@@ -72,13 +72,13 @@ export function snapshotPlugin(repoPath: string): TestRunnerPlugin {
             );
 
             if (command === SnapshotCommand.CompareSnapshot) {
-                const snapshotContent: unknown = wrapInTry(() => JSON.parse(payload.content), {
+                const newSnapshot: unknown = wrapInTry(() => JSON.parse(payload.content), {
                     fallbackValue: payload.content,
                 });
 
                 const savedSnapshot = await snapshotStore.getSnapshot(session.testFile, payload);
 
-                const matches = savedSnapshot === snapshotContent;
+                const matches = check.deepEquals(savedSnapshot, newSnapshot);
                 const updated = !matches && snapshotUpdatesAllowed;
                 const snapshotPath = createSnapshotOutputPath(session.testFile);
 
@@ -86,11 +86,11 @@ export function snapshotPlugin(repoPath: string): TestRunnerPlugin {
                     await snapshotStore.updateSnapshot({
                         testFilePath: session.testFile,
                         snapshotName: payload.name,
-                        snapshotContent,
+                        newSnapshot: newSnapshot,
                     });
                 }
 
-                const savedContent: string =
+                const savedSnapshotString: string =
                     (check.isString(savedSnapshot)
                         ? savedSnapshot
                         : JSON.stringify(savedSnapshot)) || '';
@@ -98,7 +98,7 @@ export function snapshotPlugin(repoPath: string): TestRunnerPlugin {
                 return {
                     matches,
                     updated,
-                    savedContent,
+                    savedSnapshot: savedSnapshotString,
                     snapshotPath: relative(repoPath, snapshotPath),
                     exists: existsSync(snapshotPath),
                 } satisfies CompareCommandResult;

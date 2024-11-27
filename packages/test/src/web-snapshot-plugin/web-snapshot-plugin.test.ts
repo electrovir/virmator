@@ -14,13 +14,13 @@ describe('snapshotPlugin', () => {
             } satisfies SnapshotPayload,
         );
 
-        assert.endsWith(result.snapshotPath, 'web-snapshot-plugin.test.ts.snapshot.web');
+        assert.endsWith(result.snapshotPath, 'web-snapshot-plugin.test.ts.snapshot.web.mjs');
 
         assert.deepEquals(omitObjectKeys(result, ['snapshotPath']), {
             matches: false,
             updated: false,
             exists: false,
-            savedContent: '',
+            savedSnapshot: '',
         });
     });
 });

@@ -1,6 +1,6 @@
 {
     "name": "@virmator/test",
-    "version": "13.10.2",
+    "version": "13.10.3",
     "description": "Default test plugin for virmator.",
     "keywords": [
         "virmator",
@@ -38,7 +38,7 @@
         "@augment-vir/assert": "^30.8.2",
         "@augment-vir/common": "^30.8.2",
         "@augment-vir/node": "^30.8.2",
-        "@virmator/core": "^13.10.2",
+        "@virmator/core": "^13.10.3",
         "@web/dev-server-core": "^0.7.4",
         "@web/test-runner-core": "^0.13.4",
         "glob": "^11.0.0",
