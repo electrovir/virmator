@@ -1,5 +1,5 @@
 import {check} from '@augment-vir/assert';
-import {getOrSet, PromiseQueue, wrapInTry, type MaybePromise} from '@augment-vir/common';
+import {getOrSet, logColors, PromiseQueue, wrapInTry, type MaybePromise} from '@augment-vir/common';
 import {readFile, writeFile} from 'node:fs/promises';
 import {relative} from 'node:path';
 import {defineTypedCustomEvent, ListenTarget} from 'typed-event-target';
@@ -65,9 +65,8 @@ export class SnapshotStore extends ListenTarget<SnapshotStoreUpdateEvent> {
                 }
             });
 
-        const newFileContents = createOutputText(await this.getCachedSnapshotFile(testFilePath));
+        const newFileContents = createOutputText(sortedSnapshots);
 
-        this.isFinalizing = false;
         if (currentFileContents !== newFileContents) {
             const outputPath = createSnapshotOutputPath(testFilePath);
             /**
@@ -75,9 +74,12 @@ export class SnapshotStore extends ListenTarget<SnapshotStoreUpdateEvent> {
              * quickly that the `process.stdout.write` call that `log` uses doesn't get drained in
              * time.
              */
-            console.info(`Snapshot file updated: '${relative(process.cwd(), outputPath)}'`);
+            console.info(
+                `${logColors.faint}Snapshot file updated: '${relative(process.cwd(), outputPath)}'${logColors.reset}`,
+            );
             await writeFile(outputPath, newFileContents);
         }
+        this.isFinalizing = false;
         this.updateQueue();
     }
 
