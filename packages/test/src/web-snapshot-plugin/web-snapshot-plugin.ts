@@ -39,7 +39,7 @@ export function snapshotPlugin(repoPath: string): TestRunnerPlugin {
                     if (snapshotUpdatesAllowed) {
                         await Promise.all(
                             testFilePaths.map((testFilePath) =>
-                                snapshotStore.cleanSnapshotFile(testFilePath),
+                                snapshotStore.finalizeSnapshotFile(testFilePath),
                             ),
                         );
                     }
@@ -56,7 +56,7 @@ export function snapshotPlugin(repoPath: string): TestRunnerPlugin {
                 }
             });
 
-            if (snapshotStore.isCleaning || snapshotStore.getWriteQueueSize()) {
+            if (snapshotStore.isFinalizing || snapshotStore.getWriteQueueSize()) {
                 await writesFinished.promise;
             }
         },

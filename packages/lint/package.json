@@ -1,6 +1,6 @@
 {
     "name": "@virmator/lint",
-    "version": "13.9.0",
+    "version": "13.10.0",
     "description": "Default ESLint linting plugin for virmator.",
     "keywords": [
         "virmator",
@@ -33,7 +33,7 @@
     "dependencies": {
         "@augment-vir/assert": "^30.8.2",
         "@augment-vir/common": "^30.8.2",
-        "@virmator/core": "^13.9.0",
+        "@virmator/core": "^13.10.0",
         "mri": "^1.2.0"
     },
     "devDependencies": {

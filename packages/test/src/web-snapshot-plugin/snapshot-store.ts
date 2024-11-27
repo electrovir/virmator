@@ -1,12 +1,7 @@
-import {assert} from '@augment-vir/assert';
-import {
-    getOrSet,
-    PromiseQueue,
-    PromiseQueueUpdateEvent,
-    wrapInTry,
-    type MaybePromise,
-} from '@augment-vir/common';
-import {writeFile} from 'node:fs/promises';
+import {check} from '@augment-vir/assert';
+import {getOrSet, log, PromiseQueue, wrapInTry, type MaybePromise} from '@augment-vir/common';
+import {readFile, writeFile} from 'node:fs/promises';
+import {relative} from 'node:path';
 import {defineTypedCustomEvent, ListenTarget} from 'typed-event-target';
 import type {SnapshotPayload} from './snapshot-payload.js';
 
@@ -31,62 +26,54 @@ export class SnapshotStore extends ListenTarget<SnapshotStoreUpdateEvent> {
         this.dispatch(new SnapshotStoreUpdateEvent({detail: {size: this.getWriteQueueSize()}}));
     }
 
-    protected async getSnapshotFile(testFilePath: string): Promise<SnapshotsFile> {
-        const snapshotFilePath = createSnapshotOutputPath(testFilePath);
-
+    protected async getCachedSnapshotFile(testFilePath: string): Promise<SnapshotsFile> {
         const snapshotFile = await getOrSet(this.snapshotFiles, testFilePath, async () => {
-            const existingSnapshot = await wrapInTry(() => import(snapshotFilePath), {
-                fallbackValue: undefined,
-            });
+            const existingSnapshot = await wrapInTry(
+                () => import(createSnapshotOutputPath(testFilePath)),
+                {
+                    fallbackValue: undefined,
+                },
+            );
 
-            return existingSnapshot || {};
+            if (!check.isObject(existingSnapshot)) {
+                return {};
+            }
+
+            return existingSnapshot;
         });
-
-        assert.isObject(snapshotFile, `Invalid snapshot file at '${snapshotFilePath}'`);
 
         this.snapshotFiles[testFilePath] = snapshotFile;
 
         return snapshotFile;
     }
 
-    protected saveSnapshotFile(testFilePath: string) {
-        return getOrSet(this.writeQueues, testFilePath, () => {
-            const queue = new PromiseQueue();
+    public isFinalizing = false;
 
-            queue.listen(PromiseQueueUpdateEvent, () => {
-                this.updateQueue();
+    public async finalizeSnapshotFile(testFilePath: string) {
+        this.isFinalizing = true;
+        const snapshotsFile = await this.getCachedSnapshotFile(testFilePath);
+        const currentFileContents = String(await readFile(createSnapshotOutputPath(testFilePath)));
+        const accessedSnapshotNames = Array.from(this.accessedSnapshots[testFilePath] || []);
+
+        const sortedSnapshots: SnapshotsFile = {};
+
+        Object.keys(snapshotsFile)
+            .sort()
+            .forEach((snapshotName) => {
+                if (accessedSnapshotNames.includes(snapshotName)) {
+                    sortedSnapshots[snapshotName] = snapshotsFile[snapshotName];
+                }
             });
 
-            return queue;
-        }).add(async () => {
-            await writeFile(
-                createSnapshotOutputPath(testFilePath),
-                createOutputText(await this.getSnapshotFile(testFilePath)),
-            );
-        });
-    }
+        const newFileContents = createOutputText(await this.getCachedSnapshotFile(testFilePath));
 
-    public isCleaning = false;
-
-    public async cleanSnapshotFile(testFilePath: string) {
-        this.isCleaning = true;
-        const snapshotsFile: SnapshotsFile = await this.getSnapshotFile(testFilePath);
-        const accessedSnapshotNames = Array.from(this.accessedSnapshots[testFilePath] || []);
-        let changesMade = false as boolean;
-
-        Object.keys(snapshotsFile).forEach((snapshotName) => {
-            if (!accessedSnapshotNames.includes(snapshotName)) {
-                changesMade = true;
-                delete snapshotsFile[snapshotName];
-            }
-        });
-
-        this.isCleaning = false;
-        if (changesMade) {
-            await this.saveSnapshotFile(testFilePath);
-        } else {
-            this.updateQueue();
+        this.isFinalizing = false;
+        if (currentFileContents !== newFileContents) {
+            const outputPath = createSnapshotOutputPath(testFilePath);
+            log.faint(`Snapshots file updated: '${relative(process.cwd(), outputPath)}'`);
+            await writeFile(outputPath, newFileContents);
         }
+        this.updateQueue();
     }
 
     public getWriteQueueSize() {
@@ -98,7 +85,7 @@ export class SnapshotStore extends ListenTarget<SnapshotStoreUpdateEvent> {
         payload: Readonly<Pick<SnapshotPayload, 'name'>>,
     ) {
         try {
-            const snapshotFile = await this.getSnapshotFile(testFilePath);
+            const snapshotFile = await this.getCachedSnapshotFile(testFilePath);
             const currentSnapshot = snapshotFile[payload.name];
 
             getOrSet(this.accessedSnapshots, testFilePath, () => new Set()).add(payload.name);
@@ -118,8 +105,7 @@ export class SnapshotStore extends ListenTarget<SnapshotStoreUpdateEvent> {
         snapshotName: string;
         snapshotContent: unknown;
     }) {
-        (await this.getSnapshotFile(testFilePath))[snapshotName] = snapshotContent;
-        await this.saveSnapshotFile(testFilePath);
+        (await this.getCachedSnapshotFile(testFilePath))[snapshotName] = snapshotContent;
     }
 
     public override destroy() {
