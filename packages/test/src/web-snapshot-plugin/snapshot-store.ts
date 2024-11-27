@@ -1,5 +1,5 @@
 import {check} from '@augment-vir/assert';
-import {getOrSet, log, PromiseQueue, wrapInTry, type MaybePromise} from '@augment-vir/common';
+import {getOrSet, PromiseQueue, wrapInTry, type MaybePromise} from '@augment-vir/common';
 import {readFile, writeFile} from 'node:fs/promises';
 import {relative} from 'node:path';
 import {defineTypedCustomEvent, ListenTarget} from 'typed-event-target';
@@ -70,7 +70,12 @@ export class SnapshotStore extends ListenTarget<SnapshotStoreUpdateEvent> {
         this.isFinalizing = false;
         if (currentFileContents !== newFileContents) {
             const outputPath = createSnapshotOutputPath(testFilePath);
-            log.faint(`Snapshots file updated: '${relative(process.cwd(), outputPath)}'`);
+            /**
+             * Don't use `log` from `@augment-vir/common` here because web-test-runner exits so
+             * quickly that the `process.stdout.write` call that `log` uses doesn't get drained in
+             * time.
+             */
+            console.info(`Snapshot file updated: '${relative(process.cwd(), outputPath)}'`);
             await writeFile(outputPath, newFileContents);
         }
         this.updateQueue();
