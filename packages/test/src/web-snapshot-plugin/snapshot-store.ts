@@ -7,6 +7,7 @@ import {
     wrapInTry,
     type MaybePromise,
 } from '@augment-vir/common';
+import {existsSync} from 'node:fs';
 import {readFile, writeFile} from 'node:fs/promises';
 import {relative} from 'node:path';
 import {defineTypedCustomEvent, ListenTarget} from 'typed-event-target';
@@ -36,14 +37,22 @@ export class SnapshotStore extends ListenTarget<SnapshotStoreUpdateEvent> {
     protected async getCachedSnapshotFile(testFilePath: string): Promise<SnapshotsFile> {
         const snapshotFile = await getOrSet(this.snapshotFiles, testFilePath, async () => {
             const importPath = createSnapshotOutputPath(testFilePath);
-            const existingSnapshot = await wrapInTry(() => import(importPath), {
-                handleError(error) {
-                    console.error(
-                        ensureErrorAndPrependMessage(error, `Failed to import '${importPath}'`),
-                    );
-                    return undefined;
+            const existingSnapshot = await wrapInTry(
+                async () => (await import(importPath)).default,
+                {
+                    handleError(error) {
+                        if (existsSync(importPath)) {
+                            console.error(
+                                ensureErrorAndPrependMessage(
+                                    error,
+                                    `Failed to import '${importPath}'`,
+                                ),
+                            );
+                        }
+                        return undefined;
+                    },
                 },
-            });
+            );
 
             if (!check.isObject(existingSnapshot)) {
                 return {};
