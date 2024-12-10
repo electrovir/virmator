@@ -1,6 +1,6 @@
 {
     "name": "@virmator/test",
-    "version": "13.10.4",
+    "version": "13.10.5",
     "description": "Default test plugin for virmator.",
     "keywords": [
         "virmator",
@@ -35,22 +35,22 @@
         "test:web": "virmator test web src/web-snapshot-plugin/web-snapshot-plugin.test.ts"
     },
     "dependencies": {
-        "@augment-vir/assert": "^30.8.2",
-        "@augment-vir/common": "^30.8.2",
-        "@augment-vir/node": "^30.8.2",
-        "@virmator/core": "^13.10.4",
+        "@augment-vir/assert": "^31.0.1",
+        "@augment-vir/common": "^31.0.1",
+        "@augment-vir/node": "^31.0.1",
+        "@virmator/core": "^13.10.5",
         "@web/dev-server-core": "^0.7.4",
         "@web/test-runner-core": "^0.13.4",
         "glob": "^11.0.0",
         "mri": "^1.2.0",
-        "object-shape-tester": "^3.1.1",
+        "object-shape-tester": "^3.1.4",
         "typed-event-target": "^4.0.2"
     },
     "devDependencies": {
-        "@augment-vir/test": "^30.8.2",
+        "@augment-vir/test": "^31.0.1",
         "@open-wc/testing": "^4.0.0",
-        "@types/mocha": "^10.0.9",
-        "@types/node": "^22.9.0",
+        "@types/mocha": "^10.0.10",
+        "@types/node": "^22.10.1",
         "@web/dev-server-esbuild": "^1.0.3",
         "@web/test-runner": "^0.19.0",
         "@web/test-runner-commands": "^0.9.0",

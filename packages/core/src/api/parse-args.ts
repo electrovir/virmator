@@ -1,6 +1,6 @@
 import {check} from '@augment-vir/assert';
 import {getObjectTypedEntries, mapObjectValues, wrapInTry, type Logger} from '@augment-vir/common';
-import {extractRelevantArgs} from 'cli-args-vir';
+import {extractRelevantArgs} from '@augment-vir/node';
 import {Writable} from 'type-fest';
 import {accessAtKeys} from '../augments/object/access.js';
 import {type UsedVirmatorPluginCommands} from '../plugin/plugin-executor.js';
