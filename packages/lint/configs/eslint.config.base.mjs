@@ -114,7 +114,7 @@ export function defineEslintConfig(repoDir) {
                 'sonarjs/prefer-nullish-coalescing': 'off',
                 'sonarjs/publicly-writable-directories': 'off',
                 'sonarjs/reduce-initial-value': 'off',
-                'sonarjs/sonar-prefer-regexp-exec': 'off',
+                'sonarjs/prefer-regexp-exec': 'off',
                 'sonarjs/use-type-alias': 'off',
                 'sonarjs/void-use': 'off',
 
@@ -271,7 +271,7 @@ export function defineEslintConfig(repoDir) {
                 'sonarjs/no-unused-expressions': 'off',
                 'sonarjs/pseudo-random': 'off',
                 'sonarjs/redundant-type-aliases': 'off',
-                'sonarjs/sonar-no-unused-vars': 'off',
+                'sonarjs/no-unused-vars': 'off',
             },
         },
     ];
