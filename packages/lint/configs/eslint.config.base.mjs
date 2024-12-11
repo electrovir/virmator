@@ -46,6 +46,8 @@ export function defineEslintConfig(repoDir) {
                 '*.html',
                 '*.json',
                 '*.sh',
+                '*.snapshot.web.mjs',
+                '*.snapshot',
                 '*.sql',
                 '*.yml',
                 '**/.not-committed/',

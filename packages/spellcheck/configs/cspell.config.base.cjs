@@ -5,6 +5,8 @@ const baseConfig = {
         '*.docx',
         '*.mp4',
         '*.otf',
+        '*.snapshot.web.mjs',
+        '*.snapshot',
         '*.snapshot',
         '*.sqlite',
         '*.tgz',

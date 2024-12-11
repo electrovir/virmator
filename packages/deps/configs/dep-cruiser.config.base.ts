@@ -38,8 +38,10 @@ export function defineConfig({
             from: {
                 orphan: true,
                 pathNot: [
-                    '\\.d\\.ts$', // TypeScript declaration files
+                    '\\.d\\.ts$',
                     '\\.test\\.ts$',
+                    '\\.snapshot\\.web\\.mjs$',
+                    '\\.snapshot$',
                 ],
             },
             to: {},

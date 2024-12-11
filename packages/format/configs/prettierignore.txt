@@ -1,3 +1,4 @@
+*.snapshot.web.mjs
 **/all-files-for-code-coverage.test.ts
 **/coverage/
 **/dist-*/
