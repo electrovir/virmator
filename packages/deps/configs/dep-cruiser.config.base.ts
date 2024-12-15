@@ -42,6 +42,7 @@ export function defineConfig({
                     '\\.test\\.ts$',
                     '\\.snapshot\\.web\\.mjs$',
                     '\\.snapshot$',
+                    '\\.example\\.ts$',
                 ],
             },
             to: {},

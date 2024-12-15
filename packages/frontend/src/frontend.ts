@@ -164,7 +164,6 @@ export const virmatorFrontendPlugin = defineVirmatorPlugin(
                 const previewCommand = [
                     ...baseViteCommands,
                     'preview',
-                    '--force',
                     ...filteredArgs,
                     ...configArgs,
                 ]

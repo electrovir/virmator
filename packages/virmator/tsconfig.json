@@ -24,5 +24,6 @@
         {"path": "../lint"},
         {"path": "../publish"},
         {"path": "../spellcheck"},
-        {"path": "../test"}]
+        {"path": "../test"}
+    ]
 }

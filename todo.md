@@ -1,5 +1,6 @@
 -   fix adding `--test-only` flag to node tests
     -   maybe just needs multiple `--` when calling npm scripts
+    -   add an `only` sub command to `virmator test`
 -   support `virmator init` in a dir without any package.json yet
     -   don't run init inside of non-top-level package dir to prevent accidents
 -   better automated release notes in the tagged-release GitHub Actions workflow
@@ -8,5 +9,4 @@
 -   ditch using c8, use `--experimental-test-coverage --test-coverage-include 'src/**/*.ts' --test-coverage-exclude '**/*.test.ts'` with built-in Node.js test runner instead
     -   however, I might need to make a custom reporter to force the test to fail when coverage is not met
 -   support `npx virmator test node path/to/dir/` (test all files within that dir)
--   support passing a file path to `virmator test` that is relative to a mono-repo root, not the cwd
 -   support mono-repo-root typedoc command that combines all sub packages

@@ -11,5 +11,7 @@ export const baseNcuConfig = {
         /** 9.15 breaks stuff. */
         'eslint',
         '@eslint/js',
+        /** 3.4 is broken https://github.com/prettier/prettier/issues/16936 */
+        'prettier',
     ],
 } as const satisfies ReadonlyDeep<RunOptions>;
