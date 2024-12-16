@@ -224,7 +224,7 @@ function commandDocToString(
     });
 
     const configsBlock = configs.length
-        ? `${indent(indentCount + 1, format)}${format.bullet}Configs\n${configs.join('\n')}`
+        ? `${indent(indentCount + 1, format)}${format.bullet}Configs\n${Array.from(new Set(configs)).join('\n')}`
         : '';
 
     const deps = Object.keys(command.npmDeps || {}).map((npmDepName) => {

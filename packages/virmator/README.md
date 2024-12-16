@@ -25,7 +25,6 @@ Note that as of v13, this package is now in ESM.
         -   With tsc flags: `virmator compile --noEmit`
     -   Configs
         -   tsconfig.json
-        -   tsconfig.json
         -   configs/tsconfig.base.json
     -   Deps
         -   [typescript](https://npmjs.com/package/typescript)
@@ -163,7 +162,6 @@ Note that as of v13, this package is now in ESM.
         -   .github/workflows/build-for-gh-pages.yml
         -   .github/workflows/tagged-release.yml
         -   .github/workflows/tests.yml
-        -   .github/workflows/tests.yml
         -   .vscode/settings.json
         -   src/ui/elements/vir-app.element.ts
         -   src/index.html
@@ -175,10 +173,6 @@ Note that as of v13, this package is now in ESM.
         -   LICENSE-MIT
         -   LICENSE-CC0
         -   .npmignore
-        -   package.json
-        -   package.json
-        -   package.json
-        -   package.json
         -   package.json
 
 -   **lint**

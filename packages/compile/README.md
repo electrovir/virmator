@@ -15,7 +15,6 @@ A default plugin for [virmator](https://www.npmjs.com/package/virmator).
         -   With tsc flags: `virmator compile --noEmit`
     -   Configs
         -   tsconfig.json
-        -   tsconfig.json
         -   configs/tsconfig.base.json
     -   Deps
         -   [typescript](https://npmjs.com/package/typescript)

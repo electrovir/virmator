@@ -15,7 +15,6 @@ A default plugin for [virmator](https://www.npmjs.com/package/virmator).
         -   .github/workflows/build-for-gh-pages.yml
         -   .github/workflows/tagged-release.yml
         -   .github/workflows/tests.yml
-        -   .github/workflows/tests.yml
         -   .vscode/settings.json
         -   src/ui/elements/vir-app.element.ts
         -   src/index.html
@@ -27,8 +26,4 @@ A default plugin for [virmator](https://www.npmjs.com/package/virmator).
         -   LICENSE-MIT
         -   LICENSE-CC0
         -   .npmignore
-        -   package.json
-        -   package.json
-        -   package.json
-        -   package.json
         -   package.json
