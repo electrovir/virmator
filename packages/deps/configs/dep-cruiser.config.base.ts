@@ -136,6 +136,7 @@ export function defineConfig({
                 // types for this rule
                 dependencyTypesNot: [
                     'type-only',
+                    'npm-peer',
                 ],
                 pathNot: [
                     '^src/',
@@ -162,6 +163,7 @@ export function defineConfig({
                 pathNot: [
                     '\\.test\\.ts$',
                     '\\.mock\\.ts$',
+                    '\\.example\\.ts$',
                 ],
             },
             to: {
