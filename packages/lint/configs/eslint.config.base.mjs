@@ -191,6 +191,15 @@ export function defineEslintConfig(repoDir) {
                                 ],
                             },
                         ],
+                        allowForKnownSafePromises: [
+                            {
+                                from: 'package',
+                                package: 'fastify',
+                                name: [
+                                    'FastifyReply',
+                                ],
+                            },
+                        ],
                         checkThenables: true,
                     },
                 ],
