@@ -177,6 +177,7 @@ export function defineEslintConfig(repoDir) {
                 '@typescript-eslint/await-thenable': 'error',
                 '@typescript-eslint/no-unused-vars': 'error',
                 'no-lonely-if': 'error',
+                curly: 'error',
 
                 '@typescript-eslint/no-floating-promises': [
                     'error',
