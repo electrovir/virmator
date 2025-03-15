@@ -1,4 +1,4 @@
-import {check} from '@augment-vir/assert';
+import {assertWrap, check} from '@augment-vir/assert';
 import {ensureError, log as logImport, RuntimeEnv, type Logger} from '@augment-vir/common';
 import {readPackageJson} from '@augment-vir/node';
 import {defineVirmatorPlugin, NpmDepType, PackageType, VirmatorNoTraceError} from '@virmator/core';
@@ -245,7 +245,7 @@ async function runTypedocInternal(
         log.plain(app.toString());
         return true;
     } else if (app.options.getValue('help')) {
-        log.plain(app.options.getHelp(app.i18n));
+        log.plain(app.options.getHelp());
         return true;
     } else if (app.options.getValue('showConfig')) {
         log.plain(app.options.getRawValues());
@@ -278,9 +278,9 @@ async function runTypedocInternal(
     ) {
         return false;
     } else if (app.options.getValue('emit') !== 'none') {
-        const json = app.options.getValue('json');
+        const json = assertWrap.isString(app.options.getValue('json'));
         if (!json || app.options.isSet('out')) {
-            await app.generateDocs(project, app.options.getValue('out'));
+            await app.generateDocs(project, assertWrap.isString(app.options.getValue('out')));
         }
         if (json) {
             await app.generateJson(project, json);
