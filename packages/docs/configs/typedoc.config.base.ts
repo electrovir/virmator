@@ -1,6 +1,7 @@
-import type {TypeDocOptions} from 'typedoc';
+import {type PartialDeep} from 'type-fest';
+import {type TypeDocOptionMap} from 'typedoc';
 
-export const defaultDocumentationRequirements: TypeDocOptions['requiredToBeDocumented'] = [
+export const defaultDocumentationRequirements: TypeDocOptionMap['requiredToBeDocumented'] = [
     'Accessor',
     'Class',
     'Enum',
@@ -14,7 +15,7 @@ export const defaultDocumentationRequirements: TypeDocOptions['requiredToBeDocum
     'Variable',
 ];
 
-export const baseTypedocConfig: Partial<TypeDocOptions> = {
+export const baseTypedocConfig: PartialDeep<TypeDocOptionMap> = {
     cacheBust: true,
     cleanOutputDir: true,
     excludeExternals: true,
