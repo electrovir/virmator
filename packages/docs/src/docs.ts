@@ -1,11 +1,18 @@
 import {assertWrap, check} from '@augment-vir/assert';
-import {ensureError, log as logImport, RuntimeEnv, type Logger} from '@augment-vir/common';
+import {
+    ensureError,
+    log as logImport,
+    RuntimeEnv,
+    type AnyObject,
+    type Logger,
+} from '@augment-vir/common';
 import {readPackageJson} from '@augment-vir/node';
 import {defineVirmatorPlugin, NpmDepType, PackageType, VirmatorNoTraceError} from '@virmator/core';
 import {type ChalkInstance} from 'chalk';
 import mri from 'mri';
 import {basename, join} from 'node:path';
 import {pathToFileURL} from 'node:url';
+import type {PartialDeep} from 'type-fest';
 import type * as Typedoc from 'typedoc';
 
 /** A virmator plugin for checking and generating documentation. */
@@ -161,7 +168,7 @@ export const virmatorDocsPlugin = defineVirmatorPlugin(
                         join(packageDir, configs.docs.configs.typedoc.copyToPath),
                     ).toString()
                 )
-            ).typeDocConfig as Typedoc.TypeDocOptions;
+            ).typeDocConfig as Typedoc.TypeDocOptionMap;
 
             await runTypedoc({
                 checkOnly,
@@ -199,7 +206,7 @@ export async function runTypedoc({
     log = logImport,
 }: {
     /** Full typedoc options object. */
-    config: Partial<Typedoc.TypeDocOptions>;
+    config: PartialDeep<Typedoc.TypeDocOptionMap>;
     /**
      * Path to the npm package which is running typedoc. This should be a path to a directory that
      * directly contains a `package.json` file.
@@ -214,7 +221,7 @@ export async function runTypedoc({
     /* node:coverage ignore next */
     const typedoc = await import('typedoc');
 
-    const combinedConfig: Partial<Typedoc.TypeDocOptions> = {
+    const combinedConfig = {
         tsconfig: join(packageDir, 'tsconfig.json'),
         ...config,
         ...(checkOnly
@@ -222,7 +229,7 @@ export async function runTypedoc({
                   emit: typedoc.Configuration.EmitStrategy.none,
               }
             : {}),
-    };
+    } as AnyObject as Partial<Typedoc.TypeDocOptions>;
 
     if (!(await runTypedocInternal(combinedConfig, typedoc, log))) {
         throw new VirmatorNoTraceError();
