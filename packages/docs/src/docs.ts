@@ -263,7 +263,7 @@ async function runTypedocInternal(
         return false;
     } else if (app.options.getValue('watch')) {
         throw new Error(
-            ';TypeDoc watch mode not supported in virmator. Run typedoc directly instead.',
+            'TypeDoc watch mode not supported in virmator. Run typedoc directly instead.',
         );
     }
 

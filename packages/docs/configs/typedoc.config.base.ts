@@ -15,7 +15,7 @@ export const defaultDocumentationRequirements: TypeDocOptionMap['requiredToBeDoc
     'Variable',
 ];
 
-export const baseTypedocConfig: PartialDeep<TypeDocOptionMap> = {
+export const baseTypedocConfig = {
     cacheBust: true,
     cleanOutputDir: true,
     excludeExternals: true,
@@ -35,4 +35,4 @@ export const baseTypedocConfig: PartialDeep<TypeDocOptionMap> = {
     navigation: {
         includeCategories: true,
     },
-};
+} satisfies PartialDeep<TypeDocOptionMap>;
