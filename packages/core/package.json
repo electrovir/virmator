@@ -38,12 +38,12 @@
         "concurrently": "^9.1.2",
         "mono-vir": "^2.0.5",
         "semver": "^7.7.1",
-        "type-fest": "^4.37.0",
+        "type-fest": "^4.38.0",
         "typescript": "^5.8.2"
     },
     "devDependencies": {
         "@augment-vir/test": "^31.10.1",
-        "@types/node": "^22.13.10",
+        "@types/node": "^22.13.13",
         "@types/semver": "^7.5.8",
         "esbuild": "^0.25.1"
     },

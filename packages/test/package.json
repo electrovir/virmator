@@ -50,7 +50,7 @@
         "@augment-vir/test": "^31.10.1",
         "@open-wc/testing": "^4.0.0",
         "@types/mocha": "^10.0.10",
-        "@types/node": "^22.13.10",
+        "@types/node": "^22.13.13",
         "@web/dev-server-esbuild": "^1.0.4",
         "@web/test-runner": "^0.20.0",
         "@web/test-runner-commands": "^0.9.0",
