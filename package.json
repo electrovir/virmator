@@ -2,6 +2,7 @@
     "name": "@virmator/mono-repo-root",
     "version": "13.13.5",
     "private": true,
+    "sideEffects": false,
     "type": "module",
     "workspaces": [
         "packages/*"

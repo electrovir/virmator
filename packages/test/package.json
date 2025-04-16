@@ -22,6 +22,7 @@
         "name": "electrovir",
         "url": "https://github.com/electrovir"
     },
+    "sideEffects": false,
     "type": "module",
     "main": "src/test.ts",
     "module": "src/test.ts",

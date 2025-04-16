@@ -19,6 +19,7 @@
         "name": "electrovir",
         "url": "https://github.com/electrovir"
     },
+    "sideEffects": false,
     "type": "module",
     "scripts": {
         "start": "tsx src/cli.ts",

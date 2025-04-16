@@ -20,6 +20,7 @@
         "name": "electrovir",
         "url": "https://github.com/electrovir"
     },
+    "sideEffects": false,
     "type": "module",
     "main": "src/compile.ts",
     "module": "src/compile.ts",

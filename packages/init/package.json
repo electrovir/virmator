@@ -19,6 +19,7 @@
         "name": "electrovir",
         "url": "https://github.com/electrovir"
     },
+    "sideEffects": false,
     "type": "module",
     "main": "src/init.ts",
     "module": "src/init.ts",
