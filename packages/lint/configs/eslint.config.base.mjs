@@ -179,6 +179,14 @@ export function defineEslintConfig(repoDir) {
                 'no-lonely-if': 'error',
                 curly: 'error',
 
+                '@typescript-eslint/consistent-type-imports': [
+                    'error',
+                    {
+                        disallowTypeAnnotations: false,
+                        fixStyle: 'inline-type-imports',
+                        prefer: 'type-imports',
+                    },
+                ],
                 '@typescript-eslint/no-floating-promises': [
                     'error',
                     {

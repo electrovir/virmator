@@ -10,7 +10,7 @@ import type {runShellCommand} from '@augment-vir/node';
 import {type ChalkInstance} from 'chalk';
 import {type EmptyObject, type PackageJson, type SetRequired} from 'type-fest';
 import {type VirmatorPluginResolvedConfigFile} from './plugin-configs.js';
-import {PackageType} from './plugin-env.js';
+import {type PackageType} from './plugin-env.js';
 import {
     type IndividualPluginCommand,
     type PluginNpmDeps,

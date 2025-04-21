@@ -3,7 +3,7 @@ import {
     ensureErrorAndPrependMessage,
     getOrSet,
     logColors,
-    PromiseQueue,
+    type PromiseQueue,
     wrapInTry,
     type MaybePromise,
 } from '@augment-vir/common';

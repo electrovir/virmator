@@ -17,7 +17,7 @@ import mri from 'mri';
 import {existsSync} from 'node:fs';
 import {readFile, writeFile} from 'node:fs/promises';
 import {join, relative, resolve} from 'node:path';
-import semver, {SemVer} from 'semver';
+import semver, {type SemVer} from 'semver';
 import simpleGit, {type SimpleGit} from 'simple-git';
 import {type PackageJson, type SetRequired} from 'type-fest';
 
