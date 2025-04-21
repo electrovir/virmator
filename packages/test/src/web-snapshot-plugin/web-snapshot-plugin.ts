@@ -10,7 +10,11 @@ import {type TestRunnerPlugin} from '@web/test-runner-core';
 import {existsSync} from 'node:fs';
 import {relative} from 'node:path';
 import {assertValidShape} from 'object-shape-tester';
-import {type CompareCommandResult, SnapshotCommand, snapshotPayloadShape} from './snapshot-payload.js';
+import {
+    type CompareCommandResult,
+    SnapshotCommand,
+    snapshotPayloadShape,
+} from './snapshot-payload.js';
 import {
     createSnapshotOutputPath,
     SnapshotStore,

@@ -2,7 +2,11 @@ import {assert} from '@augment-vir/assert';
 import {omitObjectKeys} from '@augment-vir/common';
 import {describe} from '@augment-vir/test';
 import {executeServerCommand} from '@web/test-runner-commands';
-import {type CompareCommandResult, SnapshotCommand, type SnapshotPayload} from './snapshot-payload.js';
+import {
+    type CompareCommandResult,
+    SnapshotCommand,
+    type SnapshotPayload,
+} from './snapshot-payload.js';
 
 describe('snapshotPlugin', () => {
     it('creates a snapshot', async () => {
