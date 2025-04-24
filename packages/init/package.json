@@ -1,6 +1,6 @@
 {
     "name": "@virmator/init",
-    "version": "13.14.0",
+    "version": "13.14.1",
     "description": "Default init plugin for virmator.",
     "keywords": [
         "virmator",
@@ -34,11 +34,11 @@
         "@augment-vir/assert": "^31.14.1",
         "@augment-vir/common": "^31.14.1",
         "@augment-vir/node": "^31.14.1",
-        "@virmator/core": "^13.14.0",
+        "@virmator/core": "^13.14.1",
         "simple-git": "^3.27.0"
     },
     "devDependencies": {
-        "@types/node": "^22.14.1",
+        "@types/node": "^22.15.0",
         "element-vir": "^25.3.0",
         "mono-vir": "^2.0.6",
         "tsx": "^4.19.3",
