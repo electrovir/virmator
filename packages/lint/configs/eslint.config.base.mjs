@@ -147,7 +147,6 @@ export function defineEslintConfig(repoDir) {
                 'unicorn/no-useless-spread': 'error',
                 'unicorn/no-useless-switch-case': 'error',
                 'unicorn/no-zero-fractions': 'error',
-                'unicorn/number-literal-case': 'error',
                 'unicorn/numeric-separators-style': 'error',
                 'unicorn/prefer-array-find': 'error',
                 'unicorn/prefer-array-flat-map': 'error',
