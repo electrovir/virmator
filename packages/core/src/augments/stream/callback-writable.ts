@@ -9,7 +9,7 @@ export class CallbackWritable extends Writable {
     private chunks: string[] = [];
 
     /** Special write implementation that writs to the given logger. */
-    override _write(
+    public override _write(
         chunk: any,
         encoding: BufferEncoding,
         callback: (error?: Error | null) => void,
