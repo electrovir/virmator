@@ -226,6 +226,15 @@ export function defineEslintConfig(repoDir) {
                         next: 'import',
                     },
                 ],
+                '@typescript-eslint/explicit-member-accessibility': [
+                    'error',
+                    {
+                        accessibility: 'explicit',
+                        overrides: {
+                            constructors: 'no-public',
+                        },
+                    },
+                ],
                 '@typescript-eslint/restrict-template-expressions': [
                     'error',
                     {
