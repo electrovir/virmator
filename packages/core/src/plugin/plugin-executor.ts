@@ -1,12 +1,12 @@
-import type {
-    AnyObject,
-    Logger,
-    LogOutputType,
-    MaybePromise,
-    PartialWithUndefined,
-    TypedFunction,
+import {
+    type AnyObject,
+    type Logger,
+    type LogOutputType,
+    type MaybePromise,
+    type PartialWithUndefined,
+    type TypedFunction,
 } from '@augment-vir/common';
-import type {runShellCommand} from '@augment-vir/node';
+import {type runShellCommand} from '@augment-vir/node';
 import {type ChalkInstance} from 'chalk';
 import {type EmptyObject, type PackageJson, type SetRequired} from 'type-fest';
 import {type VirmatorPluginResolvedConfigFile} from './plugin-configs.js';

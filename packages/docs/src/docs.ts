@@ -12,7 +12,7 @@ import {type ChalkInstance} from 'chalk';
 import mri from 'mri';
 import {basename, join} from 'node:path';
 import {pathToFileURL} from 'node:url';
-import type {PartialDeep} from 'type-fest';
+import {type PartialDeep} from 'type-fest';
 import type * as Typedoc from 'typedoc';
 
 /** A virmator plugin for checking and generating documentation. */

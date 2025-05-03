@@ -1,4 +1,4 @@
-import type {Logger} from '@augment-vir/common';
+import {type Logger} from '@augment-vir/common';
 import {Writable} from 'node:stream';
 
 /**

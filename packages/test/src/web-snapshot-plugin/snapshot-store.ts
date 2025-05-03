@@ -11,7 +11,7 @@ import {existsSync} from 'node:fs';
 import {readFile, writeFile} from 'node:fs/promises';
 import {relative} from 'node:path';
 import {defineTypedCustomEvent, ListenTarget} from 'typed-event-target';
-import type {SnapshotPayload} from './snapshot-payload.js';
+import {type SnapshotPayload} from './snapshot-payload.js';
 
 type SnapshotsFile = {
     [TestName in string]: unknown;

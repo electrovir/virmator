@@ -1,4 +1,4 @@
-import type {RuntimeEnv} from '@augment-vir/common';
+import {type RuntimeEnv} from '@augment-vir/common';
 import {type PackageType} from './plugin-env.js';
 
 /** Definition for a plugin's config file. */

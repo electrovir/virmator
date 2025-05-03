@@ -1,7 +1,7 @@
 import {logColors} from '@augment-vir/common';
 import {existsSync, lstatSync, readlinkSync} from 'node:fs';
 import {relative} from 'node:path';
-import type {LogOptions, PluginOption} from 'vite';
+import {type LogOptions, type PluginOption} from 'vite';
 
 /**
  * Include actual paths and symlinked target paths if they exist.

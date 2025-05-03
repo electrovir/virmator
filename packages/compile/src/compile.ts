@@ -8,7 +8,7 @@ import {
     parseTsConfig,
     type VirmatorPluginExecutorParams,
 } from '@virmator/core';
-import type {ChalkInstance} from 'chalk';
+import {type ChalkInstance} from 'chalk';
 import {rm} from 'node:fs/promises';
 import {basename, join} from 'node:path';
 

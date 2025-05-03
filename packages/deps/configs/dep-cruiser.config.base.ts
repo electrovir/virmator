@@ -1,4 +1,4 @@
-import type {IConfiguration, IForbiddenRuleType} from 'dependency-cruiser';
+import {type IConfiguration, IForbiddenRuleType} from 'dependency-cruiser';
 
 export function defineConfig({
     fileExceptions,
