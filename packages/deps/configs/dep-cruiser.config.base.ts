@@ -26,6 +26,9 @@ export function defineConfig({
             from: {},
             to: {
                 circular: true,
+                viaOnly: {
+                    dependencyTypesNot: ['type-only'],
+                },
             },
         },
         {
