@@ -11,4 +11,5 @@ export const baseNcuConfig = {
         /** 3.4 is broken https://github.com/prettier/prettier/issues/16936 */
         'prettier',
     ],
+    deprecated: false,
 } as const satisfies ReadonlyDeep<RunOptions>;
