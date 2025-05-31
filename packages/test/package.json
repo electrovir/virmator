@@ -36,24 +36,24 @@
         "test:web": "virmator test web src/web-snapshot-plugin/web-snapshot-plugin.test.ts"
     },
     "dependencies": {
-        "@augment-vir/assert": "^31.17.0",
-        "@augment-vir/common": "^31.17.0",
-        "@augment-vir/node": "^31.17.0",
+        "@augment-vir/assert": "^31.23.0",
+        "@augment-vir/common": "^31.23.0",
+        "@augment-vir/node": "^31.23.0",
         "@virmator/core": "^13.15.1",
         "@web/dev-server-core": "^0.7.5",
         "@web/test-runner-core": "^0.13.4",
         "glob": "^11.0.2",
         "mri": "^1.2.0",
-        "object-shape-tester": "^5.1.5",
-        "typed-event-target": "^4.0.4"
+        "object-shape-tester": "^5.1.6",
+        "typed-event-target": "^4.1.0"
     },
     "devDependencies": {
-        "@augment-vir/test": "^31.17.0",
+        "@augment-vir/test": "^31.23.0",
         "@open-wc/testing": "^4.0.0",
         "@types/mocha": "^10.0.10",
-        "@types/node": "^22.15.12",
+        "@types/node": "^22.15.29",
         "@web/dev-server-esbuild": "^1.0.4",
-        "@web/test-runner": "^0.20.1",
+        "@web/test-runner": "^0.20.2",
         "@web/test-runner-commands": "^0.9.0",
         "@web/test-runner-playwright": "^0.11.0",
         "@web/test-runner-visual-regression": "^0.10.0",

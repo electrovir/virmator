@@ -32,19 +32,19 @@
         "test:update": "npm test update"
     },
     "dependencies": {
-        "@augment-vir/assert": "^31.17.0",
-        "@augment-vir/common": "^31.17.0",
-        "@augment-vir/node": "^31.17.0",
+        "@augment-vir/assert": "^31.23.0",
+        "@augment-vir/common": "^31.23.0",
+        "@augment-vir/node": "^31.23.0",
         "@virmator/core": "^13.15.1",
         "mri": "^1.2.0"
     },
     "devDependencies": {
-        "@augment-vir/test": "^31.17.0",
-        "@types/node": "^22.15.12",
+        "@augment-vir/test": "^31.23.0",
+        "@types/node": "^22.15.29",
         "@virmator/plugin-testing": "^13.15.1",
         "c8": "^10.1.3",
         "concurrently": "^9.1.2",
-        "cspell": "^9.0.0",
+        "cspell": "^9.0.2",
         "istanbul-smart-text-reporter": "^1.1.5",
         "tsx": "^4.19.4"
     },
