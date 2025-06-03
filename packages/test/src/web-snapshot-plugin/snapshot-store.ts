@@ -71,7 +71,9 @@ export class SnapshotStore extends ListenTarget<SnapshotStoreUpdateEvent> {
     public async finalizeSnapshotFile(testFilePath: string) {
         this.isFinalizing = true;
         const snapshotsFile = await this.getCachedSnapshotFile(testFilePath);
-        const currentFileContents = String(await readFile(createSnapshotOutputPath(testFilePath)));
+        const currentFileContents = existsSync(createSnapshotOutputPath(testFilePath))
+            ? String(await readFile(createSnapshotOutputPath(testFilePath)))
+            : '';
         const accessedSnapshotNames = Array.from(this.accessedSnapshots[testFilePath] || []);
 
         const sortedSnapshots: SnapshotsFile = {};
