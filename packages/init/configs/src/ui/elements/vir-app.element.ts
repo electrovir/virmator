@@ -1,6 +1,6 @@
-import {defineElementNoInputs, html} from 'element-vir';
+import {defineElement, html} from 'element-vir';
 
-export const VirApp = defineElementNoInputs({
+export const VirApp = defineElement()({
     tagName: 'vir-app',
     render() {
         return html`

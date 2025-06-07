@@ -43,7 +43,7 @@ exports[`Init > initializes a mono-package node package 1`] = `
 exports[`Init > initializes a mono-package web package 1`] = `
 {
   "logs": {
-    "stdout": "Installing element-vir@25.12.4...\\nCopied _redirects\\nCopied .npmignore\\nCopied index.css\\nCopied index.html\\nCopied LICENSE-CC0\\nCopied LICENSE-MIT\\nCopied package.json\\nCopied tsconfig.json\\nCopied typedoc.config.ts\\nCopied vir-app.element.ts\\nCopied vite.config.ts\\nCopied web-test-runner.config.mjs\\ninit finished."
+    "stdout": "Installing element-vir@26.0.0...\\nCopied _redirects\\nCopied .npmignore\\nCopied index.css\\nCopied index.html\\nCopied LICENSE-CC0\\nCopied LICENSE-MIT\\nCopied package.json\\nCopied tsconfig.json\\nCopied typedoc.config.ts\\nCopied vir-app.element.ts\\nCopied vite.config.ts\\nCopied web-test-runner.config.mjs\\ninit finished."
   },
   "cwd": "packages/virmator/test-files/mono-package",
   "contentsDiff": {
@@ -58,7 +58,7 @@ exports[`Init > initializes a mono-package web package 1`] = `
       "index.html": "<!doctype html>\\n<html>\\n    <head>\\n        <title>Page Name</title>\\n        <meta name=\\"viewport\\" content=\\"width=device-width, minimum-scale=1.0, maximum-scale=1.0\\" />\\n        <script type=\\"module\\" src=\\"./ui/elements/vir-app.element.ts\\"></script>\\n        <link rel=\\"stylesheet\\" type=\\"text/css\\" href=\\"/index.css\\" />\\n    </head>\\n    <body>\\n        <vir-app></vir-app>\\n    </body>\\n</html>\\n",
       "ui": {
         "elements": {
-          "vir-app.element.ts": "import {defineElementNoInputs, html} from 'element-vir';\\n\\nexport const VirApp = defineElementNoInputs({\\n    tagName: 'vir-app',\\n    render() {\\n        return html\`\\n            Vir App goes here!\\n        \`;\\n    },\\n});\\n"
+          "vir-app.element.ts": "import {defineElement, html} from 'element-vir';\\n\\nexport const VirApp = defineElement()({\\n    tagName: 'vir-app',\\n    render() {\\n        return html\`\\n            Vir App goes here!\\n        \`;\\n    },\\n});\\n"
         }
       }
     },
@@ -154,7 +154,7 @@ exports[`Init > initializes a top-level node package 1`] = `
 exports[`Init > initializes a top-level web package 1`] = `
 {
   "logs": {
-    "stdout": "Installing element-vir@25.12.4...\\nCopied _redirects\\nCopied .gitattributes\\nCopied .gitignore\\nCopied .npmignore\\nCopied .nvmrc\\nCopied .prettierignore\\nCopied build-for-gh-pages.yml\\nCopied cspell.config.cjs\\nCopied dep-cruiser.config.cts\\nCopied eslint.config.mjs\\nCopied index.css\\nCopied index.html\\nCopied LICENSE-CC0\\nCopied LICENSE-MIT\\nCopied ncu.config.ts\\nCopied package.json\\nCopied prettier.config.mjs\\nCopied settings.json\\nCopied tagged-release.yml\\nCopied tests.yml\\nCopied tsconfig.json\\nCopied typedoc.config.ts\\nCopied vir-app.element.ts\\nCopied vite.config.ts\\nCopied web-test-runner.config.mjs\\ninit finished."
+    "stdout": "Installing element-vir@26.0.0...\\nCopied _redirects\\nCopied .gitattributes\\nCopied .gitignore\\nCopied .npmignore\\nCopied .nvmrc\\nCopied .prettierignore\\nCopied build-for-gh-pages.yml\\nCopied cspell.config.cjs\\nCopied dep-cruiser.config.cts\\nCopied eslint.config.mjs\\nCopied index.css\\nCopied index.html\\nCopied LICENSE-CC0\\nCopied LICENSE-MIT\\nCopied ncu.config.ts\\nCopied package.json\\nCopied prettier.config.mjs\\nCopied settings.json\\nCopied tagged-release.yml\\nCopied tests.yml\\nCopied tsconfig.json\\nCopied typedoc.config.ts\\nCopied vir-app.element.ts\\nCopied vite.config.ts\\nCopied web-test-runner.config.mjs\\ninit finished."
   },
   "cwd": "packages/virmator/test-files/top-package",
   "contentsDiff": {
@@ -179,7 +179,7 @@ exports[`Init > initializes a top-level web package 1`] = `
       "index.html": "<!doctype html>\\n<html>\\n    <head>\\n        <title>Page Name</title>\\n        <meta name=\\"viewport\\" content=\\"width=device-width, minimum-scale=1.0, maximum-scale=1.0\\" />\\n        <script type=\\"module\\" src=\\"./ui/elements/vir-app.element.ts\\"></script>\\n        <link rel=\\"stylesheet\\" type=\\"text/css\\" href=\\"/index.css\\" />\\n    </head>\\n    <body>\\n        <vir-app></vir-app>\\n    </body>\\n</html>\\n",
       "ui": {
         "elements": {
-          "vir-app.element.ts": "import {defineElementNoInputs, html} from 'element-vir';\\n\\nexport const VirApp = defineElementNoInputs({\\n    tagName: 'vir-app',\\n    render() {\\n        return html\`\\n            Vir App goes here!\\n        \`;\\n    },\\n});\\n"
+          "vir-app.element.ts": "import {defineElement, html} from 'element-vir';\\n\\nexport const VirApp = defineElement()({\\n    tagName: 'vir-app',\\n    render() {\\n        return html\`\\n            Vir App goes here!\\n        \`;\\n    },\\n});\\n"
         }
       }
     },
