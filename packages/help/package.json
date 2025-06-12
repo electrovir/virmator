@@ -1,6 +1,6 @@
 {
     "name": "@virmator/help",
-    "version": "13.15.4",
+    "version": "13.15.5",
     "description": "Default help plugin for virmator.",
     "keywords": [
         "virmator",
@@ -35,7 +35,7 @@
         "@augment-vir/assert": "^31.23.3",
         "@augment-vir/common": "^31.23.3",
         "@augment-vir/node": "^31.23.3",
-        "@virmator/core": "^13.15.4"
+        "@virmator/core": "^13.15.5"
     },
     "devDependencies": {
         "@augment-vir/test": "^31.23.3",

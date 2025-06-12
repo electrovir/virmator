@@ -10,6 +10,8 @@ export const baseNcuConfig = {
     reject: [
         /** 3.4 is broken https://github.com/prettier/prettier/issues/16936 */
         'prettier',
+        /** 4.20 is broken: https://github.com/privatenumber/tsx/issues/727 */
+        'tsx',
     ],
     deprecated: false,
 } as const satisfies ReadonlyDeep<RunOptions>;

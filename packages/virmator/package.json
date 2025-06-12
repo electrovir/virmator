@@ -1,6 +1,6 @@
 {
     "name": "virmator",
-    "version": "13.15.4",
+    "version": "13.15.5",
     "description": "Handle common package configs, commands, and dependencies.",
     "keywords": [
         "automation",
@@ -40,19 +40,19 @@
     "dependencies": {
         "@augment-vir/common": "^31.23.3",
         "@augment-vir/node": "^31.23.3",
-        "@virmator/compile": "^13.15.4",
-        "@virmator/core": "^13.15.4",
-        "@virmator/deps": "^13.15.4",
-        "@virmator/docs": "^13.15.4",
-        "@virmator/format": "^13.15.4",
-        "@virmator/frontend": "^13.15.4",
-        "@virmator/help": "^13.15.4",
-        "@virmator/init": "^13.15.4",
-        "@virmator/lint": "^13.15.4",
-        "@virmator/publish": "^13.15.4",
-        "@virmator/spellcheck": "^13.15.4",
-        "@virmator/test": "^13.15.4",
-        "tsx": "^4.19.4"
+        "@virmator/compile": "^13.15.5",
+        "@virmator/core": "^13.15.5",
+        "@virmator/deps": "^13.15.5",
+        "@virmator/docs": "^13.15.5",
+        "@virmator/format": "^13.15.5",
+        "@virmator/frontend": "^13.15.5",
+        "@virmator/help": "^13.15.5",
+        "@virmator/init": "^13.15.5",
+        "@virmator/lint": "^13.15.5",
+        "@virmator/publish": "^13.15.5",
+        "@virmator/spellcheck": "^13.15.5",
+        "@virmator/test": "^13.15.5",
+        "tsx": "4.19.4"
     },
     "devDependencies": {
         "@augment-vir/assert": "^31.23.3",
