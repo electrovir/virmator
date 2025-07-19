@@ -85,6 +85,7 @@ export function createBaseConfig({forGitHubPages, packageDirPath}: BaseConfigOpt
                 esbuildOptions: {
                     target,
                 },
+                force: true,
             },
             esbuild: {
                 target,
