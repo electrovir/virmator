@@ -41,7 +41,7 @@
         "@types/node": "^22.15.30",
         "element-vir": "^26.0.0",
         "mono-vir": "^2.0.6",
-        "tsx": "4.19.4",
+        "tsx": "^4.20.3",
         "type-fest": "^4.41.0"
     },
     "engines": {

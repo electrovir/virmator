@@ -52,7 +52,7 @@
         "@virmator/publish": "^13.15.5",
         "@virmator/spellcheck": "^13.15.5",
         "@virmator/test": "^13.15.5",
-        "tsx": "4.19.4"
+        "tsx": "^4.20.3"
     },
     "devDependencies": {
         "@augment-vir/assert": "^31.23.3",
