@@ -10,6 +10,8 @@ export const baseNcuConfig = {
     reject: [
         /** 3.4 is broken https://github.com/prettier/prettier/issues/16936 */
         'prettier',
+        /** https://github.com/sindresorhus/eslint-plugin-unicorn/pull/2706 */
+        'eslint-plugin-unicorn',
     ],
     deprecated: false,
 } as const satisfies ReadonlyDeep<RunOptions>;
