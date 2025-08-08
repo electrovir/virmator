@@ -269,7 +269,7 @@ export async function executeVirmatorCommand({
             monoRepoPackages,
             packageType,
             monoRepoRootPath,
-            cwdPackageJson: cwdPackageJson,
+            cwdPackageJson,
             cwdValidPackageJson:
                 cwdPackageJson.name && cwdPackageJson.version
                     ? (cwdPackageJson as ValidPackageJson)

@@ -90,7 +90,7 @@ export function snapshotPlugin(repoPath: string): TestRunnerPlugin {
                     await snapshotStore.updateSnapshot({
                         testFilePath: session.testFile,
                         snapshotName: payload.name,
-                        newSnapshot: newSnapshot,
+                        newSnapshot,
                     });
                 }
 

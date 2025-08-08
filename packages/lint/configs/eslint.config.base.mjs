@@ -177,6 +177,7 @@ export function defineEslintConfig(repoDir) {
                 '@typescript-eslint/no-unused-vars': 'error',
                 'no-lonely-if': 'error',
                 curly: 'error',
+                'object-shorthand': 'error',
 
                 '@typescript-eslint/consistent-type-imports': [
                     'error',
