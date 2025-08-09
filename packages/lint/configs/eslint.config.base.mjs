@@ -119,6 +119,7 @@ export function defineEslintConfig(repoDir) {
                 'sonarjs/prefer-regexp-exec': 'off',
                 'sonarjs/use-type-alias': 'off',
                 'sonarjs/void-use': 'off',
+                'sonarjs/deprecation': 'off', // duplicates @typescript-eslint/no-deprecated
 
                 'no-async-promise-executor': 'off',
                 'no-prototype-builtins': 'off',

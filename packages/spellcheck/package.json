@@ -1,6 +1,6 @@
 {
     "name": "@virmator/spellcheck",
-    "version": "13.16.0",
+    "version": "13.16.1",
     "description": "Default spellcheck plugin for virmator",
     "keywords": [
         "virmator",
@@ -35,13 +35,13 @@
         "@augment-vir/assert": "^31.31.0",
         "@augment-vir/common": "^31.31.0",
         "@augment-vir/node": "^31.31.0",
-        "@virmator/core": "^13.16.0",
+        "@virmator/core": "^13.16.1",
         "mri": "^1.2.0"
     },
     "devDependencies": {
         "@augment-vir/test": "^31.31.0",
         "@types/node": "^24.2.0",
-        "@virmator/plugin-testing": "^13.16.0",
+        "@virmator/plugin-testing": "^13.16.1",
         "c8": "^10.1.3",
         "concurrently": "^9.2.0",
         "cspell": "^9.2.0",
