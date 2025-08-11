@@ -292,7 +292,7 @@ export const virmatorTestPlugin = defineVirmatorPlugin(
         const flagArgs = extraArgs.filter((arg) => arg.startsWith('-'));
         const positionArgs = extraArgs.filter((arg) => !arg.startsWith('-'));
 
-        const fileArgs = args._.map((arg) => {
+        const fileArgs = positionArgs.map((arg) => {
             const monoRepoRelativePath = join(monoRepoRootPath, arg);
             /**
              * Handle give test file paths that are relative to the mono repo rather than the
