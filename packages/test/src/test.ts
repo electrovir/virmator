@@ -288,7 +288,9 @@ export const virmatorTestPlugin = defineVirmatorPlugin(
         package: {packageType, monoRepoRootPath, cwdPackagePath},
     }) => {
         const args = mri(filteredArgs);
-        const flagArgs = filteredArgs.filter((arg) => !args._.includes(arg));
+        const extraArgs = filteredArgs.filter((arg) => !args._.includes(arg));
+        const flagArgs = extraArgs.filter((arg) => arg.startsWith('-'));
+        const positionArgs = extraArgs.filter((arg) => !arg.startsWith('-'));
 
         const fileArgs = args._.map((arg) => {
             const monoRepoRelativePath = join(monoRepoRootPath, arg);
@@ -350,7 +352,7 @@ export const virmatorTestPlugin = defineVirmatorPlugin(
                     ...configArgs,
                     ...updateSnapshotsArgs,
                     includeCoverage ? '--coverage' : '',
-                    ...flagArgs,
+                    ...extraArgs,
                     ...fileArgs,
                 ]
                     .filter(check.isTruthy)
@@ -391,8 +393,9 @@ export const virmatorTestPlugin = defineVirmatorPlugin(
                 '--test',
                 '--experimental-test-snapshots',
                 '--test-reporter',
-                'spec',
                 ...flagArgs,
+                'spec',
+                ...positionArgs,
                 ...updateSnapshotsArgs,
                 ...testFiles,
             ]
