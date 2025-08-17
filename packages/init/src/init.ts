@@ -6,7 +6,6 @@
 import {check} from '@augment-vir/assert';
 import {
     awaitedBlockingMap,
-    filterObject,
     getEnumValues,
     joinWithFinalConjunction,
     pickObjectKeys,
@@ -32,31 +31,44 @@ import {type PackageJson} from 'type-fest';
 
 const deps: PluginNpmDeps = {
     'mono-vir': {
-        env: [
-            RuntimeEnv.Node,
-            RuntimeEnv.Web,
-        ],
-        packageType: [PackageType.MonoRoot],
+        env: {
+            [RuntimeEnv.Node]: true,
+            [RuntimeEnv.Web]: true,
+        },
+        packageType: {
+            [PackageType.MonoRoot]: true,
+        },
+        type: NpmDepType.Dev,
+    },
+    runstorm: {
+        env: {
+            [RuntimeEnv.Node]: true,
+            [RuntimeEnv.Web]: true,
+        },
+        packageType: {
+            [PackageType.TopPackage]: true,
+            [PackageType.MonoRoot]: true,
+        },
         type: NpmDepType.Dev,
     },
     tsx: {
-        env: [
-            RuntimeEnv.Node,
-        ],
-        packageType: [
-            PackageType.MonoPackage,
-            PackageType.TopPackage,
-        ],
+        env: {
+            [RuntimeEnv.Node]: true,
+        },
+        packageType: {
+            [PackageType.MonoPackage]: true,
+            [PackageType.TopPackage]: true,
+        },
         type: NpmDepType.Dev,
     },
     'element-vir': {
-        env: [
-            RuntimeEnv.Web,
-        ],
-        packageType: [
-            PackageType.MonoPackage,
-            PackageType.TopPackage,
-        ],
+        env: {
+            [RuntimeEnv.Web]: true,
+        },
+        packageType: {
+            [PackageType.MonoPackage]: true,
+            [PackageType.TopPackage]: true,
+        },
         type: NpmDepType.Regular,
     },
 };
@@ -92,64 +104,64 @@ export const virmatorInitPlugin = defineVirmatorPlugin(
                             'build-for-gh-pages.yml',
                         ),
                         copyToPath: join('.github', 'workflows', 'build-for-gh-pages.yml'),
-                        env: [
-                            RuntimeEnv.Node,
-                            RuntimeEnv.Web,
-                        ],
-                        packageType: [
-                            PackageType.TopPackage,
-                            PackageType.MonoRoot,
-                        ],
+                        env: {
+                            [RuntimeEnv.Node]: true,
+                            [RuntimeEnv.Web]: true,
+                        },
+                        packageType: {
+                            [PackageType.TopPackage]: true,
+                            [PackageType.MonoRoot]: true,
+                        },
                         required: false,
                     },
                     ghTaggedRelease: {
                         copyFromPath: join('configs', 'github', 'workflows', 'tagged-release.yml'),
                         copyToPath: join('.github', 'workflows', 'tagged-release.yml'),
-                        env: [
-                            RuntimeEnv.Node,
-                            RuntimeEnv.Web,
-                        ],
-                        packageType: [
-                            PackageType.TopPackage,
-                            PackageType.MonoRoot,
-                        ],
+                        env: {
+                            [RuntimeEnv.Node]: true,
+                            [RuntimeEnv.Web]: true,
+                        },
+                        packageType: {
+                            [PackageType.TopPackage]: true,
+                            [PackageType.MonoRoot]: true,
+                        },
                         required: false,
                     },
                     ghTestsNode: {
                         copyFromPath: join('configs', 'github', 'workflows', 'tests-node.yml'),
                         copyToPath: join('.github', 'workflows', 'tests.yml'),
-                        env: [
-                            RuntimeEnv.Node,
-                        ],
-                        packageType: [
-                            PackageType.TopPackage,
-                            PackageType.MonoRoot,
-                        ],
+                        env: {
+                            [RuntimeEnv.Node]: true,
+                        },
+                        packageType: {
+                            [PackageType.TopPackage]: true,
+                            [PackageType.MonoRoot]: true,
+                        },
                         required: false,
                     },
                     ghTestsWeb: {
                         copyFromPath: join('configs', 'github', 'workflows', 'tests-web.yml'),
                         copyToPath: join('.github', 'workflows', 'tests.yml'),
-                        env: [
-                            RuntimeEnv.Web,
-                        ],
-                        packageType: [
-                            PackageType.TopPackage,
-                            PackageType.MonoRoot,
-                        ],
+                        env: {
+                            [RuntimeEnv.Web]: true,
+                        },
+                        packageType: {
+                            [PackageType.TopPackage]: true,
+                            [PackageType.MonoRoot]: true,
+                        },
                         required: false,
                     },
                     vscodeSettings: {
                         copyFromPath: join('configs', 'vscode', 'settings.json'),
                         copyToPath: join('.vscode', 'settings.json'),
-                        env: [
-                            RuntimeEnv.Web,
-                            RuntimeEnv.Node,
-                        ],
-                        packageType: [
-                            PackageType.TopPackage,
-                            PackageType.MonoRoot,
-                        ],
+                        env: {
+                            [RuntimeEnv.Web]: true,
+                            [RuntimeEnv.Node]: true,
+                        },
+                        packageType: {
+                            [PackageType.TopPackage]: true,
+                            [PackageType.MonoRoot]: true,
+                        },
                         required: false,
                     },
                     appElement: {
@@ -161,185 +173,185 @@ export const virmatorInitPlugin = defineVirmatorPlugin(
                             'vir-app.element.ts',
                         ),
                         copyToPath: join('src', 'ui', 'elements', 'vir-app.element.ts'),
-                        env: [
-                            RuntimeEnv.Web,
-                        ],
-                        packageType: [
-                            PackageType.TopPackage,
-                            PackageType.MonoPackage,
-                        ],
+                        env: {
+                            [RuntimeEnv.Web]: true,
+                        },
+                        packageType: {
+                            [PackageType.TopPackage]: true,
+                            [PackageType.MonoPackage]: true,
+                        },
                         required: false,
                     },
                     indexHtml: {
                         copyFromPath: join('configs', 'src', 'index.html'),
                         copyToPath: join('src', 'index.html'),
-                        env: [
-                            RuntimeEnv.Web,
-                        ],
-                        packageType: [
-                            PackageType.TopPackage,
-                            PackageType.MonoPackage,
-                        ],
+                        env: {
+                            [RuntimeEnv.Web]: true,
+                        },
+                        packageType: {
+                            [PackageType.TopPackage]: true,
+                            [PackageType.MonoPackage]: true,
+                        },
                         required: false,
                     },
                     indexCss: {
                         copyFromPath: join('configs', 'www-static', 'index.css'),
                         copyToPath: join('www-static', 'index.css'),
-                        env: [
-                            RuntimeEnv.Web,
-                        ],
-                        packageType: [
-                            PackageType.TopPackage,
-                            PackageType.MonoPackage,
-                        ],
+                        env: {
+                            [RuntimeEnv.Web]: true,
+                        },
+                        packageType: {
+                            [PackageType.TopPackage]: true,
+                            [PackageType.MonoPackage]: true,
+                        },
                         required: false,
                     },
                     redirects: {
                         copyFromPath: join('configs', 'www-static', '_redirects'),
                         copyToPath: join('www-static', '_redirects'),
-                        env: [
-                            RuntimeEnv.Web,
-                        ],
-                        packageType: [
-                            PackageType.TopPackage,
-                            PackageType.MonoPackage,
-                        ],
+                        env: {
+                            [RuntimeEnv.Web]: true,
+                        },
+                        packageType: {
+                            [PackageType.TopPackage]: true,
+                            [PackageType.MonoPackage]: true,
+                        },
                         required: false,
                     },
                     gitAttributes: {
                         copyFromPath: join('configs', 'gitattributes.txt'),
                         copyToPath: join('.gitattributes'),
-                        env: [
-                            RuntimeEnv.Web,
-                            RuntimeEnv.Node,
-                        ],
-                        packageType: [
-                            PackageType.TopPackage,
-                            PackageType.MonoRoot,
-                        ],
+                        env: {
+                            [RuntimeEnv.Web]: true,
+                            [RuntimeEnv.Node]: true,
+                        },
+                        packageType: {
+                            [PackageType.TopPackage]: true,
+                            [PackageType.MonoRoot]: true,
+                        },
                         required: false,
                     },
                     nvmrc: {
                         copyFromPath: join('configs', 'nvmrc.txt'),
                         copyToPath: join('.nvmrc'),
-                        env: [
-                            RuntimeEnv.Web,
-                            RuntimeEnv.Node,
-                        ],
-                        packageType: [
-                            PackageType.TopPackage,
-                            PackageType.MonoRoot,
-                        ],
+                        env: {
+                            [RuntimeEnv.Web]: true,
+                            [RuntimeEnv.Node]: true,
+                        },
+                        packageType: {
+                            [PackageType.TopPackage]: true,
+                            [PackageType.MonoRoot]: true,
+                        },
                         required: false,
                     },
                     gitignore: {
                         copyFromPath: join('configs', 'gitignore.txt'),
                         copyToPath: join('.gitignore'),
-                        env: [
-                            RuntimeEnv.Web,
-                            RuntimeEnv.Node,
-                        ],
-                        packageType: [
-                            PackageType.TopPackage,
-                            PackageType.MonoRoot,
-                        ],
+                        env: {
+                            [RuntimeEnv.Web]: true,
+                            [RuntimeEnv.Node]: true,
+                        },
+                        packageType: {
+                            [PackageType.TopPackage]: true,
+                            [PackageType.MonoRoot]: true,
+                        },
                         required: false,
                     },
                     licenseMit: {
                         copyFromPath: join('configs', 'LICENSE-MIT'),
                         copyToPath: join('LICENSE-MIT'),
-                        env: [
-                            RuntimeEnv.Web,
-                            RuntimeEnv.Node,
-                        ],
-                        packageType: [
-                            PackageType.TopPackage,
-                            PackageType.MonoRoot,
-                            PackageType.MonoPackage,
-                        ],
+                        env: {
+                            [RuntimeEnv.Web]: true,
+                            [RuntimeEnv.Node]: true,
+                        },
+                        packageType: {
+                            [PackageType.TopPackage]: true,
+                            [PackageType.MonoRoot]: true,
+                            [PackageType.MonoPackage]: true,
+                        },
                         required: false,
                     },
                     licenseCc0: {
                         copyFromPath: join('configs', 'LICENSE-CC0'),
                         copyToPath: join('LICENSE-CC0'),
-                        env: [
-                            RuntimeEnv.Web,
-                            RuntimeEnv.Node,
-                        ],
-                        packageType: [
-                            PackageType.TopPackage,
-                            PackageType.MonoRoot,
-                            PackageType.MonoPackage,
-                        ],
+                        env: {
+                            [RuntimeEnv.Web]: true,
+                            [RuntimeEnv.Node]: true,
+                        },
+                        packageType: {
+                            [PackageType.TopPackage]: true,
+                            [PackageType.MonoRoot]: true,
+                            [PackageType.MonoPackage]: true,
+                        },
                         required: false,
                     },
                     npmIgnore: {
                         copyFromPath: join('configs', 'npmignore.txt'),
                         copyToPath: join('.npmignore'),
-                        env: [
-                            RuntimeEnv.Web,
-                            RuntimeEnv.Node,
-                        ],
-                        packageType: [
-                            PackageType.TopPackage,
-                            PackageType.MonoPackage,
-                        ],
+                        env: {
+                            [RuntimeEnv.Web]: true,
+                            [RuntimeEnv.Node]: true,
+                        },
+                        packageType: {
+                            [PackageType.TopPackage]: true,
+                            [PackageType.MonoPackage]: true,
+                        },
                         required: false,
                     },
                     monoPackageNodePackageJson: {
                         copyFromPath: join('configs', 'package-mono-package-node', 'package.json'),
                         copyToPath: join('package.json'),
-                        env: [
-                            RuntimeEnv.Node,
-                        ],
-                        packageType: [
-                            PackageType.MonoPackage,
-                        ],
+                        env: {
+                            [RuntimeEnv.Node]: true,
+                        },
+                        packageType: {
+                            [PackageType.MonoPackage]: true,
+                        },
                         required: false,
                     },
                     monoPackageWebPackageJson: {
                         copyFromPath: join('configs', 'package-mono-package-web', 'package.json'),
                         copyToPath: join('package.json'),
-                        env: [
-                            RuntimeEnv.Web,
-                        ],
-                        packageType: [
-                            PackageType.MonoPackage,
-                        ],
+                        env: {
+                            [RuntimeEnv.Web]: true,
+                        },
+                        packageType: {
+                            [PackageType.MonoPackage]: true,
+                        },
                         required: false,
                     },
                     monoRootPackageJson: {
                         copyFromPath: join('configs', 'package-mono-root', 'package.json'),
                         copyToPath: join('package.json'),
-                        env: [
-                            RuntimeEnv.Web,
-                            RuntimeEnv.Node,
-                        ],
-                        packageType: [
-                            PackageType.MonoRoot,
-                        ],
+                        env: {
+                            [RuntimeEnv.Web]: true,
+                            [RuntimeEnv.Node]: true,
+                        },
+                        packageType: {
+                            [PackageType.MonoRoot]: true,
+                        },
                         required: false,
                     },
                     topPackageNodePackageJson: {
                         copyFromPath: join('configs', 'package-top-package-node', 'package.json'),
                         copyToPath: join('package.json'),
-                        env: [
-                            RuntimeEnv.Node,
-                        ],
-                        packageType: [
-                            PackageType.TopPackage,
-                        ],
+                        env: {
+                            [RuntimeEnv.Node]: true,
+                        },
+                        packageType: {
+                            [PackageType.TopPackage]: true,
+                        },
                         required: false,
                     },
                     topPackageWebPackageJson: {
                         copyFromPath: join('configs', 'package-top-package-web', 'package.json'),
                         copyToPath: join('package.json'),
-                        env: [
-                            RuntimeEnv.Web,
-                        ],
-                        packageType: [
-                            PackageType.TopPackage,
-                        ],
+                        env: {
+                            [RuntimeEnv.Web]: true,
+                        },
+                        packageType: {
+                            [PackageType.TopPackage]: true,
+                        },
                         required: false,
                     },
                 },
@@ -366,16 +378,11 @@ export const virmatorInitPlugin = defineVirmatorPlugin(
             );
         }
 
-        const depsToInstall = filterObject(deps, (depName, depOptions) => {
-            return (
-                depOptions.env.includes(packageEnv) && depOptions.packageType.includes(packageType)
-            );
-        });
-        await runInstallDeps(depsToInstall);
+        await runInstallDeps(deps, packageEnv);
 
         const allConfigs = flattenAllConfigs(cwdPackagePath, allPlugins);
         const relevantConfigs = allConfigs.filter((config) => {
-            return config.env.includes(packageEnv) && config.packageType.includes(packageType);
+            return config.env[packageEnv] && config.packageType[packageType];
         });
 
         await awaitedBlockingMap(relevantConfigs, async (config) => {

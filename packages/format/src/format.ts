@@ -62,118 +62,118 @@ export const virmatorFormatPlugin = defineVirmatorPlugin(
                     prettier: {
                         copyFromPath: join('configs', 'prettier.config.share.mjs'),
                         copyToPath: 'prettier.config.mjs',
-                        env: [
-                            RuntimeEnv.Node,
-                            RuntimeEnv.Web,
-                        ],
-                        packageType: [
-                            PackageType.TopPackage,
-                            PackageType.MonoRoot,
-                        ],
+                        env: {
+                            [RuntimeEnv.Node]: true,
+                            [RuntimeEnv.Web]: true,
+                        },
+                        packageType: {
+                            [PackageType.TopPackage]: true,
+                            [PackageType.MonoRoot]: true,
+                        },
                         required: true,
                     },
                     prettierIgnore: {
                         copyFromPath: join('configs', 'prettierignore.txt'),
                         copyToPath: '.prettierignore',
-                        env: [
-                            RuntimeEnv.Node,
-                            RuntimeEnv.Web,
-                        ],
-                        packageType: [
-                            PackageType.TopPackage,
-                            PackageType.MonoRoot,
-                        ],
+                        env: {
+                            [RuntimeEnv.Node]: true,
+                            [RuntimeEnv.Web]: true,
+                        },
+                        packageType: {
+                            [PackageType.TopPackage]: true,
+                            [PackageType.MonoRoot]: true,
+                        },
                         required: true,
                     },
                 },
                 npmDeps: {
                     prettier: {
                         type: NpmDepType.Dev,
-                        env: [
-                            RuntimeEnv.Node,
-                            RuntimeEnv.Web,
-                        ],
-                        packageType: [
-                            PackageType.MonoRoot,
-                            PackageType.TopPackage,
-                        ],
+                        env: {
+                            [RuntimeEnv.Node]: true,
+                            [RuntimeEnv.Web]: true,
+                        },
+                        packageType: {
+                            [PackageType.MonoRoot]: true,
+                            [PackageType.TopPackage]: true,
+                        },
                     },
                     'prettier-plugin-jsdoc': {
                         type: NpmDepType.Dev,
-                        env: [
-                            RuntimeEnv.Node,
-                            RuntimeEnv.Web,
-                        ],
-                        packageType: [
-                            PackageType.MonoRoot,
-                            PackageType.TopPackage,
-                        ],
+                        env: {
+                            [RuntimeEnv.Node]: true,
+                            [RuntimeEnv.Web]: true,
+                        },
+                        packageType: {
+                            [PackageType.MonoRoot]: true,
+                            [PackageType.TopPackage]: true,
+                        },
                     },
                     'prettier-plugin-multiline-arrays': {
                         type: NpmDepType.Dev,
-                        env: [
-                            RuntimeEnv.Node,
-                            RuntimeEnv.Web,
-                        ],
-                        packageType: [
-                            PackageType.MonoRoot,
-                            PackageType.TopPackage,
-                        ],
+                        env: {
+                            [RuntimeEnv.Node]: true,
+                            [RuntimeEnv.Web]: true,
+                        },
+                        packageType: {
+                            [PackageType.MonoRoot]: true,
+                            [PackageType.TopPackage]: true,
+                        },
                     },
                     'prettier-plugin-organize-imports': {
                         type: NpmDepType.Dev,
-                        env: [
-                            RuntimeEnv.Node,
-                            RuntimeEnv.Web,
-                        ],
-                        packageType: [
-                            PackageType.MonoRoot,
-                            PackageType.TopPackage,
-                        ],
+                        env: {
+                            [RuntimeEnv.Node]: true,
+                            [RuntimeEnv.Web]: true,
+                        },
+                        packageType: {
+                            [PackageType.MonoRoot]: true,
+                            [PackageType.TopPackage]: true,
+                        },
                     },
                     'prettier-plugin-packagejson': {
                         type: NpmDepType.Dev,
-                        env: [
-                            RuntimeEnv.Node,
-                            RuntimeEnv.Web,
-                        ],
-                        packageType: [
-                            PackageType.MonoRoot,
-                            PackageType.TopPackage,
-                        ],
+                        env: {
+                            [RuntimeEnv.Node]: true,
+                            [RuntimeEnv.Web]: true,
+                        },
+                        packageType: {
+                            [PackageType.MonoRoot]: true,
+                            [PackageType.TopPackage]: true,
+                        },
                     },
                     'prettier-plugin-sort-json': {
                         type: NpmDepType.Dev,
-                        env: [
-                            RuntimeEnv.Node,
-                            RuntimeEnv.Web,
-                        ],
-                        packageType: [
-                            PackageType.MonoRoot,
-                            PackageType.TopPackage,
-                        ],
+                        env: {
+                            [RuntimeEnv.Node]: true,
+                            [RuntimeEnv.Web]: true,
+                        },
+                        packageType: {
+                            [PackageType.MonoRoot]: true,
+                            [PackageType.TopPackage]: true,
+                        },
                     },
                     'prettier-plugin-toml': {
                         type: NpmDepType.Dev,
-                        env: [
-                            RuntimeEnv.Node,
-                            RuntimeEnv.Web,
-                        ],
-                        packageType: [
-                            PackageType.MonoRoot,
-                            PackageType.TopPackage,
-                        ],
+                        env: {
+                            [RuntimeEnv.Node]: true,
+                            [RuntimeEnv.Web]: true,
+                        },
+                        packageType: {
+                            [PackageType.MonoRoot]: true,
+                            [PackageType.TopPackage]: true,
+                        },
                     },
                     'prettier-plugin-interpolated-html-tags': {
                         type: NpmDepType.Dev,
-                        env: [
-                            RuntimeEnv.Node,
-                            RuntimeEnv.Web,
-                        ],
-                        packageType: [
-                            PackageType.MonoRoot,
-                            PackageType.TopPackage,
-                        ],
+                        env: {
+                            [RuntimeEnv.Node]: true,
+                            [RuntimeEnv.Web]: true,
+                        },
+                        packageType: {
+                            [PackageType.MonoRoot]: true,
+                            [PackageType.TopPackage]: true,
+                        },
                     },
                 },
             },

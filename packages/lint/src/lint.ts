@@ -43,26 +43,26 @@ export const virmatorLintPlugin = defineVirmatorPlugin(
                     eslintTsconfig: {
                         copyFromPath: join('configs', 'tsconfig.eslint.json'),
                         copyToPath: join('configs', 'tsconfig.eslint.json'),
-                        env: [
-                            RuntimeEnv.Node,
-                            RuntimeEnv.Web,
-                        ],
-                        packageType: [
-                            PackageType.MonoRoot,
-                        ],
+                        env: {
+                            [RuntimeEnv.Node]: true,
+                            [RuntimeEnv.Web]: true,
+                        },
+                        packageType: {
+                            [PackageType.MonoRoot]: true,
+                        },
                         required: true,
                     },
                     eslint: {
                         copyFromPath: join('configs', 'eslint.config.share.mjs'),
                         copyToPath: join('eslint.config.mjs'),
-                        env: [
-                            RuntimeEnv.Node,
-                            RuntimeEnv.Web,
-                        ],
-                        packageType: [
-                            PackageType.MonoRoot,
-                            PackageType.TopPackage,
-                        ],
+                        env: {
+                            [RuntimeEnv.Node]: true,
+                            [RuntimeEnv.Web]: true,
+                        },
+                        packageType: {
+                            [PackageType.MonoRoot]: true,
+                            [PackageType.TopPackage]: true,
+                        },
                         required: true,
                         configFlags: [
                             '-c',
@@ -73,168 +73,168 @@ export const virmatorLintPlugin = defineVirmatorPlugin(
                 npmDeps: {
                     eslint: {
                         type: NpmDepType.Dev,
-                        env: [
-                            RuntimeEnv.Node,
-                            RuntimeEnv.Web,
-                        ],
-                        packageType: [
-                            PackageType.TopPackage,
-                            PackageType.MonoRoot,
-                        ],
+                        env: {
+                            [RuntimeEnv.Node]: true,
+                            [RuntimeEnv.Web]: true,
+                        },
+                        packageType: {
+                            [PackageType.TopPackage]: true,
+                            [PackageType.MonoRoot]: true,
+                        },
                     },
                     'eslint-plugin-require-extensions': {
                         type: NpmDepType.Dev,
-                        env: [
-                            RuntimeEnv.Node,
-                            RuntimeEnv.Web,
-                        ],
-                        packageType: [
-                            PackageType.TopPackage,
-                            PackageType.MonoRoot,
-                        ],
+                        env: {
+                            [RuntimeEnv.Node]: true,
+                            [RuntimeEnv.Web]: true,
+                        },
+                        packageType: {
+                            [PackageType.TopPackage]: true,
+                            [PackageType.MonoRoot]: true,
+                        },
                     },
                     'eslint-plugin-unicorn': {
                         type: NpmDepType.Dev,
-                        env: [
-                            RuntimeEnv.Node,
-                            RuntimeEnv.Web,
-                        ],
-                        packageType: [
-                            PackageType.TopPackage,
-                            PackageType.MonoRoot,
-                        ],
+                        env: {
+                            [RuntimeEnv.Node]: true,
+                            [RuntimeEnv.Web]: true,
+                        },
+                        packageType: {
+                            [PackageType.TopPackage]: true,
+                            [PackageType.MonoRoot]: true,
+                        },
                     },
                     '@eslint/js': {
                         type: NpmDepType.Dev,
-                        env: [
-                            RuntimeEnv.Node,
-                            RuntimeEnv.Web,
-                        ],
-                        packageType: [
-                            PackageType.TopPackage,
-                            PackageType.MonoRoot,
-                        ],
+                        env: {
+                            [RuntimeEnv.Node]: true,
+                            [RuntimeEnv.Web]: true,
+                        },
+                        packageType: {
+                            [PackageType.TopPackage]: true,
+                            [PackageType.MonoRoot]: true,
+                        },
                     },
                     '@eslint/eslintrc': {
                         type: NpmDepType.Dev,
-                        env: [
-                            RuntimeEnv.Node,
-                            RuntimeEnv.Web,
-                        ],
-                        packageType: [
-                            PackageType.TopPackage,
-                            PackageType.MonoRoot,
-                        ],
+                        env: {
+                            [RuntimeEnv.Node]: true,
+                            [RuntimeEnv.Web]: true,
+                        },
+                        packageType: {
+                            [PackageType.TopPackage]: true,
+                            [PackageType.MonoRoot]: true,
+                        },
                     },
                     '@stylistic/eslint-plugin': {
                         type: NpmDepType.Dev,
-                        env: [
-                            RuntimeEnv.Node,
-                            RuntimeEnv.Web,
-                        ],
-                        packageType: [
-                            PackageType.TopPackage,
-                            PackageType.MonoRoot,
-                        ],
+                        env: {
+                            [RuntimeEnv.Node]: true,
+                            [RuntimeEnv.Web]: true,
+                        },
+                        packageType: {
+                            [PackageType.TopPackage]: true,
+                            [PackageType.MonoRoot]: true,
+                        },
                     },
                     'eslint-plugin-monorepo-cop': {
                         type: NpmDepType.Dev,
-                        env: [
-                            RuntimeEnv.Node,
-                            RuntimeEnv.Web,
-                        ],
-                        packageType: [
-                            PackageType.TopPackage,
-                            PackageType.MonoRoot,
-                        ],
+                        env: {
+                            [RuntimeEnv.Node]: true,
+                            [RuntimeEnv.Web]: true,
+                        },
+                        packageType: {
+                            [PackageType.TopPackage]: true,
+                            [PackageType.MonoRoot]: true,
+                        },
                     },
                     '@stylistic/eslint-plugin-ts': {
                         type: NpmDepType.Dev,
-                        env: [
-                            RuntimeEnv.Node,
-                            RuntimeEnv.Web,
-                        ],
-                        packageType: [
-                            PackageType.TopPackage,
-                            PackageType.MonoRoot,
-                        ],
+                        env: {
+                            [RuntimeEnv.Node]: true,
+                            [RuntimeEnv.Web]: true,
+                        },
+                        packageType: {
+                            [PackageType.TopPackage]: true,
+                            [PackageType.MonoRoot]: true,
+                        },
                     },
                     '@typescript-eslint/eslint-plugin': {
                         type: NpmDepType.Dev,
-                        env: [
-                            RuntimeEnv.Node,
-                            RuntimeEnv.Web,
-                        ],
-                        packageType: [
-                            PackageType.TopPackage,
-                            PackageType.MonoRoot,
-                        ],
+                        env: {
+                            [RuntimeEnv.Node]: true,
+                            [RuntimeEnv.Web]: true,
+                        },
+                        packageType: {
+                            [PackageType.TopPackage]: true,
+                            [PackageType.MonoRoot]: true,
+                        },
                     },
                     'eslint-config-prettier': {
                         type: NpmDepType.Dev,
-                        env: [
-                            RuntimeEnv.Node,
-                            RuntimeEnv.Web,
-                        ],
-                        packageType: [
-                            PackageType.TopPackage,
-                            PackageType.MonoRoot,
-                        ],
+                        env: {
+                            [RuntimeEnv.Node]: true,
+                            [RuntimeEnv.Web]: true,
+                        },
+                        packageType: {
+                            [PackageType.TopPackage]: true,
+                            [PackageType.MonoRoot]: true,
+                        },
                     },
                     'eslint-plugin-jsdoc': {
                         type: NpmDepType.Dev,
-                        env: [
-                            RuntimeEnv.Node,
-                            RuntimeEnv.Web,
-                        ],
-                        packageType: [
-                            PackageType.TopPackage,
-                            PackageType.MonoRoot,
-                        ],
+                        env: {
+                            [RuntimeEnv.Node]: true,
+                            [RuntimeEnv.Web]: true,
+                        },
+                        packageType: {
+                            [PackageType.TopPackage]: true,
+                            [PackageType.MonoRoot]: true,
+                        },
                     },
                     'eslint-plugin-playwright': {
                         type: NpmDepType.Dev,
-                        env: [
-                            RuntimeEnv.Node,
-                            RuntimeEnv.Web,
-                        ],
-                        packageType: [
-                            PackageType.TopPackage,
-                            PackageType.MonoRoot,
-                        ],
+                        env: {
+                            [RuntimeEnv.Node]: true,
+                            [RuntimeEnv.Web]: true,
+                        },
+                        packageType: {
+                            [PackageType.TopPackage]: true,
+                            [PackageType.MonoRoot]: true,
+                        },
                     },
                     'eslint-plugin-prettier': {
                         type: NpmDepType.Dev,
-                        env: [
-                            RuntimeEnv.Node,
-                            RuntimeEnv.Web,
-                        ],
-                        packageType: [
-                            PackageType.TopPackage,
-                            PackageType.MonoRoot,
-                        ],
+                        env: {
+                            [RuntimeEnv.Node]: true,
+                            [RuntimeEnv.Web]: true,
+                        },
+                        packageType: {
+                            [PackageType.TopPackage]: true,
+                            [PackageType.MonoRoot]: true,
+                        },
                     },
                     'eslint-plugin-sonarjs': {
                         type: NpmDepType.Dev,
-                        env: [
-                            RuntimeEnv.Node,
-                            RuntimeEnv.Web,
-                        ],
-                        packageType: [
-                            PackageType.TopPackage,
-                            PackageType.MonoRoot,
-                        ],
+                        env: {
+                            [RuntimeEnv.Node]: true,
+                            [RuntimeEnv.Web]: true,
+                        },
+                        packageType: {
+                            [PackageType.TopPackage]: true,
+                            [PackageType.MonoRoot]: true,
+                        },
                     },
                     'typescript-eslint': {
                         type: NpmDepType.Dev,
-                        env: [
-                            RuntimeEnv.Node,
-                            RuntimeEnv.Web,
-                        ],
-                        packageType: [
-                            PackageType.TopPackage,
-                            PackageType.MonoRoot,
-                        ],
+                        env: {
+                            [RuntimeEnv.Node]: true,
+                            [RuntimeEnv.Web]: true,
+                        },
+                        packageType: {
+                            [PackageType.TopPackage]: true,
+                            [PackageType.MonoRoot]: true,
+                        },
                     },
                 },
             },

@@ -19,8 +19,8 @@ export type PluginNpmDeps = Record<
     string,
     {
         type: NpmDepType;
-        packageType: ReadonlyArray<PackageType>;
-        env: ReadonlyArray<RuntimeEnv>;
+        packageType: Partial<Record<PackageType, boolean>>;
+        env: Partial<Record<RuntimeEnv, boolean>>;
     }
 >;
 

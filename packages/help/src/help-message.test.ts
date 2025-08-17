@@ -316,18 +316,24 @@ describe(generateHelpMessage.name, () => {
                             someConfig: {
                                 copyFromPath: 'path',
                                 copyToPath: 'path',
-                                env: [RuntimeEnv.Node],
-                                packageType: [
-                                    PackageType.MonoPackage,
-                                ],
+                                env: {
+                                    [RuntimeEnv.Node]: true,
+                                },
+                                packageType: {
+                                    [PackageType.MonoPackage]: true,
+                                },
                                 required: true,
                                 configFlags: ['--flag'],
                             },
                         },
                         npmDeps: {
                             'element-vir': {
-                                env: [RuntimeEnv.Node],
-                                packageType: [PackageType.MonoPackage],
+                                env: {
+                                    [RuntimeEnv.Node]: true,
+                                },
+                                packageType: {
+                                    [PackageType.MonoPackage]: true,
+                                },
                                 type: NpmDepType.Dev,
                             },
                         },

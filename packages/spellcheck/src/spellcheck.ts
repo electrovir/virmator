@@ -33,14 +33,14 @@ export const virmatorSpellcheckPlugin = defineVirmatorPlugin(
                     cspell: {
                         copyToPath: 'cspell.config.cjs',
                         copyFromPath: join('configs', 'cspell.config.cjs'),
-                        env: [
-                            RuntimeEnv.Node,
-                            RuntimeEnv.Web,
-                        ],
-                        packageType: [
-                            PackageType.MonoRoot,
-                            PackageType.TopPackage,
-                        ],
+                        env: {
+                            [RuntimeEnv.Node]: true,
+                            [RuntimeEnv.Web]: true,
+                        },
+                        packageType: {
+                            [PackageType.MonoRoot]: true,
+                            [PackageType.TopPackage]: true,
+                        },
                         required: true,
                         configFlags: [
                             '-c',
@@ -50,14 +50,14 @@ export const virmatorSpellcheckPlugin = defineVirmatorPlugin(
                 },
                 npmDeps: {
                     cspell: {
-                        env: [
-                            RuntimeEnv.Node,
-                            RuntimeEnv.Web,
-                        ],
-                        packageType: [
-                            PackageType.MonoRoot,
-                            PackageType.TopPackage,
-                        ],
+                        env: {
+                            [RuntimeEnv.Node]: true,
+                            [RuntimeEnv.Web]: true,
+                        },
+                        packageType: {
+                            [PackageType.MonoRoot]: true,
+                            [PackageType.TopPackage]: true,
+                        },
                         type: NpmDepType.Dev,
                     },
                 },

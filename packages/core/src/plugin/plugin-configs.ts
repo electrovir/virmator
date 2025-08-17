@@ -15,9 +15,9 @@ export type VirmatorPluginConfigFile = {
     copyToPath: string;
 
     /** The environments in which this config should be used. */
-    env: RuntimeEnv[];
+    env: Partial<Record<RuntimeEnv, boolean>>;
     /** The package type for which this config should be used. */
-    packageType: PackageType[];
+    packageType: Partial<Record<PackageType, boolean>>;
     /**
      * If set to `true`, this config will be copied over every time the command is run, if the
      * config doesn't exist, unless `'--no-configs'` was set.

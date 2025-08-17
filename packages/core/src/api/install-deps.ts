@@ -4,6 +4,7 @@ import {
     awaitedForEach,
     getObjectTypedEntries,
     type Logger,
+    type RuntimeEnv,
 } from '@augment-vir/common';
 import {readPackageJson, runShellCommand} from '@augment-vir/node';
 import * as semver from 'semver';
@@ -24,6 +25,7 @@ export async function installPluginNpmDeps({
     pluginName: string;
     packageType: PackageType;
     log: Logger;
+    packageEnv: RuntimeEnv | undefined;
     usedCommands: Readonly<UsedVirmatorPluginCommands>;
 }): Promise<void> {
     const deps = flattenDeps(usedCommands);
@@ -52,6 +54,7 @@ export async function installNpmDeps({
     pluginPackagePath,
     pluginName,
     packageType,
+    packageEnv,
     log,
     deps,
 }: {
@@ -60,6 +63,7 @@ export async function installNpmDeps({
     pluginPackagePath: string;
     pluginName: string;
     packageType: PackageType;
+    packageEnv: RuntimeEnv | undefined;
     log: Logger;
     deps: Partial<PluginNpmDeps>;
 }): Promise<boolean> {
@@ -82,7 +86,10 @@ export async function installNpmDeps({
                 depOptions,
             ],
         ) => {
-            if (!depOptions.packageType.includes(packageType)) {
+            const matchesPackageType = depOptions.packageType[packageType];
+            const matchesPackageEnv = packageEnv ? depOptions.env[packageEnv] : true;
+
+            if (!matchesPackageType || !matchesPackageEnv) {
                 return accum;
             }
 

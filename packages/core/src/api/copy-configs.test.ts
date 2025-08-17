@@ -20,25 +20,25 @@ describe(flattenConfigs.name, () => {
                             tsconfigPackage: {
                                 copyFromPath: join('configs', 'tsconfig.package.json'),
                                 copyToPath: 'tsconfig.json',
-                                env: [
-                                    RuntimeEnv.Node,
-                                    RuntimeEnv.Web,
-                                ],
-                                packageType: [
-                                    PackageType.TopPackage,
-                                ],
+                                env: {
+                                    [RuntimeEnv.Node]: true,
+                                    [RuntimeEnv.Web]: true,
+                                },
+                                packageType: {
+                                    [PackageType.TopPackage]: true,
+                                },
                                 required: true,
                             },
                             tsconfigMono: {
                                 copyFromPath: join('configs', 'tsconfig.mono.json'),
                                 copyToPath: join('configs', 'tsconfig.base.json'),
-                                env: [
-                                    RuntimeEnv.Node,
-                                    RuntimeEnv.Web,
-                                ],
-                                packageType: [
-                                    PackageType.MonoRoot,
-                                ],
+                                env: {
+                                    [RuntimeEnv.Node]: true,
+                                    [RuntimeEnv.Web]: true,
+                                },
+                                packageType: {
+                                    [PackageType.MonoRoot]: true,
+                                },
                                 required: true,
                             },
                         },
@@ -52,13 +52,13 @@ describe(flattenConfigs.name, () => {
                             tsconfigPackage: {
                                 copyFromPath: join('configs', 'tsconfig.package.json'),
                                 copyToPath: 'tsconfig.json',
-                                env: [
-                                    RuntimeEnv.Node,
-                                    RuntimeEnv.Web,
-                                ],
-                                packageType: [
-                                    PackageType.TopPackage,
-                                ],
+                                env: {
+                                    [RuntimeEnv.Node]: true,
+                                    [RuntimeEnv.Web]: true,
+                                },
+                                packageType: {
+                                    [PackageType.TopPackage]: true,
+                                },
                                 fullCopyToPath: join('packages', 'compile', 'tsconfig.json'),
                                 fullCopyFromPath: join(
                                     'packages',
@@ -71,13 +71,13 @@ describe(flattenConfigs.name, () => {
                             tsconfigMono: {
                                 copyFromPath: join('configs', 'tsconfig.mono.json'),
                                 copyToPath: join('configs', 'tsconfig.base.json'),
-                                env: [
-                                    RuntimeEnv.Node,
-                                    RuntimeEnv.Web,
-                                ],
-                                packageType: [
-                                    PackageType.MonoRoot,
-                                ],
+                                env: {
+                                    [RuntimeEnv.Node]: true,
+                                    [RuntimeEnv.Web]: true,
+                                },
+                                packageType: {
+                                    [PackageType.MonoRoot]: true,
+                                },
                                 fullCopyToPath: join(
                                     'packages',
                                     'compile',
@@ -100,13 +100,13 @@ describe(flattenConfigs.name, () => {
                 {
                     copyFromPath: join('configs', 'tsconfig.package.json'),
                     copyToPath: 'tsconfig.json',
-                    env: [
-                        RuntimeEnv.Node,
-                        RuntimeEnv.Web,
-                    ],
-                    packageType: [
-                        PackageType.TopPackage,
-                    ],
+                    env: {
+                        [RuntimeEnv.Node]: true,
+                        [RuntimeEnv.Web]: true,
+                    },
+                    packageType: {
+                        [PackageType.TopPackage]: true,
+                    },
                     fullCopyToPath: join('packages', 'compile', 'tsconfig.json'),
                     fullCopyFromPath: join(
                         'packages',
@@ -119,13 +119,13 @@ describe(flattenConfigs.name, () => {
                 {
                     copyFromPath: join('configs', 'tsconfig.mono.json'),
                     copyToPath: join('configs', 'tsconfig.base.json'),
-                    env: [
-                        RuntimeEnv.Node,
-                        RuntimeEnv.Web,
-                    ],
-                    packageType: [
-                        PackageType.MonoRoot,
-                    ],
+                    env: {
+                        [RuntimeEnv.Node]: true,
+                        [RuntimeEnv.Web]: true,
+                    },
+                    packageType: {
+                        [PackageType.MonoRoot]: true,
+                    },
                     fullCopyToPath: join('packages', 'compile', 'configs', 'tsconfig.base.json'),
                     fullCopyFromPath: join('packages', 'compile', 'configs', 'tsconfig.mono.json'),
                     required: true,
@@ -167,14 +167,14 @@ describe(flattenConfigs.name, () => {
                                     depCruiser: {
                                         copyFromPath: join('configs', 'dep-cruiser.config.ts'),
                                         copyToPath: join('configs', 'dep-cruiser.config.ts'),
-                                        env: [
-                                            RuntimeEnv.Node,
-                                            RuntimeEnv.Web,
-                                        ],
-                                        packageType: [
-                                            PackageType.MonoRoot,
-                                            PackageType.TopPackage,
-                                        ],
+                                        env: {
+                                            [RuntimeEnv.Node]: true,
+                                            [RuntimeEnv.Web]: true,
+                                        },
+                                        packageType: {
+                                            [PackageType.MonoRoot]: true,
+                                            [PackageType.TopPackage]: true,
+                                        },
                                         required: true,
                                     },
                                 },
@@ -193,14 +193,14 @@ describe(flattenConfigs.name, () => {
                                     depCruiser: {
                                         copyFromPath: join('configs', 'dep-cruiser.config.ts'),
                                         copyToPath: join('configs', 'dep-cruiser.config.ts'),
-                                        env: [
-                                            RuntimeEnv.Node,
-                                            RuntimeEnv.Web,
-                                        ],
-                                        packageType: [
-                                            PackageType.MonoRoot,
-                                            PackageType.TopPackage,
-                                        ],
+                                        env: {
+                                            [RuntimeEnv.Node]: true,
+                                            [RuntimeEnv.Web]: true,
+                                        },
+                                        packageType: {
+                                            [PackageType.MonoRoot]: true,
+                                            [PackageType.TopPackage]: true,
+                                        },
                                         fullCopyToPath: join(
                                             'packages',
                                             'deps',
@@ -241,14 +241,14 @@ describe(flattenConfigs.name, () => {
                         'configs',
                         'dep-cruiser.config.ts',
                     ),
-                    env: [
-                        RuntimeEnv.Node,
-                        RuntimeEnv.Web,
-                    ],
-                    packageType: [
-                        PackageType.MonoRoot,
-                        PackageType.TopPackage,
-                    ],
+                    env: {
+                        [RuntimeEnv.Node]: true,
+                        [RuntimeEnv.Web]: true,
+                    },
+                    packageType: {
+                        [PackageType.MonoRoot]: true,
+                        [PackageType.TopPackage]: true,
+                    },
                     required: true,
                 },
             ],

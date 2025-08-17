@@ -63,8 +63,8 @@ export async function copyPluginConfigs(
             return;
         } else if (
             packageType === PackageType.MonoRoot &&
-            !config.packageType.includes(PackageType.MonoRoot) &&
-            config.packageType.includes(PackageType.MonoPackage)
+            !config.packageType[PackageType.MonoRoot] &&
+            config.packageType[PackageType.MonoPackage]
         ) {
             await Promise.all(
                 monoRepoPackages.map(async (repoPackage) => {
@@ -77,7 +77,7 @@ export async function copyPluginConfigs(
                     );
                 }),
             );
-        } else if (!config.required || !config.packageType.includes(packageType)) {
+        } else if (!config.required || !config.packageType[packageType]) {
             return;
         } else {
             await copyConfigFile(config, log);

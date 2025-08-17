@@ -2,7 +2,6 @@ import {check} from '@augment-vir/assert';
 import {
     awaitedBlockingMap,
     extractErrorMessage,
-    filterMap,
     log,
     logColors,
     log as logImport,
@@ -13,15 +12,18 @@ import {
     type PartialWithUndefined,
 } from '@augment-vir/common';
 import {readPackageJson, runShellCommand} from '@augment-vir/node';
-import chalk from 'chalk';
-import concurrently, {type CloseEvent, type ConcurrentlyCommandInput} from 'concurrently';
 import {getRelativePosixPackagePathsInDependencyOrder} from 'mono-vir';
 import {cpus} from 'node:os';
 import {join, resolve} from 'node:path';
+import {
+    createCommandLogPrefix,
+    getColorKeyByIndex,
+    KillOn,
+    runCommands,
+    type Command,
+} from 'runstorm';
 import {type PackageJson} from 'type-fest';
 import {findClosestPackageDir} from '../augments/index.js';
-import {CallbackWritable} from '../augments/stream/callback-writable.js';
-import {getTerminalColor} from '../colors.js';
 import {hideNoTraceTraces, VirmatorNoTraceError} from '../errors/virmator-no-trace.error.js';
 import {type VirmatorPluginResolvedConfigFile} from '../plugin/plugin-configs.js';
 import {PackageType} from '../plugin/plugin-env.js';
@@ -303,13 +305,14 @@ export async function executeVirmatorCommand({
 
             return result;
         },
-        async runInstallDeps(deps) {
+        async runInstallDeps(deps, packageEnv) {
             await installNpmDeps({
                 deps,
                 cwdPackageJson,
                 cwdPackagePath,
                 log,
                 packageType,
+                packageEnv,
                 pluginName: plugin.name,
                 pluginPackagePath,
             });
@@ -323,15 +326,11 @@ export async function executeVirmatorCommand({
                 );
             }
 
-            const commands: Exclude<ConcurrentlyCommandInput, string>[] = (
+            const commands: Command[] = (
                 await awaitedBlockingMap(
                     monoRepoPackages,
-                    async (
-                        monoRepoPackage,
-                        index,
-                    ): Promise<Exclude<ConcurrentlyCommandInput, string> | undefined> => {
-                        const colorString = getTerminalColor(index);
-                        const color = chalk[colorString];
+                    async (monoRepoPackage, index): Promise<Command | undefined> => {
+                        const color = getColorKeyByIndex(index);
                         const absolutePackagePath = join(cwd, monoRepoPackage.relativePath);
                         const command = await generateCliCommandString({
                             packageCwd: absolutePackagePath,
@@ -342,57 +341,35 @@ export async function executeVirmatorCommand({
                         if (!command) {
                             return undefined;
                         }
-                        const prefix = color(`[${monoRepoPackage.packageName}]`);
-                        log.faint(`${prefix}${logColors.faint} > ${command}`);
+                        const prefix = createCommandLogPrefix({
+                            color,
+                            name: monoRepoPackage.packageName,
+                        });
+                        log.faint(`${prefix}${logColors.faint}> ${command}`);
                         return {
                             command,
                             cwd: absolutePackagePath,
                             name: monoRepoPackage.packageName,
-                            prefixColor: colorString,
+                            color,
                         };
                     },
                 )
             ).filter(check.isTruthy);
 
-            const writeStream = new CallbackWritable(log);
-
-            /** Force concurrently to use color even though it's being run as a subscript. */
-            process.env.FORCE_COLOR = '2';
-
-            let concurrentlyResults: ReadonlyArray<CloseEvent> = [];
-            let failed = false;
-
-            try {
-                if (commands.length) {
-                    concurrentlyResults = await concurrently(commands, {
-                        killOthers: 'failure',
-                        outputStream: writeStream,
-                        maxProcesses: maxProcesses || outerMaxProcesses,
-                    }).result;
-                }
-            } catch (error) {
-                failed = true;
-                if (Array.isArray(error)) {
-                    concurrentlyResults = error;
-                } else {
-                    throw error;
-                }
-            }
-
-            if (!failed) {
+            if (!commands.length) {
                 return;
             }
-
-            const failedCommandNames = filterMap(
-                concurrentlyResults,
-                (result) => result.command.name,
-                (commandName, result) => {
-                    return result.exitCode !== 0 && !result.killed;
+            const {highestExitCode} = await runCommands(commands, {
+                killOn: KillOn.Failure,
+                loggers: {
+                    stderr: log.error,
+                    stdout: log.plain,
                 },
-            );
+                maxConcurrency: maxProcesses || outerMaxProcesses,
+            });
 
-            if (failedCommandNames.length) {
-                throw new VirmatorNoTraceError(`${failedCommandNames.join(', ')} failed.`);
+            if (highestExitCode) {
+                throw new VirmatorNoTraceError(`Exited with ${highestExitCode}.`);
             }
         },
     };
@@ -416,6 +393,7 @@ export async function executeVirmatorCommand({
             pluginName: plugin.name,
             pluginPackagePath,
             usedCommands: args.usedCommands,
+            packageEnv: undefined,
         });
     }
 

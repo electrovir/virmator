@@ -8,10 +8,10 @@ import {
 } from '@augment-vir/common';
 import {readPackageJson} from '@augment-vir/node';
 import {defineVirmatorPlugin, NpmDepType, PackageType, VirmatorNoTraceError} from '@virmator/core';
-import {type ChalkInstance} from 'chalk';
 import mri from 'mri';
 import {basename, join} from 'node:path';
 import {pathToFileURL} from 'node:url';
+import {createCommandLogPrefix, type ColorKey} from 'runstorm';
 import {type PartialDeep} from 'type-fest';
 import type * as Typedoc from 'typedoc';
 
@@ -56,40 +56,40 @@ export const virmatorDocsPlugin = defineVirmatorPlugin(
                     typedoc: {
                         copyFromPath: join('configs', 'typedoc.config.share.ts'),
                         copyToPath: join('configs', 'typedoc.config.ts'),
-                        env: [
-                            RuntimeEnv.Node,
-                            RuntimeEnv.Web,
-                        ],
-                        packageType: [
-                            PackageType.TopPackage,
-                            PackageType.MonoPackage,
-                        ],
+                        env: {
+                            [RuntimeEnv.Node]: true,
+                            [RuntimeEnv.Web]: true,
+                        },
+                        packageType: {
+                            [PackageType.TopPackage]: true,
+                            [PackageType.MonoPackage]: true,
+                        },
                         required: true,
                     },
                 },
                 npmDeps: {
                     'markdown-code-example-inserter': {
                         type: NpmDepType.Dev,
-                        env: [
-                            RuntimeEnv.Node,
-                            RuntimeEnv.Web,
-                        ],
-                        packageType: [
-                            PackageType.TopPackage,
-                            PackageType.MonoPackage,
-                            PackageType.MonoRoot,
-                        ],
+                        env: {
+                            [RuntimeEnv.Node]: true,
+                            [RuntimeEnv.Web]: true,
+                        },
+                        packageType: {
+                            [PackageType.TopPackage]: true,
+                            [PackageType.MonoPackage]: true,
+                            [PackageType.MonoRoot]: true,
+                        },
                     },
                     typedoc: {
                         type: NpmDepType.Dev,
-                        env: [
-                            RuntimeEnv.Node,
-                            RuntimeEnv.Web,
-                        ],
-                        packageType: [
-                            PackageType.TopPackage,
-                            PackageType.MonoPackage,
-                        ],
+                        env: {
+                            [RuntimeEnv.Node]: true,
+                            [RuntimeEnv.Web]: true,
+                        },
+                        packageType: {
+                            [PackageType.TopPackage]: true,
+                            [PackageType.MonoPackage]: true,
+                        },
                     },
                 },
             },
@@ -123,14 +123,17 @@ export const virmatorDocsPlugin = defineVirmatorPlugin(
         async function runDocs(
             packageDir: string,
             packageName: string,
-            color: ChalkInstance | undefined,
+            color: ColorKey | undefined,
         ) {
             try {
                 await runShellCommand(
                     mdCodeCommand,
                     {cwd: packageDir},
                     {
-                        logPrefix: color && packageName ? color(`[${packageName}] `) : undefined,
+                        logPrefix:
+                            color && packageName
+                                ? createCommandLogPrefix({name: packageName, color})
+                                : undefined,
                         logTransform: {
                             stderr: (stderrInput) =>
                                 stderrInput.replace(

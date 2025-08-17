@@ -61,13 +61,13 @@ export const virmatorFrontendPlugin = defineVirmatorPlugin(
                     vite: {
                         copyFromPath: join('configs', 'vite.config.ts'),
                         copyToPath: join('configs', 'vite.config.ts'),
-                        env: [
-                            RuntimeEnv.Web,
-                        ],
-                        packageType: [
-                            PackageType.TopPackage,
-                            PackageType.MonoPackage,
-                        ],
+                        env: {
+                            [RuntimeEnv.Web]: true,
+                        },
+                        packageType: {
+                            [PackageType.TopPackage]: true,
+                            [PackageType.MonoPackage]: true,
+                        },
                         required: true,
                         configFlags: ['--config'],
                     },
@@ -75,23 +75,23 @@ export const virmatorFrontendPlugin = defineVirmatorPlugin(
                 npmDeps: {
                     typescript: {
                         type: NpmDepType.Dev,
-                        env: [
-                            RuntimeEnv.Web,
-                        ],
-                        packageType: [
-                            PackageType.MonoPackage,
-                            PackageType.TopPackage,
-                        ],
+                        env: {
+                            [RuntimeEnv.Web]: true,
+                        },
+                        packageType: {
+                            [PackageType.MonoPackage]: true,
+                            [PackageType.TopPackage]: true,
+                        },
                     },
                     vite: {
                         type: NpmDepType.Dev,
-                        env: [
-                            RuntimeEnv.Web,
-                        ],
-                        packageType: [
-                            PackageType.MonoPackage,
-                            PackageType.TopPackage,
-                        ],
+                        env: {
+                            [RuntimeEnv.Web]: true,
+                        },
+                        packageType: {
+                            [PackageType.MonoPackage]: true,
+                            [PackageType.TopPackage]: true,
+                        },
                     },
                 },
             },

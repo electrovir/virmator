@@ -63,40 +63,40 @@ export const virmatorDepsPlugin = defineVirmatorPlugin(
                             depCruiser: {
                                 copyFromPath: join('configs', 'dep-cruiser.config.cts'),
                                 copyToPath: join('configs', 'dep-cruiser.config.cts'),
-                                env: [
-                                    RuntimeEnv.Node,
-                                    RuntimeEnv.Web,
-                                ],
-                                packageType: [
-                                    PackageType.TopPackage,
-                                    PackageType.MonoRoot,
-                                ],
+                                env: {
+                                    [RuntimeEnv.Node]: true,
+                                    [RuntimeEnv.Web]: true,
+                                },
+                                packageType: {
+                                    [PackageType.TopPackage]: true,
+                                    [PackageType.MonoRoot]: true,
+                                },
                                 required: true,
                             },
                         },
                         npmDeps: {
                             'dependency-cruiser': {
                                 type: NpmDepType.Dev,
-                                env: [
-                                    RuntimeEnv.Node,
-                                    RuntimeEnv.Web,
-                                ],
-                                packageType: [
-                                    PackageType.TopPackage,
-                                    PackageType.MonoRoot,
-                                ],
+                                env: {
+                                    [RuntimeEnv.Node]: true,
+                                    [RuntimeEnv.Web]: true,
+                                },
+                                packageType: {
+                                    [PackageType.TopPackage]: true,
+                                    [PackageType.MonoRoot]: true,
+                                },
                             },
                             /** Needed to compile the TS dep-cruiser config file. */
                             esbuild: {
                                 type: NpmDepType.Dev,
-                                env: [
-                                    RuntimeEnv.Node,
-                                    RuntimeEnv.Web,
-                                ],
-                                packageType: [
-                                    PackageType.TopPackage,
-                                    PackageType.MonoRoot,
-                                ],
+                                env: {
+                                    [RuntimeEnv.Node]: true,
+                                    [RuntimeEnv.Web]: true,
+                                },
+                                packageType: {
+                                    [PackageType.TopPackage]: true,
+                                    [PackageType.MonoRoot]: true,
+                                },
                             },
                         },
                     },
@@ -119,14 +119,14 @@ export const virmatorDepsPlugin = defineVirmatorPlugin(
                             ncu: {
                                 copyFromPath: join('configs', 'ncu.config.ts'),
                                 copyToPath: join('configs', 'ncu.config.ts'),
-                                env: [
-                                    RuntimeEnv.Node,
-                                    RuntimeEnv.Web,
-                                ],
-                                packageType: [
-                                    PackageType.MonoRoot,
-                                    PackageType.TopPackage,
-                                ],
+                                env: {
+                                    [RuntimeEnv.Node]: true,
+                                    [RuntimeEnv.Web]: true,
+                                },
+                                packageType: {
+                                    [PackageType.MonoRoot]: true,
+                                    [PackageType.TopPackage]: true,
+                                },
                                 required: true,
                                 configFlags: ['--config'],
                             },
@@ -134,14 +134,14 @@ export const virmatorDepsPlugin = defineVirmatorPlugin(
                         npmDeps: {
                             'npm-check-updates': {
                                 type: NpmDepType.Dev,
-                                env: [
-                                    RuntimeEnv.Node,
-                                    RuntimeEnv.Web,
-                                ],
-                                packageType: [
-                                    PackageType.TopPackage,
-                                    PackageType.MonoRoot,
-                                ],
+                                env: {
+                                    [RuntimeEnv.Node]: true,
+                                    [RuntimeEnv.Web]: true,
+                                },
+                                packageType: {
+                                    [PackageType.TopPackage]: true,
+                                    [PackageType.MonoRoot]: true,
+                                },
                             },
                         },
                     },

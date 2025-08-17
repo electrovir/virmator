@@ -45,40 +45,40 @@ describe(calculateUsedCommands.name, () => {
                                     depCruiser: {
                                         copyFromPath: join('configs', 'dep-cruiser.config.ts'),
                                         copyToPath: join('configs', 'dep-cruiser.config.ts'),
-                                        env: [
-                                            RuntimeEnv.Node,
-                                            RuntimeEnv.Web,
-                                        ],
-                                        packageType: [
-                                            PackageType.TopPackage,
-                                            PackageType.MonoRoot,
-                                        ],
+                                        env: {
+                                            [RuntimeEnv.Node]: true,
+                                            [RuntimeEnv.Web]: true,
+                                        },
+                                        packageType: {
+                                            [PackageType.TopPackage]: true,
+                                            [PackageType.MonoRoot]: true,
+                                        },
                                         required: true,
                                     },
                                 },
                                 npmDeps: {
                                     'dependency-cruiser': {
                                         type: NpmDepType.Dev,
-                                        env: [
-                                            RuntimeEnv.Node,
-                                            RuntimeEnv.Web,
-                                        ],
-                                        packageType: [
-                                            PackageType.TopPackage,
-                                            PackageType.MonoRoot,
-                                        ],
+                                        env: {
+                                            [RuntimeEnv.Node]: true,
+                                            [RuntimeEnv.Web]: true,
+                                        },
+                                        packageType: {
+                                            [PackageType.TopPackage]: true,
+                                            [PackageType.MonoRoot]: true,
+                                        },
                                     },
                                     /** Needed to compile the TS dep-cruiser config file. */
                                     esbuild: {
                                         type: NpmDepType.Dev,
-                                        env: [
-                                            RuntimeEnv.Node,
-                                            RuntimeEnv.Web,
-                                        ],
-                                        packageType: [
-                                            PackageType.TopPackage,
-                                            PackageType.MonoRoot,
-                                        ],
+                                        env: {
+                                            [RuntimeEnv.Node]: true,
+                                            [RuntimeEnv.Web]: true,
+                                        },
+                                        packageType: {
+                                            [PackageType.TopPackage]: true,
+                                            [PackageType.MonoRoot]: true,
+                                        },
                                     },
                                 },
                             },
@@ -91,14 +91,14 @@ describe(calculateUsedCommands.name, () => {
                                 npmDeps: {
                                     'npm-check-updates': {
                                         type: NpmDepType.Dev,
-                                        env: [
-                                            RuntimeEnv.Node,
-                                            RuntimeEnv.Web,
-                                        ],
-                                        packageType: [
-                                            PackageType.TopPackage,
-                                            PackageType.MonoRoot,
-                                        ],
+                                        env: {
+                                            [RuntimeEnv.Node]: true,
+                                            [RuntimeEnv.Web]: true,
+                                        },
+                                        packageType: {
+                                            [PackageType.TopPackage]: true,
+                                            [PackageType.MonoRoot]: true,
+                                        },
                                     },
                                 },
                             },
@@ -133,14 +133,14 @@ describe(calculateUsedCommands.name, () => {
                                 depCruiser: {
                                     copyFromPath: join('configs', 'dep-cruiser.config.ts'),
                                     copyToPath: join('configs', 'dep-cruiser.config.ts'),
-                                    env: [
-                                        'node',
-                                        'web',
-                                    ],
-                                    packageType: [
-                                        'top-level-package',
-                                        'mono-root',
-                                    ],
+                                    env: {
+                                        node: true,
+                                        web: true,
+                                    },
+                                    packageType: {
+                                        'top-level-package': true,
+                                        'mono-root': true,
+                                    },
                                     required: true,
                                 },
                             },
@@ -158,25 +158,25 @@ describe(calculateUsedCommands.name, () => {
                             },
                             npmDeps: {
                                 'dependency-cruiser': {
-                                    env: [
-                                        'node',
-                                        'web',
-                                    ],
-                                    packageType: [
-                                        'top-level-package',
-                                        'mono-root',
-                                    ],
+                                    env: {
+                                        node: true,
+                                        web: true,
+                                    },
+                                    packageType: {
+                                        'top-level-package': true,
+                                        'mono-root': true,
+                                    },
                                     type: 'dev',
                                 },
                                 esbuild: {
-                                    env: [
-                                        'node',
-                                        'web',
-                                    ],
-                                    packageType: [
-                                        'top-level-package',
-                                        'mono-root',
-                                    ],
+                                    env: {
+                                        node: true,
+                                        web: true,
+                                    },
+                                    packageType: {
+                                        'top-level-package': true,
+                                        'mono-root': true,
+                                    },
                                     type: 'dev',
                                 },
                             },

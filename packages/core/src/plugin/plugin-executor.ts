@@ -4,10 +4,11 @@ import {
     type LogOutputType,
     type MaybePromise,
     type PartialWithUndefined,
+    type RuntimeEnv,
     type TypedFunction,
 } from '@augment-vir/common';
 import {type runShellCommand} from '@augment-vir/node';
-import {type ChalkInstance} from 'chalk';
+import {type ColorKey} from 'runstorm';
 import {type EmptyObject, type PackageJson, type SetRequired} from 'type-fest';
 import {type VirmatorPluginResolvedConfigFile} from './plugin-configs.js';
 import {type PackageType} from './plugin-env.js';
@@ -66,7 +67,7 @@ export type RunPerPackage = (
     generateCliCommandString: (params: {
         packageCwd: string;
         packageName: string;
-        color: ChalkInstance;
+        color: ColorKey;
     }) => MaybePromise<string | undefined>,
     maxProcesses?: number | undefined,
 ) => Promise<void>;
@@ -127,7 +128,10 @@ export type VirmatorPluginExecutorParams<
     /** Runs the given command for each package within a mono repo, if it has any. */
     runPerPackage: RunPerPackage;
     /** Installs the given list of deps within the current package directory. */
-    runInstallDeps: (deps: Readonly<Partial<PluginNpmDeps>>) => Promise<void>;
+    runInstallDeps: (
+        deps: Readonly<Partial<PluginNpmDeps>>,
+        packageEnv: RuntimeEnv,
+    ) => Promise<void>;
 
     log: Logger;
 

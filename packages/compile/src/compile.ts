@@ -8,9 +8,9 @@ import {
     parseTsConfig,
     type VirmatorPluginExecutorParams,
 } from '@virmator/core';
-import {type ChalkInstance} from 'chalk';
 import {rm} from 'node:fs/promises';
 import {basename, join} from 'node:path';
+import {type ColorKey, createCommandLogPrefix} from 'runstorm';
 
 /** A virmator plugin for compiling TypeScript. */
 export const virmatorCompilePlugin = defineVirmatorPlugin(
@@ -44,60 +44,60 @@ export const virmatorCompilePlugin = defineVirmatorPlugin(
                     tsconfigPackage: {
                         copyFromPath: join('configs', 'tsconfig.package.json'),
                         copyToPath: 'tsconfig.json',
-                        env: [
-                            RuntimeEnv.Node,
-                            RuntimeEnv.Web,
-                        ],
-                        packageType: [
-                            PackageType.TopPackage,
-                        ],
+                        env: {
+                            [RuntimeEnv.Node]: true,
+                            [RuntimeEnv.Web]: true,
+                        },
+                        packageType: {
+                            [PackageType.TopPackage]: true,
+                        },
                         required: true,
                     },
                     tsconfigMonoPackage: {
                         copyFromPath: join('configs', 'tsconfig.mono-package.json'),
                         copyToPath: 'tsconfig.json',
-                        env: [
-                            RuntimeEnv.Node,
-                            RuntimeEnv.Web,
-                        ],
-                        packageType: [
-                            PackageType.MonoPackage,
-                        ],
+                        env: {
+                            [RuntimeEnv.Node]: true,
+                            [RuntimeEnv.Web]: true,
+                        },
+                        packageType: {
+                            [PackageType.MonoPackage]: true,
+                        },
                         required: true,
                     },
                     tsconfigMono: {
                         copyFromPath: join('configs', 'tsconfig.mono.json'),
                         copyToPath: join('configs', 'tsconfig.base.json'),
-                        env: [
-                            RuntimeEnv.Node,
-                            RuntimeEnv.Web,
-                        ],
-                        packageType: [
-                            PackageType.MonoRoot,
-                        ],
+                        env: {
+                            [RuntimeEnv.Node]: true,
+                            [RuntimeEnv.Web]: true,
+                        },
+                        packageType: {
+                            [PackageType.MonoRoot]: true,
+                        },
                         required: true,
                     },
                 },
                 npmDeps: {
                     typescript: {
                         type: NpmDepType.Dev,
-                        env: [
-                            RuntimeEnv.Node,
-                            RuntimeEnv.Web,
-                        ],
-                        packageType: [
-                            PackageType.TopPackage,
-                        ],
+                        env: {
+                            [RuntimeEnv.Node]: true,
+                            [RuntimeEnv.Web]: true,
+                        },
+                        packageType: {
+                            [PackageType.TopPackage]: true,
+                        },
                     },
                     'mono-vir': {
                         type: NpmDepType.Dev,
-                        env: [
-                            RuntimeEnv.Node,
-                            RuntimeEnv.Web,
-                        ],
-                        packageType: [
-                            PackageType.MonoRoot,
-                        ],
+                        env: {
+                            [RuntimeEnv.Node]: true,
+                            [RuntimeEnv.Web]: true,
+                        },
+                        packageType: {
+                            [PackageType.MonoRoot]: true,
+                        },
                     },
                 },
             },
@@ -146,17 +146,19 @@ export const virmatorCompilePlugin = defineVirmatorPlugin(
 async function createCompileCommandString(
     {cwd, cliInputs, log}: Pick<VirmatorPluginExecutorParams<any>, 'cwd' | 'cliInputs' | 'log'>,
     packageName: string | undefined,
-    prefixColor?: ChalkInstance,
+    color?: ColorKey | undefined,
 ): Promise<string> {
     const tsconfig = parseTsConfig(cwd);
     const outDir = tsconfig?.options.outDir;
 
     const logPrefix =
-        packageName && prefixColor
+        packageName && color
             ? [
-                  prefixColor(`[${packageName}]`),
+                  createCommandLogPrefix({
+                      name: packageName,
+                      color,
+                  }),
                   logColors.faint,
-                  ' ',
               ].join('')
             : '';
 

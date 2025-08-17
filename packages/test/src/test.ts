@@ -39,27 +39,27 @@ export const virmatorTestPlugin = defineVirmatorPlugin(
                 },
                 npmDeps: {
                     '@augment-vir/test': {
-                        env: [
-                            RuntimeEnv.Node,
-                            RuntimeEnv.Web,
-                        ],
-                        packageType: [
-                            PackageType.MonoPackage,
-                            PackageType.MonoRoot,
-                            PackageType.TopPackage,
-                        ],
+                        env: {
+                            [RuntimeEnv.Node]: true,
+                            [RuntimeEnv.Web]: true,
+                        },
+                        packageType: {
+                            [PackageType.MonoPackage]: true,
+                            [PackageType.MonoRoot]: true,
+                            [PackageType.TopPackage]: true,
+                        },
                         type: NpmDepType.Dev,
                     },
                     '@augment-vir/assert': {
-                        env: [
-                            RuntimeEnv.Node,
-                            RuntimeEnv.Web,
-                        ],
-                        packageType: [
-                            PackageType.MonoPackage,
-                            PackageType.MonoRoot,
-                            PackageType.TopPackage,
-                        ],
+                        env: {
+                            [RuntimeEnv.Node]: true,
+                            [RuntimeEnv.Web]: true,
+                        },
+                        packageType: {
+                            [PackageType.MonoPackage]: true,
+                            [PackageType.MonoRoot]: true,
+                            [PackageType.TopPackage]: true,
+                        },
                         type: NpmDepType.Regular,
                     },
                 },
@@ -111,13 +111,13 @@ export const virmatorTestPlugin = defineVirmatorPlugin(
                             webTestRunner: {
                                 copyFromPath: join('configs', 'web-test-runner.config.mjs'),
                                 copyToPath: join('configs', 'web-test-runner.config.mjs'),
-                                env: [
-                                    RuntimeEnv.Web,
-                                ],
-                                packageType: [
-                                    PackageType.MonoPackage,
-                                    PackageType.TopPackage,
-                                ],
+                                env: {
+                                    [RuntimeEnv.Web]: true,
+                                },
+                                packageType: {
+                                    [PackageType.MonoPackage]: true,
+                                    [PackageType.TopPackage]: true,
+                                },
                                 required: true,
                                 configFlags: ['--config'],
                             },
@@ -125,63 +125,63 @@ export const virmatorTestPlugin = defineVirmatorPlugin(
                         extraInstallCommand: 'npx playwright install --with-deps',
                         npmDeps: {
                             '@web/dev-server-esbuild': {
-                                env: [
-                                    RuntimeEnv.Web,
-                                ],
-                                packageType: [
-                                    PackageType.MonoPackage,
-                                    PackageType.TopPackage,
-                                ],
+                                env: {
+                                    [RuntimeEnv.Web]: true,
+                                },
+                                packageType: {
+                                    [PackageType.MonoPackage]: true,
+                                    [PackageType.TopPackage]: true,
+                                },
                                 type: NpmDepType.Dev,
                             },
                             '@web/test-runner-commands': {
-                                env: [
-                                    RuntimeEnv.Web,
-                                ],
-                                packageType: [
-                                    PackageType.MonoPackage,
-                                    PackageType.TopPackage,
-                                ],
+                                env: {
+                                    [RuntimeEnv.Web]: true,
+                                },
+                                packageType: {
+                                    [PackageType.MonoPackage]: true,
+                                    [PackageType.TopPackage]: true,
+                                },
                                 type: NpmDepType.Dev,
                             },
                             '@web/test-runner-playwright': {
-                                env: [
-                                    RuntimeEnv.Web,
-                                ],
-                                packageType: [
-                                    PackageType.MonoPackage,
-                                    PackageType.TopPackage,
-                                ],
+                                env: {
+                                    [RuntimeEnv.Web]: true,
+                                },
+                                packageType: {
+                                    [PackageType.MonoPackage]: true,
+                                    [PackageType.TopPackage]: true,
+                                },
                                 type: NpmDepType.Dev,
                             },
                             '@web/test-runner-visual-regression': {
-                                env: [
-                                    RuntimeEnv.Web,
-                                ],
-                                packageType: [
-                                    PackageType.MonoPackage,
-                                    PackageType.TopPackage,
-                                ],
+                                env: {
+                                    [RuntimeEnv.Web]: true,
+                                },
+                                packageType: {
+                                    [PackageType.MonoPackage]: true,
+                                    [PackageType.TopPackage]: true,
+                                },
                                 type: NpmDepType.Dev,
                             },
                             '@web/test-runner': {
-                                env: [
-                                    RuntimeEnv.Web,
-                                ],
-                                packageType: [
-                                    PackageType.MonoPackage,
-                                    PackageType.TopPackage,
-                                ],
+                                env: {
+                                    [RuntimeEnv.Web]: true,
+                                },
+                                packageType: {
+                                    [PackageType.MonoPackage]: true,
+                                    [PackageType.TopPackage]: true,
+                                },
                                 type: NpmDepType.Dev,
                             },
                             'istanbul-smart-text-reporter': {
-                                env: [
-                                    RuntimeEnv.Web,
-                                ],
-                                packageType: [
-                                    PackageType.MonoPackage,
-                                    PackageType.TopPackage,
-                                ],
+                                env: {
+                                    [RuntimeEnv.Web]: true,
+                                },
+                                packageType: {
+                                    [PackageType.MonoPackage]: true,
+                                    [PackageType.TopPackage]: true,
+                                },
                                 type: NpmDepType.Dev,
                             },
                         },
@@ -217,45 +217,45 @@ export const virmatorTestPlugin = defineVirmatorPlugin(
                                     c8: {
                                         copyFromPath: join('configs', 'c8.config.json'),
                                         copyToPath: join('configs', 'c8.config.json'),
-                                        env: [
-                                            RuntimeEnv.Node,
-                                        ],
-                                        packageType: [
-                                            PackageType.MonoPackage,
-                                            PackageType.TopPackage,
-                                        ],
+                                        env: {
+                                            [RuntimeEnv.Node]: true,
+                                        },
+                                        packageType: {
+                                            [PackageType.MonoPackage]: true,
+                                            [PackageType.TopPackage]: true,
+                                        },
                                         required: true,
                                     },
                                 },
                                 npmDeps: {
                                     c8: {
-                                        env: [
-                                            RuntimeEnv.Node,
-                                        ],
-                                        packageType: [
-                                            PackageType.MonoPackage,
-                                            PackageType.TopPackage,
-                                        ],
+                                        env: {
+                                            [RuntimeEnv.Node]: true,
+                                        },
+                                        packageType: {
+                                            [PackageType.MonoPackage]: true,
+                                            [PackageType.TopPackage]: true,
+                                        },
                                         type: NpmDepType.Dev,
                                     },
                                     'istanbul-smart-text-reporter': {
-                                        env: [
-                                            RuntimeEnv.Node,
-                                        ],
-                                        packageType: [
-                                            PackageType.MonoPackage,
-                                            PackageType.TopPackage,
-                                        ],
+                                        env: {
+                                            [RuntimeEnv.Node]: true,
+                                        },
+                                        packageType: {
+                                            [PackageType.MonoPackage]: true,
+                                            [PackageType.TopPackage]: true,
+                                        },
                                         type: NpmDepType.Dev,
                                     },
                                     '@types/node': {
-                                        env: [
-                                            RuntimeEnv.Node,
-                                        ],
-                                        packageType: [
-                                            PackageType.MonoPackage,
-                                            PackageType.TopPackage,
-                                        ],
+                                        env: {
+                                            [RuntimeEnv.Node]: true,
+                                        },
+                                        packageType: {
+                                            [PackageType.MonoPackage]: true,
+                                            [PackageType.TopPackage]: true,
+                                        },
                                         type: NpmDepType.Dev,
                                     },
                                 },
@@ -288,22 +288,22 @@ export const virmatorTestPlugin = defineVirmatorPlugin(
         package: {packageType, monoRepoRootPath, cwdPackagePath},
     }) => {
         const args = mri(filteredArgs);
-        const extraArgs = filteredArgs.filter((arg) => !args._.includes(arg));
-        const flagArgs = extraArgs.filter((arg) => arg.startsWith('-'));
-        const positionArgs = extraArgs.filter((arg) => !arg.startsWith('-'));
+        const flagArgs = filteredArgs.filter((arg) => arg.startsWith('-'));
 
-        const fileArgs = positionArgs.map((arg) => {
-            const monoRepoRelativePath = join(monoRepoRootPath, arg);
-            /**
-             * Handle give test file paths that are relative to the mono repo rather than the
-             * current package.
-             */
-            if (existsSync(monoRepoRelativePath)) {
-                return relative(cwdPackagePath, monoRepoRelativePath);
-            } else {
-                return arg;
-            }
-        });
+        const fileArgs = filteredArgs
+            .filter((arg) => !arg.startsWith('-'))
+            .map((arg) => {
+                const monoRepoRelativePath = join(monoRepoRootPath, arg);
+                /**
+                 * Handle give test file paths that are relative to the mono repo rather than the
+                 * current package.
+                 */
+                if (existsSync(monoRepoRelativePath)) {
+                    return relative(cwdPackagePath, monoRepoRelativePath);
+                } else {
+                    return arg;
+                }
+            });
 
         if (packageType === PackageType.MonoRoot) {
             throw new VirmatorNoTraceError(
@@ -350,9 +350,9 @@ export const virmatorTestPlugin = defineVirmatorPlugin(
                     'web-test-runner',
                     '--color',
                     ...configArgs,
+                    ...flagArgs,
                     ...updateSnapshotsArgs,
                     includeCoverage ? '--coverage' : '',
-                    ...extraArgs,
                     ...fileArgs,
                 ]
                     .filter(check.isTruthy)
@@ -393,9 +393,8 @@ export const virmatorTestPlugin = defineVirmatorPlugin(
                 '--test',
                 '--experimental-test-snapshots',
                 '--test-reporter',
-                ...flagArgs,
                 'spec',
-                ...positionArgs,
+                ...flagArgs,
                 ...updateSnapshotsArgs,
                 ...testFiles,
             ]
