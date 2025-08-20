@@ -45,7 +45,7 @@
         "@augment-vir/test": "^31.32.3",
         "@types/node": "^24.3.0",
         "typescript": "^5.9.2",
-        "vite": "^7.1.2",
+        "vite": "^7.1.3",
         "vite-tsconfig-paths": "^5.1.4"
     },
     "engines": {

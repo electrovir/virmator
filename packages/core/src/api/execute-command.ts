@@ -12,13 +12,14 @@ import {
     type PartialWithUndefined,
 } from '@augment-vir/common';
 import {readPackageJson, runShellCommand} from '@augment-vir/node';
-import {getRelativePosixPackagePathsInDependencyOrder} from 'mono-vir';
+import {getRelativePosixPackagePathTreeInDependencyOrder} from 'mono-vir';
 import {cpus} from 'node:os';
-import {join, resolve} from 'node:path';
+import {join} from 'node:path';
 import {
     createCommandLogPrefix,
     getColorKeyByIndex,
     KillOn,
+    runCommandMatrix,
     runCommands,
     type Command,
 } from 'runstorm';
@@ -138,7 +139,7 @@ async function determinePackageType(
                 const parentPackages = await getMonoRepoPackages(monoRepoRootPath);
 
                 if (
-                    parentPackages.some((monoPackage) => {
+                    parentPackages.flat().some((monoPackage) => {
                         return join(monoRepoRootPath, monoPackage.relativePath) === cwdPackagePath;
                     })
                 ) {
@@ -154,9 +155,9 @@ async function determinePackageType(
     }
 }
 
-async function getMonoRepoPackages(cwdPackagePath: string): Promise<MonoRepoPackage[]> {
+async function getMonoRepoPackages(cwdPackagePath: string): Promise<MonoRepoPackage[][]> {
     const relativePackagePathsInOrder = await wrapInTry(
-        () => getRelativePosixPackagePathsInDependencyOrder(cwdPackagePath),
+        () => getRelativePosixPackagePathTreeInDependencyOrder(cwdPackagePath),
         {
             handleError(error) {
                 log.error(extractErrorMessage(error) + '\n');
@@ -166,36 +167,65 @@ async function getMonoRepoPackages(cwdPackagePath: string): Promise<MonoRepoPack
     );
 
     return await Promise.all(
-        relativePackagePathsInOrder.map(async (packagePath): Promise<MonoRepoPackage> => {
-            const packageJson = await wrapInTry(() => readPackageJson(packagePath), {
-                fallbackValue: undefined,
-            });
-            return {
-                packageName: packageJson?.name || packagePath,
-                relativePath: packagePath,
-                fullPath: join(cwdPackagePath, packagePath),
-            };
+        relativePackagePathsInOrder.map(async (dependencyLayer): Promise<MonoRepoPackage[]> => {
+            return await Promise.all(
+                dependencyLayer.map(async (packagePath) => {
+                    const packageJson = await wrapInTry(() => readPackageJson(packagePath), {
+                        fallbackValue: undefined,
+                    });
+                    return {
+                        packageName: packageJson?.name || packagePath,
+                        relativePath: packagePath,
+                        fullPath: join(cwdPackagePath, packagePath),
+                    };
+                }),
+            );
         }),
     );
 }
 
-async function findMonoRepoDir(cwdPackagePath: string) {
-    const parentPackageDir = wrapInTry(() => findClosestPackageDir(resolve(cwdPackagePath, '..')), {
-        fallbackValue: undefined,
-    });
+async function getMonoRepoDetails(cwdPackagePath: string, cwdPackageJson: PackageJson) {
+    const monoRepoRootPath = await findMonoRepoDir(cwdPackagePath);
+    const packageType = await determinePackageType(
+        cwdPackagePath,
+        monoRepoRootPath,
+        cwdPackageJson,
+    );
+    const monoRepoPackages =
+        packageType === PackageType.MonoRoot ? await getMonoRepoPackages(cwdPackagePath) : [];
 
-    if (parentPackageDir) {
-        const parentPackages = await getMonoRepoPackages(parentPackageDir);
+    const isPartOfMonoRepo = monoRepoPackages
+        .flat()
+        .some(({fullPath}) => fullPath === cwdPackagePath);
 
-        if (
-            parentPackages.some((monoPackage) => {
-                return join(parentPackageDir, monoPackage.relativePath) === cwdPackagePath;
-            })
-        ) {
-            return parentPackageDir;
-        }
+    if (isPartOfMonoRepo || packageType === PackageType.MonoRoot) {
+        return {
+            monoRepoPackages,
+            monoRepoRootPath,
+            packageType,
+        };
+    } else {
+        return {
+            monoRepoPackages: [],
+            monoRepoRootPath: cwdPackagePath,
+            packageType,
+        };
     }
-    return cwdPackagePath;
+}
+
+async function findMonoRepoDir(cwdPackagePath: string) {
+    const parentPackageDir = await wrapInTry(
+        () =>
+            findClosestPackageDir({
+                startDirPath: cwdPackagePath,
+                requireWorkspaces: true,
+            }),
+        {
+            fallbackValue: undefined,
+        },
+    );
+
+    return parentPackageDir || cwdPackagePath;
 }
 
 function writeLog(
@@ -242,20 +272,20 @@ export async function executeVirmatorCommand({
         throw new VirmatorNoTraceError(`Missing valid command.`);
     }
 
-    const cwdPackagePath = findClosestPackageDir(cwd);
+    const cwdPackagePath = await findClosestPackageDir({
+        startDirPath: cwd,
+        requireWorkspaces: false,
+    });
 
     const cwdPackageJson = await readPackageJson(cwdPackagePath);
 
     const pluginPackagePath = plugin.pluginPackageRootPath;
     const resolvedConfigs = resolveConfigs({cwdPackagePath, pluginPackagePath}, plugin.cliCommands);
-    const monoRepoRootPath = await findMonoRepoDir(cwdPackagePath);
-    const packageType = await determinePackageType(
+
+    const {monoRepoPackages, monoRepoRootPath, packageType} = await getMonoRepoDetails(
         cwdPackagePath,
-        monoRepoRootPath,
         cwdPackageJson,
     );
-    const monoRepoPackages =
-        packageType === PackageType.MonoRoot ? await getMonoRepoPackages(cwdPackagePath) : [];
     const outerMaxProcesses = params.concurrency || cpus().length - 1 || 1;
     const filteredArgs = args.filteredCommandArgs.filter(check.isTruthy);
 
@@ -268,7 +298,7 @@ export async function executeVirmatorCommand({
         cwd,
         package: {
             cwdPackagePath,
-            monoRepoPackages,
+            monoRepoPackages: monoRepoPackages.flat(),
             packageType,
             monoRepoRootPath,
             cwdPackageJson,
@@ -317,7 +347,7 @@ export async function executeVirmatorCommand({
                 pluginPackagePath,
             });
         },
-        async runPerPackage(generateCliCommandString, maxProcesses: number | undefined) {
+        async runPerPackage(generateCliCommandString, maxProcesses: number | undefined | 'tree') {
             if (packageType !== PackageType.MonoRoot) {
                 throw new Error(`Cannot run "runPerPackage" on non-mono-repo.`);
             } else if (!monoRepoPackages.length) {
@@ -326,50 +356,106 @@ export async function executeVirmatorCommand({
                 );
             }
 
-            const commands: Command[] = (
-                await awaitedBlockingMap(
+            if (maxProcesses === 'tree') {
+                const commands: Command[][] = await awaitedBlockingMap(
                     monoRepoPackages,
-                    async (monoRepoPackage, index): Promise<Command | undefined> => {
-                        const color = getColorKeyByIndex(index);
-                        const absolutePackagePath = join(cwd, monoRepoPackage.relativePath);
-                        const command = await generateCliCommandString({
-                            packageCwd: absolutePackagePath,
-                            packageName: monoRepoPackage.packageName,
-                            color,
-                        });
+                    async (packageLayer) => {
+                        return (
+                            await awaitedBlockingMap(
+                                packageLayer,
+                                async (monoRepoPackage, index): Promise<Command | undefined> => {
+                                    const color = getColorKeyByIndex(index);
+                                    const absolutePackagePath = join(
+                                        cwd,
+                                        monoRepoPackage.relativePath,
+                                    );
+                                    const command = await generateCliCommandString({
+                                        packageCwd: absolutePackagePath,
+                                        packageName: monoRepoPackage.packageName,
+                                        color,
+                                    });
 
-                        if (!command) {
-                            return undefined;
-                        }
-                        const prefix = createCommandLogPrefix({
-                            color,
-                            name: monoRepoPackage.packageName,
-                        });
-                        log.faint(`${prefix}${logColors.faint}> ${command}`);
-                        return {
-                            command,
-                            cwd: absolutePackagePath,
-                            name: monoRepoPackage.packageName,
-                            color,
-                        };
+                                    if (!command) {
+                                        return undefined;
+                                    }
+                                    const prefix = createCommandLogPrefix({
+                                        color,
+                                        name: monoRepoPackage.packageName,
+                                    });
+                                    log.faint(`${prefix}${logColors.faint}> ${command}`);
+                                    return {
+                                        command,
+                                        cwd: absolutePackagePath,
+                                        name: monoRepoPackage.packageName,
+                                        color,
+                                    };
+                                },
+                            )
+                        ).filter(check.isTruthy);
                     },
-                )
-            ).filter(check.isTruthy);
+                );
 
-            if (!commands.length) {
-                return;
-            }
-            const {highestExitCode} = await runCommands(commands, {
-                killOn: KillOn.Failure,
-                loggers: {
-                    stderr: log.error,
-                    stdout: log.plain,
-                },
-                maxConcurrency: maxProcesses || outerMaxProcesses,
-            });
+                if (!commands.length) {
+                    return;
+                }
+                const {highestExitCode} = await runCommandMatrix(commands, {
+                    killOn: KillOn.Failure,
+                    loggers: {
+                        stderr: log.error,
+                        stdout: log.plain,
+                    },
+                    maxConcurrency: outerMaxProcesses,
+                });
 
-            if (highestExitCode) {
-                throw new VirmatorNoTraceError(`Exited with ${highestExitCode}.`);
+                if (highestExitCode) {
+                    throw new VirmatorNoTraceError(`Exited with ${highestExitCode}.`);
+                }
+            } else {
+                const commands: Command[] = (
+                    await awaitedBlockingMap(
+                        monoRepoPackages.flat(),
+                        async (monoRepoPackage, index): Promise<Command | undefined> => {
+                            const color = getColorKeyByIndex(index);
+                            const absolutePackagePath = join(cwd, monoRepoPackage.relativePath);
+                            const command = await generateCliCommandString({
+                                packageCwd: absolutePackagePath,
+                                packageName: monoRepoPackage.packageName,
+                                color,
+                            });
+
+                            if (!command) {
+                                return undefined;
+                            }
+                            const prefix = createCommandLogPrefix({
+                                color,
+                                name: monoRepoPackage.packageName,
+                            });
+                            log.faint(`${prefix}${logColors.faint}> ${command}`);
+                            return {
+                                command,
+                                cwd: absolutePackagePath,
+                                name: monoRepoPackage.packageName,
+                                color,
+                            };
+                        },
+                    )
+                ).filter(check.isTruthy);
+
+                if (!commands.length) {
+                    return;
+                }
+                const {highestExitCode} = await runCommands(commands, {
+                    killOn: KillOn.Failure,
+                    loggers: {
+                        stderr: log.error,
+                        stdout: log.plain,
+                    },
+                    maxConcurrency: maxProcesses || outerMaxProcesses,
+                });
+
+                if (highestExitCode) {
+                    throw new VirmatorNoTraceError(`Exited with ${highestExitCode}.`);
+                }
             }
         },
     };
@@ -379,7 +465,7 @@ export async function executeVirmatorCommand({
             args.usedCommands,
             resolvedConfigs,
             packageType,
-            monoRepoPackages,
+            monoRepoPackages.flat(),
             log,
             filteredArgs,
         );

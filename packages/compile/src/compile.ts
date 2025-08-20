@@ -113,30 +113,23 @@ export const virmatorCompilePlugin = defineVirmatorPlugin(
         } = params;
 
         if (packageType === PackageType.MonoRoot) {
-            await runPerPackage(
-                async ({packageCwd, packageName, color}) => {
-                    await copyConfigFile(
-                        {
-                            ...configs.compile.configs.tsconfigMonoPackage,
-                            fullCopyToPath: join(packageCwd, 'tsconfig.json'),
-                        },
-                        log,
-                        false,
-                        undefined,
-                        packageName,
-                    );
-                    return await createCompileCommandString(
-                        {...params, cwd: packageCwd},
-                        packageName,
-                        color,
-                    );
-                },
-                /**
-                 * Compiling each package needs to happen in series so that dependent packages are
-                 * compiled first.
-                 */
-                1,
-            );
+            await runPerPackage(async ({packageCwd, packageName, color}) => {
+                await copyConfigFile(
+                    {
+                        ...configs.compile.configs.tsconfigMonoPackage,
+                        fullCopyToPath: join(packageCwd, 'tsconfig.json'),
+                    },
+                    log,
+                    false,
+                    undefined,
+                    packageName,
+                );
+                return await createCompileCommandString(
+                    {...params, cwd: packageCwd},
+                    packageName,
+                    color,
+                );
+            }, 'tree');
         } else {
             await runShellCommand(await createCompileCommandString(params, undefined));
         }

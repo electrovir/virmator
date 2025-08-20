@@ -111,7 +111,10 @@ export async function testPlugin(
         ...defaultContentsExcludeList,
     ];
 
-    const readDir = findClosestPackageDir(cwd);
+    const readDir = await findClosestPackageDir({
+        startDirPath: cwd,
+        requireWorkspaces: false,
+    });
 
     const contentsBefore = await readAllDirContents(readDir, {
         recursive: true,

@@ -69,7 +69,7 @@ export type RunPerPackage = (
         packageName: string;
         color: ColorKey;
     }) => MaybePromise<string | undefined>,
-    maxProcesses?: number | undefined,
+    maxProcesses?: number | undefined | 'tree',
 ) => Promise<void>;
 
 /** Extra, optional options for a plugin's `runShellCommand` param. */
