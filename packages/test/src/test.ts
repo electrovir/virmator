@@ -7,7 +7,7 @@ import {glob} from 'glob';
 import mri from 'mri';
 import {existsSync} from 'node:fs';
 import {rm, writeFile} from 'node:fs/promises';
-import {join, relative} from 'node:path';
+import {extname, join, relative} from 'node:path';
 import {pathToFileURL} from 'node:url';
 
 /** A virmator plugin for running tests. */
@@ -288,22 +288,43 @@ export const virmatorTestPlugin = defineVirmatorPlugin(
         package: {packageType, monoRepoRootPath, cwdPackagePath},
     }) => {
         const args = mri(filteredArgs);
-        const flagArgs = filteredArgs.filter((arg) => arg.startsWith('-'));
-
-        const fileArgs = filteredArgs
-            .filter((arg) => !arg.startsWith('-'))
-            .map((arg) => {
-                const monoRepoRelativePath = join(monoRepoRootPath, arg);
-                /**
-                 * Handle give test file paths that are relative to the mono repo rather than the
-                 * current package.
-                 */
-                if (existsSync(monoRepoRelativePath)) {
-                    return relative(cwdPackagePath, monoRepoRelativePath);
+        const {rawFileArgs, otherArgs} = filteredArgs.reduce(
+            (accum, arg) => {
+                if (
+                    !arg.startsWith('-') &&
+                    [
+                        '.js',
+                        '.jsx',
+                        '.cjs',
+                        '.mjs',
+                        '.ts',
+                        '.tsx',
+                        '.cts',
+                        '.mts',
+                    ].includes(extname(arg))
+                ) {
+                    accum.rawFileArgs.push(arg);
                 } else {
-                    return arg;
+                    accum.otherArgs.push(arg);
                 }
-            });
+
+                return accum;
+            },
+            {rawFileArgs: [] as string[], otherArgs: [] as string[]},
+        );
+
+        const fileArgs = rawFileArgs.map((arg) => {
+            const monoRepoRelativePath = join(monoRepoRootPath, arg);
+            /**
+             * Handle give test file paths that are relative to the mono repo rather than the
+             * current package.
+             */
+            if (existsSync(monoRepoRelativePath)) {
+                return relative(cwdPackagePath, monoRepoRelativePath);
+            } else {
+                return arg;
+            }
+        });
 
         if (packageType === PackageType.MonoRoot) {
             throw new VirmatorNoTraceError(
@@ -350,7 +371,7 @@ export const virmatorTestPlugin = defineVirmatorPlugin(
                     'web-test-runner',
                     '--color',
                     ...configArgs,
-                    ...flagArgs,
+                    ...otherArgs,
                     ...updateSnapshotsArgs,
                     includeCoverage ? '--coverage' : '',
                     ...fileArgs,
@@ -394,7 +415,7 @@ export const virmatorTestPlugin = defineVirmatorPlugin(
                 '--experimental-test-snapshots',
                 '--test-reporter',
                 'spec',
-                ...flagArgs,
+                ...otherArgs,
                 ...updateSnapshotsArgs,
                 ...testFiles,
             ]

@@ -134,6 +134,7 @@ export const virmatorFrontendPlugin = defineVirmatorPlugin(
 
         if (needsBuild) {
             await rm(join(cwdPackagePath, 'node_modules', '.vite'), {force: true, recursive: true});
+
             await rm(outDir, {recursive: true, force: true});
 
             const buildCommand = [
