@@ -28,9 +28,9 @@
         "test:update": "npm start"
     },
     "dependencies": {
-        "@augment-vir/assert": "^31.32.3",
-        "@augment-vir/common": "^31.32.3",
-        "@augment-vir/node": "^31.32.3",
+        "@augment-vir/assert": "^31.33.0",
+        "@augment-vir/common": "^31.33.0",
+        "@augment-vir/node": "^31.33.0",
         "mri": "^1.2.0",
         "tsx": "^4.20.4",
         "virmator": "^14.0.0"

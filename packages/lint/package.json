@@ -32,13 +32,13 @@
         "test:update": "npm test update"
     },
     "dependencies": {
-        "@augment-vir/assert": "^31.32.3",
-        "@augment-vir/common": "^31.32.3",
+        "@augment-vir/assert": "^31.33.0",
+        "@augment-vir/common": "^31.33.0",
         "@virmator/core": "^14.0.0",
         "mri": "^1.2.0"
     },
     "devDependencies": {
-        "@augment-vir/test": "^31.32.3",
+        "@augment-vir/test": "^31.33.0",
         "@eslint/eslintrc": "^3.3.1",
         "@eslint/js": "9.33.0",
         "@stylistic/eslint-plugin": "^5.2.3",
