@@ -1,6 +1,6 @@
 import {check} from '@augment-vir/assert';
 import {type MaybePromise, RuntimeEnv} from '@augment-vir/common';
-import {toPosixPath} from '@augment-vir/node';
+import {doesPathContain, toPosixPath} from '@augment-vir/node';
 import {defineVirmatorPlugin, NpmDepType, PackageType} from '@virmator/core';
 import mri from 'mri';
 import {cp, rm} from 'node:fs/promises';
@@ -99,7 +99,7 @@ export const virmatorFrontendPlugin = defineVirmatorPlugin(
     },
     async ({
         cliInputs: {filteredArgs, usedCommands},
-        package: {cwdPackagePath},
+        package: {cwdPackagePath, monoRepoRootPath},
         runShellCommand,
         cwd,
         configs,
@@ -134,8 +134,9 @@ export const virmatorFrontendPlugin = defineVirmatorPlugin(
 
         if (needsBuild) {
             await rm(join(cwdPackagePath, 'node_modules', '.vite'), {force: true, recursive: true});
-
-            await rm(outDir, {recursive: true, force: true});
+            if (doesPathContain(monoRepoRootPath, outDir)) {
+                await rm(outDir, {recursive: true, force: true});
+            }
 
             const buildCommand = [
                 ...baseViteCommands,
