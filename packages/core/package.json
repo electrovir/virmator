@@ -1,6 +1,6 @@
 {
     "name": "@virmator/core",
-    "version": "14.0.1",
+    "version": "14.0.2",
     "description": "Shared core functionality for all virmator plugins and the virmator CLI.",
     "keywords": [
         "automation",
@@ -35,7 +35,7 @@
         "@augment-vir/assert": "^31.33.0",
         "@augment-vir/common": "^31.33.0",
         "@augment-vir/node": "^31.33.0",
-        "mono-vir": "^2.2.1",
+        "mono-vir": "^2.2.2",
         "runstorm": "^0.6.1",
         "semver": "^7.7.2",
         "type-fest": "^4.41.0",

@@ -25,7 +25,7 @@ exports[`Init > errors without package type 1`] = `
 exports[`Init > initializes a mono-package node package 1`] = `
 {
   "logs": {
-    "stdout": "Installing runstorm@0.6.1 tsx@4.20.4...\\nCopied .npmignore\\nCopied c8.config.json\\nCopied LICENSE-CC0\\nCopied LICENSE-MIT\\nCopied package.json\\nCopied tsconfig.json\\nCopied typedoc.config.ts\\ninit finished."
+    "stdout": "Installing runstorm@0.6.1 tsx@4.20.5...\\nCopied .npmignore\\nCopied c8.config.json\\nCopied LICENSE-CC0\\nCopied LICENSE-MIT\\nCopied package.json\\nCopied tsconfig.json\\nCopied typedoc.config.ts\\ninit finished."
   },
   "cwd": "packages/virmator/test-files/mono-package",
   "contentsDiff": {
@@ -43,7 +43,7 @@ exports[`Init > initializes a mono-package node package 1`] = `
 exports[`Init > initializes a mono-package web package 1`] = `
 {
   "logs": {
-    "stdout": "Installing runstorm@0.6.1...\\nInstalling element-vir@26.8.0...\\nCopied _redirects\\nCopied .npmignore\\nCopied index.css\\nCopied index.html\\nCopied LICENSE-CC0\\nCopied LICENSE-MIT\\nCopied package.json\\nCopied tsconfig.json\\nCopied typedoc.config.ts\\nCopied vir-app.element.ts\\nCopied vite.config.ts\\nCopied web-test-runner.config.mjs\\ninit finished."
+    "stdout": "Installing runstorm@0.6.1...\\nInstalling element-vir@26.9.0...\\nCopied _redirects\\nCopied .npmignore\\nCopied index.css\\nCopied index.html\\nCopied LICENSE-CC0\\nCopied LICENSE-MIT\\nCopied package.json\\nCopied tsconfig.json\\nCopied typedoc.config.ts\\nCopied vir-app.element.ts\\nCopied vite.config.ts\\nCopied web-test-runner.config.mjs\\ninit finished."
   },
   "cwd": "packages/virmator/test-files/mono-package",
   "contentsDiff": {
@@ -51,7 +51,7 @@ exports[`Init > initializes a mono-package web package 1`] = `
     ".npmignore": ".*\\n.not-committed/\\n*.book.*\\n*.d.ts.map\\n*.example.*\\n*.mock.*\\n*.test.*\\n*.tgz\\n**/*/test/\\n/configs/\\n/coverage/\\n/cspell.config.cjs\\n/graphics/\\n/Icon?\\n/src/\\n/www-static/\\nbash-scripts/\\ndist-docs/\\neslint.config.mjs\\ngenerated-config-*\\nindex.html\\nprettier.config.mjs\\ntest-files/\\ntodo.md\\ntsconfig.*",
     "configs": {
       "typedoc.config.ts": "import {baseTypedocConfig} from '@virmator/docs/configs/typedoc.config.base';\\nimport {dirname, join} from 'node:path/posix';\\nimport {fileURLToPath} from 'node:url';\\nimport {type TypeDocOptions} from 'typedoc';\\n\\nconst indexTsFile = join(dirname(dirname(fileURLToPath(import.meta.url))), 'src', 'index.ts');\\nconst outDirPath = join(dirname(dirname(fileURLToPath(import.meta.url))), 'dist-docs');\\n\\nexport const typeDocConfig: Partial<TypeDocOptions> = {\\n    ...baseTypedocConfig,\\n    out: outDirPath,\\n    entryPoints: [\\n        indexTsFile,\\n    ],\\n    intentionallyNotExported: [],\\n    defaultCategory: 'MISSING CATEGORY',\\n    categoryOrder: [\\n        'Main',\\n        'Internal',\\n    ],\\n};\\n",
-      "vite.config.ts": "import {defineConfig} from '@virmator/frontend/configs/vite.config.base.ts';\\nimport {resolve} from 'node:path';\\n\\nexport default defineConfig(\\n    {\\n        forGitHubPages: true,\\n        packageDirPath: resolve(import.meta.dirname, '..'),\\n    },\\n    (baseConfig) => {\\n        return {\\n            ...baseConfig,\\n        };\\n    },\\n);\\n",
+      "vite.config.ts": "import {defineConfig} from '@virmator/frontend/configs/vite.config.base.js';\\nimport {resolve} from 'node:path';\\n\\nexport default defineConfig(\\n    {\\n        forGitHubPages: true,\\n        packageDirPath: resolve(import.meta.dirname, '..'),\\n    },\\n    (baseConfig) => {\\n        return {\\n            ...baseConfig,\\n        };\\n    },\\n);\\n",
       "web-test-runner.config.mjs": "import {defineConfig} from '@virmator/test/configs/web-test-runner.config.base.mjs';\\nimport {dirname} from 'path';\\nimport {fileURLToPath, pathToFileURL} from 'url';\\n\\nconst baseConfig = defineConfig({\\n    coveragePercent: 100,\\n    packageRootDirPath: dirname(dirname(fileURLToPath(import.meta.url))),\\n    extraScreenshotOptions: {},\\n});\\n\\n/** @type {import('@web/test-runner').TestRunnerConfig} */\\nconst webTestRunnerConfig = {\\n    ...baseConfig,\\n};\\n\\nexport default webTestRunnerConfig;\\n\\n/** Log the full config if this file file is run directly as a script, for debugging. */\\nif (import.meta.url === pathToFileURL(process.argv[1]).href) {\\n    console.info(JSON.stringify(webTestRunnerConfig, null, 4));\\n}\\n"
     },
     "src": {
@@ -74,7 +74,7 @@ exports[`Init > initializes a mono-package web package 1`] = `
 exports[`Init > initializes a mono-root node package 1`] = `
 {
   "logs": {
-    "stdout": "Installing runstorm@0.6.1 tsx@4.20.4...\\nCopied .gitattributes\\nCopied .gitignore\\nCopied .nvmrc\\nCopied .prettierignore\\nCopied build-for-gh-pages.yml\\nCopied cspell.config.cjs\\nCopied dep-cruiser.config.cts\\nCopied eslint.config.mjs\\nCopied LICENSE-CC0\\nCopied LICENSE-MIT\\nCopied ncu.config.ts\\nCopied package.json\\nCopied prettier.config.mjs\\nCopied settings.json\\nCopied tagged-release.yml\\nCopied tests.yml\\nCopied tsconfig.base.json\\nCopied tsconfig.eslint.json\\ninit finished."
+    "stdout": "Installing runstorm@0.6.1 tsx@4.20.5...\\nCopied .gitattributes\\nCopied .gitignore\\nCopied .nvmrc\\nCopied .prettierignore\\nCopied build-for-gh-pages.yml\\nCopied cspell.config.cjs\\nCopied dep-cruiser.config.cts\\nCopied eslint.config.mjs\\nCopied LICENSE-CC0\\nCopied LICENSE-MIT\\nCopied ncu.config.ts\\nCopied package.json\\nCopied prettier.config.mjs\\nCopied settings.json\\nCopied tagged-release.yml\\nCopied tests.yml\\nCopied tsconfig.base.json\\nCopied tsconfig.eslint.json\\ninit finished."
   },
   "cwd": "packages/virmator/test-files/mono-root",
   "contentsDiff": {
@@ -100,7 +100,7 @@ exports[`Init > initializes a mono-root node package 1`] = `
 exports[`Init > initializes a mono-root web package 1`] = `
 {
   "logs": {
-    "stdout": "Installing runstorm@0.6.1...\\nInstalling element-vir@26.8.0...\\nCopied .gitattributes\\nCopied .gitignore\\nCopied .nvmrc\\nCopied .prettierignore\\nCopied build-for-gh-pages.yml\\nCopied cspell.config.cjs\\nCopied dep-cruiser.config.cts\\nCopied eslint.config.mjs\\nCopied LICENSE-CC0\\nCopied LICENSE-MIT\\nCopied ncu.config.ts\\nCopied package.json\\nCopied prettier.config.mjs\\nCopied settings.json\\nCopied tagged-release.yml\\nCopied tests.yml\\nCopied tsconfig.base.json\\nCopied tsconfig.eslint.json\\ninit finished."
+    "stdout": "Installing runstorm@0.6.1...\\nInstalling element-vir@26.9.0...\\nCopied .gitattributes\\nCopied .gitignore\\nCopied .nvmrc\\nCopied .prettierignore\\nCopied build-for-gh-pages.yml\\nCopied cspell.config.cjs\\nCopied dep-cruiser.config.cts\\nCopied eslint.config.mjs\\nCopied LICENSE-CC0\\nCopied LICENSE-MIT\\nCopied ncu.config.ts\\nCopied package.json\\nCopied prettier.config.mjs\\nCopied settings.json\\nCopied tagged-release.yml\\nCopied tests.yml\\nCopied tsconfig.base.json\\nCopied tsconfig.eslint.json\\ninit finished."
   },
   "cwd": "packages/virmator/test-files/mono-root",
   "contentsDiff": {
@@ -126,7 +126,7 @@ exports[`Init > initializes a mono-root web package 1`] = `
 exports[`Init > initializes a top-level node package 1`] = `
 {
   "logs": {
-    "stdout": "Installing runstorm@0.6.1 tsx@4.20.4...\\nCopied .gitattributes\\nCopied .gitignore\\nCopied .npmignore\\nCopied .nvmrc\\nCopied .prettierignore\\nCopied build-for-gh-pages.yml\\nCopied c8.config.json\\nCopied cspell.config.cjs\\nCopied dep-cruiser.config.cts\\nCopied eslint.config.mjs\\nCopied LICENSE-CC0\\nCopied LICENSE-MIT\\nCopied ncu.config.ts\\nCopied package.json\\nCopied prettier.config.mjs\\nCopied settings.json\\nCopied tagged-release.yml\\nCopied tests.yml\\nCopied tsconfig.json\\nCopied typedoc.config.ts\\ninit finished."
+    "stdout": "Installing runstorm@0.6.1 tsx@4.20.5...\\nCopied .gitattributes\\nCopied .gitignore\\nCopied .npmignore\\nCopied .nvmrc\\nCopied .prettierignore\\nCopied build-for-gh-pages.yml\\nCopied c8.config.json\\nCopied cspell.config.cjs\\nCopied dep-cruiser.config.cts\\nCopied eslint.config.mjs\\nCopied LICENSE-CC0\\nCopied LICENSE-MIT\\nCopied ncu.config.ts\\nCopied package.json\\nCopied prettier.config.mjs\\nCopied settings.json\\nCopied tagged-release.yml\\nCopied tests.yml\\nCopied tsconfig.json\\nCopied typedoc.config.ts\\ninit finished."
   },
   "cwd": "packages/virmator/test-files/top-package",
   "contentsDiff": {
@@ -154,7 +154,7 @@ exports[`Init > initializes a top-level node package 1`] = `
 exports[`Init > initializes a top-level web package 1`] = `
 {
   "logs": {
-    "stdout": "Installing runstorm@0.6.1...\\nInstalling element-vir@26.8.0...\\nCopied _redirects\\nCopied .gitattributes\\nCopied .gitignore\\nCopied .npmignore\\nCopied .nvmrc\\nCopied .prettierignore\\nCopied build-for-gh-pages.yml\\nCopied cspell.config.cjs\\nCopied dep-cruiser.config.cts\\nCopied eslint.config.mjs\\nCopied index.css\\nCopied index.html\\nCopied LICENSE-CC0\\nCopied LICENSE-MIT\\nCopied ncu.config.ts\\nCopied package.json\\nCopied prettier.config.mjs\\nCopied settings.json\\nCopied tagged-release.yml\\nCopied tests.yml\\nCopied tsconfig.json\\nCopied typedoc.config.ts\\nCopied vir-app.element.ts\\nCopied vite.config.ts\\nCopied web-test-runner.config.mjs\\ninit finished."
+    "stdout": "Installing runstorm@0.6.1...\\nInstalling element-vir@26.9.0...\\nCopied _redirects\\nCopied .gitattributes\\nCopied .gitignore\\nCopied .npmignore\\nCopied .nvmrc\\nCopied .prettierignore\\nCopied build-for-gh-pages.yml\\nCopied cspell.config.cjs\\nCopied dep-cruiser.config.cts\\nCopied eslint.config.mjs\\nCopied index.css\\nCopied index.html\\nCopied LICENSE-CC0\\nCopied LICENSE-MIT\\nCopied ncu.config.ts\\nCopied package.json\\nCopied prettier.config.mjs\\nCopied settings.json\\nCopied tagged-release.yml\\nCopied tests.yml\\nCopied tsconfig.json\\nCopied typedoc.config.ts\\nCopied vir-app.element.ts\\nCopied vite.config.ts\\nCopied web-test-runner.config.mjs\\ninit finished."
   },
   "cwd": "packages/virmator/test-files/top-package",
   "contentsDiff": {
@@ -169,7 +169,7 @@ exports[`Init > initializes a top-level web package 1`] = `
       "dep-cruiser.config.cts": "import {defineConfig} from '@virmator/deps/configs/dep-cruiser.config.base';\\nimport {type IConfiguration} from 'dependency-cruiser';\\n\\nconst baseConfig = defineConfig({\\n    fileExceptions: {\\n        // enter file exceptions by rule name here\\n        'no-orphans': {\\n            from: [\\n                'src/index\\\\\\\\.ts$',\\n            ],\\n        },\\n    },\\n    omitRules: [\\n        // enter rule names here to omit\\n    ],\\n});\\n\\nconst depCruiserConfig: IConfiguration = {\\n    ...baseConfig,\\n};\\n\\nmodule.exports = depCruiserConfig;\\n",
       "ncu.config.ts": "import {baseNcuConfig} from '@virmator/deps/configs/ncu.config.base';\\nimport {RunOptions} from 'npm-check-updates';\\n\\nexport const ncuConfig: RunOptions = {\\n    ...baseNcuConfig,\\n    // exclude these\\n    reject: [\\n        ...baseNcuConfig.reject,\\n    ],\\n    // include only these\\n    filter: [],\\n};\\n",
       "typedoc.config.ts": "import {baseTypedocConfig} from '@virmator/docs/configs/typedoc.config.base';\\nimport {dirname, join} from 'node:path/posix';\\nimport {fileURLToPath} from 'node:url';\\nimport {type TypeDocOptions} from 'typedoc';\\n\\nconst indexTsFile = join(dirname(dirname(fileURLToPath(import.meta.url))), 'src', 'index.ts');\\nconst outDirPath = join(dirname(dirname(fileURLToPath(import.meta.url))), 'dist-docs');\\n\\nexport const typeDocConfig: Partial<TypeDocOptions> = {\\n    ...baseTypedocConfig,\\n    out: outDirPath,\\n    entryPoints: [\\n        indexTsFile,\\n    ],\\n    intentionallyNotExported: [],\\n    defaultCategory: 'MISSING CATEGORY',\\n    categoryOrder: [\\n        'Main',\\n        'Internal',\\n    ],\\n};\\n",
-      "vite.config.ts": "import {defineConfig} from '@virmator/frontend/configs/vite.config.base.ts';\\nimport {resolve} from 'node:path';\\n\\nexport default defineConfig(\\n    {\\n        forGitHubPages: true,\\n        packageDirPath: resolve(import.meta.dirname, '..'),\\n    },\\n    (baseConfig) => {\\n        return {\\n            ...baseConfig,\\n        };\\n    },\\n);\\n",
+      "vite.config.ts": "import {defineConfig} from '@virmator/frontend/configs/vite.config.base.js';\\nimport {resolve} from 'node:path';\\n\\nexport default defineConfig(\\n    {\\n        forGitHubPages: true,\\n        packageDirPath: resolve(import.meta.dirname, '..'),\\n    },\\n    (baseConfig) => {\\n        return {\\n            ...baseConfig,\\n        };\\n    },\\n);\\n",
       "web-test-runner.config.mjs": "import {defineConfig} from '@virmator/test/configs/web-test-runner.config.base.mjs';\\nimport {dirname} from 'path';\\nimport {fileURLToPath, pathToFileURL} from 'url';\\n\\nconst baseConfig = defineConfig({\\n    coveragePercent: 100,\\n    packageRootDirPath: dirname(dirname(fileURLToPath(import.meta.url))),\\n    extraScreenshotOptions: {},\\n});\\n\\n/** @type {import('@web/test-runner').TestRunnerConfig} */\\nconst webTestRunnerConfig = {\\n    ...baseConfig,\\n};\\n\\nexport default webTestRunnerConfig;\\n\\n/** Log the full config if this file file is run directly as a script, for debugging. */\\nif (import.meta.url === pathToFileURL(process.argv[1]).href) {\\n    console.info(JSON.stringify(webTestRunnerConfig, null, 4));\\n}\\n"
     },
     "cspell.config.cjs": "const {baseConfig} = require('@virmator/spellcheck/configs/cspell.config.base.cjs');\\n\\nmodule.exports = {\\n    ...baseConfig,\\n    ignorePaths: [\\n        ...baseConfig.ignorePaths,\\n    ],\\n    words: [\\n        ...baseConfig.words,\\n    ],\\n};\\n",
