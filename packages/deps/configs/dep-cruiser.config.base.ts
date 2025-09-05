@@ -42,12 +42,11 @@ export function defineConfig({
                 orphan: true,
                 pathNot: [
                     '\\.d\\.ts$',
-                    '\\.example\\.ts$',
-                    '\\.script\\.mock\\.ts$',
-                    '\\.script\\.ts$',
-                    '\\.snapshot\\.web\\.mjs$',
-                    '\\.snapshot$',
-                    '\\.test\\.ts$',
+                    '\\.example\\.',
+                    '\\.script\\.',
+                    '\\.script\\.',
+                    '\\.snapshot\\.',
+                    '\\.test\\.',
                 ],
             },
             to: {},
@@ -157,7 +156,7 @@ export function defineConfig({
             severity: 'error',
             from: {},
             to: {
-                path: '\\.test\\.ts$',
+                path: '\\.test\\.',
             },
         },
         {
@@ -166,13 +165,13 @@ export function defineConfig({
             severity: 'error',
             from: {
                 pathNot: [
-                    '\\.test\\.ts$',
-                    '\\.mock\\.ts$',
-                    '\\.example\\.ts$',
+                    '\\.test\\.',
+                    '\\.mock\\.',
+                    '\\.example\\.',
                 ],
             },
             to: {
-                path: '\\.mock\\.ts$',
+                path: '\\.mock\\.',
             },
         },
         {
@@ -184,7 +183,7 @@ export function defineConfig({
             from: {
                 path: '^(packages)',
                 pathNot: [
-                    '\\.test\\.ts$',
+                    '\\.test\\.',
                 ],
             },
             to: {
