@@ -1,6 +1,6 @@
 {
     "name": "@virmator/mono-repo-root",
-    "version": "14.0.2",
+    "version": "14.0.3",
     "private": true,
     "sideEffects": false,
     "type": "module",
@@ -30,16 +30,16 @@
     },
     "devDependencies": {
         "@eslint/eslintrc": "^3.3.1",
-        "@eslint/js": "9.34.0",
+        "@eslint/js": "9.35.0",
         "@stylistic/eslint-plugin": "^5.3.1",
         "@stylistic/eslint-plugin-ts": "^4.4.1",
-        "@typescript-eslint/eslint-plugin": "^8.41.0",
+        "@typescript-eslint/eslint-plugin": "^8.42.0",
         "cspell": "^9.2.1",
         "dependency-cruiser": "^17.0.1",
         "esbuild": "^0.25.9",
-        "eslint": "^9.34.0",
+        "eslint": "^9.35.0",
         "eslint-config-prettier": "^10.1.8",
-        "eslint-plugin-jsdoc": "^54.1.1",
+        "eslint-plugin-jsdoc": "^54.3.1",
         "eslint-plugin-monorepo-cop": "^1.0.2",
         "eslint-plugin-playwright": "^2.2.2",
         "eslint-plugin-prettier": "^5.5.4",
@@ -57,7 +57,7 @@
         "prettier-plugin-packagejson": "^2.5.19",
         "prettier-plugin-sort-json": "^4.1.1",
         "prettier-plugin-toml": "^2.0.6",
-        "typescript-eslint": "^8.41.0",
+        "typescript-eslint": "^8.42.0",
         "virmator": "^13.16.2"
     },
     "engines": {

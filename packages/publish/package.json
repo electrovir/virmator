@@ -1,6 +1,6 @@
 {
     "name": "@virmator/publish",
-    "version": "14.0.2",
+    "version": "14.0.3",
     "description": "Default publish plugin for virmator.",
     "keywords": [
         "virmator",
@@ -34,18 +34,18 @@
         "test:update": "npm test"
     },
     "dependencies": {
-        "@augment-vir/assert": "^31.33.0",
-        "@augment-vir/common": "^31.33.0",
-        "@augment-vir/node": "^31.33.0",
-        "@virmator/core": "^14.0.2",
+        "@augment-vir/assert": "^31.34.1",
+        "@augment-vir/common": "^31.34.1",
+        "@augment-vir/node": "^31.34.1",
+        "@virmator/core": "^14.0.3",
         "mri": "^1.2.0",
         "semver": "^7.7.2",
         "simple-git": "^3.28.0",
-        "url-vir": "^2.1.4"
+        "url-vir": "^2.1.6"
     },
     "devDependencies": {
-        "@types/node": "^24.3.0",
-        "@types/semver": "^7.7.0",
+        "@types/node": "^24.3.1",
+        "@types/semver": "^7.7.1",
         "markdown-code-example-inserter": "^3.0.3",
         "type-fest": "^4.41.0",
         "typedoc": "^0.28.12"
