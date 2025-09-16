@@ -347,6 +347,7 @@ const baseConfig = {
         'tsbuildinfo',
         'tsdoc',
         'ttywrap',
+        'typebox',
         'typeof',
         'ulaanbaatar',
         'uncompiled',

@@ -125,7 +125,10 @@ async function determinePackageType(
     cwdPackagePath: string,
     monoRepoRootPath: string,
     cwdPackageJson: PackageJson,
-): Promise<PackageType> {
+): Promise<{
+    packageType: PackageType;
+    monoRepoPackages: MonoRepoPackage[][];
+}> {
     try {
         if (
             cwdPackageJson.workspaces &&
@@ -133,7 +136,12 @@ async function determinePackageType(
                 ? cwdPackageJson.workspaces.length
                 : cwdPackageJson.workspaces.packages?.length)
         ) {
-            return PackageType.MonoRoot;
+            const monoRepoPackages = await getMonoRepoPackages(monoRepoRootPath);
+
+            return {
+                monoRepoPackages,
+                packageType: PackageType.MonoRoot,
+            };
         } else {
             if (monoRepoRootPath !== cwdPackagePath) {
                 const parentPackages = await getMonoRepoPackages(monoRepoRootPath);
@@ -143,15 +151,24 @@ async function determinePackageType(
                         return join(monoRepoRootPath, monoPackage.relativePath) === cwdPackagePath;
                     })
                 ) {
-                    return PackageType.MonoPackage;
+                    return {
+                        packageType: PackageType.MonoPackage,
+                        monoRepoPackages: parentPackages,
+                    };
                 }
             }
-            return PackageType.TopPackage;
+            return {
+                monoRepoPackages: [],
+                packageType: PackageType.TopPackage,
+            };
         }
     } catch (error) {
         console.error(error);
         /** Default to package package type. */
-        return PackageType.TopPackage;
+        return {
+            monoRepoPackages: [],
+            packageType: PackageType.TopPackage,
+        };
     }
 }
 
@@ -186,21 +203,19 @@ async function getMonoRepoPackages(cwdPackagePath: string): Promise<MonoRepoPack
 
 async function getMonoRepoDetails(cwdPackagePath: string, cwdPackageJson: PackageJson) {
     const monoRepoRootPath = await findMonoRepoDir(cwdPackagePath);
-    const packageType = await determinePackageType(
+    const {packageType, monoRepoPackages} = await determinePackageType(
         cwdPackagePath,
         monoRepoRootPath,
         cwdPackageJson,
     );
-    const monoRepoPackages =
-        packageType === PackageType.MonoRoot ? await getMonoRepoPackages(cwdPackagePath) : [];
 
-    const isPartOfMonoRepo = monoRepoPackages
-        .flat()
-        .some(({fullPath}) => fullPath === cwdPackagePath);
+    const isPartOfMonoRepo =
+        packageType === PackageType.MonoPackage &&
+        monoRepoPackages.flat().some(({fullPath}) => fullPath === cwdPackagePath);
 
     if (isPartOfMonoRepo || packageType === PackageType.MonoRoot) {
         return {
-            monoRepoPackages,
+            monoRepoPackages: packageType === PackageType.MonoRoot ? monoRepoPackages : [],
             monoRepoRootPath,
             packageType,
         };
