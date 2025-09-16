@@ -1,11 +1,11 @@
 exports[`Frontend > builds 1`] = `
 {
   "logs": {
-    "stdout": "Installing typescript@5.9.2 vite@7.1.4...\\nBuilding...\\n> NODE_OPTIONS=\\"--import tsx\\" npx vite build --config configs/vite.config.ts\\npublic dir: www-static\\nroot dir:   src\\nout dir:    dist\\nbase path:  /\\nvite v7.1.4 building for production...\\ntransforming...\\n✓ 3 modules transformed.\\nrendering chunks...\\ncomputing gzip size...\\n../dist/index.html                0.29 kB │ gzip: 0.21 kB\\n../dist/assets/index-mfONQ4jQ.js  0.80 kB │ gzip: 0.45 kB\\n✓ built\\nCreating 404 page...\\nfrontend finished."
+    "stdout": "Installing typescript@5.9.2 vite@7.1.5...\\nBuilding...\\n> NODE_OPTIONS=\\"--import tsx\\" npx vite build --config configs/vite.config.ts\\npublic dir: www-static\\nroot dir:   src\\nout dir:    dist\\nbase path:  /\\nvite v7.1.5 building for production...\\ntransforming...\\n✓ 3 modules transformed.\\nrendering chunks...\\ncomputing gzip size...\\n../dist/index.html                0.29 kB │ gzip: 0.21 kB\\n../dist/assets/index-mfONQ4jQ.js  0.80 kB │ gzip: 0.45 kB\\n✓ built\\nCreating 404 page...\\nfrontend finished."
   },
   "cwd": "packages/frontend/test-files/valid-frontend",
   "contentsDiff": {
-    "package.json": "{\\n    \\"type\\": \\"module\\",\\n    \\"devDependencies\\": {\\n        \\"typescript\\": \\"^5.9.2\\",\\n        \\"vite\\": \\"^7.1.4\\"\\n    }\\n}\\n",
+    "package.json": "{\\n    \\"type\\": \\"module\\",\\n    \\"devDependencies\\": {\\n        \\"typescript\\": \\"^5.9.2\\",\\n        \\"vite\\": \\"^7.1.5\\"\\n    }\\n}\\n",
     "dist": {
       "404.html": "<!doctype html>\\n<html>\\n    <head>\\n        <title>Test File</title>\\n        <meta name=\\"viewport\\" content=\\"width=device-width, minimum-scale=1.0, maximum-scale=1.0\\" />\\n      <script type=\\"module\\" crossorigin src=\\"/assets/index-mfONQ4jQ.js\\"></script>\\n    </head>\\n    <body></body>\\n</html>\\n",
       "assets": {
