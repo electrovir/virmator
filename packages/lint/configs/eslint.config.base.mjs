@@ -50,6 +50,7 @@ export function defineEslintConfig(repoDir) {
                 '*.snapshot',
                 '*.sql',
                 '*.yml',
+                '**/.history/',
                 '**/.not-committed/',
                 '**/all-files-for-code-coverage.test.ts',
                 '**/configs/',

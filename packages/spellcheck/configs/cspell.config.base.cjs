@@ -1,7 +1,9 @@
 const baseConfig = {
     ignorePaths: [
         '.DS_Store',
+        '.git',
         '.git/',
+        '.history/',
         '*.docx',
         '*.mp4',
         '*.otf',
