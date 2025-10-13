@@ -29,7 +29,7 @@
     "types": "src/test.ts",
     "scripts": {
         "compile": "virmator compile",
-        "test": "runstorm --kill-on=failure --names node,web \"npm run test:node\" \"npm run test:web\"",
+        "test": "runstorm --names node,web \"npm run test:node\" \"npm run test:web\"",
         "test:coverage": "npm test",
         "test:node": "virmator test node src/test.test.ts src/web-snapshot-plugin/snapshot-store.test.ts",
         "test:update": "virmator test node update src/test.test.ts src/web-snapshot-plugin/snapshot-store.test.ts",

@@ -76,8 +76,12 @@ export function createBaseConfig({forGitHubPages, packageDirPath}: BaseConfigOpt
                 target,
                 rollupOptions: {
                     external: [
-                        // This is specified, but not used, in `@augment-vir/common`'s `log` export. It is only used inside a Node.js environment.
+                        /**
+                         * These are specified, but not actually used in a browser, in
+                         * @augment-vir/common exports.
+                         */
                         'node:util',
+                        'node:path',
                     ],
                 },
             },
