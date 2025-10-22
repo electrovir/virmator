@@ -35,17 +35,17 @@
         "test:update": "npm test update"
     },
     "dependencies": {
-        "@augment-vir/assert": "^31.38.0",
-        "@augment-vir/common": "^31.38.0",
-        "@augment-vir/node": "^31.38.0",
+        "@augment-vir/assert": "^31.45.0",
+        "@augment-vir/common": "^31.45.0",
+        "@augment-vir/node": "^31.45.0",
         "@virmator/core": "^14.1.0",
         "mri": "^1.2.0"
     },
     "devDependencies": {
-        "@augment-vir/test": "^31.38.0",
-        "@types/node": "^24.6.1",
+        "@augment-vir/test": "^31.45.0",
+        "@types/node": "^24.9.1",
         "typescript": "^5.9.3",
-        "vite": "^7.1.7",
+        "vite": "^7.1.12",
         "vite-tsconfig-paths": "^5.1.4"
     },
     "engines": {

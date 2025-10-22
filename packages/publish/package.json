@@ -34,21 +34,21 @@
         "test:update": "npm test"
     },
     "dependencies": {
-        "@augment-vir/assert": "^31.38.0",
-        "@augment-vir/common": "^31.38.0",
-        "@augment-vir/node": "^31.38.0",
+        "@augment-vir/assert": "^31.45.0",
+        "@augment-vir/common": "^31.45.0",
+        "@augment-vir/node": "^31.45.0",
         "@virmator/core": "^14.1.0",
         "mri": "^1.2.0",
-        "semver": "^7.7.2",
+        "semver": "^7.7.3",
         "simple-git": "^3.28.0",
         "url-vir": "^2.1.6"
     },
     "devDependencies": {
-        "@types/node": "^24.6.1",
+        "@types/node": "^24.9.1",
         "@types/semver": "^7.7.1",
         "markdown-code-example-inserter": "^3.0.3",
-        "type-fest": "^5.0.1",
-        "typedoc": "^0.28.13"
+        "type-fest": "^5.1.0",
+        "typedoc": "^0.28.14"
     },
     "engines": {
         "node": ">=22"

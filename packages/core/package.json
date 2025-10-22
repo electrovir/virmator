@@ -32,20 +32,20 @@
         "test:update": "npm test update"
     },
     "dependencies": {
-        "@augment-vir/assert": "^31.38.0",
-        "@augment-vir/common": "^31.38.0",
-        "@augment-vir/node": "^31.38.0",
-        "mono-vir": "^2.3.0",
+        "@augment-vir/assert": "^31.45.0",
+        "@augment-vir/common": "^31.45.0",
+        "@augment-vir/node": "^31.45.0",
+        "mono-vir": "^2.4.1",
         "runstorm": "^0.6.2",
-        "semver": "^7.7.2",
-        "type-fest": "^5.0.1",
+        "semver": "^7.7.3",
+        "type-fest": "^5.1.0",
         "typescript": "^5.9.3"
     },
     "devDependencies": {
-        "@augment-vir/test": "^31.38.0",
-        "@types/node": "^24.6.1",
+        "@augment-vir/test": "^31.45.0",
+        "@types/node": "^24.9.1",
         "@types/semver": "^7.7.1",
-        "esbuild": "^0.25.10"
+        "esbuild": "^0.25.11"
     },
     "engines": {
         "node": ">=22"
