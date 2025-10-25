@@ -78,7 +78,7 @@ export function createBaseConfig({forGitHubPages, packageDirPath}: BaseConfigOpt
                     external: [
                         /**
                          * These are specified, but not actually used in a browser, in
-                         * @augment-vir/common exports.
+                         * `@augment-vir/common` exports.
                          */
                         'node:util',
                         'node:path',

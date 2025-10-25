@@ -246,6 +246,7 @@ const baseConfig = {
         'opentype',
         'outfile',
         'packagejson',
+        'packument',
         'pago_pago',
         'pako',
         'pangnirtung',
