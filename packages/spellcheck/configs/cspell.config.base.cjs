@@ -79,6 +79,7 @@ const baseConfig = {
         'cpsell',
         'creston',
         'cuiaba',
+        'cuid',
         'cullable',
         'customizer',
         'danmarkshavn',

@@ -1,6 +1,6 @@
 {
     "name": "@virmator/publish",
-    "version": "14.2.1",
+    "version": "14.2.2",
     "description": "Default publish plugin for virmator.",
     "keywords": [
         "virmator",
@@ -37,7 +37,7 @@
         "@augment-vir/assert": "^31.46.1",
         "@augment-vir/common": "^31.46.1",
         "@augment-vir/node": "^31.46.1",
-        "@virmator/core": "^14.2.1",
+        "@virmator/core": "^14.2.2",
         "mri": "^1.2.0",
         "semver": "^7.7.3",
         "simple-git": "^3.28.0",
