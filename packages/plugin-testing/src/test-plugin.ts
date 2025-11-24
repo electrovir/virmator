@@ -9,7 +9,6 @@ import {
     type MaybePromise,
     type PartialWithUndefined,
     removeColor,
-    RuntimeEnv,
     wrapInTry,
     wrapString,
 } from '@augment-vir/common';
@@ -19,7 +18,7 @@ import {
     resetDirContents,
     toPosixPath,
 } from '@augment-vir/node';
-import {assertTestContext, type UniversalTestContext} from '@augment-vir/test';
+import {assertTestContext, TestEnv, type UniversalTestContext} from '@augment-vir/test';
 import {
     executeVirmatorCommand,
     findClosestPackageDir,
@@ -93,7 +92,7 @@ export async function testPlugin(
         beforeCleanupCallback,
     }: TestPluginOptions = {},
 ): Promise<void> {
-    assertTestContext(context, RuntimeEnv.Node);
+    assertTestContext(context, TestEnv.Node);
 
     const logs: Partial<Record<LogOutputType, string[]>> = {};
     const logger: Logger = createLogger({

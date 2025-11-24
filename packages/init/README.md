@@ -21,6 +21,7 @@ A default plugin for [virmator](https://www.npmjs.com/package/virmator).
         -   www-static/index.css
         -   www-static/\_redirects
         -   .gitattributes
+        -   .npmrc
         -   .nvmrc
         -   .gitignore
         -   LICENSE-MIT

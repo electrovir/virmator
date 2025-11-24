@@ -168,6 +168,7 @@ Note that as of v13, this package is now in ESM.
         -   www-static/index.css
         -   www-static/\_redirects
         -   .gitattributes
+        -   .npmrc
         -   .nvmrc
         -   .gitignore
         -   LICENSE-MIT
