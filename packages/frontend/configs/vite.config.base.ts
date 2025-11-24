@@ -47,6 +47,17 @@ export type OverrideCallback = (
     basePaths: Readonly<ConfigPaths>,
 ) => UserConfig | Promise<UserConfig>;
 
+const externalDeps: string[] = [
+    /** These are specified, but not actually used in a browser, in `@augment-vir/common` exports. */
+    'node:util',
+    'node:path',
+
+    /** This is specified, but not actually used in a browser, in `@augment-vir/test` exports. */
+    '@playwright/test',
+    /** For extra measure, also block playwright. */
+    'playwright',
+];
+
 export function createBaseConfig({forGitHubPages, packageDirPath}: BaseConfigOptions): {
     baseConfig: UserConfig;
     basePaths: ConfigPaths;
@@ -75,20 +86,14 @@ export function createBaseConfig({forGitHubPages, packageDirPath}: BaseConfigOpt
                 emptyOutDir: true,
                 target,
                 rollupOptions: {
-                    external: [
-                        /**
-                         * These are specified, but not actually used in a browser, in
-                         * `@augment-vir/common` exports.
-                         */
-                        'node:util',
-                        'node:path',
-                    ],
+                    external: externalDeps,
                 },
             },
             optimizeDeps: {
                 esbuildOptions: {
                     target,
                 },
+                exclude: externalDeps,
                 force: true,
             },
             esbuild: {
