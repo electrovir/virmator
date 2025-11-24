@@ -110,6 +110,7 @@ const baseConfig = {
         'dmmf',
         'docgen',
         'dodgerblue',
+        'domcontentloaded',
         'domparser',
         'drawio',
         'dualshock',

@@ -231,6 +231,19 @@ export const virmatorInitPlugin = defineVirmatorPlugin(
                         },
                         required: false,
                     },
+                    npmrc: {
+                        copyFromPath: join('configs', 'npmrc.txt'),
+                        copyToPath: join('.npmrc'),
+                        env: {
+                            [RuntimeEnv.Web]: true,
+                            [RuntimeEnv.Node]: true,
+                        },
+                        packageType: {
+                            [PackageType.TopPackage]: true,
+                            [PackageType.MonoRoot]: true,
+                        },
+                        required: false,
+                    },
                     nvmrc: {
                         copyFromPath: join('configs', 'nvmrc.txt'),
                         copyToPath: join('.nvmrc'),
