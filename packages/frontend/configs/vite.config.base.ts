@@ -51,6 +51,8 @@ const externalDeps: string[] = [
     /** These are specified, but not actually used in a browser, in `@augment-vir/common` exports. */
     'node:util',
     'node:path',
+    /** Imported in object-shape-tester but only in backend code. */
+    'node:fs/promises',
 
     /** This is specified, but not actually used in a browser, in `@augment-vir/test` exports. */
     '@playwright/test',
