@@ -1,6 +1,6 @@
 {
     "name": "@virmator/mono-repo-root",
-    "version": "14.3.3",
+    "version": "14.3.4",
     "private": true,
     "sideEffects": false,
     "type": "module",
@@ -52,7 +52,7 @@
         "prettier": "~3.3.3",
         "prettier-plugin-interpolated-html-tags": "^2.0.1",
         "prettier-plugin-jsdoc": "^1.8.0",
-        "prettier-plugin-multiline-arrays": "^4.0.5",
+        "prettier-plugin-multiline-arrays": "~4.0.5",
         "prettier-plugin-organize-imports": "^4.3.0",
         "prettier-plugin-packagejson": "^2.5.20",
         "prettier-plugin-sort-json": "^4.1.1",

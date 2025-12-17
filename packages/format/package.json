@@ -1,6 +1,6 @@
 {
     "name": "@virmator/format",
-    "version": "14.3.3",
+    "version": "14.3.4",
     "description": "Default format plugin for virmator.",
     "keywords": [
         "virmator",
@@ -34,7 +34,7 @@
     "dependencies": {
         "@augment-vir/assert": "^31.54.3",
         "@augment-vir/common": "^31.54.3",
-        "@virmator/core": "^14.3.3",
+        "@virmator/core": "^14.3.4",
         "mri": "^1.2.0"
     },
     "devDependencies": {
@@ -45,7 +45,7 @@
         "prettier": "3.3.3",
         "prettier-plugin-interpolated-html-tags": "^2.0.1",
         "prettier-plugin-jsdoc": "^1.8.0",
-        "prettier-plugin-multiline-arrays": "^4.0.5",
+        "prettier-plugin-multiline-arrays": "~4.0.5",
         "prettier-plugin-organize-imports": "^4.3.0",
         "prettier-plugin-packagejson": "^2.5.20",
         "prettier-plugin-sort-json": "^4.1.1",
