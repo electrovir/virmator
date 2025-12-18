@@ -33,8 +33,6 @@ export const baseNcuConfig = {
     reject: [
         /** > 3.4 is broken https://github.com/prettier/prettier/issues/16936 */
         'prettier',
-        /** > 4.1 is broken https://github.com/electrovir/prettier-plugin-multiline-arrays/issues/63 */
-        'prettier-plugin-multiline-arrays',
     ],
     deprecated: false,
     /** Returns days. */
