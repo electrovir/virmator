@@ -43,7 +43,7 @@ export function alwaysReloadPlugin(
         handleHotUpdate() {
             return [];
         },
-        configureServer({watcher, ws, config: {logger, publicDir = '', root = process.cwd()}}) {
+        configureServer({watcher, ws, config: {logger, publicDir, root}}) {
             const {inclusions = [], exclusions = []} = config;
             let callingAlready = false;
 
