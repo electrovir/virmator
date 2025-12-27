@@ -138,8 +138,8 @@ describe(calculateUsedCommands.name, () => {
                                         web: true,
                                     },
                                     packageType: {
-                                        'top-level-package': true,
-                                        'mono-root': true,
+                                        [PackageType.TopPackage]: true,
+                                        [PackageType.MonoRoot]: true,
                                     },
                                     required: true,
                                 },
@@ -163,8 +163,8 @@ describe(calculateUsedCommands.name, () => {
                                         web: true,
                                     },
                                     packageType: {
-                                        'top-level-package': true,
-                                        'mono-root': true,
+                                        [PackageType.TopPackage]: true,
+                                        [PackageType.MonoRoot]: true,
                                     },
                                     type: 'dev',
                                 },
@@ -174,8 +174,8 @@ describe(calculateUsedCommands.name, () => {
                                         web: true,
                                     },
                                     packageType: {
-                                        'top-level-package': true,
-                                        'mono-root': true,
+                                        [PackageType.TopPackage]: true,
+                                        [PackageType.MonoRoot]: true,
                                     },
                                     type: 'dev',
                                 },

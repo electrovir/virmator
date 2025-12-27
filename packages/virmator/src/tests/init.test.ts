@@ -64,7 +64,7 @@ describe(virmatorInitPlugin.name, () => {
         await testDocsPlugin(
             true,
             context,
-            join(testFilesDir, 'mono-root'),
+            join(testFilesDir, PackageType.MonoRoot),
             RuntimeEnv.Node,
             PackageType.MonoRoot,
         );
@@ -73,7 +73,7 @@ describe(virmatorInitPlugin.name, () => {
         await testDocsPlugin(
             true,
             context,
-            join(testFilesDir, 'mono-root'),
+            join(testFilesDir, PackageType.MonoRoot),
             RuntimeEnv.Web,
             PackageType.MonoRoot,
         );
@@ -82,7 +82,7 @@ describe(virmatorInitPlugin.name, () => {
         await testDocsPlugin(
             true,
             context,
-            join(testFilesDir, 'mono-package'),
+            join(testFilesDir, PackageType.MonoPackage),
             RuntimeEnv.Web,
             PackageType.MonoPackage,
         );
@@ -91,7 +91,7 @@ describe(virmatorInitPlugin.name, () => {
         await testDocsPlugin(
             true,
             context,
-            join(testFilesDir, 'mono-package'),
+            join(testFilesDir, PackageType.MonoPackage),
             RuntimeEnv.Node,
             PackageType.MonoPackage,
         );
