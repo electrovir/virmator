@@ -13,7 +13,7 @@ exports[`Init > errors without env 1`] = `
 exports[`Init > errors without package type 1`] = `
 {
   "logs": {
-    "stderr": "Missing package type. Expected one of mono-root, top-level-package, or mono-package\\ninit failed."
+    "stderr": "Missing package type. Expected one of mono-root, package, or mono-package\\ninit failed."
   },
   "cwd": "packages/virmator/test-files/top-package",
   "error": {
