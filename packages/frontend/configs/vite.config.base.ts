@@ -76,6 +76,9 @@ export function createBaseConfig({forGitHubPages, packageDirPath}: BaseConfigOpt
 
     return {
         baseConfig: {
+            server: {
+                host: true,
+            },
             clearScreen: false,
             base: basePath,
             publicDir: staticDir,
