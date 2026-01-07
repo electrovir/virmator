@@ -13,7 +13,7 @@ import {
     type VirmatorPlugin,
     type VirmatorPluginCliCommands,
 } from '@virmator/core';
-import {type PluginDocEntry} from '@virmator/core/src/plugin/plugin-init';
+import {type PluginDocEntry} from '@virmator/core/src/plugin/plugin-init.js';
 
 /** Different syntaxes for each supported help message target environment. */
 export enum HelpMessageSyntax {

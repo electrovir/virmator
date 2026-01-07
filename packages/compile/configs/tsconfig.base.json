@@ -7,8 +7,8 @@
         "forceConsistentCasingInFileNames": true,
         "importHelpers": true,
         "isolatedModules": true,
-        "module": "ES2022",
-        "moduleResolution": "Node",
+        "module": "node20",
+        "moduleResolution": "node16",
         "noEmitOnError": false,
         "noImplicitAny": true,
         "noImplicitOverride": true,
@@ -20,7 +20,7 @@
         "skipDefaultLibCheck": true,
         "skipLibCheck": true,
         "strict": true,
-        "target": "ES2023",
+        "target": "es2024",
         "useDefineForClassFields": true
     }
 }
