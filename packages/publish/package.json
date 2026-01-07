@@ -34,9 +34,9 @@
         "test:update": "npm test"
     },
     "dependencies": {
-        "@augment-vir/assert": "^31.55.0",
-        "@augment-vir/common": "^31.55.0",
-        "@augment-vir/node": "^31.55.0",
+        "@augment-vir/assert": "^31.57.5",
+        "@augment-vir/common": "^31.57.5",
+        "@augment-vir/node": "^31.57.5",
         "@virmator/core": "^14.4.1",
         "mri": "^1.2.0",
         "semver": "^7.7.3",

@@ -36,9 +36,9 @@
         "test:web": "virmator test web src/web-snapshot-plugin/web-snapshot-plugin.test.ts"
     },
     "dependencies": {
-        "@augment-vir/assert": "^31.55.0",
-        "@augment-vir/common": "^31.55.0",
-        "@augment-vir/node": "^31.55.0",
+        "@augment-vir/assert": "^31.57.5",
+        "@augment-vir/common": "^31.57.5",
+        "@augment-vir/node": "^31.57.5",
         "@virmator/core": "^14.4.1",
         "@web/dev-server-core": "^0.7.5",
         "@web/test-runner-core": "^0.13.4",
@@ -48,7 +48,7 @@
         "typed-event-target": "^4.1.0"
     },
     "devDependencies": {
-        "@augment-vir/test": "^31.55.0",
+        "@augment-vir/test": "^31.57.5",
         "@open-wc/testing": "^4.0.0",
         "@types/mocha": "^10.0.10",
         "@types/node": "^25.0.3",
