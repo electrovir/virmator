@@ -1,6 +1,6 @@
 {
     "name": "@virmator/spellcheck",
-    "version": "14.4.2",
+    "version": "14.4.3",
     "description": "Default spellcheck plugin for virmator",
     "keywords": [
         "virmator",
@@ -32,18 +32,18 @@
         "test:update": "npm test update"
     },
     "dependencies": {
-        "@augment-vir/assert": "^31.57.5",
-        "@augment-vir/common": "^31.57.5",
-        "@augment-vir/node": "^31.57.5",
-        "@virmator/core": "^14.4.2",
+        "@augment-vir/assert": "^31.58.0",
+        "@augment-vir/common": "^31.58.0",
+        "@augment-vir/node": "^31.58.0",
+        "@virmator/core": "^14.4.3",
         "mri": "^1.2.0"
     },
     "devDependencies": {
-        "@augment-vir/test": "^31.57.5",
+        "@augment-vir/test": "^31.58.0",
         "@types/node": "^25.0.3",
-        "@virmator/plugin-testing": "^14.4.2",
+        "@virmator/plugin-testing": "^14.4.3",
         "c8": "^10.1.3",
-        "cspell": "^9.4.0",
+        "cspell": "^9.6.0",
         "istanbul-smart-text-reporter": "^1.1.5",
         "tsx": "^4.21.0"
     },
