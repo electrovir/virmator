@@ -1,5 +1,6 @@
 import {check} from '@augment-vir/assert';
 import {RuntimeEnv} from '@augment-vir/common';
+import {interpolationSafeWindowsPath} from '@augment-vir/node';
 import {defineVirmatorPlugin, NpmDepType, PackageType} from '@virmator/core';
 import mri from 'mri';
 import {join} from 'node:path';
@@ -249,9 +250,13 @@ export const virmatorLintPlugin = defineVirmatorPlugin(
 
         const dirPath = args._.length ? '' : '.';
 
+        const cacheLocation = join(monoRepoRootPath, 'node_modules', '.cache', '.eslintcache');
+
         const eslintCommand = [
             'npx',
             'eslint',
+            '--cache',
+            `--cache-location='${interpolationSafeWindowsPath(cacheLocation)}'`,
             usedCommands.lint?.subCommands.fix && !args.fix ? '--fix' : '',
             dirPath,
             ...filteredArgs,
