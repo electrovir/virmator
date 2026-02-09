@@ -33,6 +33,10 @@ export const baseNcuConfig = {
     reject: [
         /** > 3.4 is broken https://github.com/prettier/prettier/issues/16936 */
         'prettier',
+
+        /** Dependencies are not ready yet for ESLint 10. */
+        'eslint',
+        '@eslint/js',
     ],
     deprecated: false,
     /** Returns days. */
