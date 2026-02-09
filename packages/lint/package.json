@@ -1,6 +1,6 @@
 {
     "name": "@virmator/lint",
-    "version": "14.5.0",
+    "version": "14.5.1",
     "description": "Default ESLint linting plugin for virmator.",
     "keywords": [
         "virmator",
@@ -32,14 +32,14 @@
         "test:update": "npm test update"
     },
     "dependencies": {
-        "@augment-vir/assert": "^31.59.1",
-        "@augment-vir/common": "^31.59.1",
-        "@augment-vir/node": "^31.59.1",
-        "@virmator/core": "^14.5.0",
+        "@augment-vir/assert": "^31.59.2",
+        "@augment-vir/common": "^31.59.2",
+        "@augment-vir/node": "^31.59.2",
+        "@virmator/core": "^14.5.1",
         "mri": "^1.2.0"
     },
     "devDependencies": {
-        "@augment-vir/test": "^31.59.1",
+        "@augment-vir/test": "^31.59.2",
         "@eslint/eslintrc": "^3.3.3",
         "@eslint/js": "9.39.2",
         "@stylistic/eslint-plugin": "^5.7.1",
