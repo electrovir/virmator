@@ -181,13 +181,18 @@ export function defineConfig({
                 "This module depends on an npm package from the 'devDependencies' section of your " +
                 'package.json.',
             from: {
-                path: '^(packages)',
+                path: '^(src|packages/[^/]+/src)/',
                 pathNot: [
                     '\\.test\\.',
+                    '\\.mock\\.',
                 ],
             },
             to: {
                 dependencyTypes: ['npm-dev'],
+                dependencyTypesNot: [
+                    'type-only',
+                    'npm-peer',
+                ],
             },
         },
         {
