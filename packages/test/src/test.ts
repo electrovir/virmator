@@ -154,16 +154,6 @@ export const virmatorTestPlugin = defineVirmatorPlugin(
                                 },
                                 type: NpmDepType.Dev,
                             },
-                            '@web/test-runner-visual-regression': {
-                                env: {
-                                    [RuntimeEnv.Web]: true,
-                                },
-                                packageType: {
-                                    [PackageType.MonoPackage]: true,
-                                    [PackageType.TopPackage]: true,
-                                },
-                                type: NpmDepType.Dev,
-                            },
                             '@web/test-runner': {
                                 env: {
                                     [RuntimeEnv.Web]: true,

@@ -30,7 +30,6 @@ A default plugin for [virmator](https://www.npmjs.com/package/virmator).
                 -   [@web/dev-server-esbuild](https://npmjs.com/package/@web/dev-server-esbuild)
                 -   [@web/test-runner-commands](https://npmjs.com/package/@web/test-runner-commands)
                 -   [@web/test-runner-playwright](https://npmjs.com/package/@web/test-runner-playwright)
-                -   [@web/test-runner-visual-regression](https://npmjs.com/package/@web/test-runner-visual-regression)
                 -   [@web/test-runner](https://npmjs.com/package/@web/test-runner)
                 -   [istanbul-smart-text-reporter](https://npmjs.com/package/istanbul-smart-text-reporter)
             -   Sub Commands
