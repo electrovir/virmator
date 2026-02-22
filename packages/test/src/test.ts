@@ -134,16 +134,6 @@ export const virmatorTestPlugin = defineVirmatorPlugin(
                                 },
                                 type: NpmDepType.Dev,
                             },
-                            '@web/test-runner-commands': {
-                                env: {
-                                    [RuntimeEnv.Web]: true,
-                                },
-                                packageType: {
-                                    [PackageType.MonoPackage]: true,
-                                    [PackageType.TopPackage]: true,
-                                },
-                                type: NpmDepType.Dev,
-                            },
                             '@web/test-runner-playwright': {
                                 env: {
                                     [RuntimeEnv.Web]: true,
