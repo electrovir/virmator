@@ -1,6 +1,6 @@
 import {assert} from '@augment-vir/assert';
 import {omitObjectKeys} from '@augment-vir/common';
-import {describe} from '@augment-vir/test';
+import {describe, it} from '@augment-vir/test';
 import {executeServerCommand} from '@web/test-runner-commands';
 import {
     type CompareCommandResult,

@@ -314,7 +314,7 @@ export const virmatorTestPlugin = defineVirmatorPlugin(
 
         if (usedCommands.test?.subCommands.web) {
             const allFilesTestFilePath = join(cwd, 'src', 'all-files-for-code-coverage.test.ts');
-            const shouldUpdateSnapshots = usedCommands.test.subCommands.web.subCommands.update;
+            const shouldUpdateTest = usedCommands.test.subCommands.web.subCommands.update;
 
             try {
                 const configPath =
@@ -334,9 +334,7 @@ export const virmatorTestPlugin = defineVirmatorPlugin(
                     .default as Partial<TestRunnerConfig>;
 
                 const includeCoverage = usedCommands.test.subCommands.web.subCommands.coverage;
-                const updateSnapshotsArgs = shouldUpdateSnapshots
-                    ? ['--test-update-snapshots']
-                    : [];
+                const updateTestArgs = shouldUpdateTest ? ['--update'] : [];
 
                 if (includeCoverage) {
                     await createTestThatImportsAllFilesForCoverage(
@@ -352,7 +350,7 @@ export const virmatorTestPlugin = defineVirmatorPlugin(
                     '--color',
                     ...configArgs,
                     ...otherArgs,
-                    ...updateSnapshotsArgs,
+                    ...updateTestArgs,
                     includeCoverage ? '--coverage' : '',
                     ...fileArgs,
                 ]

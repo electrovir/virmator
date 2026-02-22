@@ -22,9 +22,7 @@ import {
 } from './snapshot-store.js';
 
 export function snapshotPlugin(repoPath: string): TestRunnerPlugin {
-    const snapshotUpdatesAllowed =
-        process.argv.includes('--update-snapshots') ||
-        process.argv.includes('--test-update-snapshots');
+    const updatesAllowed = process.argv.includes('--update');
     const snapshotStore = new SnapshotStore();
     const sessionIdsToFilePaths: Record<string, Set<string>> = {};
 
@@ -40,7 +38,7 @@ export function snapshotPlugin(repoPath: string): TestRunnerPlugin {
 
                     const testFilePaths = Array.from(sessionIdsToFilePaths[sessionId] || []);
 
-                    if (snapshotUpdatesAllowed) {
+                    if (updatesAllowed) {
                         await Promise.all(
                             testFilePaths.map((testFilePath) =>
                                 snapshotStore.finalizeSnapshotFile(testFilePath),
@@ -66,16 +64,14 @@ export function snapshotPlugin(repoPath: string): TestRunnerPlugin {
         },
 
         async executeCommand({command, payload, session}) {
-            getOrSet(sessionIdsToFilePaths, session.id, () => new Set()).add(session.testFile);
-
-            assertValidShape(
-                payload,
-                snapshotPayloadShape,
-                undefined,
-                'You must provide a valid snapshot payload object.',
-            );
-
             if (command === SnapshotCommand.CompareSnapshot) {
+                getOrSet(sessionIdsToFilePaths, session.id, () => new Set()).add(session.testFile);
+                assertValidShape(
+                    payload,
+                    snapshotPayloadShape,
+                    undefined,
+                    'You must provide a valid snapshot payload object.',
+                );
                 const newSnapshot: unknown = wrapInTry(() => JSON.parse(payload.content), {
                     fallbackValue: payload.content,
                 });
@@ -83,7 +79,7 @@ export function snapshotPlugin(repoPath: string): TestRunnerPlugin {
                 const savedSnapshot = await snapshotStore.getSnapshot(session.testFile, payload);
 
                 const matches = check.deepEquals(savedSnapshot, newSnapshot);
-                const updated = !matches && snapshotUpdatesAllowed;
+                const updated = !matches && updatesAllowed;
                 const snapshotPath = createSnapshotOutputPath(session.testFile);
 
                 if (updated) {
