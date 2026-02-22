@@ -40,7 +40,7 @@ function createScreenshotsPlugin(extraOptions, repoDir) {
         return [];
     }
     const defaultOptions = {
-        update: false,
+        update: process.argv.includes('--update'),
         getBaselineName: (args) => {
             return getTestFileName(args, repoDir, '');
         },
