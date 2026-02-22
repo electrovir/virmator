@@ -15,7 +15,7 @@ import {joinFilesToDir, writeFileAndDir} from '@augment-vir/node';
 import {type TestRunnerPlugin} from '@web/test-runner-core';
 import type {PlaywrightLauncher} from '@web/test-runner-playwright';
 import {existsSync} from 'node:fs';
-import {readdir, readFile, rm, writeFile} from 'node:fs/promises';
+import {readdir, readFile, rm} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
 import {join, relative} from 'node:path';
 import {assertValidShape} from 'object-shape-tester';
@@ -115,7 +115,7 @@ export function screenshotPlugin(
                         height: maximums.maxHeight,
                     });
 
-                    await writeFile(finalWritePath, finalScreenshot);
+                    await writeFileAndDir(finalWritePath, finalScreenshot);
 
                     log.mutate(`Updated screenshot: ${relative(process.cwd(), finalWritePath)}`);
                 },
@@ -170,7 +170,7 @@ export function screenshotPlugin(
                     const screenshotFilePath = join(screenshotsDirPath, screenshotFileName);
 
                     if (updatesAllowed) {
-                        const tempDirPath = join(tempScreenshotsDirPath, screenshotFileName);
+                        const tempDirPath = join(tempScreenshotsDirPath, screenshotsDirPath);
 
                         screenshotStore[payload.screenshotFileName] = {
                             finalWritePath: screenshotFilePath,
