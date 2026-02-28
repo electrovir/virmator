@@ -132,7 +132,10 @@ export const virmatorDocsPlugin = defineVirmatorPlugin(
                     {
                         logPrefix:
                             color && packageName
-                                ? createCommandLogPrefix({name: packageName, color})
+                                ? createCommandLogPrefix({
+                                      name: packageName,
+                                      color,
+                                  })
                                 : undefined,
                         logTransform: {
                             stderr: (stderrInput) =>

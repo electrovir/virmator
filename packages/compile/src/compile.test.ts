@@ -36,7 +36,10 @@ describe(virmatorCompilePlugin.name, () => {
 
     it('works in a mono-repo', async (context) => {
         const dir = join(testFilesDir, 'mono-repo');
-        await runShellCommand('npm i', {cwd: dir, rejectOnError: true});
+        await runShellCommand('npm i', {
+            cwd: dir,
+            rejectOnError: true,
+        });
         await testVirmatorCompilePlugin(true, context, dir);
     });
 });

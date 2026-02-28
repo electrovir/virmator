@@ -114,7 +114,10 @@ function resolveConfigs(
                 },
             ),
             subCommands: resolveConfigs(
-                {cwdPackagePath, pluginPackagePath},
+                {
+                    cwdPackagePath,
+                    pluginPackagePath,
+                },
                 command.subCommands || {},
             ),
         };
@@ -295,7 +298,13 @@ export async function executeVirmatorCommand({
     const cwdPackageJson = await readPackageJson(cwdPackagePath);
 
     const pluginPackagePath = plugin.pluginPackageRootPath;
-    const resolvedConfigs = resolveConfigs({cwdPackagePath, pluginPackagePath}, plugin.cliCommands);
+    const resolvedConfigs = resolveConfigs(
+        {
+            cwdPackagePath,
+            pluginPackagePath,
+        },
+        plugin.cliCommands,
+    );
 
     const {monoRepoPackages, monoRepoRootPath, packageType} = await getMonoRepoDetails(
         cwdPackagePath,

@@ -125,7 +125,10 @@ export const virmatorCompilePlugin = defineVirmatorPlugin(
                     packageName,
                 );
                 return await createCompileCommandString(
-                    {...params, cwd: packageCwd},
+                    {
+                        ...params,
+                        cwd: packageCwd,
+                    },
                     packageName,
                     color,
                 );
@@ -158,7 +161,10 @@ async function createCompileCommandString(
     if (outDir) {
         log.faint(`${logPrefix}Deleting ${basename(outDir)}...`);
 
-        await rm(outDir, {force: true, recursive: true});
+        await rm(outDir, {
+            force: true,
+            recursive: true,
+        });
     }
     log.faint(`${logPrefix}Deleting tsconfig.tsbuildinfo...`);
     await rm(join(cwd, 'tsconfig.tsbuildinfo'), {force: true});

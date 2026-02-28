@@ -290,7 +290,10 @@ export const virmatorTestPlugin = defineVirmatorPlugin(
 
                 return accum;
             },
-            {rawFileArgs: [] as string[], otherArgs: [] as string[]},
+            {
+                rawFileArgs: [] as string[],
+                otherArgs: [] as string[],
+            },
         );
 
         const fileArgs = rawFileArgs.map((arg) => {

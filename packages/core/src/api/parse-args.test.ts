@@ -193,7 +193,12 @@ describe(parseCliArgs.name, () => {
     const examplePlugins = [
         {
             cliCommands: {
-                fake: {doc: {examples: [], sections: []}},
+                fake: {
+                    doc: {
+                        examples: [],
+                        sections: [],
+                    },
+                },
             },
             name: 'fake plugin',
             executor() {},
@@ -215,7 +220,15 @@ describe(parseCliArgs.name, () => {
             commands: ['fake'],
             filteredCommandArgs: [],
             plugin: examplePlugins[0],
-            usedCommands: {fake: {subCommands: {}, doc: {examples: [], sections: []}}},
+            usedCommands: {
+                fake: {
+                    subCommands: {},
+                    doc: {
+                        examples: [],
+                        sections: [],
+                    },
+                },
+            },
             virmatorFlags: {},
         });
     });
@@ -227,7 +240,15 @@ describe(parseCliArgs.name, () => {
                 '--more-arg',
             ],
             plugin: examplePlugins[0],
-            usedCommands: {fake: {subCommands: {}, doc: {examples: [], sections: []}}},
+            usedCommands: {
+                fake: {
+                    subCommands: {},
+                    doc: {
+                        examples: [],
+                        sections: [],
+                    },
+                },
+            },
             virmatorFlags: {
                 '--no-deps': true,
             },

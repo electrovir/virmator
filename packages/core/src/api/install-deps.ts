@@ -31,7 +31,12 @@ export async function installPluginNpmDeps({
     const deps = flattenDeps(usedCommands);
     const installCommands = flattenExtraInstallCommands(usedCommands);
 
-    if (await installNpmDeps({...params, deps})) {
+    if (
+        await installNpmDeps({
+            ...params,
+            deps,
+        })
+    ) {
         await awaitedForEach(installCommands, async (command) => {
             params.log.faint(`> ${command}`);
             await runShellCommand(command, {

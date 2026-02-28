@@ -52,7 +52,13 @@ function handleWrite(
     logType: LogOutputType,
     text: string,
 ): true {
-    const fixed = removeColor(text).replaceAll(addSuffix({value: monoRepoDir, suffix: '/'}), '');
+    const fixed = removeColor(text).replaceAll(
+        addSuffix({
+            value: monoRepoDir,
+            suffix: '/',
+        }),
+        '',
+    );
 
     if (fixed.length) {
         getOrSet(logs, logType, () => []).push(fixed);
@@ -63,10 +69,16 @@ function handleWrite(
 
 const defaultContentsExcludeList = [
     'tsconfig.tsbuildinfo',
-    wrapString({value: 'node_modules', wrapper: sep}),
+    wrapString({
+        value: 'node_modules',
+        wrapper: sep,
+    }),
     `.git`,
     'package-lock.json',
-    wrapString({value: 'coverage', wrapper: sep}),
+    wrapString({
+        value: 'coverage',
+        wrapper: sep,
+    }),
 ];
 
 /** Optional options for {@link testPlugin}. */

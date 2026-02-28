@@ -23,8 +23,20 @@ describe(generateHelpMessage.name, () => {
         name: string,
         hideVirmatorExplanations = false,
     ) {
-        const outputMarkdownPath = join(outputDir, addSuffix({value: name, suffix: '.md'}));
-        const outputCliPath = join(outputDir, addSuffix({value: name, suffix: '.txt'}));
+        const outputMarkdownPath = join(
+            outputDir,
+            addSuffix({
+                value: name,
+                suffix: '.md',
+            }),
+        );
+        const outputCliPath = join(
+            outputDir,
+            addSuffix({
+                value: name,
+                suffix: '.txt',
+            }),
+        );
         const existingMarkdown = await wrapInTry(
             async () => (await readFile(outputMarkdownPath)).toString(),
             {fallbackValue: ''},

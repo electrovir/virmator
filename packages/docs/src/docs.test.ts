@@ -28,8 +28,14 @@ describe(virmatorDocsPlugin.name, () => {
             {
                 beforeCleanupCallback,
                 excludeContents: [
-                    wrapString({value: 'assets', wrapper: sep}),
-                    wrapString({value: 'dist-docs', wrapper: sep}),
+                    wrapString({
+                        value: 'assets',
+                        wrapper: sep,
+                    }),
+                    wrapString({
+                        value: 'dist-docs',
+                        wrapper: sep,
+                    }),
                 ],
             },
         );
@@ -64,7 +70,10 @@ describe(virmatorDocsPlugin.name, () => {
     });
     it('skips private repo typedoc', async (context) => {
         const monoDir = join(testFilesDir, 'mono-repo');
-        const dirContents = await readAllDirContents(monoDir, {recursive: true, excludeList: []});
+        const dirContents = await readAllDirContents(monoDir, {
+            recursive: true,
+            excludeList: [],
+        });
         await runShellCommand('npm i', {cwd: monoDir});
         await testDocsPlugin(true, context, join(monoDir, 'packages', 'b'), '', (cwd) => {
             assert.strictEquals(existsSync(join(cwd, 'dist-docs', 'index.html')), false);
@@ -73,7 +82,10 @@ describe(virmatorDocsPlugin.name, () => {
     });
     it('does not error on missing markdown files', async (context) => {
         const monoDir = join(testFilesDir, 'mono-repo');
-        const dirContents = await readAllDirContents(monoDir, {recursive: true, excludeList: []});
+        const dirContents = await readAllDirContents(monoDir, {
+            recursive: true,
+            excludeList: [],
+        });
         await runShellCommand('npm i', {cwd: monoDir});
         await testDocsPlugin(true, context, join(monoDir, 'packages', 'c'));
         await resetDirContents(monoDir, dirContents);

@@ -229,6 +229,28 @@ export function defineEslintConfig(repoDir) {
                         next: 'import',
                     },
                 ],
+                '@stylistic/object-curly-newline': [
+                    'error',
+                    {
+                        ObjectExpression: {
+                            multiline: true,
+                            minProperties: 2,
+                            consistent: true,
+                        },
+                        ObjectPattern: {
+                            multiline: true,
+                            consistent: true,
+                        },
+                        ImportDeclaration: {
+                            multiline: true,
+                            consistent: true,
+                        },
+                        ExportDeclaration: {
+                            multiline: true,
+                            consistent: true,
+                        },
+                    },
+                ],
                 '@typescript-eslint/explicit-member-accessibility': [
                     'error',
                     {
