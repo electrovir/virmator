@@ -109,7 +109,9 @@ export async function copyConfigFile(
     try {
         const copyFromContents = (await readFile(config.fullCopyFromPath)).toString();
         const writeContents = transform ? await transform(copyFromContents) : copyFromContents;
-        await mkdir(dirname(config.fullCopyToPath), {recursive: true});
+        await mkdir(dirname(config.fullCopyToPath), {
+            recursive: true,
+        });
 
         await writeFile(config.fullCopyToPath, writeContents);
         log.info(`${logPrefix}Copied ${baseConfigFileName}`);

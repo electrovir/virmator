@@ -362,7 +362,9 @@ export const virmatorTestPlugin = defineVirmatorPlugin(
 
                 await runShellCommand(interpolationSafeWindowsPath(testCommand));
             } finally {
-                await rm(allFilesTestFilePath, {force: true});
+                await rm(allFilesTestFilePath, {
+                    force: true,
+                });
             }
         } else if (usedCommands.test?.subCommands.node) {
             const includeCoverage = usedCommands.test.subCommands.node.subCommands.coverage;

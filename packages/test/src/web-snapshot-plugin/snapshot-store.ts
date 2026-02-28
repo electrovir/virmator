@@ -31,7 +31,13 @@ export class SnapshotStore extends ListenTarget<SnapshotStoreUpdateEvent> {
     protected accessedSnapshots: {[TestFilePath in string]: Set</* snapshot name */ string>} = {};
 
     protected updateQueue() {
-        this.dispatch(new SnapshotStoreUpdateEvent({detail: {size: this.getWriteQueueSize()}}));
+        this.dispatch(
+            new SnapshotStoreUpdateEvent({
+                detail: {
+                    size: this.getWriteQueueSize(),
+                },
+            }),
+        );
     }
 
     protected async getCachedSnapshotFile(testFilePath: string): Promise<SnapshotsFile> {

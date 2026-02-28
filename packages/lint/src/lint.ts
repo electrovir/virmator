@@ -264,6 +264,8 @@ export const virmatorLintPlugin = defineVirmatorPlugin(
             .filter(check.isTruthy)
             .join(' ');
 
-        await runShellCommand(eslintCommand, {cwd: monoRepoRootPath});
+        await runShellCommand(eslintCommand, {
+            cwd: monoRepoRootPath,
+        });
     },
 );

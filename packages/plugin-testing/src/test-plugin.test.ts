@@ -25,7 +25,9 @@ describe(testPlugin.name, () => {
                 throw new VirmatorNoTraceError();
             } else {
                 log.plain(4);
-                log.plain({something: true});
+                log.plain({
+                    something: true,
+                });
                 await runShellCommand('echo "hi"; >&2 echo "error";');
             }
         },

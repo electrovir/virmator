@@ -168,7 +168,11 @@ export async function testPlugin(
             }),
             cwd: toPosixPath(relative(monoRepoDir, cwd)),
             contentsDiff,
-            ...(error ? {error} : {}),
+            ...(error
+                ? {
+                      error,
+                  }
+                : {}),
         };
 
         context.assert.snapshot(result);

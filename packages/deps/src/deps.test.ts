@@ -49,12 +49,16 @@ describe(virmatorDepsPlugin.name, () => {
     });
     it('passes valid mono repo deps', async (context) => {
         const dir = join(testFilesDir, 'valid-mono-repo');
-        await runShellCommand('npm i', {cwd: dir});
+        await runShellCommand('npm i', {
+            cwd: dir,
+        });
         await testDepsPlugin(true, context, dir, 'check');
     });
     it('fails invalid mono repo deps', async (context) => {
         const dir = join(testFilesDir, 'invalid-mono-repo');
-        await runShellCommand('npm i', {cwd: dir});
+        await runShellCommand('npm i', {
+            cwd: dir,
+        });
         await testDepsPlugin(false, context, dir, 'check');
     });
 
@@ -64,7 +68,9 @@ describe(virmatorDepsPlugin.name, () => {
 
     it('regenerates deps', async (context) => {
         const dir = join(testFilesDir, 'valid-mono-repo');
-        await runShellCommand('npm i', {cwd: dir});
+        await runShellCommand('npm i', {
+            cwd: dir,
+        });
         /**
          * Silent log level is necessary to disable the "installed in X milliseconds" logs that npm
          * spits out. With those logs, the tests are completely unstable.

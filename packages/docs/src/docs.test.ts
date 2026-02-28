@@ -60,7 +60,9 @@ describe(virmatorDocsPlugin.name, () => {
     it('runs on mono-repo packages', async (context) => {
         /** The failure logs won't show up in the snapshot; typedoc logs directly to the console. */
         const dir = join(testFilesDir, 'mono-repo');
-        await runShellCommand('npm i', {cwd: dir});
+        await runShellCommand('npm i', {
+            cwd: dir,
+        });
         await testDocsPlugin(
             /** This fails because one of the mono-repo sub-packages has missing docs. */
             false,
@@ -74,7 +76,9 @@ describe(virmatorDocsPlugin.name, () => {
             recursive: true,
             excludeList: [],
         });
-        await runShellCommand('npm i', {cwd: monoDir});
+        await runShellCommand('npm i', {
+            cwd: monoDir,
+        });
         await testDocsPlugin(true, context, join(monoDir, 'packages', 'b'), '', (cwd) => {
             assert.strictEquals(existsSync(join(cwd, 'dist-docs', 'index.html')), false);
         });
@@ -86,7 +90,9 @@ describe(virmatorDocsPlugin.name, () => {
             recursive: true,
             excludeList: [],
         });
-        await runShellCommand('npm i', {cwd: monoDir});
+        await runShellCommand('npm i', {
+            cwd: monoDir,
+        });
         await testDocsPlugin(true, context, join(monoDir, 'packages', 'c'));
         await resetDirContents(monoDir, dirContents);
     });

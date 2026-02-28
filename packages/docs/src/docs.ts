@@ -128,7 +128,9 @@ export const virmatorDocsPlugin = defineVirmatorPlugin(
             try {
                 await runShellCommand(
                     mdCodeCommand,
-                    {cwd: packageDir},
+                    {
+                        cwd: packageDir,
+                    },
                     {
                         logPrefix:
                             color && packageName

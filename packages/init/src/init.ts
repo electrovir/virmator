@@ -440,7 +440,13 @@ function createGitUrls(ref: string) {
         ,
         username,
     ] = safeMatch(repoPath, /\.com\/([^/]+)\//);
-    const bugsObject = issuesUrl ? {bugs: {url: issuesUrl}} : {};
+    const bugsObject = issuesUrl
+        ? {
+              bugs: {
+                  url: issuesUrl,
+              },
+          }
+        : {};
     const userUrlObject = isGitHub
         ? {
               url: `https://github.com/${username}`,

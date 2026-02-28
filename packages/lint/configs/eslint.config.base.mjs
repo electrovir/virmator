@@ -234,7 +234,7 @@ export function defineEslintConfig(repoDir) {
                     {
                         ObjectExpression: {
                             multiline: true,
-                            minProperties: 2,
+                            minProperties: 1,
                             consistent: true,
                         },
                         ObjectPattern: {

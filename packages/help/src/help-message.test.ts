@@ -39,11 +39,15 @@ describe(generateHelpMessage.name, () => {
         );
         const existingMarkdown = await wrapInTry(
             async () => (await readFile(outputMarkdownPath)).toString(),
-            {fallbackValue: ''},
+            {
+                fallbackValue: '',
+            },
         );
         const existingCli = await wrapInTry(
             async () => (await readFile(outputCliPath)).toString(),
-            {fallbackValue: ''},
+            {
+                fallbackValue: '',
+            },
         );
 
         const newMarkdown = generateHelpMessage(

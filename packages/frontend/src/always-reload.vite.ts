@@ -39,7 +39,13 @@ export function alwaysReloadPlugin(
     return {
         name: 'alwaysReloadPlugin',
         apply: 'serve',
-        config: () => ({server: {watch: {disableGlobbing: false}}}),
+        config: () => ({
+            server: {
+                watch: {
+                    disableGlobbing: false,
+                },
+            },
+        }),
         handleHotUpdate() {
             return [];
         },

@@ -207,7 +207,14 @@ function commandDocToString(
     indentCount: number,
 ): string {
     const sections = command.doc.sections.map((section) =>
-        docEntryToString({content: section}, indentCount, false, format),
+        docEntryToString(
+            {
+                content: section,
+            },
+            indentCount,
+            false,
+            format,
+        ),
     );
 
     const examples = command.doc.examples.map((example) =>

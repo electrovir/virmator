@@ -59,7 +59,9 @@ export const virmatorPublishPlugin = defineVirmatorPlugin(
         runShellCommand,
     }) => {
         if (process.env[inVirmatorEnvKey]) {
-            return {noLog: true};
+            return {
+                noLog: true,
+            };
         } else if (!cwdValidPackageJson) {
             throw new VirmatorNoTraceError(`Missing "name" / "version" package.json fields.`);
         }
@@ -81,7 +83,9 @@ export const virmatorPublishPlugin = defineVirmatorPlugin(
 
         const publishArgs = filteredArgs.filter((arg) => !nonFlagArgs.includes(arg));
         if (Object.keys(publishArgs).length) {
-            log.faint({publishArgs});
+            log.faint({
+                publishArgs,
+            });
         }
         const isDryRun = publishArgs.includes('--dry-run');
 

@@ -167,7 +167,9 @@ async function createCompileCommandString(
         });
     }
     log.faint(`${logPrefix}Deleting tsconfig.tsbuildinfo...`);
-    await rm(join(cwd, 'tsconfig.tsbuildinfo'), {force: true});
+    await rm(join(cwd, 'tsconfig.tsbuildinfo'), {
+        force: true,
+    });
 
     log.faint(`${logPrefix}Compiling...`);
 

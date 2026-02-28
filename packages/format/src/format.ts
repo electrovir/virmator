@@ -211,7 +211,9 @@ export const virmatorFormatPlugin = defineVirmatorPlugin(
 
         await runShellCommand(
             prettierCommand,
-            {cwd: cwdPackagePath},
+            {
+                cwd: cwdPackagePath,
+            },
             {
                 logTransform: {
                     stdout(stdout) {

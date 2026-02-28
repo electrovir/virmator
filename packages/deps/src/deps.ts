@@ -274,7 +274,9 @@ export const virmatorDepsPlugin = defineVirmatorPlugin(
             });
 
             log.faint('Removing package-lock.json...');
-            await rm(join(monoRepoRootPath, 'package-lock.json'), {force: true});
+            await rm(join(monoRepoRootPath, 'package-lock.json'), {
+                force: true,
+            });
 
             const installCommand = [
                 'npm',
