@@ -1,15 +1,16 @@
 import {baseTypedocConfig} from '@virmator/docs/configs/typedoc.config.base';
-import {join, resolve} from 'path';
+import {dirname, join} from 'node:path';
+import {fileURLToPath} from 'node:url';
 import {type TypeDocOptions} from 'typedoc';
 
-const repoRoot = resolve(import.meta.dirname, '..');
-const indexTsFile = join(repoRoot, 'src', 'publish.ts');
+const indexTsFile = join(dirname(dirname(fileURLToPath(import.meta.url))), 'src', 'publish.ts');
+const outDirPath = join(dirname(dirname(fileURLToPath(import.meta.url))), 'dist-docs');
 
 export const typeDocConfig: Partial<TypeDocOptions> = {
     ...baseTypedocConfig,
-    out: join(repoRoot, 'dist-docs'),
+    out: outDirPath,
     entryPoints: [
-        indexTsFile,
+        indexTsFile.replaceAll('\\', '/'),
     ],
     intentionallyNotExported: [],
     defaultCategory: 'MISSING CATEGORY',
