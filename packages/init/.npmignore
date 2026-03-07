@@ -15,7 +15,7 @@
 /www-static/
 bash-scripts/
 dist-docs/
-eslint.config.mjs
+eslint.config.ts
 generated-config-*
 prettier.config.mjs
 test-files/

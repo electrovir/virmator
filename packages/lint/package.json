@@ -36,6 +36,7 @@
         "@augment-vir/common": "^31.64.0",
         "@augment-vir/node": "^31.64.0",
         "@virmator/core": "^14.7.2",
+        "jiti": "^2.6.1",
         "mri": "^1.2.0"
     },
     "devDependencies": {

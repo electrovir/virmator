@@ -12,7 +12,7 @@ A default plugin for [virmator](https://www.npmjs.com/package/virmator).
         -   `virmator lint`
     -   Configs
         -   configs/tsconfig.eslint.json
-        -   eslint.config.mjs
+        -   eslint.config.ts
     -   Deps
         -   [eslint](https://npmjs.com/package/eslint)
         -   [eslint-plugin-require-extensions](https://npmjs.com/package/eslint-plugin-require-extensions)

@@ -184,7 +184,7 @@ Note that as of v13, this package is now in ESM.
         -   `virmator lint`
     -   Configs
         -   configs/tsconfig.eslint.json
-        -   eslint.config.mjs
+        -   eslint.config.ts
     -   Deps
         -   [eslint](https://npmjs.com/package/eslint)
         -   [eslint-plugin-require-extensions](https://npmjs.com/package/eslint-plugin-require-extensions)
