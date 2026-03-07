@@ -210,16 +210,14 @@ export const virmatorPublishPlugin = defineVirmatorPlugin(
                 throw new Error(
                     `Missing 'main' file '${updatedPackageJson.main}' from '${relative(monoRepoRootPath, packageJsonPath)}'.`,
                 );
-            }
-            if (
+            } else if (
                 updatedPackageJson.module &&
                 !existsSync(join(packagePath, updatedPackageJson.module))
             ) {
                 throw new Error(
                     `Missing 'module' file '${updatedPackageJson.module}' from '${relative(monoRepoRootPath, packageJsonPath)}'.`,
                 );
-            }
-            if (
+            } else if (
                 updatedPackageJson.types &&
                 !existsSync(join(packagePath, updatedPackageJson.types))
             ) {

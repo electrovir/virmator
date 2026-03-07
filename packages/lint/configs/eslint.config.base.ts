@@ -9,6 +9,7 @@ import globals from 'globals';
 import {existsSync} from 'node:fs';
 import {join} from 'node:path';
 import tsEslint from 'typescript-eslint';
+import preferIfElseChainRule from '../src/rules/prefer-if-else-chain.lint.js';
 
 export const globalVars = {
     ...globals.node,
@@ -79,6 +80,11 @@ export function defineEslintConfig(repoDir: string) {
                 '@stylistic': stylistic,
                 '@jsdoc': jsdoc,
                 unicorn: eslintPluginUnicorn,
+                '@virmator': {
+                    rules: {
+                        'prefer-if-else-chain': preferIfElseChainRule,
+                    },
+                },
             },
             rules: {
                 '@typescript-eslint/no-confusing-void-expression': 'off',
@@ -177,6 +183,7 @@ export function defineEslintConfig(repoDir: string) {
                 '@jsdoc/no-undefined-types': 'error',
                 '@typescript-eslint/await-thenable': 'error',
                 '@typescript-eslint/no-unused-vars': 'error',
+                '@virmator/prefer-if-else-chain': 'error',
                 'no-lonely-if': 'error',
                 curly: 'error',
                 'object-shorthand': 'error',
