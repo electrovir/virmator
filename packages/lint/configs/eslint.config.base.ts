@@ -15,7 +15,7 @@ export const globalVars = {
     ...globals.browser,
 };
 
-export function determineTsconfigPath(repoDir) {
+export function determineTsconfigPath(repoDir: string) {
     const eslintTsconfig = join(repoDir, 'configs', 'tsconfig.eslint.json');
     const rootTsconfig = join(repoDir, 'tsconfig.json');
 
@@ -26,7 +26,7 @@ export function determineTsconfigPath(repoDir) {
     }
 }
 
-export function defineEslintConfig(repoDir) {
+export function defineEslintConfig(repoDir: string) {
     const compat = new FlatCompat({
         baseDirectory: repoDir,
     });
@@ -64,7 +64,7 @@ export function defineEslintConfig(repoDir) {
         },
         jsEslint.configs.recommended,
         ...tsEslint.configs.strictTypeChecked,
-        sonarJsEslint.configs.recommended,
+        sonarJsEslint.configs?.recommended,
         prettierEslintRecommended,
         {
             languageOptions: {
