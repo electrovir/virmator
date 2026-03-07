@@ -1,3 +1,4 @@
+import {assertWrap} from '@augment-vir/assert';
 import {type Rule, type SourceCode} from 'eslint';
 import type {Directive, IfStatement, ModuleDeclaration, Statement} from 'estree';
 
@@ -50,26 +51,25 @@ function checkBlock(
             node: next,
             messageId: 'useIfElse',
             fix(fixer) {
-                const fixes: Rule.Fix[] = [
-                    fixer.replaceTextRange(
-                        [
-                            currRange[1],
-                            nextRange[0],
-                        ],
-                        ' else ',
-                    ),
-                ];
+                const elseReplacement = fixer.replaceTextRange(
+                    [
+                        currRange[1],
+                        nextRange[0],
+                    ],
+                    ' else ',
+                );
 
-                if (commentsBetween.length > 0) {
-                    const targetStatement =
-                        next.consequent.type === 'BlockStatement' && next.consequent.body[0]
-                            ? next.consequent.body[0]
-                            : next.consequent;
-
-                    const targetRange = sourceCode.getRange(targetStatement);
+                if (
+                    commentsBetween.length > 0 &&
+                    curr.consequent.type === 'BlockStatement' &&
+                    curr.consequent.body.length > 0
+                ) {
+                    const lastStatement = assertWrap.isDefined(curr.consequent.body.at(-1));
+                    const lastStatementRange = sourceCode.getRange(lastStatement);
                     const sourceText = sourceCode.getText();
-                    const lineStart = sourceText.lastIndexOf('\n', targetRange[0] - 1) + 1;
-                    const indent = sourceText.slice(lineStart, targetRange[0]);
+                    const lastLineStart =
+                        sourceText.lastIndexOf('\n', lastStatementRange[0] - 1) + 1;
+                    const indent = sourceText.slice(lastLineStart, lastStatementRange[0]);
 
                     const commentText = commentsBetween
                         .map((comment) => {
@@ -77,12 +77,13 @@ function checkBlock(
                         })
                         .join('\n' + indent);
 
-                    fixes.push(
-                        fixer.insertTextBefore(targetStatement, commentText + '\n' + indent),
-                    );
+                    return [
+                        fixer.insertTextAfter(lastStatement, '\n' + indent + commentText),
+                        elseReplacement,
+                    ];
                 }
 
-                return fixes;
+                return elseReplacement;
             },
         });
     });
