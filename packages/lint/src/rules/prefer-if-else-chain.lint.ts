@@ -23,6 +23,13 @@ function isConsecutiveTerminatingIfs(
     );
 }
 
+function reconstructComment(comment: Readonly<{type: string; value: string}>): string {
+    if (comment.type === 'Block') {
+        return `/*${comment.value}*/`;
+    }
+    return `//${comment.value}`;
+}
+
 function checkBlock(
     statements: ReadonlyArray<AnyStatement>,
     context: Readonly<Rule.RuleContext>,
@@ -31,28 +38,52 @@ function checkBlock(
     statements.forEach((curr, index) => {
         const next = statements[index + 1];
 
-        if (!next || !isConsecutiveTerminatingIfs(curr, next)) {
+        if (!next || !isConsecutiveTerminatingIfs(curr, next) || next.type !== 'IfStatement') {
             return;
         }
 
         const currRange = sourceCode.getRange(curr);
         const nextRange = sourceCode.getRange(next);
-        const hasCommentsBetween = sourceCode.commentsExistBetween(curr, next);
+        const commentsBetween = sourceCode.getCommentsBefore(next);
 
         context.report({
             node: next,
             messageId: 'useIfElse',
-            fix: hasCommentsBetween
-                ? null
-                : (fixer) => {
-                      return fixer.replaceTextRange(
-                          [
-                              currRange[1],
-                              nextRange[0],
-                          ],
-                          ' else ',
-                      );
-                  },
+            fix(fixer) {
+                const fixes: Rule.Fix[] = [
+                    fixer.replaceTextRange(
+                        [
+                            currRange[1],
+                            nextRange[0],
+                        ],
+                        ' else ',
+                    ),
+                ];
+
+                if (commentsBetween.length > 0) {
+                    const targetStatement =
+                        next.consequent.type === 'BlockStatement' && next.consequent.body[0]
+                            ? next.consequent.body[0]
+                            : next.consequent;
+
+                    const targetRange = sourceCode.getRange(targetStatement);
+                    const sourceText = sourceCode.getText();
+                    const lineStart = sourceText.lastIndexOf('\n', targetRange[0] - 1) + 1;
+                    const indent = sourceText.slice(lineStart, targetRange[0]);
+
+                    const commentText = commentsBetween
+                        .map((comment) => {
+                            return reconstructComment(comment);
+                        })
+                        .join('\n' + indent);
+
+                    fixes.push(
+                        fixer.insertTextBefore(targetStatement, commentText + '\n' + indent),
+                    );
+                }
+
+                return fixes;
+            },
         });
     });
 }
