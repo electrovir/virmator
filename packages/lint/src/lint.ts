@@ -53,6 +53,18 @@ export const virmatorLintPlugin = defineVirmatorPlugin(
                         },
                         required: true,
                     },
+                    eslintTsconfigTopPackage: {
+                        copyFromPath: join('configs', 'tsconfig.eslint.top-package.json'),
+                        copyToPath: join('configs', 'tsconfig.eslint.json'),
+                        env: {
+                            [RuntimeEnv.Node]: true,
+                            [RuntimeEnv.Web]: true,
+                        },
+                        packageType: {
+                            [PackageType.TopPackage]: true,
+                        },
+                        required: true,
+                    },
                     eslint: {
                         copyFromPath: join('configs', 'eslint.config.share.ts'),
                         copyToPath: join('eslint.config.ts'),
@@ -245,6 +257,7 @@ export const virmatorLintPlugin = defineVirmatorPlugin(
         package: {monoRepoRootPath},
         runShellCommand,
         cliInputs: {usedCommands, filteredArgs},
+        configs,
     }) => {
         const args = mri(filteredArgs);
 
@@ -252,11 +265,16 @@ export const virmatorLintPlugin = defineVirmatorPlugin(
 
         const cacheLocation = join(monoRepoRootPath, 'node_modules', '.cache', '.eslintcache');
 
+        const userSpecifiedConfig = filteredArgs.some((arg) => arg === '-c' || arg === '--config');
+
         const eslintCommand = [
             'npx',
             'eslint',
             '--cache',
             `--cache-location='${interpolationSafeWindowsPath(cacheLocation)}'`,
+            userSpecifiedConfig
+                ? ''
+                : `--config '${interpolationSafeWindowsPath(configs.lint.configs.eslint.fullCopyToPath)}'`,
             usedCommands.lint?.subCommands.fix && !args.fix ? '--fix' : '',
             dirPath,
             ...filteredArgs,

@@ -43,4 +43,13 @@ describe(virmatorLintPlugin.name, () => {
     it('fixes an invalid project', async (context) => {
         await testVirmatorLintPlugin(false, context, join(testFilesDir, 'bad-repo'), 'fix');
     });
+
+    it('works with a custom config', async (context) => {
+        await testVirmatorLintPlugin(
+            true,
+            context,
+            join(testFilesDir, 'good-repo-custom-config'),
+            '--config configs/eslint.config.ts',
+        );
+    });
 });

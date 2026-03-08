@@ -1,6 +1,6 @@
 {
     "name": "@virmator/docs",
-    "version": "14.8.2",
+    "version": "14.8.3",
     "description": "Default TS docs plugin for virmator.",
     "keywords": [
         "virmator",
@@ -36,7 +36,7 @@
         "@augment-vir/assert": "^31.67.1",
         "@augment-vir/common": "^31.67.1",
         "@augment-vir/node": "^31.67.1",
-        "@virmator/core": "^14.8.2",
+        "@virmator/core": "^14.8.3",
         "mri": "^1.2.0",
         "runstorm": "^1.0.0",
         "type-fest": "^5.4.4"

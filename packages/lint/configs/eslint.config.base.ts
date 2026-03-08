@@ -32,6 +32,8 @@ export function defineEslintConfig(repoDir: string) {
         baseDirectory: repoDir,
     });
 
+    const tsConfigPath = determineTsconfigPath(repoDir);
+
     return [
         ...compat.plugins('require-extensions'),
         ...compat.extends('plugin:require-extensions/recommended'),
@@ -61,6 +63,7 @@ export function defineEslintConfig(repoDir: string) {
                 '**/test-files/',
                 'cspell.config.cjs',
                 'package-lock.json',
+                'eslint.config.ts',
             ],
         },
         jsEslint.configs.recommended,
@@ -71,7 +74,7 @@ export function defineEslintConfig(repoDir: string) {
             languageOptions: {
                 parserOptions: {
                     project: [
-                        determineTsconfigPath(repoDir),
+                        tsConfigPath,
                     ],
                 },
                 globals: globalVars,

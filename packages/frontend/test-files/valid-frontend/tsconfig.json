@@ -6,10 +6,11 @@
     "exclude": [
         "./configs",
         "./coverage",
-        "./dist",
         "./dist-*",
+        "./dist",
         "./node_modules",
-        "./test-files"
+        "./test-files",
+        "eslint.config.ts"
     ],
     "extends": "../../../../configs/tsconfig.base.json"
 }

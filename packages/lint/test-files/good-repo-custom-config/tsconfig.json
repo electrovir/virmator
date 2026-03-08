@@ -10,15 +10,7 @@
         "./dist",
         "./node_modules",
         "./test-files",
-        "eslint.config.ts"
+        "configs/eslint.config.ts"
     ],
-    "extends": "../../configs/tsconfig.base.json",
-    "references": [
-        {
-            "path": "../core"
-        },
-        {
-            "path": "../plugin-testing"
-        }
-    ]
+    "extends": "../../../../configs/tsconfig.base.json"
 }
