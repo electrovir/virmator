@@ -31,11 +31,11 @@
         "test:update": "npm test"
     },
     "dependencies": {
-        "@augment-vir/assert": "^31.67.1",
-        "@augment-vir/common": "^31.67.1",
-        "@augment-vir/node": "^31.67.1",
+        "@augment-vir/assert": "^31.68.1",
+        "@augment-vir/common": "^31.68.1",
+        "@augment-vir/node": "^31.68.1",
         "@virmator/core": "^14.8.3",
-        "simple-git": "^3.32.3"
+        "simple-git": "^3.33.0"
     },
     "devDependencies": {
         "@types/node": "^25.3.0",

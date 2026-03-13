@@ -31,10 +31,10 @@
         "test:update": "npm test update"
     },
     "dependencies": {
-        "@augment-vir/assert": "^31.67.1",
-        "@augment-vir/common": "^31.67.1",
-        "@augment-vir/node": "^31.67.1",
-        "@augment-vir/test": "^31.67.1",
+        "@augment-vir/assert": "^31.68.1",
+        "@augment-vir/common": "^31.68.1",
+        "@augment-vir/node": "^31.68.1",
+        "@augment-vir/test": "^31.68.1",
         "@virmator/core": "^14.8.3",
         "type-fest": "^5.4.4"
     },

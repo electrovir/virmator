@@ -72,7 +72,7 @@ export function createBaseConfig({forGitHubPages, packageDirPath}: BaseConfigOpt
     const srcDir = join(cwd, 'src');
     const staticDir = join(cwd, 'www-static');
     const outDir = join(cwd, 'dist');
-    const target = 'es2022'; // This should be kept in sync with `@virmator/compile/configs/tsconfig.base.json`.
+    const target = 'es2024'; // This should be kept in sync with `@virmator/compile/configs/tsconfig.base.json`.
 
     return {
         baseConfig: {
@@ -95,14 +95,9 @@ export function createBaseConfig({forGitHubPages, packageDirPath}: BaseConfigOpt
                 },
             },
             optimizeDeps: {
-                esbuildOptions: {
-                    target,
-                },
+                rolldownOptions: {},
                 exclude: externalDeps,
                 force: true,
-            },
-            esbuild: {
-                target,
             },
         },
         basePaths: {

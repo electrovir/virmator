@@ -36,9 +36,9 @@
         "test:web": "npm run compile && virmator test web src/web-snapshot-plugin/web-snapshot-plugin.test.ts src/web-screenshot-plugin/web-screenshot-plugin.test.ts"
     },
     "dependencies": {
-        "@augment-vir/assert": "^31.67.1",
-        "@augment-vir/common": "^31.67.1",
-        "@augment-vir/node": "^31.67.1",
+        "@augment-vir/assert": "^31.68.1",
+        "@augment-vir/common": "^31.68.1",
+        "@augment-vir/node": "^31.68.1",
         "@virmator/core": "^14.8.3",
         "@web/dev-server-core": "^0.7.5",
         "@web/test-runner-core": "^0.13.4",
@@ -48,10 +48,10 @@
         "pixelmatch": "^7.1.0",
         "pngjs": "^7.0.0",
         "sharp": "^0.34.5",
-        "typed-event-target": "^4.2.0"
+        "typed-event-target": "^4.3.0"
     },
     "devDependencies": {
-        "@augment-vir/test": "^31.67.1",
+        "@augment-vir/test": "^31.68.1",
         "@open-wc/testing": "^4.0.0",
         "@types/mocha": "^10.0.10",
         "@types/node": "^25.3.0",
