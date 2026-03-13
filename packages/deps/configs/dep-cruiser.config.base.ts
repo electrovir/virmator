@@ -123,6 +123,7 @@ export function defineConfig({
             from: {},
             to: {
                 couldNotResolve: true,
+                preCompilationOnly: false,
             },
         },
         {
@@ -265,7 +266,7 @@ export function defineConfig({
                     'npm-unknown',
                 ],
             },
-            tsPreCompilationDeps: true,
+            tsPreCompilationDeps: 'specify',
         },
     } satisfies IConfiguration;
 }
