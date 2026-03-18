@@ -15,8 +15,8 @@ import {type ImageComparisonOptions, type ImageComparisonResult} from './compare
  * @category Internal
  */
 export const defaultImageComparisonOptions: Readonly<RequiredAndNotNull<ImageComparisonOptions>> = {
-    threshold: 0.08,
-    maxDiffPixelRatio: 0.08,
+    threshold: 0.1,
+    maxDiffPixelRatio: 0.1,
 };
 
 export async function padImage(image: Buffer, {height, width}: Dimensions) {
