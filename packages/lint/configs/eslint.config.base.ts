@@ -10,6 +10,7 @@ import {existsSync} from 'node:fs';
 import {join} from 'node:path';
 import tsEslint from 'typescript-eslint';
 import preferIfElseChainRule from '../src/rules/prefer-if-else-chain.lint.js';
+import preferParseUrlRule from '../src/rules/prefer-parse-url.lint.js';
 
 export const globalVars = {
     ...globals.node,
@@ -86,6 +87,7 @@ export function defineEslintConfig(repoDir: string) {
                 '@virmator': {
                     rules: {
                         'prefer-if-else-chain': preferIfElseChainRule,
+                        'prefer-parse-url': preferParseUrlRule,
                     },
                 },
             },
@@ -187,6 +189,7 @@ export function defineEslintConfig(repoDir: string) {
                 '@typescript-eslint/await-thenable': 'error',
                 '@typescript-eslint/no-unused-vars': 'error',
                 '@virmator/prefer-if-else-chain': 'error',
+                '@virmator/prefer-parse-url': 'error',
                 'no-lonely-if': 'error',
                 curly: 'error',
                 'object-shorthand': 'error',
