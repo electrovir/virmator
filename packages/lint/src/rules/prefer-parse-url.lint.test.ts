@@ -32,6 +32,10 @@ describe('prefer-parse-url', () => {
                     name: 'no new URL usage',
                     code: "const url = parseUrl('https://example.com');",
                 },
+                {
+                    name: 'new URL with two arguments is ignored',
+                    code: "const url = new URL('/path', 'https://example.com');",
+                },
             ],
             invalid: [
                 {
@@ -98,16 +102,6 @@ describe('prefer-parse-url', () => {
                     name: 'new URL with existing other import adds url-vir import after it',
                     code: "import {something} from 'other';\nconst url = new URL('https://example.com');",
                     output: "import {something} from 'other';\nimport {parseUrl} from 'url-vir';\nconst url = parseUrl('https://example.com');",
-                    errors: [
-                        {
-                            messageId: 'useParseUrl',
-                        },
-                    ],
-                },
-                {
-                    name: 'new URL with two arguments has no auto-fix',
-                    code: "const url = new URL('/path', 'https://example.com');",
-                    output: null,
                     errors: [
                         {
                             messageId: 'useParseUrl',

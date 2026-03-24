@@ -71,6 +71,7 @@ const rule: Rule.RuleModule = {
                 if (
                     node.callee.type !== 'Identifier' ||
                     node.callee.name !== 'URL' ||
+                    node.arguments.length !== 1 ||
                     isPassedToInterface(node)
                 ) {
                     return;
@@ -80,10 +81,6 @@ const rule: Rule.RuleModule = {
                     node,
                     messageId: 'useParseUrl',
                     fix(fixer) {
-                        if (node.arguments.length !== 1) {
-                            return null;
-                        }
-
                         const arg = node.arguments[0];
                         if (!arg) {
                             return null;

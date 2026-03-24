@@ -1,6 +1,6 @@
 {
     "name": "@virmator/lint",
-    "version": "14.10.0",
+    "version": "14.10.1",
     "description": "Default ESLint linting plugin for virmator.",
     "keywords": [
         "virmator",
@@ -35,7 +35,7 @@
         "@augment-vir/assert": "^31.68.1",
         "@augment-vir/common": "^31.68.1",
         "@augment-vir/node": "^31.68.1",
-        "@virmator/core": "^14.10.0",
+        "@virmator/core": "^14.10.1",
         "jiti": "^2.6.1",
         "mri": "^1.2.0"
     },
@@ -59,7 +59,7 @@
         "eslint-plugin-sonarjs": "^4.0.2",
         "eslint-plugin-unicorn": "^63.0.0",
         "istanbul-smart-text-reporter": "^1.1.5",
-        "typescript-eslint": "^8.57.0"
+        "typescript-eslint": "8.57.1"
     },
     "engines": {
         "node": ">=22"

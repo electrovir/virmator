@@ -37,6 +37,9 @@ export const baseNcuConfig = {
         /** Dependencies are not ready yet for ESLint 10. */
         'eslint',
         '@eslint/js',
+
+        /** The rule '@typescript-eslint/no-unnecessary-type-arguments' is broken in v8.57.2. */
+        'typescript-eslint',
     ],
     deprecated: false,
     /** Returns days. */
