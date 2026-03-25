@@ -40,6 +40,9 @@ export const baseNcuConfig = {
 
         /** The rule '@typescript-eslint/no-unnecessary-type-arguments' is broken in v8.57.2. */
         'typescript-eslint',
+
+        /** V6 is too new still. */
+        'typescript',
     ],
     deprecated: false,
     /** Returns days. */
