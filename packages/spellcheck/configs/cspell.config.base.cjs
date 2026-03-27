@@ -379,6 +379,8 @@ const baseConfig = {
         'webrtc',
         'websql',
         'winamac',
+        'worktree',
+        'worktrees',
         'xlarge',
         'xlink',
         'yakutat',
