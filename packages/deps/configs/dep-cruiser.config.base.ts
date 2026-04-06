@@ -110,7 +110,7 @@ export function defineConfig({
                     'npm-unknown',
                 ],
                 pathNot: [
-                    '^src/',
+                    '^(src|packages/[^/]+/src)/',
                 ],
             },
         },
@@ -144,7 +144,7 @@ export function defineConfig({
                     'npm-peer',
                 ],
                 pathNot: [
-                    '^src/',
+                    '^(src|packages/[^/]+/src)/',
                 ],
             },
         },

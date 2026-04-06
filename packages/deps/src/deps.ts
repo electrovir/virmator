@@ -194,31 +194,45 @@ export const virmatorDepsPlugin = defineVirmatorPlugin(
                 },
                 JsModuleType.Cjs,
                 async (configPath) => {
-                    function defineCommand(relativeTo: string) {
-                        const config = args['config']
+                    function buildConfigFlags(relativeTo: string) {
+                        return args['config']
                             ? ['']
                             : [
                                   '--config',
                                   toPosixPath(relative(relativeTo, configPath)),
                               ];
-
-                        return [
-                            'npx',
-                            'depcruise',
-                            ...config,
-                            pathToCheck,
-                            ...filteredArgs,
-                        ]
-                            .filter(check.isTruthy)
-                            .join(' ');
                     }
 
                     if (packageType === PackageType.MonoRoot) {
                         await runPerPackage(({packageCwd}) => {
-                            return defineCommand(packageCwd);
+                            const relativeToRoot = toPosixPath(relative(packageCwd, cwd));
+                            const packageRelPath = toPosixPath(relative(cwd, packageCwd));
+
+                            return [
+                                'cd',
+                                relativeToRoot,
+                                '&&',
+                                'npx',
+                                'depcruise',
+                                ...buildConfigFlags(cwd),
+                                pathToCheck ? toPosixPath(join(packageRelPath, pathToCheck)) : '',
+                                ...filteredArgs,
+                            ]
+                                .filter(check.isTruthy)
+                                .join(' ');
                         });
                     } else {
-                        await runShellCommand(defineCommand(cwd));
+                        await runShellCommand(
+                            [
+                                'npx',
+                                'depcruise',
+                                ...buildConfigFlags(cwd),
+                                pathToCheck,
+                                ...filteredArgs,
+                            ]
+                                .filter(check.isTruthy)
+                                .join(' '),
+                        );
                     }
                 },
             );
