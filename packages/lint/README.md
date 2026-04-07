@@ -11,7 +11,6 @@ A default plugin for [virmator](https://www.npmjs.com/package/virmator).
     -   Examples
         -   `virmator lint`
     -   Configs
-        -   configs/tsconfig.eslint.json
         -   eslint.config.ts
     -   Deps
         -   [eslint](https://npmjs.com/package/eslint)

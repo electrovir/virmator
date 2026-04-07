@@ -6,8 +6,6 @@ import prettierEslintRecommended from 'eslint-plugin-prettier/recommended';
 import sonarJsEslint from 'eslint-plugin-sonarjs';
 import eslintPluginUnicorn from 'eslint-plugin-unicorn';
 import globals from 'globals';
-import {existsSync} from 'node:fs';
-import {join} from 'node:path';
 import tsEslint from 'typescript-eslint';
 import preferIfElseChainRule from '../src/rules/prefer-if-else-chain.lint.js';
 import preferParseUrlRule from '../src/rules/prefer-parse-url.lint.js';
@@ -17,23 +15,10 @@ export const globalVars = {
     ...globals.browser,
 };
 
-export function determineTsconfigPath(repoDir: string) {
-    const eslintTsconfig = join(repoDir, 'configs', 'tsconfig.eslint.json');
-    const rootTsconfig = join(repoDir, 'tsconfig.json');
-
-    if (existsSync(eslintTsconfig)) {
-        return eslintTsconfig;
-    } else {
-        return rootTsconfig;
-    }
-}
-
 export function defineEslintConfig(repoDir: string) {
     const compat = new FlatCompat({
         baseDirectory: repoDir,
     });
-
-    const tsConfigPath = determineTsconfigPath(repoDir);
 
     return [
         ...compat.plugins('require-extensions'),
@@ -74,9 +59,8 @@ export function defineEslintConfig(repoDir: string) {
         {
             languageOptions: {
                 parserOptions: {
-                    project: [
-                        tsConfigPath,
-                    ],
+                    projectService: true,
+                    tsconfigRootDir: repoDir,
                 },
                 globals: globalVars,
             },

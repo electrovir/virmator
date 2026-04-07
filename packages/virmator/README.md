@@ -183,7 +183,6 @@ Note that as of v13, this package is now in ESM.
     -   Examples
         -   `virmator lint`
     -   Configs
-        -   configs/tsconfig.eslint.json
         -   eslint.config.ts
     -   Deps
         -   [eslint](https://npmjs.com/package/eslint)

@@ -41,30 +41,6 @@ export const virmatorLintPlugin = defineVirmatorPlugin(
                     },
                 },
                 configFiles: {
-                    eslintTsconfig: {
-                        copyFromPath: join('configs', 'tsconfig.eslint.json'),
-                        copyToPath: join('configs', 'tsconfig.eslint.json'),
-                        env: {
-                            [RuntimeEnv.Node]: true,
-                            [RuntimeEnv.Web]: true,
-                        },
-                        packageType: {
-                            [PackageType.MonoRoot]: true,
-                        },
-                        required: true,
-                    },
-                    eslintTsconfigTopPackage: {
-                        copyFromPath: join('configs', 'tsconfig.eslint.top-package.json'),
-                        copyToPath: join('configs', 'tsconfig.eslint.json'),
-                        env: {
-                            [RuntimeEnv.Node]: true,
-                            [RuntimeEnv.Web]: true,
-                        },
-                        packageType: {
-                            [PackageType.TopPackage]: true,
-                        },
-                        required: true,
-                    },
                     eslint: {
                         copyFromPath: join('configs', 'eslint.config.share.ts'),
                         copyToPath: join('eslint.config.ts'),
