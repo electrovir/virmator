@@ -54,6 +54,13 @@ describe(virmatorDepsPlugin.name, () => {
         });
         await testDepsPlugin(true, context, dir, 'check');
     });
+    it('checks a custom mono repo path', async (context) => {
+        const dir = join(testFilesDir, 'valid-mono-repo');
+        await runShellCommand('npm i', {
+            cwd: dir,
+        });
+        await testDepsPlugin(true, context, dir, 'check packages/a/src');
+    });
     it('fails invalid mono repo deps', async (context) => {
         const dir = join(testFilesDir, 'invalid-mono-repo');
         await runShellCommand('npm i', {

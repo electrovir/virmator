@@ -1,3 +1,17 @@
+exports[`Deps > checks a custom mono repo path 1`] = `
+{
+  "logs": {
+    "stdout": "Copied dep-cruiser.config.cts\\n[packages/a] > cd ../.. && npx depcruise --config node_modules/.virmator/dep-cruiser.config.cjs packages/a/src\\n[packages/b] > cd ../.. && npx depcruise --config node_modules/.virmator/dep-cruiser.config.cjs packages/a/src\\n[packages/a] \\n[packages/a] ✔ no dependency violations found (1 modules, 0 dependencies cruised)\\n[packages/a] \\n[packages/a] exited with exit code 0.\\n[packages/b] \\n[packages/b] ✔ no dependency violations found (1 modules, 0 dependencies cruised)\\n[packages/b] \\n[packages/b] exited with exit code 0.\\n\\n\\nRunStorm Summary:\\n[packages/a] succeeded.\\n[packages/b] succeeded.\\n\\n\\ndeps finished."
+  },
+  "cwd": "packages/deps/test-files/valid-mono-repo",
+  "contentsDiff": {
+    "configs": {
+      "dep-cruiser.config.cts": "import {defineConfig} from '@virmator/deps/configs/dep-cruiser.config.base.js';\\nimport {type IConfiguration} from 'dependency-cruiser';\\n\\nconst baseConfig = defineConfig({\\n    fileExceptions: {\\n        // enter file exceptions by rule name here\\n        'no-orphans': {\\n            from: [\\n                'src/index\\\\\\\\.ts$',\\n            ],\\n        },\\n    },\\n    omitRules: [\\n        // enter rule names here to omit\\n    ],\\n});\\n\\nconst depCruiserConfig: IConfiguration = {\\n    ...baseConfig,\\n};\\n\\nmodule.exports = depCruiserConfig;\\n"
+    }
+  }
+}
+`;
+
 exports[`Deps > checks a custom path 1`] = `
 {
   "logs": {
