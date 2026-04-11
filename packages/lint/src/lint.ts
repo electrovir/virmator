@@ -230,36 +230,62 @@ export const virmatorLintPlugin = defineVirmatorPlugin(
         },
     },
     async ({
-        package: {monoRepoRootPath},
+        package: {monoRepoRootPath, packageType},
         runShellCommand,
+        runPerPackage,
         cliInputs: {usedCommands, filteredArgs},
         configs,
     }) => {
         const args = mri(filteredArgs);
 
-        const dirPath = args._.length ? '' : '.';
-
-        const cacheLocation = join(monoRepoRootPath, 'node_modules', '.cache', '.eslintcache');
-
         const userSpecifiedConfig = filteredArgs.some((arg) => arg === '-c' || arg === '--config');
+        const configArg = userSpecifiedConfig
+            ? ''
+            : `--config '${interpolationSafeWindowsPath(configs.lint.configs.eslint.fullCopyToPath)}'`;
+        const fixArg = usedCommands.lint?.subCommands.fix && !args.fix ? '--fix' : '';
 
-        const eslintCommand = [
-            'npx',
-            'eslint',
-            '--cache',
-            `--cache-location='${interpolationSafeWindowsPath(cacheLocation)}'`,
-            userSpecifiedConfig
-                ? ''
-                : `--config '${interpolationSafeWindowsPath(configs.lint.configs.eslint.fullCopyToPath)}'`,
-            usedCommands.lint?.subCommands.fix && !args.fix ? '--fix' : '',
-            dirPath,
-            ...filteredArgs,
-        ]
-            .filter(check.isTruthy)
-            .join(' ');
+        if (packageType === PackageType.MonoRoot && !args._.length) {
+            await runPerPackage(({packageName}) => {
+                const cacheLocation = join(
+                    monoRepoRootPath,
+                    'node_modules',
+                    '.cache',
+                    `.eslintcache-${packageName}`,
+                );
 
-        await runShellCommand(eslintCommand, {
-            cwd: monoRepoRootPath,
-        });
+                return [
+                    'npx',
+                    'eslint',
+                    '--cache',
+                    `--cache-location='${interpolationSafeWindowsPath(cacheLocation)}'`,
+                    configArg,
+                    fixArg,
+                    '.',
+                    ...filteredArgs,
+                ]
+                    .filter(check.isTruthy)
+                    .join(' ');
+            });
+        } else {
+            const dirPath = args._.length ? '' : '.';
+            const cacheLocation = join(monoRepoRootPath, 'node_modules', '.cache', '.eslintcache');
+
+            const eslintCommand = [
+                'npx',
+                'eslint',
+                '--cache',
+                `--cache-location='${interpolationSafeWindowsPath(cacheLocation)}'`,
+                configArg,
+                fixArg,
+                dirPath,
+                ...filteredArgs,
+            ]
+                .filter(check.isTruthy)
+                .join(' ');
+
+            await runShellCommand(eslintCommand, {
+                cwd: monoRepoRootPath,
+            });
+        }
     },
 );

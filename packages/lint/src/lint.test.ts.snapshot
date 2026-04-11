@@ -48,6 +48,19 @@ exports[`Lint > lints an invalid project 1`] = `
 }
 `;
 
+exports[`Lint > works in a mono-repo 1`] = `
+{
+  "logs": {
+    "stdout": "Copied eslint.config.ts\\nInstalling eslint@9.39.2 eslint-plugin-require-extensions@0.1.3 eslint-plugin-unicorn@64.0.0 @eslint/js@9.39.2 @eslint/eslintrc@3.3.5 @stylistic/eslint-plugin@5.10.0 eslint-plugin-monorepo-cop@1.0.2 @stylistic/eslint-plugin-ts@4.4.1 @typescript-eslint/eslint-plugin@8.58.0 eslint-config-prettier@10.1.8 eslint-plugin-jsdoc@62.9.0 eslint-plugin-playwright@2.10.1 eslint-plugin-prettier@5.5.5 eslint-plugin-sonarjs@4.0.2 typescript-eslint@8.57.1...\\n[packages/a] > npx eslint --cache --cache-location='packages/lint/test-files/mono-repo/node_modules/.cache/.eslintcache-packages/a' --config 'packages/lint/test-files/mono-repo/eslint.config.ts' .\\n[packages/b] > npx eslint --cache --cache-location='packages/lint/test-files/mono-repo/node_modules/.cache/.eslintcache-packages/b' --config 'packages/lint/test-files/mono-repo/eslint.config.ts' .\\n[packages/a] exited with exit code 0.\\n[packages/b] exited with exit code 0.\\n\\n\\nRunStorm Summary:\\n[packages/a] succeeded.\\n[packages/b] succeeded.\\n\\n\\nlint finished."
+  },
+  "cwd": "packages/lint/test-files/mono-repo",
+  "contentsDiff": {
+    "package.json": "{\\n    \\"private\\": true,\\n    \\"type\\": \\"module\\",\\n    \\"workspaces\\": [\\n        \\"packages/*\\"\\n    ],\\n    \\"devDependencies\\": {\\n        \\"@eslint/eslintrc\\": \\"^3.3.5\\",\\n        \\"@eslint/js\\": \\"^9.39.2\\",\\n        \\"@stylistic/eslint-plugin\\": \\"^5.10.0\\",\\n        \\"@stylistic/eslint-plugin-ts\\": \\"^4.4.1\\",\\n        \\"@typescript-eslint/eslint-plugin\\": \\"^8.58.0\\",\\n        \\"eslint\\": \\"^9.39.2\\",\\n        \\"eslint-config-prettier\\": \\"^10.1.8\\",\\n        \\"eslint-plugin-jsdoc\\": \\"^62.9.0\\",\\n        \\"eslint-plugin-monorepo-cop\\": \\"^1.0.2\\",\\n        \\"eslint-plugin-playwright\\": \\"^2.10.1\\",\\n        \\"eslint-plugin-prettier\\": \\"^5.5.5\\",\\n        \\"eslint-plugin-require-extensions\\": \\"^0.1.3\\",\\n        \\"eslint-plugin-sonarjs\\": \\"^4.0.2\\",\\n        \\"eslint-plugin-unicorn\\": \\"^64.0.0\\",\\n        \\"typescript-eslint\\": \\"^8.57.1\\"\\n    }\\n}\\n",
+    "eslint.config.ts": "import {defineEslintConfig} from '@virmator/lint/configs/eslint.config.base.js';\\nimport {dirname} from 'node:path';\\nimport {fileURLToPath} from 'node:url';\\n\\nconst __dirname = dirname(fileURLToPath(import.meta.url));\\n\\nexport default [\\n    ...defineEslintConfig(__dirname),\\n    {\\n        ignores: [\\n            /** Add file globs that should be ignored. */\\n        ],\\n    },\\n    {\\n        rules: {\\n            /**\\n             * Turn off or on specific rules. See {@link defineEslintConfig} for which plugins are\\n             * already enabled.\\n             */\\n        },\\n    },\\n];\\n"
+  }
+}
+`;
+
 exports[`Lint > works with a custom config 1`] = `
 {
   "logs": {

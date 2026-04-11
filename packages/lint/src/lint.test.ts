@@ -1,4 +1,5 @@
 import {safeMatch} from '@augment-vir/common';
+import {runShellCommand} from '@augment-vir/node';
 import {describe, it, type UniversalTestContext} from '@augment-vir/test';
 import {testPlugin} from '@virmator/plugin-testing';
 import {basename, join, resolve} from 'node:path';
@@ -51,5 +52,14 @@ describe(virmatorLintPlugin.name, () => {
             join(testFilesDir, 'good-repo-custom-config'),
             '--config configs/eslint.config.ts',
         );
+    });
+
+    it('works in a mono-repo', async (context) => {
+        const dir = join(testFilesDir, 'mono-repo');
+        await runShellCommand('npm i', {
+            cwd: dir,
+            rejectOnError: true,
+        });
+        await testVirmatorLintPlugin(true, context, dir);
     });
 });
