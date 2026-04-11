@@ -3,7 +3,7 @@ import {RuntimeEnv} from '@augment-vir/common';
 import {interpolationSafeWindowsPath} from '@augment-vir/node';
 import {defineVirmatorPlugin, NpmDepType, PackageType} from '@virmator/core';
 import mri from 'mri';
-import {join} from 'node:path';
+import {join, relative} from 'node:path';
 
 /** A virmator plugin for running ESLint. */
 export const virmatorLintPlugin = defineVirmatorPlugin(
@@ -245,26 +245,34 @@ export const virmatorLintPlugin = defineVirmatorPlugin(
         const fixArg = usedCommands.lint?.subCommands.fix && !args.fix ? '--fix' : '';
 
         if (packageType === PackageType.MonoRoot && !args._.length) {
-            await runPerPackage(({packageName}) => {
+            await runPerPackage(({packageCwd, packageName}) => {
                 const cacheLocation = join(
                     monoRepoRootPath,
                     'node_modules',
                     '.cache',
                     `.eslintcache-${packageName}`,
                 );
+                const relativePackagePath = relative(monoRepoRootPath, packageCwd);
 
-                return [
+                /**
+                 * ESLint resolves ignore patterns relative to the config file's directory (the
+                 * monorepo root). We must `cd` back to the root so that file paths match those
+                 * patterns correctly; `runPerPackage` sets CWD to the package directory.
+                 */
+                const eslintCommand = [
                     'npx',
                     'eslint',
                     '--cache',
                     `--cache-location='${interpolationSafeWindowsPath(cacheLocation)}'`,
                     configArg,
                     fixArg,
-                    '.',
+                    `'${interpolationSafeWindowsPath(relativePackagePath)}'`,
                     ...filteredArgs,
                 ]
                     .filter(check.isTruthy)
                     .join(' ');
+
+                return `cd '${interpolationSafeWindowsPath(monoRepoRootPath)}' && ${eslintCommand}`;
             });
         } else {
             const dirPath = args._.length ? '' : '.';
