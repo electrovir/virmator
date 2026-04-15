@@ -53,9 +53,9 @@ export function defineConfig({coveragePercent = 0, packageRootDirPath = ''}) {
         ],
         browserStartTimeout: process.env.CI ? 10 * oneMinuteMs : oneMinuteMs,
         /** Reduce concurrency in CI environments to improve stability. */
-        concurrentBrowsers: process.env.ci ? 1 : 3,
+        concurrentBrowsers: process.env.CI ? 1 : 3,
         /** Reduce concurrency in CI environments to improve stability. */
-        concurrency: process.env.ci ? 1 : cpus().length - 1,
+        concurrency: process.env.CI ? 1 : cpus().length - 1,
         // this can be overridden by the --coverage flag
         coverage: false,
         files: testFiles.spec,
