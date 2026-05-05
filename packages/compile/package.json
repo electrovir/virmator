@@ -1,6 +1,6 @@
 {
     "name": "@virmator/compile",
-    "version": "14.12.2",
+    "version": "14.13.0",
     "description": "Default TS compile plugin for virmator.",
     "keywords": [
         "virmator",
@@ -32,16 +32,16 @@
         "test:update": "npm test update"
     },
     "dependencies": {
-        "@augment-vir/assert": "^31.68.3",
-        "@augment-vir/common": "^31.68.3",
-        "@augment-vir/node": "^31.68.3",
-        "@virmator/core": "^14.12.2",
+        "@augment-vir/assert": "^31.69.0",
+        "@augment-vir/common": "^31.69.0",
+        "@augment-vir/node": "^31.69.0",
+        "@virmator/core": "^14.13.0",
         "runstorm": "^1.0.0"
     },
     "devDependencies": {
-        "@augment-vir/test": "^31.68.3",
-        "@types/node": "^25.5.2",
-        "@virmator/plugin-testing": "^14.12.2",
+        "@augment-vir/test": "^31.69.0",
+        "@types/node": "^25.6.0",
+        "@virmator/plugin-testing": "^14.13.0",
         "c8": "^11.0.0",
         "istanbul-smart-text-reporter": "^1.1.5",
         "mono-vir": "^2.5.0",

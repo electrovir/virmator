@@ -63,7 +63,7 @@ export const virmatorPublishPlugin = defineVirmatorPlugin(
                 noLog: true,
             };
         } else if (!cwdValidPackageJson) {
-            throw new VirmatorNoTraceError(`Missing "name" / "version" package.json fields.`);
+            throw new VirmatorNoTraceError('Missing "name" / "version" package.json fields.');
         }
 
         const monoRepoPackageJson = await readPackageJson(monoRepoRootPath);
@@ -244,7 +244,7 @@ export const virmatorPublishPlugin = defineVirmatorPlugin(
                 const isPrivate = monoRepoPackageJson.private;
 
                 if (isPrivate) {
-                    log.info(`This package is private. Skipping publish.`);
+                    log.info('This package is private. Skipping publish.');
                     return;
                 }
                 await alterPackageEntryPoints(monoRepoRootPath);
@@ -278,7 +278,7 @@ async function updateGit(packageDirPath: string): Promise<void> {
     assert.isDefined(newVersion);
 
     if (await doChangesExist(packageDirPath)) {
-        await runShellCommand(`git commit -a --amend --no-edit`, {
+        await runShellCommand('git commit -a --amend --no-edit', {
             cwd: packageDirPath,
             rejectOnError: true,
         });

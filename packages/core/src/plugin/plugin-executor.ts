@@ -122,7 +122,10 @@ export type VirmatorPluginExecutorParams<
 
     /** Run a shell command with sensible defaults. */
     runShellCommand: TypedFunction<
-        [...Parameters<typeof runShellCommand>, PartialWithUndefined<ExtraRunShellCommandOptions>?],
+        [
+            ...Parameters<typeof runShellCommand>,
+            PartialWithUndefined<ExtraRunShellCommandOptions>?,
+        ],
         ReturnType<typeof runShellCommand>
     >;
     /** Runs the given command for each package within a mono repo, if it has any. */

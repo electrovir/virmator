@@ -287,7 +287,7 @@ export async function executeVirmatorCommand({
     const plugin = args.plugin;
 
     if (!args.commands.length || !plugin) {
-        throw new VirmatorNoTraceError(`Missing valid command.`);
+        throw new VirmatorNoTraceError('Missing valid command.');
     }
 
     const cwdPackagePath = await findClosestPackageDir({
@@ -373,10 +373,10 @@ export async function executeVirmatorCommand({
         },
         async runPerPackage(generateCliCommandString, maxProcesses: number | undefined | 'tree') {
             if (packageType !== PackageType.MonoRoot) {
-                throw new Error(`Cannot run "runPerPackage" on non-mono-repo.`);
+                throw new Error('Cannot run "runPerPackage" on non-mono-repo.');
             } else if (!monoRepoPackages.length) {
                 throw new Error(
-                    `No mono-repo packages found. Make sure to set the 'workspaces' field in your mono-repo package.json and run 'npm i'.`,
+                    "No mono-repo packages found. Make sure to set the 'workspaces' field in your mono-repo package.json and run 'npm i'.",
                 );
             }
 

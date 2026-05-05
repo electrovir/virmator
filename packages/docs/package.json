@@ -1,6 +1,6 @@
 {
     "name": "@virmator/docs",
-    "version": "14.12.2",
+    "version": "14.13.0",
     "description": "Default TS docs plugin for virmator.",
     "keywords": [
         "virmator",
@@ -33,22 +33,22 @@
         "test:update": "npm test update"
     },
     "dependencies": {
-        "@augment-vir/assert": "^31.68.3",
-        "@augment-vir/common": "^31.68.3",
-        "@augment-vir/node": "^31.68.3",
-        "@virmator/core": "^14.12.2",
+        "@augment-vir/assert": "^31.69.0",
+        "@augment-vir/common": "^31.69.0",
+        "@augment-vir/node": "^31.69.0",
+        "@virmator/core": "^14.13.0",
         "mri": "^1.2.0",
         "runstorm": "^1.0.0",
-        "type-fest": "^5.5.0"
+        "type-fest": "^5.6.0"
     },
     "devDependencies": {
-        "@augment-vir/test": "^31.68.3",
-        "@types/node": "^25.5.2",
+        "@augment-vir/test": "^31.69.0",
+        "@types/node": "^25.6.0",
         "c8": "^11.0.0",
         "esbuild": "^0.28.0",
         "istanbul-smart-text-reporter": "^1.1.5",
-        "markdown-code-example-inserter": "^3.0.3",
-        "typedoc": "^0.28.18"
+        "markdown-code-example-inserter": "^3.0.5",
+        "typedoc": "^0.28.19"
     },
     "engines": {
         "node": ">=22"

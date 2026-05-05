@@ -57,7 +57,7 @@ describe('prefer-single-quotes', () => {
                 {
                     name: 'backtick string with single quotes inside is escaped',
                     code: "const x = `it's a test`;",
-                    output: "const x = 'it\\'s a test';",
+                    output: String.raw`const x = 'it\'s a test';`,
                     errors: [
                         {
                             messageId: 'preferSingleQuotes',
@@ -67,7 +67,7 @@ describe('prefer-single-quotes', () => {
                 {
                     name: 'backtick string with multiple single quotes is escaped',
                     code: "const x = `'a' and 'b'`;",
-                    output: "const x = '\\'a\\' and \\'b\\'';",
+                    output: String.raw`const x = '\'a\' and \'b\'';`,
                     errors: [
                         {
                             messageId: 'preferSingleQuotes',
@@ -75,9 +75,9 @@ describe('prefer-single-quotes', () => {
                     ],
                 },
                 {
-                    name: 'backtick string with \\n escape is preserved',
+                    name: String.raw`backtick string with \n escape is preserved`,
                     code: 'const x = `hello\\nworld`;',
-                    output: "const x = 'hello\\nworld';",
+                    output: String.raw`const x = 'hello\nworld';`,
                     errors: [
                         {
                             messageId: 'preferSingleQuotes',
@@ -117,7 +117,7 @@ describe('prefer-single-quotes', () => {
                 {
                     name: 'backtick string with backslash is preserved',
                     code: 'const x = `a\\\\b`;',
-                    output: "const x = 'a\\\\b';",
+                    output: String.raw`const x = 'a\\b';`,
                     errors: [
                         {
                             messageId: 'preferSingleQuotes',
@@ -127,7 +127,7 @@ describe('prefer-single-quotes', () => {
                 {
                     name: 'backtick string with unicode escape is preserved',
                     code: 'const x = `\\u0041`;',
-                    output: "const x = '\\u0041';",
+                    output: String.raw`const x = '\u0041';`,
                     errors: [
                         {
                             messageId: 'preferSingleQuotes',
@@ -137,7 +137,7 @@ describe('prefer-single-quotes', () => {
                 {
                     name: 'backtick string with already-escaped single quote is preserved',
                     code: "const x = `it\\'s`;",
-                    output: "const x = 'it\\'s';",
+                    output: String.raw`const x = 'it\'s';`,
                     errors: [
                         {
                             messageId: 'preferSingleQuotes',

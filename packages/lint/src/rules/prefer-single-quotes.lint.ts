@@ -5,12 +5,10 @@ function templateRawToSingleQuoted(raw: string): string {
     const escaped = raw.replaceAll(/\\`|\\\$\{|\\.|'/gs, (match) => {
         if (match === '\\`') {
             return '`';
-        }
-        if (match === '\\${') {
+        } else if (match === '\\${') {
             return '${';
-        }
-        if (match === "'") {
-            return "\\'";
+        } else if (match === "'") {
+            return String.raw`\'`;
         }
         return match;
     });
@@ -31,11 +29,10 @@ const rule: Rule.RuleModule = {
 
         return {
             TemplateLiteral(node: TemplateLiteral & Rule.NodeParentExtension) {
-                if (node.expressions.length > 0) {
-                    return;
-                }
-
-                if (node.parent.type === 'TaggedTemplateExpression') {
+                if (
+                    node.expressions.length > 0 ||
+                    node.parent.type === 'TaggedTemplateExpression'
+                ) {
                     return;
                 }
 

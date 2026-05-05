@@ -9,6 +9,7 @@ module.exports = {
     ],
     words: [
         ...baseConfig.words,
+        'quasis',
         'htmlhint',
         'webdev',
     ],

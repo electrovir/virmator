@@ -473,6 +473,6 @@ async function createTestThatImportsAllFilesForCoverage(
         )}\n};\n`;
         await writeFile(allFilesTestFilePath, codeToWrite);
     } else {
-        throw new Error(`No files found for code coverage calculations.`);
+        throw new Error('No files found for code coverage calculations.');
     }
 }

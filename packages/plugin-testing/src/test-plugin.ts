@@ -73,7 +73,7 @@ const defaultContentsExcludeList = [
         value: 'node_modules',
         wrapper: sep,
     }),
-    `.git`,
+    '.git',
     'package-lock.json',
     wrapString({
         value: 'coverage',

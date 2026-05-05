@@ -14,7 +14,10 @@ import {virmatorFlags, type SetVirmatorFlags} from './virmator-flags.js';
 /** All supported sets of args for virmator. */
 export type ParsedArgs = {
     virmatorFlags: SetVirmatorFlags;
-    commands: [string, ...string[]];
+    commands: [
+        string,
+        ...string[],
+    ];
     filteredCommandArgs: string[];
     plugin: Readonly<VirmatorPlugin> | undefined;
     usedCommands: UsedVirmatorPluginCommands;
