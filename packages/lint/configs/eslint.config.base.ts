@@ -9,6 +9,7 @@ import globals from 'globals';
 import tsEslint from 'typescript-eslint';
 import preferIfElseChainRule from '../src/rules/prefer-if-else-chain.lint.js';
 import preferParseUrlRule from '../src/rules/prefer-parse-url.lint.js';
+import preferSingleQuotesRule from '../src/rules/prefer-single-quotes.lint.js';
 
 export const globalVars = {
     ...globals.node,
@@ -72,6 +73,7 @@ export function defineEslintConfig(repoDir: string) {
                     rules: {
                         'prefer-if-else-chain': preferIfElseChainRule,
                         'prefer-parse-url': preferParseUrlRule,
+                        'prefer-single-quotes': preferSingleQuotesRule,
                     },
                 },
             },
@@ -174,6 +176,7 @@ export function defineEslintConfig(repoDir: string) {
                 '@typescript-eslint/no-unused-vars': 'error',
                 '@virmator/prefer-if-else-chain': 'error',
                 '@virmator/prefer-parse-url': 'error',
+                '@virmator/prefer-single-quotes': 'error',
                 'no-lonely-if': 'error',
                 curly: 'error',
                 'object-shorthand': 'error',
