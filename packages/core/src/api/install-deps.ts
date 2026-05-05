@@ -83,9 +83,18 @@ export async function installNpmDeps({
     const pluginPackageJson = await readPackageJson(pluginPackagePath);
     const currentPluginPackageDeps = combineDeps(pluginPackageJson);
 
-    const depsThatNeedInstalling: Record<NpmDepType, string[]> = neededDeps.reduce(
+    const emptyDepsByPrefix: Record<VersionPrefix, string[]> = {
+        '^': [],
+        '~': [],
+        '': [],
+    };
+
+    const depsThatNeedInstalling: Record<
+        NpmDepType,
+        Record<VersionPrefix, string[]>
+    > = neededDeps.reduce(
         (
-            accum: Record<NpmDepType, string[]>,
+            accum: Record<NpmDepType, Record<VersionPrefix, string[]>>,
             [
                 depName,
                 depOptions,
@@ -98,7 +107,8 @@ export async function installNpmDeps({
                 return accum;
             }
 
-            const baselineVersion = semver.coerce(currentPluginPackageDeps[depName] || '');
+            const pluginVersionString = currentPluginPackageDeps[depName] || '';
+            const baselineVersion = semver.coerce(pluginVersionString);
 
             if (!baselineVersion) {
                 throw new VirmatorNoTraceError(
@@ -112,51 +122,90 @@ export async function installNpmDeps({
                 return accum;
             }
 
+            const versionPrefix = extractVersionPrefix(pluginVersionString);
             const depNameWithVersion = `${depName}@${baselineVersion.raw}`;
 
-            accum[depOptions.type].push(depNameWithVersion);
-
-            return accum;
+            return {
+                ...accum,
+                [depOptions.type]: {
+                    ...accum[depOptions.type],
+                    [versionPrefix]: [
+                        ...accum[depOptions.type][versionPrefix],
+                        depNameWithVersion,
+                    ],
+                },
+            };
         },
         {
-            [NpmDepType.Dev]: [],
-            [NpmDepType.Regular]: [],
+            [NpmDepType.Dev]: {
+                ...emptyDepsByPrefix,
+            },
+            [NpmDepType.Regular]: {
+                ...emptyDepsByPrefix,
+            },
         },
     );
 
-    const installed = await awaitedBlockingMap(
-        Object.entries(depsThatNeedInstalling),
-        async ([
+    const installGroups = getObjectTypedEntries(depsThatNeedInstalling).flatMap(
+        ([
             depType,
-            deps,
+            depsByPrefix,
         ]) => {
-            if (!deps.length) {
-                return false;
-            }
-
-            const installDeps: string = deps.join(' ');
-
-            const installCommand = [
-                'npm',
-                'i',
-                depType === NpmDepType.Dev ? '-D' : '',
-                installDeps,
-            ]
-                .filter(check.isTruthy)
-                .join(' ');
-
-            log.faint(`Installing ${installDeps}...`);
-            await runShellCommand(installCommand, {
-                cwd: cwdPackagePath,
-                hookUpToConsole: true,
-                rejectOnError: true,
-            });
-
-            return true;
+            return getObjectTypedEntries(depsByPrefix).map(
+                ([
+                    prefix,
+                    deps,
+                ]) => {
+                    return {
+                        depType,
+                        prefix,
+                        deps,
+                    };
+                },
+            );
         },
     );
+
+    const installed = await awaitedBlockingMap(installGroups, async ({depType, prefix, deps}) => {
+        if (!deps.length) {
+            return false;
+        }
+
+        const installDeps: string = deps.join(' ');
+
+        const installCommand = [
+            'npm',
+            'i',
+            depType === NpmDepType.Dev ? '-D' : '',
+            prefix === '' ? '--save-exact' : '',
+            prefix === '~' ? '--save-prefix=~' : '',
+            installDeps,
+        ]
+            .filter(check.isTruthy)
+            .join(' ');
+
+        log.faint(`Installing ${installDeps}...`);
+        await runShellCommand(installCommand, {
+            cwd: cwdPackagePath,
+            hookUpToConsole: true,
+            rejectOnError: true,
+        });
+
+        return true;
+    });
 
     return installed.some(check.isTrue);
+}
+
+type VersionPrefix = '^' | '~' | '';
+
+function extractVersionPrefix(versionString: string): VersionPrefix {
+    if (versionString.startsWith('^')) {
+        return '^';
+    } else if (versionString.startsWith('~')) {
+        return '~';
+    }
+    return '';
 }
 
 function combineDeps(packageJson: Readonly<PackageJson>) {
