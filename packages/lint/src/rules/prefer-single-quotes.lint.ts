@@ -46,6 +46,11 @@ const rule: Rule.RuleModule = {
                     return;
                 }
 
+                const cooked = quasi.value.cooked;
+                if (cooked != undefined && cooked.includes("'") && cooked.includes('"')) {
+                    return;
+                }
+
                 context.report({
                     node,
                     messageId: 'preferSingleQuotes',

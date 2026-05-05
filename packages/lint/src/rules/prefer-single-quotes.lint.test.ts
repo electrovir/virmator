@@ -32,6 +32,14 @@ describe('prefer-single-quotes', () => {
                     name: 'tagged template literal with no interpolation',
                     code: 'const x = html`<div></div>`;',
                 },
+                {
+                    name: 'backtick string with both single and double quotes is preserved',
+                    code: 'const x = `it\'s "great"`;',
+                },
+                {
+                    name: 'backtick string with escaped single quote and double quote is preserved',
+                    code: 'const x = `it\\\'s "great"`;',
+                },
             ],
             invalid: [
                 {
