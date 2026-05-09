@@ -59,7 +59,15 @@ export function defineConfig({coveragePercent = 0, packageRootDirPath = ''}) {
         // this can be overridden by the --coverage flag
         coverage: false,
         files: testFiles.spec,
-        nodeResolve: true,
+        nodeResolve: {
+            exportConditions: [
+                'browser',
+                'development',
+                'import',
+                'module',
+                'default',
+            ],
+        },
         plugins: [
             esbuildPlugin({ts: true}),
             snapshotPlugin(packageRootDirPath),
