@@ -54,6 +54,7 @@ const baseConfig = {
         'bbox',
         'bignumber',
         'bitnami',
+        'bivariant',
         'blanc-sablon',
         'bowser',
         'browserconfig',
