@@ -74,6 +74,7 @@ const baseConfig = {
         'combinator',
         'combinators',
         'comodrivadavia',
+        'contravariance',
         'contructs',
         'cooldown',
         'costa_rica',
