@@ -1,7 +1,9 @@
+import {assert} from '@augment-vir/assert';
 import {RuntimeEnv} from '@augment-vir/common';
 import {describe, it, type UniversalTestContext} from '@augment-vir/test';
 import {PackageType} from '@virmator/core';
 import {virmatorInitPlugin} from '@virmator/init';
+import {readFile} from 'node:fs/promises';
 import {join, resolve} from 'node:path';
 import {testVirmator} from './test-virmator.mock.js';
 
@@ -95,5 +97,16 @@ describe(virmatorInitPlugin.name, () => {
             RuntimeEnv.Node,
             PackageType.MonoPackage,
         );
+    });
+    it('copies an MIT license with the current year', async () => {
+        const licenseConfig = virmatorInitPlugin.cliCommands.init.configFiles.licenseMit;
+        assert.isDefined(licenseConfig);
+        const licensePath = join(
+            virmatorInitPlugin.pluginPackageRootPath,
+            licenseConfig.copyFromPath,
+        );
+        const licenseText = await readFile(licensePath, 'utf8');
+        const currentYear = new Date().getUTCFullYear();
+        assert.matches(licenseText, new RegExp(String.raw`Copyright \(c\) ${currentYear} `));
     });
 });

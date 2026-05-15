@@ -39,11 +39,16 @@ export async function installPluginNpmDeps({
     ) {
         await awaitedForEach(installCommands, async (command) => {
             params.log.faint(`> ${command}`);
-            await runShellCommand(command, {
+            const result = await runShellCommand(command, {
                 cwd: params.cwdPackagePath,
                 rejectOnError: true,
                 hookUpToConsole: true,
             });
+            if (result.exitCode || result.error) {
+                throw new VirmatorNoTraceError(
+                    `'${command}' failed with exit code ${result.exitCode ?? 'unknown'}.`,
+                );
+            }
         });
     }
 }
