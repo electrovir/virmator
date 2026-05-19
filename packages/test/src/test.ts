@@ -323,9 +323,7 @@ export const virmatorTestPlugin = defineVirmatorPlugin(
                 throw new VirmatorNoTraceError(
                     "Test command requires an env argument: either 'node' or 'web'.",
                 );
-            }
-
-            if (rawFileArgs.length) {
+            } else if (rawFileArgs.length) {
                 const targetWorkspace = findWorkspaceForFiles({
                     fileArgs: rawFileArgs,
                     monoRepoPackages,
