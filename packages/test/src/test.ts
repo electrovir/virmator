@@ -1,13 +1,19 @@
 import {check} from '@augment-vir/assert';
 import {RuntimeEnv} from '@augment-vir/common';
 import {interpolationSafeWindowsPath, toPosixPath} from '@augment-vir/node';
-import {defineVirmatorPlugin, NpmDepType, PackageType, VirmatorNoTraceError} from '@virmator/core';
+import {
+    defineVirmatorPlugin,
+    type MonoRepoPackage,
+    NpmDepType,
+    PackageType,
+    VirmatorNoTraceError,
+} from '@virmator/core';
 import {type TestRunnerConfig} from '@web/test-runner';
 import {glob} from 'glob';
 import mri from 'mri';
 import {existsSync} from 'node:fs';
 import {rm, writeFile} from 'node:fs/promises';
-import {extname, join, relative} from 'node:path';
+import {extname, join, relative, sep} from 'node:path';
 import {pathToFileURL} from 'node:url';
 
 /** A virmator plugin for running tests. */
@@ -263,9 +269,10 @@ export const virmatorTestPlugin = defineVirmatorPlugin(
     async ({
         cliInputs: {filteredArgs, usedCommands},
         runShellCommand,
+        runPerPackage,
         cwd,
         configs,
-        package: {packageType, monoRepoRootPath, cwdPackagePath},
+        package: {packageType, monoRepoRootPath, cwdPackagePath, monoRepoPackages},
     }) => {
         const args = mri(filteredArgs);
         const {rawFileArgs, otherArgs} = filteredArgs.reduce(
@@ -310,9 +317,60 @@ export const virmatorTestPlugin = defineVirmatorPlugin(
         });
 
         if (packageType === PackageType.MonoRoot) {
-            throw new VirmatorNoTraceError(
-                "'virmator test' cannot be run in a mono-repo root. Instead, run it for each sub-package.",
-            );
+            const subCommandChain = extractTestSubCommandChain(usedCommands);
+
+            if (!subCommandChain.length) {
+                throw new VirmatorNoTraceError(
+                    "Test command requires an env argument: either 'node' or 'web'.",
+                );
+            }
+
+            if (rawFileArgs.length) {
+                const targetWorkspace = findWorkspaceForFiles({
+                    fileArgs: rawFileArgs,
+                    monoRepoPackages,
+                    monoRepoRootPath,
+                });
+
+                if (!targetWorkspace) {
+                    throw new VirmatorNoTraceError(
+                        "'virmator test' could not find a single mono-repo sub-package containing the given test file path(s).",
+                    );
+                }
+
+                const workspaceRelativeArgs = filteredArgs.map((arg) => {
+                    if (rawFileArgs.includes(arg)) {
+                        return relative(targetWorkspace.fullPath, join(monoRepoRootPath, arg));
+                    }
+                    return arg;
+                });
+
+                const redirectedCommand = [
+                    'virmator',
+                    'test',
+                    ...subCommandChain,
+                    ...workspaceRelativeArgs,
+                ]
+                    .filter(check.isTruthy)
+                    .join(' ');
+
+                await runShellCommand(interpolationSafeWindowsPath(redirectedCommand), {
+                    cwd: targetWorkspace.fullPath,
+                });
+                return;
+            }
+
+            await runPerPackage(() => {
+                return [
+                    'virmator',
+                    'test',
+                    ...subCommandChain,
+                    ...otherArgs,
+                ]
+                    .filter(check.isTruthy)
+                    .join(' ');
+            });
+            return;
         }
 
         if (usedCommands.test?.subCommands.web) {
@@ -418,6 +476,69 @@ export const virmatorTestPlugin = defineVirmatorPlugin(
         }
     },
 );
+
+/**
+ * Find the single mono-repo sub-package that contains all of the given file paths. Returns
+ * `undefined` if no file args were provided, if any file doesn't live within a workspace, or if the
+ * files span multiple workspaces.
+ */
+function findWorkspaceForFiles({
+    fileArgs,
+    monoRepoPackages,
+    monoRepoRootPath,
+}: {
+    fileArgs: ReadonlyArray<string>;
+    monoRepoPackages: ReadonlyArray<MonoRepoPackage>;
+    monoRepoRootPath: string;
+}): MonoRepoPackage | undefined {
+    if (!fileArgs.length || !monoRepoPackages.length) {
+        return undefined;
+    }
+
+    const deepestFirst = monoRepoPackages.toSorted((a, b) => b.fullPath.length - a.fullPath.length);
+
+    const matches = fileArgs.map((fileArg) => {
+        const absoluteFilePath = join(monoRepoRootPath, fileArg);
+        return deepestFirst.find(
+            (workspace) =>
+                absoluteFilePath === workspace.fullPath ||
+                absoluteFilePath.startsWith(workspace.fullPath + sep),
+        );
+    });
+
+    const first = matches[0];
+    if (!first || !matches.every((match) => match?.fullPath === first.fullPath)) {
+        return undefined;
+    }
+
+    return first;
+}
+
+function extractTestSubCommandChain(
+    usedCommands: Parameters<typeof virmatorTestPlugin.executor>[0]['cliInputs']['usedCommands'],
+): string[] {
+    const webCommand = usedCommands.test?.subCommands.web;
+    if (webCommand) {
+        const chain = ['web'];
+        if (webCommand.subCommands.coverage) {
+            chain.push('coverage');
+        } else if (webCommand.subCommands.update) {
+            chain.push('update');
+        }
+        return chain;
+    }
+    const nodeCommand = usedCommands.test?.subCommands.node;
+    if (nodeCommand) {
+        const chain = ['node'];
+        if (nodeCommand.subCommands.coverage) {
+            chain.push('coverage');
+        } else if (nodeCommand.subCommands.update) {
+            chain.push('update');
+        }
+        return chain;
+    }
+    return [];
+}
 
 async function createTestThatImportsAllFilesForCoverage(
     webTestRunnerConfig: Partial<Pick<TestRunnerConfig, 'coverageConfig'>>,

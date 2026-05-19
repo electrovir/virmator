@@ -30,16 +30,6 @@ import {simpleGit} from 'simple-git';
 import {type PackageJson} from 'type-fest';
 
 const deps: PluginNpmDeps = {
-    'mono-vir': {
-        env: {
-            [RuntimeEnv.Node]: true,
-            [RuntimeEnv.Web]: true,
-        },
-        packageType: {
-            [PackageType.MonoRoot]: true,
-        },
-        type: NpmDepType.Dev,
-    },
     runstorm: {
         env: {
             [RuntimeEnv.Node]: true,
@@ -333,12 +323,22 @@ export const virmatorInitPlugin = defineVirmatorPlugin(
                         },
                         required: false,
                     },
-                    monoRootPackageJson: {
-                        copyFromPath: join('configs', 'package-mono-root', 'package.json'),
+                    monoRootNodePackageJson: {
+                        copyFromPath: join('configs', 'package-mono-root-node', 'package.json'),
+                        copyToPath: join('package.json'),
+                        env: {
+                            [RuntimeEnv.Node]: true,
+                        },
+                        packageType: {
+                            [PackageType.MonoRoot]: true,
+                        },
+                        required: false,
+                    },
+                    monoRootWebPackageJson: {
+                        copyFromPath: join('configs', 'package-mono-root-web', 'package.json'),
                         copyToPath: join('package.json'),
                         env: {
                             [RuntimeEnv.Web]: true,
-                            [RuntimeEnv.Node]: true,
                         },
                         packageType: {
                             [PackageType.MonoRoot]: true,
