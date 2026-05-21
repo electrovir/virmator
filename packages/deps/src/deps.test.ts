@@ -68,6 +68,20 @@ describe(virmatorDepsPlugin.name, () => {
         });
         await testDepsPlugin(false, context, dir, 'check');
     });
+    /**
+     * Verifies that deps check catches circular dependencies across packages that go through
+     * deep file imports (e.g. `import 'b/src/b.js'` from `a` and `import 'a/src/a.js'` from
+     * `b`). dependency-cruiser resolves the workspace symlinks back to the source files in
+     * the other package, so the cycle is detected the same way an intra-package cycle would
+     * be.
+     */
+    it('catches circular deps across packages via file-level imports', async (context) => {
+        const dir = join(testFilesDir, 'circular-file-imports-mono-repo');
+        await runShellCommand('npm i', {
+            cwd: dir,
+        });
+        await testDepsPlugin(false, context, dir, 'check');
+    });
 
     it('upgrades deps', async (context) => {
         await testDepsPlugin(true, context, join(testFilesDir, 'upgrade'), 'upgrade');
