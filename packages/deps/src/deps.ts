@@ -1,7 +1,8 @@
 import {check} from '@augment-vir/assert';
-import {awaitedBlockingMap, RuntimeEnv} from '@augment-vir/common';
-import {toPosixPath} from '@augment-vir/node';
+import {awaitedBlockingMap, getObjectTypedEntries, RuntimeEnv} from '@augment-vir/common';
+import {listAllDirectNpmDeps, PackageJsonDependencyKey, toPosixPath} from '@augment-vir/node';
 import {
+    copyConfigFile,
     defineVirmatorPlugin,
     JsModuleType,
     NpmDepType,
@@ -12,8 +13,16 @@ import {
 } from '@virmator/core';
 import mri from 'mri';
 import {rm} from 'node:fs/promises';
-import {join, relative} from 'node:path';
+import {dirname, join, matchesGlob, relative} from 'node:path';
 import {type RunOptions} from 'npm-check-updates';
+
+const installFlagsByDepKey: Readonly<Record<PackageJsonDependencyKey, string | undefined>> = {
+    [PackageJsonDependencyKey.Dependencies]: '',
+    [PackageJsonDependencyKey.DevDependencies]: '-D',
+    [PackageJsonDependencyKey.PeerDependencies]: '--save-peer',
+    /** Not a real installable dep, just a resolution override. */
+    [PackageJsonDependencyKey.Overrides]: undefined,
+};
 
 /** A virmator plugin for checking package TS dependencies. */
 export const virmatorDepsPlugin = defineVirmatorPlugin(
@@ -108,10 +117,34 @@ export const virmatorDepsPlugin = defineVirmatorPlugin(
                                     Does not automatically run 'npm i'.
                                     It is recommended to run 'virmator deps regen' instead.
                                 `,
+                                `
+                                    If a package name or glob is passed as an argument, only the
+                                    matching direct dependencies are upgraded via
+                                    'npm i <extra-args> <name>@latest'. Any flags or args supplied
+                                    after the pattern are forwarded to npm verbatim
+                                    (e.g. '--min-release-age 0'). In a mono-repo, this scans the
+                                    root package.json as well as every workspace package.json,
+                                    running an install in each one that has a match. Outside a
+                                    mono-repo, it scans the current package only. The command
+                                    errors out if no direct deps match in any package.json.
+                                `,
                             ],
                             examples: [
                                 {
                                     content: 'virmator deps upgrade',
+                                },
+                                {
+                                    title: 'upgrade a single package across the mono-repo',
+                                    content: 'virmator deps upgrade @augment-vir/common',
+                                },
+                                {
+                                    title: 'upgrade all packages matching a glob',
+                                    content: 'virmator deps upgrade "@augment-vir/*"',
+                                },
+                                {
+                                    title: 'forward npm flags (e.g. bypass min-release-age)',
+                                    content:
+                                        'virmator deps upgrade "@augment-vir/*" --min-release-age 0',
                                 },
                             ],
                         },
@@ -127,7 +160,12 @@ export const virmatorDepsPlugin = defineVirmatorPlugin(
                                     [PackageType.MonoRoot]: true,
                                     [PackageType.TopPackage]: true,
                                 },
-                                required: true,
+                                /**
+                                 * Only required when no dep filter argument is passed (the
+                                 * arg-based path bypasses ncu entirely). Copied on demand in the
+                                 * no-arg branch.
+                                 */
+                                required: false,
                                 configFlags: ['--config'],
                             },
                         },
@@ -237,40 +275,146 @@ export const virmatorDepsPlugin = defineVirmatorPlugin(
                 },
             );
         } else if (usedCommands.deps?.subCommands.upgrade) {
-            await withImportedTsFile(
-                {
-                    inputPath: join(
-                        monoRepoRootPath,
-                        configs.deps.subCommands.upgrade.configs.ncu.copyToPath,
-                    ),
-                    outputPath: join(
-                        cwdPackagePath,
-                        'node_modules',
-                        '.virmator',
-                        'dep-cruiser.config.mjs',
-                    ),
-                },
-                JsModuleType.Esm,
-                async (configFile) => {
-                    const config = configFile.ncuConfig as RunOptions;
+            const upgradeArgs = mri(filteredArgs);
+            const depPattern = upgradeArgs._[0];
 
-                    /** C8 incorrectly thinks these imports are uncovered branches. */
-                    /* node:coverage ignore next */
-                    const ncu = await import('npm-check-updates');
+            if (depPattern) {
+                const passthroughArgs = filteredArgs.toSpliced(filteredArgs.indexOf(depPattern), 1);
+                const allDirectDeps = await listAllDirectNpmDeps(monoRepoRootPath);
 
-                    await ncu.run(
-                        {
-                            ...config,
-                            cwd: monoRepoRootPath,
-                            workspaces: !!monoRepoPackages.length,
-                            format: [],
-                        },
-                        {
-                            cli: true,
-                        },
+                const matchedDepsByPackageAndKey = Object.entries(allDirectDeps).reduce<
+                    Record<string, Partial<Record<PackageJsonDependencyKey, string[]>>>
+                >(
+                    (
+                        accum,
+                        [
+                            depName,
+                            usages,
+                        ],
+                    ) => {
+                        if (!matchesGlob(depName, depPattern)) {
+                            return accum;
+                        }
+                        return usages.reduce((innerAccumulator, usage) => {
+                            if (
+                                usage.isWorkspace ||
+                                installFlagsByDepKey[usage.dependencyKey] == undefined
+                            ) {
+                                return innerAccumulator;
+                            }
+                            const packageDir = dirname(usage.requiredBy);
+                            const existingDepsByKey = innerAccumulator[packageDir] ?? {};
+                            const existingDeps = existingDepsByKey[usage.dependencyKey] ?? [];
+                            return {
+                                ...innerAccumulator,
+                                [packageDir]: {
+                                    ...existingDepsByKey,
+                                    [usage.dependencyKey]: [
+                                        ...existingDeps,
+                                        depName,
+                                    ],
+                                },
+                            };
+                        }, accum);
+                    },
+                    {},
+                );
+
+                const matches = Object.entries(matchedDepsByPackageAndKey);
+
+                if (!matches.length) {
+                    throw new VirmatorNoTraceError(
+                        `No direct dependencies matching '${depPattern}' found in any package.json.`,
                     );
-                },
-            );
+                }
+
+                await awaitedBlockingMap(
+                    matches,
+                    async ([
+                        packageDir,
+                        depsByKey,
+                    ]) => {
+                        await awaitedBlockingMap(
+                            getObjectTypedEntries(depsByKey),
+                            async ([
+                                dependencyKey,
+                                depNames,
+                            ]) => {
+                                const flag = installFlagsByDepKey[dependencyKey];
+
+                                /**
+                                 * Defensive guard: upstream filter at 'matchedDepsByPackageAndKey'
+                                 * already drops entries whose dep key maps to an undefined flag, so
+                                 * this branch is unreachable in practice.
+                                 */
+                                /* node:coverage ignore next 3 */
+                                if (flag == undefined) {
+                                    return;
+                                }
+
+                                const command = [
+                                    'npm',
+                                    'i',
+                                    flag,
+                                    ...passthroughArgs,
+                                    ...depNames.map((depName) => `${depName}@latest`),
+                                ]
+                                    .filter(check.isTruthy)
+                                    .join(' ');
+                                const packageRelativePath =
+                                    relative(monoRepoRootPath, packageDir) || '.';
+                                log.faint(`[${packageRelativePath}] > ${command}`);
+                                await runShellCommand(
+                                    command,
+                                    {
+                                        cwd: packageDir,
+                                    },
+                                    {
+                                        logPrefix: packageRelativePath,
+                                    },
+                                );
+                            },
+                        );
+                    },
+                );
+            } else {
+                await copyConfigFile(configs.deps.subCommands.upgrade.configs.ncu, log);
+
+                await withImportedTsFile(
+                    {
+                        inputPath: join(
+                            monoRepoRootPath,
+                            configs.deps.subCommands.upgrade.configs.ncu.copyToPath,
+                        ),
+                        outputPath: join(
+                            cwdPackagePath,
+                            'node_modules',
+                            '.virmator',
+                            'dep-cruiser.config.mjs',
+                        ),
+                    },
+                    JsModuleType.Esm,
+                    async (configFile) => {
+                        const config = configFile.ncuConfig as RunOptions;
+
+                        /** C8 incorrectly thinks these imports are uncovered branches. */
+                        /* node:coverage ignore next */
+                        const ncu = await import('npm-check-updates');
+
+                        await ncu.run(
+                            {
+                                ...config,
+                                cwd: monoRepoRootPath,
+                                workspaces: !!monoRepoPackages.length,
+                                format: [],
+                            },
+                            {
+                                cli: true,
+                            },
+                        );
+                    },
+                );
+            }
         } else if (usedCommands.deps?.subCommands.regen) {
             const allNodeModulesDirectories = [
                 ...monoRepoPackages.map((monoPackage) =>

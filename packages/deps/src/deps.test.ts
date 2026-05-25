@@ -69,11 +69,10 @@ describe(virmatorDepsPlugin.name, () => {
         await testDepsPlugin(false, context, dir, 'check');
     });
     /**
-     * Verifies that deps check catches circular dependencies across packages that go through
-     * deep file imports (e.g. `import 'b/src/b.js'` from `a` and `import 'a/src/a.js'` from
-     * `b`). dependency-cruiser resolves the workspace symlinks back to the source files in
-     * the other package, so the cycle is detected the same way an intra-package cycle would
-     * be.
+     * Verifies that deps check catches circular dependencies across packages that go through deep
+     * file imports (e.g. `import 'b/src/b.js'` from `a` and `import 'a/src/a.js'` from `b`).
+     * dependency-cruiser resolves the workspace symlinks back to the source files in the other
+     * package, so the cycle is detected the same way an intra-package cycle would be.
      */
     it('catches circular deps across packages via file-level imports', async (context) => {
         const dir = join(testFilesDir, 'circular-file-imports-mono-repo');
@@ -85,6 +84,44 @@ describe(virmatorDepsPlugin.name, () => {
 
     it('upgrades deps', async (context) => {
         await testDepsPlugin(true, context, join(testFilesDir, 'upgrade'), 'upgrade');
+    });
+
+    it('errors when upgrade target matches no direct deps', async (context) => {
+        await testDepsPlugin(
+            false,
+            context,
+            join(testFilesDir, 'upgrade'),
+            'upgrade @no-such-scope/*',
+        );
+    });
+
+    it('upgrades a single dep by exact name', async (context) => {
+        const dir = join(testFilesDir, 'upgrade');
+        await runShellCommand('npm i', {
+            cwd: dir,
+        });
+        await testDepsPlugin(
+            true,
+            context,
+            dir,
+            'upgrade htmlhint-plugin-blocked-words --loglevel silent',
+        );
+    });
+
+    it('upgrades deps matching a glob pattern', async (context) => {
+        const dir = join(testFilesDir, 'upgrade');
+        await runShellCommand('npm i', {
+            cwd: dir,
+        });
+        await testDepsPlugin(true, context, dir, 'upgrade htmlhint-* --loglevel silent');
+    });
+
+    it('skips matches in the overrides section', async (context) => {
+        const dir = join(testFilesDir, 'upgrade-with-overrides');
+        await runShellCommand('npm i', {
+            cwd: dir,
+        });
+        await testDepsPlugin(true, context, dir, 'upgrade htmlhint-* --loglevel silent');
     });
 
     it('regenerates deps', async (context) => {

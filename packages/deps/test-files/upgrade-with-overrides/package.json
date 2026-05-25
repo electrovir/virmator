@@ -1,0 +1,8 @@
+{
+    "overrides": {
+        "htmlhint-fake-override-target": "1.0.0"
+    },
+    "dependencies": {
+        "htmlhint-plugin-blocked-words": "1.0.0"
+    }
+}

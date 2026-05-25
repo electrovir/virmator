@@ -44,6 +44,18 @@ exports[`Deps > checks a custom path 1`] = `
 }
 `;
 
+exports[`Deps > errors when upgrade target matches no direct deps 1`] = `
+{
+  "logs": {
+    "stderr": "No direct dependencies matching '@no-such-scope/*' found in any package.json.\\ndeps failed."
+  },
+  "cwd": "packages/deps/test-files/upgrade",
+  "error": {
+    "name": "VirmatorNoTraceError"
+  }
+}
+`;
+
 exports[`Deps > fails invalid deps 1`] = `
 {
   "logs": {
@@ -143,6 +155,30 @@ exports[`Deps > rejects a missing sub command 1`] = `
 }
 `;
 
+exports[`Deps > skips matches in the overrides section 1`] = `
+{
+  "logs": {
+    "stdout": "[.] > npm i --loglevel silent htmlhint-plugin-blocked-words@latest\\n. > npm i --loglevel silent htmlhint-plugin-blocked-words@latest\\ndeps finished."
+  },
+  "cwd": "packages/deps/test-files/upgrade-with-overrides",
+  "contentsDiff": {
+    "package.json": "{\\n    \\"overrides\\": {\\n        \\"htmlhint-fake-override-target\\": \\"1.0.0\\"\\n    },\\n    \\"dependencies\\": {\\n        \\"htmlhint-plugin-blocked-words\\": \\"^1.0.2\\"\\n    }\\n}\\n"
+  }
+}
+`;
+
+exports[`Deps > upgrades a single dep by exact name 1`] = `
+{
+  "logs": {
+    "stdout": "[.] > npm i --loglevel silent htmlhint-plugin-blocked-words@latest\\n. > npm i --loglevel silent htmlhint-plugin-blocked-words@latest\\ndeps finished."
+  },
+  "cwd": "packages/deps/test-files/upgrade",
+  "contentsDiff": {
+    "package.json": "{\\n    \\"dependencies\\": {\\n        \\"htmlhint-plugin-blocked-words\\": \\"^1.0.2\\"\\n    }\\n}\\n"
+  }
+}
+`;
+
 exports[`Deps > upgrades deps 1`] = `
 {
   "logs": {
@@ -151,6 +187,18 @@ exports[`Deps > upgrades deps 1`] = `
   "cwd": "packages/deps/test-files/upgrade",
   "contentsDiff": {
     "package.json": "{\\n    \\"dependencies\\": {\\n        \\"htmlhint-plugin-blocked-words\\": \\"1.0.2\\"\\n    }\\n}\\n"
+  }
+}
+`;
+
+exports[`Deps > upgrades deps matching a glob pattern 1`] = `
+{
+  "logs": {
+    "stdout": "[.] > npm i --loglevel silent htmlhint-plugin-blocked-words@latest\\n. > npm i --loglevel silent htmlhint-plugin-blocked-words@latest\\ndeps finished."
+  },
+  "cwd": "packages/deps/test-files/upgrade",
+  "contentsDiff": {
+    "package.json": "{\\n    \\"dependencies\\": {\\n        \\"htmlhint-plugin-blocked-words\\": \\"^1.0.2\\"\\n    }\\n}\\n"
   }
 }
 `;
