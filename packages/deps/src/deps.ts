@@ -361,16 +361,13 @@ export const virmatorDepsPlugin = defineVirmatorPlugin(
                                 ]
                                     .filter(check.isTruthy)
                                     .join(' ');
-                                const packageRelativePath =
-                                    relative(monoRepoRootPath, packageDir) || '.';
-                                log.faint(`[${packageRelativePath}] > ${command}`);
                                 await runShellCommand(
                                     command,
                                     {
                                         cwd: packageDir,
                                     },
                                     {
-                                        logPrefix: packageRelativePath,
+                                        logPrefix: relative(monoRepoRootPath, packageDir) || '.',
                                     },
                                 );
                             },
