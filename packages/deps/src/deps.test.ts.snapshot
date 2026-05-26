@@ -167,6 +167,18 @@ exports[`Deps > skips matches in the overrides section 1`] = `
 }
 `;
 
+exports[`Deps > upgrades a dep to a specific version 1`] = `
+{
+  "logs": {
+    "stdout": ". > npm i --loglevel silent htmlhint-plugin-blocked-words@1.0.1\\ndeps finished."
+  },
+  "cwd": "packages/deps/test-files/upgrade",
+  "contentsDiff": {
+    "package.json": "{\\n    \\"dependencies\\": {\\n        \\"htmlhint-plugin-blocked-words\\": \\"^1.0.1\\"\\n    }\\n}\\n"
+  }
+}
+`;
+
 exports[`Deps > upgrades a single dep by exact name 1`] = `
 {
   "logs": {

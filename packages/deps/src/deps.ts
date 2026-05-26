@@ -120,8 +120,10 @@ export const virmatorDepsPlugin = defineVirmatorPlugin(
                                 `
                                     If a package name or glob is passed as an argument, only the
                                     matching direct dependencies are upgraded via
-                                    'npm i <extra-args> <name>@latest'. Any flags or args supplied
-                                    after the pattern are forwarded to npm verbatim
+                                    'npm i <extra-args> <name>@<version>'. An optional
+                                    '@<version>' suffix on the argument selects which version to
+                                    install (defaulting to 'latest' when omitted). Any flags or
+                                    args supplied after the pattern are forwarded to npm verbatim
                                     (e.g. '--min-release-age 0'). In a mono-repo, this scans the
                                     root package.json as well as every workspace package.json,
                                     running an install in each one that has a match. Outside a
@@ -140,6 +142,10 @@ export const virmatorDepsPlugin = defineVirmatorPlugin(
                                 {
                                     title: 'upgrade all packages matching a glob',
                                     content: 'virmator deps upgrade "@augment-vir/*"',
+                                },
+                                {
+                                    title: 'upgrade matches to a specific version',
+                                    content: 'virmator deps upgrade "my-package@^2.0.0"',
                                 },
                                 {
                                     title: 'forward npm flags (e.g. bypass min-release-age)',
@@ -280,6 +286,15 @@ export const virmatorDepsPlugin = defineVirmatorPlugin(
 
             if (depPattern) {
                 const passthroughArgs = filteredArgs.toSpliced(filteredArgs.indexOf(depPattern), 1);
+                /**
+                 * Split off an optional trailing '@<version>'. The first '@' in a scoped name like
+                 * '@augment-vir/*' is part of the name, so only a non-leading '@' separates name
+                 * from version.
+                 */
+                const lastAtIndex = depPattern.lastIndexOf('@');
+                const namePattern = lastAtIndex > 0 ? depPattern.slice(0, lastAtIndex) : depPattern;
+                const versionSpecifier =
+                    lastAtIndex > 0 ? depPattern.slice(lastAtIndex + 1) : 'latest';
                 const allDirectDeps = await listAllDirectNpmDeps(monoRepoRootPath);
 
                 const matchedDepsByPackageAndKey = Object.entries(allDirectDeps).reduce<
@@ -292,7 +307,7 @@ export const virmatorDepsPlugin = defineVirmatorPlugin(
                             usages,
                         ],
                     ) => {
-                        if (!matchesGlob(depName, depPattern)) {
+                        if (!matchesGlob(depName, namePattern)) {
                             return accum;
                         }
                         return usages.reduce((innerAccumulator, usage) => {
@@ -357,7 +372,7 @@ export const virmatorDepsPlugin = defineVirmatorPlugin(
                                     'i',
                                     flag,
                                     ...passthroughArgs,
-                                    ...depNames.map((depName) => `${depName}@latest`),
+                                    ...depNames.map((depName) => `${depName}@${versionSpecifier}`),
                                 ]
                                     .filter(check.isTruthy)
                                     .join(' ');

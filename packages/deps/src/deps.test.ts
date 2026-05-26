@@ -116,6 +116,14 @@ describe(virmatorDepsPlugin.name, () => {
         await testDepsPlugin(true, context, dir, 'upgrade htmlhint-* --loglevel silent');
     });
 
+    it('upgrades a dep to a specific version', async (context) => {
+        const dir = join(testFilesDir, 'upgrade');
+        await runShellCommand('npm i', {
+            cwd: dir,
+        });
+        await testDepsPlugin(true, context, dir, 'upgrade htmlhint-*@1.0.1 --loglevel silent');
+    });
+
     it('skips matches in the overrides section', async (context) => {
         const dir = join(testFilesDir, 'upgrade-with-overrides');
         await runShellCommand('npm i', {
