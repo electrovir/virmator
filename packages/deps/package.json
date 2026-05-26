@@ -1,6 +1,6 @@
 {
     "name": "@virmator/deps",
-    "version": "14.17.1",
+    "version": "14.18.0",
     "description": "Default TS deps plugin for virmator.",
     "keywords": [
         "virmator",
@@ -38,7 +38,7 @@
         "@augment-vir/common": "^31.69.0",
         "@augment-vir/node": "^31.69.0",
         "@npm/types": "^2.1.0",
-        "@virmator/core": "^14.17.1",
+        "@virmator/core": "^14.18.0",
         "mri": "^1.2.0"
     },
     "devDependencies": {

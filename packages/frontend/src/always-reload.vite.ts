@@ -49,12 +49,12 @@ export function alwaysReloadPlugin(
         handleHotUpdate() {
             return [];
         },
-        configureServer({watcher, ws, config: {logger, publicDir, root}}) {
+        configureServer(server) {
             const {inclusions = [], exclusions = []} = config;
             let callingAlready = false;
 
             // eslint-disable-next-line @typescript-eslint/unbound-method
-            const oldInfoLog = logger.info;
+            const oldInfoLog = server.config.logger.info;
 
             function customInfoLog(message: string, options: LogOptions) {
                 /**
@@ -66,21 +66,26 @@ export function alwaysReloadPlugin(
                 }
                 oldInfoLog(message, options);
             }
-            logger.info = customInfoLog;
+            server.config.logger.info = customInfoLog;
 
             function reloadCallback(path: string) {
                 // prevent duplicate calls cause the watcher is very eager to call callbacks multiple times in a row
                 if (!callingAlready) {
                     callingAlready = true;
-                    ws.send({
+                    server.ws.send({
                         type: 'full-reload',
                         path: '*',
                     });
-                    logger.info(
+                    const resolvedUrls = [
+                        ...(server.resolvedUrls?.local ?? []),
+                        ...(server.resolvedUrls?.network ?? []),
+                    ].join(' ');
+                    const urlsSuffix = resolvedUrls ? ` ${resolvedUrls}` : '';
+                    server.config.logger.info(
                         `${logColors.success}page reload ${logColors.faint}${relative(
                             process.cwd(),
                             path,
-                        )}${logColors.reset}`,
+                        )}${urlsSuffix}${logColors.reset}`,
                         {
                             clear: true,
                             timestamp: true,
@@ -96,24 +101,24 @@ export function alwaysReloadPlugin(
                 }
             }
 
-            watcher.add(root);
+            server.watcher.add(server.config.root);
 
             if (exclusions.length) {
-                watcher.unwatch(mapToActualPaths(exclusions));
+                server.watcher.unwatch(mapToActualPaths(exclusions));
             }
             // ignore macOS file system metadata stuff
-            watcher.unwatch('./**/.DS_Store');
+            server.watcher.unwatch('./**/.DS_Store');
             if (inclusions.length) {
-                watcher.add(mapToActualPaths(inclusions));
+                server.watcher.add(mapToActualPaths(inclusions));
             }
-            if (publicDir) {
-                watcher.add(publicDir);
+            if (server.config.publicDir) {
+                server.watcher.add(server.config.publicDir);
             }
 
-            if (!watcher.listeners('change').includes(reloadCallback)) {
-                watcher.on('change', reloadCallback);
-                watcher.on('add', reloadCallback);
-                watcher.on('unlink', reloadCallback);
+            if (!server.watcher.listeners('change').includes(reloadCallback)) {
+                server.watcher.on('change', reloadCallback);
+                server.watcher.on('add', reloadCallback);
+                server.watcher.on('unlink', reloadCallback);
             }
         },
     };
