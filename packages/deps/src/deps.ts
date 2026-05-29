@@ -383,6 +383,7 @@ export const virmatorDepsPlugin = defineVirmatorPlugin(
                                     },
                                     {
                                         logPrefix: relative(monoRepoRootPath, packageDir) || '.',
+                                        prefixCommandOnly: true,
                                     },
                                 );
                             },

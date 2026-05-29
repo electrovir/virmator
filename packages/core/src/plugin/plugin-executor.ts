@@ -84,6 +84,13 @@ export type ExtraRunShellCommandOptions = {
      * @default false
      */
     includeErrorMessage: boolean;
+    /**
+     * If true, `logPrefix` is applied only to the initial command-echo line; streamed stdout/stderr
+     * output is emitted without the prefix.
+     *
+     * @default false
+     */
+    prefixCommandOnly: boolean;
 };
 
 /** A parsed `package.json` with `name` and `version` properties required. */

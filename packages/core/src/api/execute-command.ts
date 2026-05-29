@@ -339,14 +339,20 @@ export async function executeVirmatorCommand({
         async runShellCommand(command, options, extraOptions) {
             const prefix = extraOptions?.logPrefix ? `${extraOptions.logPrefix} ` : '';
             log.faint(`${prefix}> ${command}`);
+            const outputExtraOptions = extraOptions?.prefixCommandOnly
+                ? {
+                      ...extraOptions,
+                      logPrefix: undefined,
+                  }
+                : extraOptions;
             const result = await runShellCommand(command, {
                 cwd,
                 shell: 'bash',
                 stderrCallback(stderr) {
-                    writeLog(stderr, log, LogOutputType.Error, extraOptions);
+                    writeLog(stderr, log, LogOutputType.Error, outputExtraOptions);
                 },
                 stdoutCallback(stdout) {
-                    writeLog(stdout, log, LogOutputType.Standard, extraOptions);
+                    writeLog(stdout, log, LogOutputType.Standard, outputExtraOptions);
                 },
                 ...options,
             });
