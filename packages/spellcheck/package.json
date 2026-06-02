@@ -1,6 +1,6 @@
 {
     "name": "@virmator/spellcheck",
-    "version": "14.19.1",
+    "version": "14.19.2",
     "description": "Default spellcheck plugin for virmator",
     "keywords": [
         "virmator",
@@ -15,7 +15,7 @@
         "type": "git",
         "url": "git+https://github.com/electrovir/virmator.git"
     },
-    "license": "(MIT or CC0 1.0)",
+    "license": "(MIT OR CC0-1.0)",
     "author": {
         "name": "electrovir",
         "url": "https://github.com/electrovir"
@@ -35,13 +35,13 @@
         "@augment-vir/assert": "^31.69.0",
         "@augment-vir/common": "^31.69.0",
         "@augment-vir/node": "^31.69.0",
-        "@virmator/core": "^14.19.1",
+        "@virmator/core": "^14.19.2",
         "mri": "^1.2.0"
     },
     "devDependencies": {
         "@augment-vir/test": "^31.69.0",
         "@types/node": "^25.6.0",
-        "@virmator/plugin-testing": "^14.19.1",
+        "@virmator/plugin-testing": "^14.19.2",
         "c8": "^11.0.0",
         "cspell": "^10.0.0",
         "istanbul-smart-text-reporter": "^1.1.5",

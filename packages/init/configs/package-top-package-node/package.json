@@ -1,7 +1,7 @@
 {
     "description": "",
     "keywords": [],
-    "license": "(MIT or CC0 1.0)",
+    "license": "(MIT OR CC0-1.0)",
     "sideEffects": false,
     "type": "module",
     "main": "src/index.ts",

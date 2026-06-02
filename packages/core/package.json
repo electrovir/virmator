@@ -1,6 +1,6 @@
 {
     "name": "@virmator/core",
-    "version": "14.19.1",
+    "version": "14.19.2",
     "description": "Shared core functionality for all virmator plugins and the virmator CLI.",
     "keywords": [
         "automation",
@@ -15,7 +15,7 @@
         "type": "git",
         "url": "git+https://github.com/electrovir/virmator.git"
     },
-    "license": "(MIT or CC0 1.0)",
+    "license": "(MIT OR CC0-1.0)",
     "author": {
         "name": "electrovir",
         "url": "https://github.com/electrovir"

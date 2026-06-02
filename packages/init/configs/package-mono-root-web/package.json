@@ -1,7 +1,7 @@
 {
     "version": "0.0.0",
     "private": true,
-    "license": "(MIT or CC0 1.0)",
+    "license": "(MIT OR CC0-1.0)",
     "sideEffects": false,
     "type": "module",
     "workspaces": [
