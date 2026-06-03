@@ -1,11 +1,11 @@
 exports[`TS Compile > compiles a valid project 1`] = `
 {
   "logs": {
-    "stdout": "Copied tsconfig.json\\nInstalling typescript@5.9.3...\\nDeleting dist...\\nDeleting tsconfig.tsbuildinfo...\\nCompiling...\\n> npx tsc --pretty\\ncompile finished."
+    "stdout": "Copied tsconfig.json\\nInstalling typescript@6.0.3...\\nDeleting dist...\\nDeleting tsconfig.tsbuildinfo...\\nCompiling...\\n> npx tsc --pretty\\ncompile finished."
   },
   "cwd": "packages/compile/test-files/pass-compile",
   "contentsDiff": {
-    "package.json": "{\\n    \\"type\\": \\"module\\",\\n    \\"devDependencies\\": {\\n        \\"typescript\\": \\"^5.9.3\\"\\n    }\\n}\\n",
+    "package.json": "{\\n    \\"type\\": \\"module\\",\\n    \\"devDependencies\\": {\\n        \\"typescript\\": \\"^6.0.3\\"\\n    }\\n}\\n",
     "dist": {
       "a.d.ts": "export type A = {\\n    here: string;\\n    there: number;\\n};\\nexport declare const value: A;\\n",
       "a.js": "export const value = {\\n    here: 'yo',\\n    there: 0,\\n};\\n"
@@ -18,12 +18,12 @@ exports[`TS Compile > compiles a valid project 1`] = `
 exports[`TS Compile > rejects an invalid project 1`] = `
 {
   "logs": {
-    "stdout": "Copied tsconfig.json\\nInstalling typescript@5.9.3...\\nDeleting dist...\\nDeleting tsconfig.tsbuildinfo...\\nCompiling...\\n> npx tsc --pretty\\nsrc/a.ts:12:5 - error TS2353: Object literal may only specify known properties, and 'no' does not exist in type 'A'.\\n\\n12     no: 'bad',\\n       ~~\\n\\n\\nFound 1 error in src/a.ts:12\\n",
+    "stdout": "Copied tsconfig.json\\nInstalling typescript@6.0.3...\\nDeleting dist...\\nDeleting tsconfig.tsbuildinfo...\\nCompiling...\\n> npx tsc --pretty\\nsrc/a.ts:12:5 - error TS2353: Object literal may only specify known properties, and 'no' does not exist in type 'A'.\\n\\n12     no: 'bad',\\n       ~~\\n\\n\\nFound 1 error in src/a.ts:12\\n",
     "stderr": "compile failed."
   },
   "cwd": "packages/compile/test-files/fail-compile",
   "contentsDiff": {
-    "package.json": "{\\n    \\"type\\": \\"module\\",\\n    \\"devDependencies\\": {\\n        \\"typescript\\": \\"^5.9.3\\"\\n    }\\n}\\n",
+    "package.json": "{\\n    \\"type\\": \\"module\\",\\n    \\"devDependencies\\": {\\n        \\"typescript\\": \\"^6.0.3\\"\\n    }\\n}\\n",
     "dist": {
       "a.d.ts": "export type A = {\\n    here: string;\\n    there: number;\\n};\\nexport declare const value: A;\\nexport declare const value2: A;\\n",
       "a.js": "export const value = {\\n    here: 'yo',\\n    there: 0,\\n};\\nexport const value2 = {\\n    no: 'bad',\\n};\\n"

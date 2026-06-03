@@ -197,7 +197,6 @@ Note that as of v13, this package is now in ESM.
         -   [@eslint/js](https://npmjs.com/package/@eslint/js)
         -   [@eslint/eslintrc](https://npmjs.com/package/@eslint/eslintrc)
         -   [@stylistic/eslint-plugin](https://npmjs.com/package/@stylistic/eslint-plugin)
-        -   [eslint-plugin-monorepo-cop](https://npmjs.com/package/eslint-plugin-monorepo-cop)
         -   [@stylistic/eslint-plugin-ts](https://npmjs.com/package/@stylistic/eslint-plugin-ts)
         -   [@typescript-eslint/eslint-plugin](https://npmjs.com/package/@typescript-eslint/eslint-plugin)
         -   [eslint-config-prettier](https://npmjs.com/package/eslint-config-prettier)

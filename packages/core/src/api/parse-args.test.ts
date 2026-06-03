@@ -1,5 +1,5 @@
 import {assert} from '@augment-vir/assert';
-import {emptyLog, RuntimeEnv, type AnyObject} from '@augment-vir/common';
+import {type AnyObject, emptyLog, RuntimeEnv} from '@augment-vir/common';
 import {describe, it} from '@augment-vir/test';
 import {NpmDepType, PackageType} from '@virmator/core';
 import {join} from 'node:path';
@@ -8,7 +8,7 @@ import {calculateUsedCommands, parseCliArgs} from './parse-args.js';
 
 describe(calculateUsedCommands.name, () => {
     it('calculates correctly', () => {
-        assert.deepEquals(
+        assert.deepEquals<AnyObject, AnyObject>(
             calculateUsedCommands(
                 {
                     deps: {
@@ -109,7 +109,7 @@ describe(calculateUsedCommands.name, () => {
                     'deps',
                     'check',
                 ],
-            ) as AnyObject,
+            ),
             {
                 deps: {
                     doc: {

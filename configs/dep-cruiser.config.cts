@@ -10,9 +10,10 @@ const baseConfig = defineConfig({
             ],
         },
         'not-to-unresolvable': {
+            /** Idk why dep-cruiser thinks these are unresolvable. */
             to: [
-                /** Idk why dep-cruiser thinks typedoc is unresolvable. */
                 'typedoc',
+                'typescript-eslint',
             ],
         },
     },

@@ -10,16 +10,6 @@ export const baseNcuConfig = {
     reject: [
         /** > 3.4 is broken https://github.com/prettier/prettier/issues/16936 */
         'prettier',
-
-        /** Dependencies are not ready yet for ESLint 10. */
-        'eslint',
-        '@eslint/js',
-
-        /** The rule '@typescript-eslint/no-unnecessary-type-arguments' is broken in v8.57.2. */
-        'typescript-eslint',
-
-        /** V6 is too new still. */
-        'typescript',
     ],
     deprecated: false,
 } as const satisfies ReadonlyDeep<RunOptions>;

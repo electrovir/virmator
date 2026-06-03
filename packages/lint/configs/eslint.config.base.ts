@@ -7,6 +7,7 @@ import sonarJsEslint from 'eslint-plugin-sonarjs';
 import eslintPluginUnicorn from 'eslint-plugin-unicorn';
 import globals from 'globals';
 import tsEslint from 'typescript-eslint';
+import noRelativeImportOutsidePackageRule from '../src/rules/no-relative-import-outside-package.lint.js';
 import preferIfElseChainRule from '../src/rules/prefer-if-else-chain.lint.js';
 import preferParseUrlRule from '../src/rules/prefer-parse-url.lint.js';
 import preferSingleQuotesRule from '../src/rules/prefer-single-quotes.lint.js';
@@ -24,12 +25,6 @@ export function defineEslintConfig(repoDir: string) {
     return [
         ...compat.plugins('require-extensions'),
         ...compat.extends('plugin:require-extensions/recommended'),
-        ...compat.config({
-            plugins: ['monorepo-cop'],
-            rules: {
-                'monorepo-cop/no-relative-import-outside-package': 'error',
-            },
-        }),
         {
             ignores: [
                 '*.graphql',
@@ -71,6 +66,7 @@ export function defineEslintConfig(repoDir: string) {
                 unicorn: eslintPluginUnicorn,
                 '@virmator': {
                     rules: {
+                        'no-relative-import-outside-package': noRelativeImportOutsidePackageRule,
                         'prefer-if-else-chain': preferIfElseChainRule,
                         'prefer-parse-url': preferParseUrlRule,
                         'prefer-single-quotes': preferSingleQuotesRule,
@@ -174,6 +170,7 @@ export function defineEslintConfig(repoDir: string) {
                 '@jsdoc/no-undefined-types': 'error',
                 '@typescript-eslint/await-thenable': 'error',
                 '@typescript-eslint/no-unused-vars': 'error',
+                '@virmator/no-relative-import-outside-package': 'error',
                 '@virmator/prefer-if-else-chain': 'error',
                 '@virmator/prefer-parse-url': 'error',
                 '@virmator/prefer-single-quotes': 'error',

@@ -1,6 +1,6 @@
 {
     "name": "@virmator/deps",
-    "version": "14.19.2",
+    "version": "14.20.0",
     "description": "Default TS deps plugin for virmator.",
     "keywords": [
         "virmator",
@@ -34,21 +34,21 @@
         "test:update": "npm test update"
     },
     "dependencies": {
-        "@augment-vir/assert": "^31.69.0",
-        "@augment-vir/common": "^31.69.0",
-        "@augment-vir/node": "^31.69.0",
+        "@augment-vir/assert": "^31.71.3",
+        "@augment-vir/common": "^31.71.3",
+        "@augment-vir/node": "^31.71.3",
         "@npm/types": "^2.1.0",
-        "@virmator/core": "^14.19.2",
+        "@virmator/core": "^14.20.0",
         "mri": "^1.2.0"
     },
     "devDependencies": {
-        "@augment-vir/test": "^31.69.0",
-        "@types/node": "^25.6.0",
+        "@augment-vir/test": "^31.71.3",
+        "@types/node": "^25.9.1",
         "c8": "^11.0.0",
-        "dependency-cruiser": "^17.4.0",
+        "dependency-cruiser": "^17.4.2",
         "esbuild": "^0.28.0",
         "istanbul-smart-text-reporter": "^1.1.5",
-        "npm-check-updates": "^22.1.0"
+        "npm-check-updates": "^22.2.1"
     },
     "peerDependencies": {
         "npm-check-updates": ">=19"

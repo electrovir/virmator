@@ -126,17 +126,6 @@ export const virmatorLintPlugin = defineVirmatorPlugin(
                             [PackageType.MonoRoot]: true,
                         },
                     },
-                    'eslint-plugin-monorepo-cop': {
-                        type: NpmDepType.Dev,
-                        env: {
-                            [RuntimeEnv.Node]: true,
-                            [RuntimeEnv.Web]: true,
-                        },
-                        packageType: {
-                            [PackageType.TopPackage]: true,
-                            [PackageType.MonoRoot]: true,
-                        },
-                    },
                     '@stylistic/eslint-plugin-ts': {
                         type: NpmDepType.Dev,
                         env: {
