@@ -80,6 +80,7 @@ export function defineEslintConfig(repoDir: string) {
                 '@typescript-eslint/no-explicit-any': 'off',
                 '@typescript-eslint/no-invalid-void-type': 'off',
                 '@typescript-eslint/no-misused-promises': 'off',
+                '@typescript-eslint/no-unnecessary-type-assertion': 'off', // incessant false failures
                 '@typescript-eslint/no-unnecessary-type-parameters': 'off',
                 '@typescript-eslint/no-unsafe-argument': 'off',
                 '@typescript-eslint/no-unsafe-assignment': 'off',
