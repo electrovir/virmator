@@ -19,6 +19,7 @@ import {readFile, writeFile} from 'node:fs/promises';
 import {join, relative, resolve} from 'node:path';
 import semver, {type SemVer} from 'semver';
 import {simpleGit, type SimpleGit} from 'simple-git';
+import {isValidSpdxExpression} from 'spdx-vir';
 import {type PackageJson, type SetRequired} from 'type-fest';
 
 const inVirmatorEnvKey = 'IN_VIRMATOR';
@@ -66,6 +67,12 @@ export const virmatorPublishPlugin = defineVirmatorPlugin(
             throw new VirmatorNoTraceError('Missing "name" / "version" package.json fields.');
         }
 
+        assertValidLicense({
+            license: cwdValidPackageJson.license,
+            isPrivate: cwdValidPackageJson.private,
+            displayName: cwdValidPackageJson.name,
+        });
+
         const monoRepoPackageJson = await readPackageJson(monoRepoRootPath);
         const version = monoRepoPackageJson.version;
 
@@ -102,6 +109,12 @@ export const virmatorPublishPlugin = defineVirmatorPlugin(
                             `No package.json version in '${packageJson.name}'`,
                         );
                     }
+
+                    assertValidLicense({
+                        license: packageJson.license,
+                        isPrivate: packageJson.private,
+                        displayName: packageJson.name,
+                    });
 
                     return packageJson as ValidPackageJson;
                 }),
@@ -288,6 +301,31 @@ async function updateGit(packageDirPath: string): Promise<void> {
         cwd: packageDirPath,
         rejectOnError: true,
     });
+}
+
+/**
+ * Asserts that a package's license field is valid if the package is going to be published.
+ *
+ * @category Internal
+ */
+export function assertValidLicense({
+    license,
+    isPrivate,
+    displayName,
+}: {
+    license: PackageJson['license'];
+    isPrivate: PackageJson['private'];
+    displayName: string;
+}): void {
+    if (isPrivate) {
+        return;
+    } else if (!check.isString(license) || !license) {
+        throw new VirmatorNoTraceError(`Missing 'license' field in '${displayName}'.`);
+    } else if (!isValidSpdxExpression(license)) {
+        throw new VirmatorNoTraceError(
+            `Invalid SPDX license expression '${license}' in '${displayName}'.`,
+        );
+    }
 }
 
 async function doChangesExist(repoDirPath: string): Promise<boolean> {
