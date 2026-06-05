@@ -30,6 +30,16 @@ import {simpleGit} from 'simple-git';
 import {type PackageJson} from 'type-fest';
 
 const deps: PluginNpmDeps = {
+    'mono-vir': {
+        env: {
+            [RuntimeEnv.Node]: true,
+            [RuntimeEnv.Web]: true,
+        },
+        packageType: {
+            [PackageType.MonoRoot]: true,
+        },
+        type: NpmDepType.Dev,
+    },
     runstorm: {
         env: {
             [RuntimeEnv.Node]: true,

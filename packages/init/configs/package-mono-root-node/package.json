@@ -12,15 +12,15 @@
         "format": "virmator format",
         "lint": "virmator lint fix",
         "publish": "virmator publish npm run test:all",
-        "test": "virmator test node",
-        "test:all": "npm run compile && runstorm --names tests,spelling,format,docs,deps,lint \"npm run test:coverage\" \"npm run test:spelling\" \"npm run test:format\" \"npm run test:docs\" \"npm run test:deps\" \"npm run test:lint\"",
-        "test:coverage": "npm run test coverage",
+        "test": "npm run compile && mono-vir for-each-async npm run test",
+        "test:all": "npm run test:coverage && runstorm --names spelling,format,docs,deps,lint \"npm run test:spelling\" \"npm run test:format\" \"npm run test:docs\" \"npm run test:deps\" \"npm run test:lint\"",
+        "test:coverage": "npm run compile && mono-vir for-each-async npm run test:coverage",
         "test:deps": "virmator deps check",
         "test:docs": "virmator docs check",
         "test:format": "virmator format check",
         "test:lint": "virmator lint",
         "test:spelling": "virmator spellcheck",
-        "test:update": "npm run test update"
+        "test:update": "npm run compile && mono-vir for-each-async npm run test:update"
     },
     "engines": {
         "node": ">=22"
