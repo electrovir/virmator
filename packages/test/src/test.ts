@@ -51,7 +51,6 @@ export const virmatorTestPlugin = defineVirmatorPlugin(
                         },
                         packageType: {
                             [PackageType.MonoPackage]: true,
-                            [PackageType.MonoRoot]: true,
                             [PackageType.TopPackage]: true,
                         },
                         type: NpmDepType.Dev,
@@ -63,7 +62,6 @@ export const virmatorTestPlugin = defineVirmatorPlugin(
                         },
                         packageType: {
                             [PackageType.MonoPackage]: true,
-                            [PackageType.MonoRoot]: true,
                             [PackageType.TopPackage]: true,
                         },
                         type: NpmDepType.Regular,
