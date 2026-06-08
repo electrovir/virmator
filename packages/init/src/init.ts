@@ -164,6 +164,19 @@ export const virmatorInitPlugin = defineVirmatorPlugin(
                         },
                         required: false,
                     },
+                    depsRegen: {
+                        copyFromPath: join('configs', 'deps-regen.config.ts'),
+                        copyToPath: join('configs', 'deps-regen.config.ts'),
+                        env: {
+                            [RuntimeEnv.Web]: true,
+                            [RuntimeEnv.Node]: true,
+                        },
+                        packageType: {
+                            [PackageType.TopPackage]: true,
+                            [PackageType.MonoRoot]: true,
+                        },
+                        required: false,
+                    },
                     appElement: {
                         copyFromPath: join(
                             'configs',
