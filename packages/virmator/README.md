@@ -73,8 +73,13 @@ Note that as of v13, this package is now in ESM.
 
             Force regeneration of all all dependencies by deleting all node_modules directories and package-lock.json and then running 'npm i'.
 
+            If npm's effective 'min-release-age' is set (resolved across project, user, and global config), any direct dependency that matches the deps-regen allow list but currently pins a too-recent version is temporarily downgraded to the most recent version that satisfies 'min-release-age' so the install succeeds. After regeneration, each such dependency is re-installed at its original version with '--min-release-age=0' (in its own package, or the mono-repo root) and its original 'package.json' version is restored.
+
+            The allow list defaults to 'configs/deps-regen.config.ts' (as placed by 'virmator init'); a missing default config is silently skipped. Override it with '--config <path>'; an explicitly-provided config that does not exist is an error.
+
             -   Examples
                 -   `virmator deps regen`
+                -   use a custom deps-regen allow list: `virmator deps regen --config ./configs/deps-regen.config.ts`
 
 -   **docs**
 

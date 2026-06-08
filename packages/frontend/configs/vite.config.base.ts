@@ -78,6 +78,13 @@ export function createBaseConfig({forGitHubPages, packageDirPath}: BaseConfigOpt
         baseConfig: {
             server: {
                 host: true,
+                watch: {
+                    ignored: [
+                        '**/node_modules/**',
+                        '**/.git/**',
+                        '**/.history/**',
+                    ],
+                },
             },
             clearScreen: false,
             base: basePath,
