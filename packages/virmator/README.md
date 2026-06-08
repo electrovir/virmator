@@ -169,6 +169,7 @@ Note that as of v13, this package is now in ESM.
         -   .github/workflows/tagged-release.yml
         -   .github/workflows/tests.yml
         -   .vscode/settings.json
+        -   configs/deps-regen.config.ts
         -   src/ui/elements/vir-app.element.ts
         -   src/index.html
         -   www-static/index.css
@@ -192,10 +193,8 @@ Note that as of v13, this package is now in ESM.
         -   eslint.config.ts
     -   Deps
         -   [eslint](https://npmjs.com/package/eslint)
-        -   [eslint-plugin-require-extensions](https://npmjs.com/package/eslint-plugin-require-extensions)
         -   [eslint-plugin-unicorn](https://npmjs.com/package/eslint-plugin-unicorn)
         -   [@eslint/js](https://npmjs.com/package/@eslint/js)
-        -   [@eslint/eslintrc](https://npmjs.com/package/@eslint/eslintrc)
         -   [@stylistic/eslint-plugin](https://npmjs.com/package/@stylistic/eslint-plugin)
         -   [@stylistic/eslint-plugin-ts](https://npmjs.com/package/@stylistic/eslint-plugin-ts)
         -   [@typescript-eslint/eslint-plugin](https://npmjs.com/package/@typescript-eslint/eslint-plugin)

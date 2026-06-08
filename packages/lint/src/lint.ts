@@ -71,17 +71,6 @@ export const virmatorLintPlugin = defineVirmatorPlugin(
                             [PackageType.MonoRoot]: true,
                         },
                     },
-                    'eslint-plugin-require-extensions': {
-                        type: NpmDepType.Dev,
-                        env: {
-                            [RuntimeEnv.Node]: true,
-                            [RuntimeEnv.Web]: true,
-                        },
-                        packageType: {
-                            [PackageType.TopPackage]: true,
-                            [PackageType.MonoRoot]: true,
-                        },
-                    },
                     'eslint-plugin-unicorn': {
                         type: NpmDepType.Dev,
                         env: {
@@ -94,17 +83,6 @@ export const virmatorLintPlugin = defineVirmatorPlugin(
                         },
                     },
                     '@eslint/js': {
-                        type: NpmDepType.Dev,
-                        env: {
-                            [RuntimeEnv.Node]: true,
-                            [RuntimeEnv.Web]: true,
-                        },
-                        packageType: {
-                            [PackageType.TopPackage]: true,
-                            [PackageType.MonoRoot]: true,
-                        },
-                    },
-                    '@eslint/eslintrc': {
                         type: NpmDepType.Dev,
                         env: {
                             [RuntimeEnv.Node]: true,

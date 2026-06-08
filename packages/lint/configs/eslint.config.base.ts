@@ -1,4 +1,3 @@
-import {FlatCompat} from '@eslint/eslintrc';
 import jsEslint from '@eslint/js';
 import stylistic from '@stylistic/eslint-plugin';
 import jsdoc from 'eslint-plugin-jsdoc';
@@ -11,6 +10,7 @@ import noRelativeImportOutsidePackageRule from '../src/rules/no-relative-import-
 import preferIfElseChainRule from '../src/rules/prefer-if-else-chain.lint.js';
 import preferParseUrlRule from '../src/rules/prefer-parse-url.lint.js';
 import preferSingleQuotesRule from '../src/rules/prefer-single-quotes.lint.js';
+import requireImportExtensionsRule from '../src/rules/require-import-extensions.lint.js';
 
 export const globalVars = {
     ...globals.node,
@@ -18,13 +18,7 @@ export const globalVars = {
 };
 
 export function defineEslintConfig(repoDir: string) {
-    const compat = new FlatCompat({
-        baseDirectory: repoDir,
-    });
-
     return [
-        ...compat.plugins('require-extensions'),
-        ...compat.extends('plugin:require-extensions/recommended'),
         {
             ignores: [
                 '*.graphql',
@@ -70,6 +64,7 @@ export function defineEslintConfig(repoDir: string) {
                         'prefer-if-else-chain': preferIfElseChainRule,
                         'prefer-parse-url': preferParseUrlRule,
                         'prefer-single-quotes': preferSingleQuotesRule,
+                        'require-import-extensions': requireImportExtensionsRule,
                     },
                 },
             },
@@ -175,6 +170,7 @@ export function defineEslintConfig(repoDir: string) {
                 '@virmator/prefer-if-else-chain': 'error',
                 '@virmator/prefer-parse-url': 'error',
                 '@virmator/prefer-single-quotes': 'error',
+                '@virmator/require-import-extensions': 'error',
                 'no-lonely-if': 'error',
                 curly: 'error',
                 'object-shorthand': 'error',
