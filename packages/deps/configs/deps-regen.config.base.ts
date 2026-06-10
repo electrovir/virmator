@@ -21,6 +21,7 @@ const electrovirPackages: RecentDepsAllowList = [
     'element-vir',
     'execute-in-browser',
     'i18n-vir',
+    'indexed-vir',
     'istanbul-smart-text-reporter',
     'lit-css-vars',
     'local-db-client',

@@ -136,8 +136,13 @@ export type RecentDepViolator = {
     originalVersionValue: string;
     /** The leading non-numeric prefix of the original version (e.g. `^` or `~` or `''`). */
     versionPrefix: string;
-    /** The most recent published version that does _not_ violate min-release-age. */
-    safeVersion: string;
+    /**
+     * The most recent published version that does _not_ violate min-release-age, to temporarily
+     * downgrade to. `undefined` when _no_ published version is old enough (e.g. a brand-new
+     * package); in that case the dep is temporarily removed for the regen install instead, then
+     * re-added by the bypass reinstall.
+     */
+    safeVersion: string | undefined;
 };
 
 export type RegistryInfo = {
@@ -145,11 +150,12 @@ export type RegistryInfo = {
     time: Record<string, string>;
 };
 
-/** A single `package.json` dependency version change applied by {@link updatePackageJsonVersions}. */
+/** A single `package.json` dependency change applied by {@link updatePackageJsonVersions}. */
 export type VersionUpdate = {
     dependencyKey: PackageJsonDependencyKey;
     depName: string;
-    version: string;
+    /** The new version range, or `undefined` to remove the dependency entry entirely. */
+    version: string | undefined;
 };
 
 /** A direct dependency name paired with its installable, non-workspace usages. */
@@ -169,15 +175,15 @@ export type RecentDepsIo = {
     listDirectDeps: (rootPath: string) => Promise<NpmDeps>;
     queryRegistry: (depName: string, cwd: string) => Promise<RegistryInfo | undefined>;
     /**
-     * Resolves the given range to the newest published version satisfying it (ignoring
-     * min-release-age) — i.e. what gets installed once min-release-age is bypassed — or `undefined`
-     * if the range matches nothing.
+     * Returns every published version satisfying the given range (ignoring min-release-age), or
+     * `undefined` if the range matches nothing. Used to decide whether a cooldown-respecting
+     * install could find an old-enough version.
      */
-    queryResolvedVersion: (
+    queryInRangeVersions: (
         depName: string,
         range: string,
         cwd: string,
-    ) => Promise<string | undefined>;
+    ) => Promise<string[] | undefined>;
     updatePackageJsonVersions: (
         packageJsonPath: string,
         updates: ReadonlyArray<VersionUpdate>,
@@ -246,16 +252,22 @@ export function parseRegistryTime(stdout: string): RegistryInfo | undefined {
 }
 
 /**
- * Parses the JSON output of `npm view <pkg>@<range> version --json` into the newest matching
- * version (the last entry, since npm sorts ascending), or `undefined` if nothing matched / the
- * output was unusable.
+ * Parses the JSON output of `npm view <pkg>@<range> version --json` into the list of published
+ * versions that satisfy the range (npm returns a single string when only one matches, an array
+ * otherwise). `undefined` if nothing matched / the output was unusable.
  */
-export function parseResolvedVersion(stdout: string): string | undefined {
+export function parseInRangeVersions(stdout: string): string[] | undefined {
     const parsed = wrapInTry(() => JSON.parse(stdout) as unknown, {
         fallbackValue: undefined,
     });
-    const newest = check.isArray(parsed) ? parsed[parsed.length - 1] : parsed;
-    return check.isString(newest) ? newest : undefined;
+    if (check.isString(parsed)) {
+        return [
+            parsed,
+        ];
+    } else if (check.isArray(parsed)) {
+        return parsed.filter(check.isString);
+    }
+    return undefined;
 }
 
 /* node:coverage disable -- thin network wrappers around the npm registry; parsing lives in the parse* helpers */
@@ -269,18 +281,18 @@ async function queryRegistry(depName: string, cwd: string): Promise<RegistryInfo
     return parseRegistryTime(result.stdout);
 }
 
-async function queryResolvedVersion(
+async function queryInRangeVersions(
     depName: string,
     range: string,
     cwd: string,
-): Promise<string | undefined> {
+): Promise<string[] | undefined> {
     const result = await runShellCommand(`npm view '${depName}@${range}' version --json`, {
         cwd,
     });
     if (result.exitCode) {
         return undefined;
     }
-    return parseResolvedVersion(result.stdout);
+    return parseInRangeVersions(result.stdout);
 }
 /* node:coverage enable */
 
@@ -307,18 +319,22 @@ function parseVersionValue(versionValue: string): {prefix: string; version: stri
     };
 }
 
-/** Whether the given publish date is more recent than `threshold` (the min-release-age cutoff). */
-function isVersionTooRecent(publishDateString: string | undefined, threshold: FullDate): boolean {
+/**
+ * Whether the given publish date is old enough to satisfy `threshold` (the min-release-age cutoff)
+ * — i.e. a cooldown-respecting `npm i` would be allowed to install it. Missing/invalid dates are
+ * treated as not old enough.
+ */
+function isVersionOldEnough(publishDateString: string | undefined, threshold: FullDate): boolean {
     if (!publishDateString || !isValidIsoString(publishDateString)) {
         return false;
     }
-    return isDateAfter({
+    return !isDateAfter({
         fullDate: createUtcFullDate(publishDateString),
         relativeTo: threshold,
     });
 }
 
-/** Finds the most recently published stable version that is no newer than `threshold`. */
+/** Finds the most recently published stable version that is old enough to satisfy `threshold`. */
 function findMostRecentSafeVersion(
     time: Readonly<Record<string, string>>,
     threshold: FullDate,
@@ -328,7 +344,7 @@ function findMostRecentSafeVersion(
             ([
                 version,
                 dateString,
-            ]) => /^\d+\.\d+\.\d+$/.test(version) && isValidIsoString(dateString),
+            ]) => /^\d+\.\d+\.\d+$/.test(version) && isVersionOldEnough(dateString, threshold),
         )
         .map(
             ([
@@ -340,13 +356,6 @@ function findMostRecentSafeVersion(
                     date: createUtcFullDate(dateString),
                 };
             },
-        )
-        .filter(
-            ({date}) =>
-                !isDateAfter({
-                    fullDate: date,
-                    relativeTo: threshold,
-                }),
         );
 
     if (!safeVersions.length) {
@@ -363,7 +372,11 @@ function findMostRecentSafeVersion(
     ).version;
 }
 
-/** Reads, mutates the given dependency versions in, and re-writes a `package.json` file in place. */
+/**
+ * Reads, applies the given dependency changes to, and re-writes a `package.json` file in place. A
+ * `string` version sets (or re-adds) the entry; an `undefined` version removes it. Sections that
+ * don't exist are left untouched.
+ */
 export async function updatePackageJsonVersions(
     packageJsonPath: string,
     updates: ReadonlyArray<VersionUpdate>,
@@ -375,7 +388,12 @@ export async function updatePackageJsonVersions(
 
     updates.forEach(({dependencyKey, depName, version}) => {
         const section = parsed[dependencyKey];
-        if (check.isObject(section) && depName in section) {
+        if (!check.isObject(section)) {
+            return;
+        }
+        if (version == undefined) {
+            delete section[depName];
+        } else {
             section[depName] = version;
         }
     });
@@ -435,9 +453,9 @@ function rangeOfUsage(versionValue: string): string | undefined {
 }
 
 /**
- * Returns the `{depName, range}` pairs whose newest-in-range version must be resolved (to check
- * recency against the version that will actually be installed): only for allow-list-matched
- * candidates with a parseable range. Deduped.
+ * Returns the `{depName, range}` pairs whose in-range versions must be looked up (to decide whether
+ * a cooldown-respecting install could satisfy the range): only for allow-list-matched candidates
+ * with a parseable range. Deduped.
  */
 export function getResolveTargets(
     candidateUsages: ReadonlyArray<CandidateDepUsage>,
@@ -463,25 +481,24 @@ export function getResolveTargets(
 }
 
 /**
- * Pure detection of every direct dependency usage that both matches the allow list and pins a
- * version too recent for the min-release-age threshold, paired with the safe version it should be
- * temporarily downgraded to.
+ * Pure detection of every direct dependency usage that both matches the allow list and whose range
+ * _cannot_ be satisfied by an old-enough version (so a cooldown-respecting `npm i` would fail),
+ * paired with the safe version it should be temporarily downgraded to (or `undefined` to remove).
+ * Deps whose range already has an old-enough version are left alone — `npm i` installs that
+ * itself.
  */
 export function computeRecentDepViolators({
     candidateUsages,
     allowList,
     registryByName,
-    resolvedByRange,
+    inRangeVersionsByRange,
     threshold,
 }: {
     candidateUsages: ReadonlyArray<CandidateDepUsage>;
     allowList: RecentDepsAllowList;
     registryByName: ReadonlyMap<string, RegistryInfo | undefined>;
-    /**
-     * The resolved newest-in-range version per `${depName}@${range}`. Recency is checked against
-     * this (the version that will actually be installed), not the pinned floor.
-     */
-    resolvedByRange: ReadonlyMap<string, string | undefined>;
+    /** The published versions satisfying each `${depName}@${range}` (ignoring min-release-age). */
+    inRangeVersionsByRange: ReadonlyMap<string, string[] | undefined>;
     /** The min-release-age cutoff: a version published after this is too recent. */
     threshold: FullDate;
 }): RecentDepViolator[] {
@@ -498,18 +515,28 @@ export function computeRecentDepViolators({
             }
 
             const range = `${parsedVersion.prefix}${parsedVersion.version}`;
-            const resolvedVersion = resolvedByRange.get(depRangeKey(depName, range));
+            const inRangeVersions = inRangeVersionsByRange.get(depRangeKey(depName, range));
+            /**
+             * Leave the dep alone when its range matches nothing (a plain install would fail with a
+             * clear error of its own) or when some in-range version is old enough (a plain install
+             * resolves the range to that version on its own — no downgrade needed).
+             */
             if (
-                !resolvedVersion ||
-                !isVersionTooRecent(registry.time[resolvedVersion], threshold)
+                !inRangeVersions?.length ||
+                inRangeVersions.some((version) =>
+                    isVersionOldEnough(registry.time[version], threshold),
+                )
             ) {
                 return [];
             }
 
+            /**
+             * No in-range version is old enough, so a cooldown-respecting install can't satisfy the
+             * range. Downgrade to the most recent old-enough version overall, or — when there is no
+             * old-enough version at all (a brand-new package) — `undefined`, meaning the dep is
+             * temporarily removed for the regen install rather than downgraded.
+             */
             const safeVersion = findMostRecentSafeVersion(registry.time, threshold);
-            if (!safeVersion) {
-                return [];
-            }
 
             return [
                 {
@@ -532,7 +559,7 @@ export const defaultRecentDepsIo: RecentDepsIo = {
     loadAllowList,
     listDirectDeps: listAllDirectNpmDeps,
     queryRegistry,
-    queryResolvedVersion,
+    queryInRangeVersions,
     updatePackageJsonVersions,
 };
 
@@ -601,13 +628,13 @@ export async function prepareRecentDepDowngrades({
         ),
     );
 
-    const resolvedByRange = new Map<string, string | undefined>(
+    const inRangeVersionsByRange = new Map<string, string[] | undefined>(
         await awaitedBlockingMap(
             resolveTargets,
             async ({depName, range}) =>
                 [
                     depRangeKey(depName, range),
-                    await io.queryResolvedVersion(depName, range, monoRepoRootPath),
+                    await io.queryInRangeVersions(depName, range, monoRepoRootPath),
                 ] as const,
         ),
     );
@@ -616,7 +643,7 @@ export async function prepareRecentDepDowngrades({
         candidateUsages,
         allowList,
         registryByName,
-        resolvedByRange,
+        inRangeVersionsByRange,
         threshold,
     });
 
@@ -628,7 +655,9 @@ export async function prepareRecentDepDowngrades({
         ]) => {
             packageViolators.forEach((violator) => {
                 log.faint(
-                    `Temporarily downgrading ${violator.depName} from ${violator.originalVersionValue} to ${violator.versionPrefix}${violator.safeVersion} for regen.`,
+                    violator.safeVersion == undefined
+                        ? `Temporarily removing ${violator.depName} (no version old enough) for regen.`
+                        : `Temporarily downgrading ${violator.depName} from ${violator.originalVersionValue} to ${violator.versionPrefix}${violator.safeVersion} for regen.`,
                 );
             });
             await io.updatePackageJsonVersions(
@@ -637,7 +666,10 @@ export async function prepareRecentDepDowngrades({
                     return {
                         dependencyKey: violator.dependencyKey,
                         depName: violator.depName,
-                        version: `${violator.versionPrefix}${violator.safeVersion}`,
+                        version:
+                            violator.safeVersion == undefined
+                                ? undefined
+                                : `${violator.versionPrefix}${violator.safeVersion}`,
                     };
                 }),
             );

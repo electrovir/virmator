@@ -1,6 +1,6 @@
 {
     "name": "@virmator/mono-repo-root",
-    "version": "14.23.0",
+    "version": "14.23.1",
     "private": true,
     "sideEffects": false,
     "type": "module",
@@ -9,7 +9,7 @@
     ],
     "scripts": {
         "compile": "virmator compile",
-        "docs": "virmator docs",
+        "docs": "npm start --workspace=@virmator/scripts && virmator docs",
         "format": "virmator format",
         "lint": "virmator lint fix",
         "publish": "virmator publish npm run test:all",
@@ -17,7 +17,7 @@
         "test:all": "npm run test:coverage && runstorm --max 2 --names spelling,format,docs,deps,lint \"npm run test:spelling\" \"npm run test:format\" \"npm run test:docs\" \"npm run test:deps\" \"npm run test:lint\"",
         "test:coverage": "npm run compile && mono-vir for-each-async npm run test:coverage",
         "test:deps": "virmator deps check",
-        "test:docs": "virmator docs check",
+        "test:docs": "npm test --workspace=@virmator/scripts && virmator docs check",
         "test:format": "virmator format check",
         "test:lint": "virmator lint",
         "test:spelling": "virmator spellcheck",

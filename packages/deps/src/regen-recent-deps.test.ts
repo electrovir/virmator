@@ -15,9 +15,9 @@ import {
     getResolveTargets,
     isSafePackageName,
     loadAllowList,
+    parseInRangeVersions,
     parseMinReleaseAgeDays,
     parseRegistryTime,
-    parseResolvedVersion,
     prepareRecentDepDowngrades,
     reinstallOriginalDeps,
     resolveRegenConfigPath,
@@ -203,27 +203,32 @@ describe(parseRegistryTime.name, () => {
     });
 });
 
-describe(parseResolvedVersion.name, () => {
-    it('takes the newest entry (last) of an array', () => {
-        assert.strictEquals(
-            parseResolvedVersion(
+describe(parseInRangeVersions.name, () => {
+    it('returns the array of matching versions, dropping non-strings', () => {
+        assert.deepEquals(
+            parseInRangeVersions(
                 JSON.stringify([
                     '5.1.0',
+                    5,
                     '5.1.4',
                 ]),
             ),
-            '5.1.4',
+            [
+                '5.1.0',
+                '5.1.4',
+            ],
         );
     });
 
-    it('handles a single-match string', () => {
-        assert.strictEquals(parseResolvedVersion(JSON.stringify('5.1.2')), '5.1.2');
+    it('wraps a single-match string in an array', () => {
+        assert.deepEquals(parseInRangeVersions(JSON.stringify('5.1.2')), [
+            '5.1.2',
+        ]);
     });
 
-    it('returns undefined for empty arrays or invalid output', () => {
-        assert.isUndefined(parseResolvedVersion('[]'));
-        assert.isUndefined(parseResolvedVersion('5'));
-        assert.isUndefined(parseResolvedVersion('not json'));
+    it('returns undefined for non-array/non-string or invalid output', () => {
+        assert.isUndefined(parseInRangeVersions('5'));
+        assert.isUndefined(parseInRangeVersions('not json'));
     });
 });
 
@@ -357,18 +362,18 @@ describe(computeRecentDepViolators.name, () => {
     function resolved(
         depName: string,
         range: string,
-        version: string | undefined,
+        inRangeVersions: string[] | undefined,
     ): readonly [
         string,
-        string | undefined,
+        string[] | undefined,
     ] {
         return [
             depRangeKey(depName, range),
-            version,
+            inRangeVersions,
         ] as const;
     }
 
-    it('flags a too-recent resolved version (regex match) and picks the most recent safe version', () => {
+    it('downgrades a dep whose range has no old-enough version (regex match), picking the newest safe version', () => {
         const violators = computeRecentDepViolators({
             candidateUsages: [
                 usage('date-vir', '^1.2.0'),
@@ -386,13 +391,15 @@ describe(computeRecentDepViolators.name, () => {
                         '1.0.0': isoDaysAgo(120),
                         '1.1.0': isoDaysAgo(30),
                         '1.0.5': isoDaysAgo(200),
-                        '1.2.0-beta.1': isoDaysAgo(60),
                         '1.2.0': isoDaysAgo(1),
                     }),
                 ],
             ]),
-            resolvedByRange: new Map([
-                resolved('date-vir', '^1.2.0', '1.2.0'),
+            inRangeVersionsByRange: new Map([
+                /** Only 1.2.0 satisfies `^1.2.0`, and it's too recent. */
+                resolved('date-vir', '^1.2.0', [
+                    '1.2.0',
+                ]),
             ]),
             threshold,
         });
@@ -427,8 +434,10 @@ describe(computeRecentDepViolators.name, () => {
                     }),
                 ],
             ]),
-            resolvedByRange: new Map([
-                resolved('augment-vir', '2.0.0', '2.0.0'),
+            inRangeVersionsByRange: new Map([
+                resolved('augment-vir', '2.0.0', [
+                    '2.0.0',
+                ]),
             ]),
             threshold,
         });
@@ -438,73 +447,69 @@ describe(computeRecentDepViolators.name, () => {
         assert.strictEquals(violators[0].safeVersion, '1.0.0');
     });
 
-    it('checks recency against the resolved version, not the pinned floor', () => {
+    it('leaves a dep alone when an old-enough in-range version exists (even if a newer one is too recent)', () => {
         /**
-         * The floor (1.2.0) is old, but the range resolves to a brand-new 1.9.0 — which is what
-         * actually gets installed, so it must be flagged.
+         * `^8.4.0` matches both the old-enough 8.4.0 and the too-recent 8.5.0. A
+         * cooldown-respecting install resolves it to 8.4.0 on its own, so there is nothing to
+         * downgrade.
          */
-        const violators = computeRecentDepViolators({
-            candidateUsages: [
-                usage('date-vir', '^1.2.0'),
-            ],
-            allowList: [
-                'date-vir',
-            ],
-            registryByName: new Map([
-                [
-                    'date-vir',
-                    registry({
-                        '1.2.0': isoDaysAgo(120),
-                        '1.8.0': isoDaysAgo(30),
-                        '1.9.0': isoDaysAgo(1),
-                    }),
-                ],
-            ]),
-            resolvedByRange: new Map([
-                resolved('date-vir', '^1.2.0', '1.9.0'),
-            ]),
-            threshold,
-        });
-
-        assert.isLengthExactly(violators, 1);
-        assert.strictEquals(violators[0].safeVersion, '1.8.0');
-    });
-
-    it('ignores deps that do not match, are not too recent, or cannot be resolved/parsed', () => {
-        const sharedRegistry = new Map([
-            [
-                'date-vir',
-                registry({
-                    '1.0.0': isoDaysAgo(120),
-                    '2.0.0': isoDaysAgo(1),
-                }),
-            ],
-            [
-                'react',
-                registry({
-                    '1.0.0': isoDaysAgo(1),
-                }),
-            ],
-        ]);
-
         assert.isEmpty(
             computeRecentDepViolators({
                 candidateUsages: [
-                    /** Not matched (react is not in the allow list) */
+                    usage('date-vir', '^8.4.0'),
+                ],
+                allowList: [
+                    'date-vir',
+                ],
+                registryByName: new Map([
+                    [
+                        'date-vir',
+                        registry({
+                            '8.4.0': isoDaysAgo(30),
+                            '8.5.0': isoDaysAgo(1),
+                        }),
+                    ],
+                ]),
+                inRangeVersionsByRange: new Map([
+                    resolved('date-vir', '^8.4.0', [
+                        '8.4.0',
+                        '8.5.0',
+                    ]),
+                ]),
+                threshold,
+            }),
+        );
+    });
+
+    it('ignores deps that do not match, have a non-semver version, or whose range matches nothing', () => {
+        assert.isEmpty(
+            computeRecentDepViolators({
+                candidateUsages: [
+                    /** Not matched (react is not in the allow list). */
                     usage('react', '^1.0.0'),
-                    /** Matched but the resolved version is old enough */
-                    usage('date-vir', '^1.0.0'),
-                    /** Matched but version string is not a concrete semver */
+                    /** Matched but version string is not a concrete semver. */
                     usage('date-vir', 'workspace:*'),
-                    /** Matched but the range resolves to nothing */
+                    /** Matched but the range matches nothing. */
                     usage('date-vir', '^9.9.9'),
                 ],
                 allowList: [
                     'date-vir',
                 ],
-                registryByName: sharedRegistry,
-                resolvedByRange: new Map([
-                    resolved('date-vir', '^1.0.0', '1.0.0'),
+                registryByName: new Map([
+                    [
+                        'react',
+                        registry({
+                            '1.0.0': isoDaysAgo(1),
+                        }),
+                    ],
+                    [
+                        'date-vir',
+                        registry({
+                            '1.0.0': isoDaysAgo(120),
+                        }),
+                    ],
+                ]),
+                inRangeVersionsByRange: new Map([
                     resolved('date-vir', '^9.9.9', undefined),
                 ]),
                 threshold,
@@ -512,13 +517,11 @@ describe(computeRecentDepViolators.name, () => {
         );
     });
 
-    it('skips deps with no registry info, an invalid publish date, or no publish time', () => {
+    it('skips a dep with no registry info', () => {
         assert.isEmpty(
             computeRecentDepViolators({
                 candidateUsages: [
                     usage('no-registry', '^1.0.0'),
-                    usage('bad-date', '^2.0.0'),
-                    usage('missing-time', '^3.0.0'),
                 ],
                 allowList: [
                     /.*/,
@@ -528,53 +531,45 @@ describe(computeRecentDepViolators.name, () => {
                         'no-registry',
                         undefined,
                     ],
-                    [
-                        'bad-date',
-                        registry({
-                            '2.0.0': 'not-a-date',
-                        }),
-                    ],
-                    [
-                        'missing-time',
-                        registry({
-                            '1.0.0': isoDaysAgo(1),
-                        }),
-                    ],
                 ]),
-                resolvedByRange: new Map([
-                    resolved('bad-date', '^2.0.0', '2.0.0'),
-                    /** Resolves to a version that isn't in the time map. */
-                    resolved('missing-time', '^3.0.0', '3.0.0'),
+                inRangeVersionsByRange: new Map([
+                    resolved('no-registry', '^1.0.0', [
+                        '1.0.0',
+                    ]),
                 ]),
                 threshold,
             }),
         );
     });
 
-    it('skips a too-recent dep when no safe version exists', () => {
-        assert.isEmpty(
-            computeRecentDepViolators({
-                candidateUsages: [
-                    usage('all-recent', '^2.0.0'),
-                ],
-                allowList: [
+    it('flags a dep for removal (undefined safeVersion) when no version anywhere is old enough', () => {
+        const violators = computeRecentDepViolators({
+            candidateUsages: [
+                usage('all-recent', '^2.0.0'),
+            ],
+            allowList: [
+                'all-recent',
+            ],
+            registryByName: new Map([
+                [
                     'all-recent',
+                    registry({
+                        '1.0.0': isoDaysAgo(2),
+                        '2.0.0': isoDaysAgo(1),
+                    }),
                 ],
-                registryByName: new Map([
-                    [
-                        'all-recent',
-                        registry({
-                            '1.0.0': isoDaysAgo(2),
-                            '2.0.0': isoDaysAgo(1),
-                        }),
-                    ],
+            ]),
+            inRangeVersionsByRange: new Map([
+                resolved('all-recent', '^2.0.0', [
+                    '2.0.0',
                 ]),
-                resolvedByRange: new Map([
-                    resolved('all-recent', '^2.0.0', '2.0.0'),
-                ]),
-                threshold,
-            }),
-        );
+            ]),
+            threshold,
+        });
+
+        assert.isLengthExactly(violators, 1);
+        assert.isUndefined(violators[0].safeVersion);
+        assert.strictEquals(violators[0].originalVersionValue, '^2.0.0');
     });
 });
 
@@ -598,16 +593,23 @@ describe(updatePackageJsonVersions.name, () => {
             await writeFile(packageJsonPath, original);
 
             await updatePackageJsonVersions(packageJsonPath, [
+                /** Update an existing entry. */
                 {
                     dependencyKey: PackageJsonDependencyKey.Dependencies,
                     depName: 'date-vir',
                     version: '^1.1.0',
                 },
-                /** Missing dep in an existing section: skipped. */
+                /** Add a missing entry to an existing section. */
                 {
                     dependencyKey: PackageJsonDependencyKey.Dependencies,
-                    depName: 'missing',
+                    depName: 'added',
                     version: '^1.0.0',
+                },
+                /** Remove an entry (undefined version). */
+                {
+                    dependencyKey: PackageJsonDependencyKey.DevDependencies,
+                    depName: 'esbuild',
+                    version: undefined,
                 },
                 /** Missing section entirely: skipped. */
                 {
@@ -617,11 +619,17 @@ describe(updatePackageJsonVersions.name, () => {
                 },
             ]);
 
-            const updated = await readFile(packageJsonPath, 'utf8');
-            assert.strictEquals(JSON.parse(updated).dependencies['date-vir'], '^1.1.0');
-            assert.strictEquals(JSON.parse(updated).dependencies.react, '^1.0.0');
-            assert.isTrue(updated.endsWith('\n'));
-            assert.isTrue(updated.includes('\n    "name"'));
+            const updatedText = await readFile(packageJsonPath, 'utf8');
+            const updated = JSON.parse(updatedText);
+            assert.deepEquals(updated.dependencies, {
+                'date-vir': '^1.1.0',
+                react: '^1.0.0',
+                added: '^1.0.0',
+            });
+            assert.deepEquals(updated.devDependencies, {});
+            assert.isUndefined(updated.peerDependencies);
+            assert.isTrue(updatedText.endsWith('\n'));
+            assert.isTrue(updatedText.includes('\n    "name"'));
         });
     });
 
@@ -701,7 +709,7 @@ describe(prepareRecentDepDowngrades.name, () => {
             loadAllowList: () => Promise.resolve(undefined),
             listDirectDeps: () => Promise.resolve({}),
             queryRegistry: () => Promise.resolve(undefined),
-            queryResolvedVersion: () => Promise.resolve(undefined),
+            queryInRangeVersions: () => Promise.resolve(undefined),
             updatePackageJsonVersions: () => Promise.resolve(),
             ...overrides,
         };
@@ -834,8 +842,14 @@ describe(prepareRecentDepDowngrades.name, () => {
                             '2.0.0': isoDaysAgo(1),
                         },
                     }),
-                queryResolvedVersion: (depName) =>
-                    Promise.resolve(depName === 'augment-vir' ? '2.0.0' : undefined),
+                queryInRangeVersions: (depName) =>
+                    Promise.resolve(
+                        depName === 'augment-vir'
+                            ? [
+                                  '2.0.0',
+                              ]
+                            : undefined,
+                    ),
                 updatePackageJsonVersions: (packageJsonPath, updates) => {
                     downgrades.push({
                         packageJsonPath,
@@ -854,6 +868,66 @@ describe(prepareRecentDepDowngrades.name, () => {
                 dependencyKey: PackageJsonDependencyKey.DevDependencies,
                 depName: 'augment-vir',
                 version: '~1.1.0',
+            },
+        ]);
+    });
+
+    it('removes (rather than downgrades) a matched dep with no version old enough', async () => {
+        const updates: {packageJsonPath: string; updates: ReadonlyArray<VersionUpdate>}[] = [];
+
+        const violators = await prepareRecentDepDowngrades({
+            monoRepoRootPath: '/repo',
+            configPath: '/repo/configs/deps-regen.config.ts',
+            configIsExplicit: false,
+            minReleaseAgeDays: 5,
+            log: emptyLog,
+            now,
+            io: fakeIo({
+                loadAllowList: () =>
+                    Promise.resolve([
+                        'indexed-vir',
+                    ]),
+                listDirectDeps: () =>
+                    Promise.resolve({
+                        'indexed-vir': [
+                            {
+                                requiredBy: '/repo/package.json',
+                                dependencyKey: PackageJsonDependencyKey.Dependencies,
+                                versionValue: '^1.0.0',
+                                isWorkspace: false,
+                            },
+                        ],
+                    }),
+                /** Every published version is within the cooldown window. */
+                queryRegistry: () =>
+                    Promise.resolve({
+                        time: {
+                            '0.0.0': isoDaysAgo(2),
+                            '1.0.0': isoDaysAgo(1),
+                        },
+                    }),
+                queryInRangeVersions: () =>
+                    Promise.resolve([
+                        '1.0.0',
+                    ]),
+                updatePackageJsonVersions: (packageJsonPath, packageUpdates) => {
+                    updates.push({
+                        packageJsonPath,
+                        updates: packageUpdates,
+                    });
+                    return Promise.resolve();
+                },
+            }),
+        });
+
+        assert.isLengthExactly(violators, 1);
+        assert.isUndefined(violators[0].safeVersion);
+        /** Removed (undefined version) so the cooldown-respecting install can succeed. */
+        assert.deepEquals(updates[0]?.updates, [
+            {
+                dependencyKey: PackageJsonDependencyKey.Dependencies,
+                depName: 'indexed-vir',
+                version: undefined,
             },
         ]);
     });
