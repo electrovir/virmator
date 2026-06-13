@@ -1,14 +1,14 @@
 /** These packages bypass min-release-age when running `virmator deps regen`. */
-export type RecentDepsAllowList = ReadonlyArray<string | RegExp>;
+export type RecentDepsAllowList = ReadonlyArray<string>;
 
 const electrovirPackages: RecentDepsAllowList = [
-    /^@augment-vir\//,
-    /^@date-vir\//,
-    /^@electrovir\//,
-    /^@rest-vir\//,
-    /^@review-vir\//,
-    /^@updating-secrets\//,
-    /^@virmator\//,
+    '@augment-vir/*',
+    '@date-vir/*',
+    '@electrovir/*',
+    '@rest-vir/*',
+    '@review-vir/*',
+    '@updating-secrets/*',
+    '@virmator/*',
     'auth-vir',
     'catch-exit',
     'cli-vir',
@@ -55,8 +55,9 @@ const electrovirPackages: RecentDepsAllowList = [
 ];
 
 /**
- * The default allow list: electrovir's own commonly-used packages. Each entry matches a package by
- * exact name (string) or by pattern (RegExp tested against the package name).
+ * The default allow list: electrovir's own commonly-used packages. Each entry is an exact package
+ * name or a `minimatch` glob pattern matched against the package name (forwarded to npm's
+ * `min-release-age-exclude`).
  */
 export const baseAllowedRecentDeps: RecentDepsAllowList = [
     ...electrovirPackages,

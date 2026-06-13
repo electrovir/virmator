@@ -47,7 +47,7 @@ A default plugin for [virmator](https://www.npmjs.com/package/virmator).
 
             Force regeneration of all all dependencies by deleting all node_modules directories and package-lock.json and then running 'npm i'.
 
-            Reads 'configs/deps-regen.config.ts' for intelligently working around min-release-age for explicitly allowed packages.
+            Reads 'configs/deps-regen.config.ts' for a list of packages (exact names or globs) to exempt from min-release-age during the install, via npm's '--min-release-age-exclude' flag.
 
             -   Examples
                 -   `virmator deps regen`

@@ -1,6 +1,6 @@
 import {check} from '@augment-vir/assert';
-import {awaitedBlockingMap, getObjectTypedEntries, RuntimeEnv} from '@augment-vir/common';
-import {listAllDirectNpmDeps, type PackageJsonDependencyKey, toPosixPath} from '@augment-vir/node';
+import {awaitedBlockingMap, RuntimeEnv} from '@augment-vir/common';
+import {toPosixPath} from '@augment-vir/node';
 import {
     copyConfigFile,
     defineVirmatorPlugin,
@@ -13,17 +13,16 @@ import {
 } from '@virmator/core';
 import mri from 'mri';
 import {rm} from 'node:fs/promises';
-import {dirname, join, matchesGlob, relative} from 'node:path';
+import {join, relative} from 'node:path';
 import {type RunOptions} from 'npm-check-updates';
-import {installFlagsByDepKey} from './install-flags.js';
 import {
+    buildMinReleaseAgeExcludeFlags,
     extractRegenConfigArg,
-    getMinReleaseAgeDays,
-    prepareRecentDepDowngrades,
-    reinstallOriginalDeps,
+    listRegenNodeModulesDirs,
     resolveRegenConfigPath,
-    restoreOriginalPackageJsonVersions,
+    resolveRegenExcludes,
 } from './regen-recent-deps.js';
+import {runArgBasedUpgrade} from './upgrade-deps.js';
 
 /** A virmator plugin for checking package TS dependencies. */
 export const virmatorDepsPlugin = defineVirmatorPlugin(
@@ -199,8 +198,9 @@ export const virmatorDepsPlugin = defineVirmatorPlugin(
                                     running 'npm i'.
                                 `,
                                 `
-                                    Reads 'configs/deps-regen.config.ts' for intelligently working
-                                    around min-release-age for explicitly allowed packages.
+                                    Reads 'configs/deps-regen.config.ts' for a list of packages
+                                    (exact names or globs) to exempt from min-release-age during the
+                                    install, via npm's '--min-release-age-exclude' flag.
                                 `,
                             ],
                             examples: [
@@ -295,111 +295,12 @@ export const virmatorDepsPlugin = defineVirmatorPlugin(
             const depPattern = upgradeArgs._[0];
 
             if (depPattern) {
-                const passthroughArgs = filteredArgs.toSpliced(filteredArgs.indexOf(depPattern), 1);
-                /**
-                 * Split off an optional trailing '@<version>'. The first '@' in a scoped name like
-                 * '@augment-vir/*' is part of the name, so only a non-leading '@' separates name
-                 * from version.
-                 */
-                const lastAtIndex = depPattern.lastIndexOf('@');
-                const namePattern = lastAtIndex > 0 ? depPattern.slice(0, lastAtIndex) : depPattern;
-                const versionSpecifier =
-                    lastAtIndex > 0 ? depPattern.slice(lastAtIndex + 1) : 'latest';
-                const allDirectDeps = await listAllDirectNpmDeps(monoRepoRootPath);
-
-                const matchedDepsByPackageAndKey = Object.entries(allDirectDeps).reduce<
-                    Record<string, Partial<Record<PackageJsonDependencyKey, string[]>>>
-                >(
-                    (
-                        accum,
-                        [
-                            depName,
-                            usages,
-                        ],
-                    ) => {
-                        if (!matchesGlob(depName, namePattern)) {
-                            return accum;
-                        }
-                        return usages.reduce((innerAccumulator, usage) => {
-                            if (
-                                usage.isWorkspace ||
-                                installFlagsByDepKey[usage.dependencyKey] == undefined
-                            ) {
-                                return innerAccumulator;
-                            }
-                            const packageDir = dirname(usage.requiredBy);
-                            const existingDepsByKey = innerAccumulator[packageDir] ?? {};
-                            const existingDeps = existingDepsByKey[usage.dependencyKey] ?? [];
-                            return {
-                                ...innerAccumulator,
-                                [packageDir]: {
-                                    ...existingDepsByKey,
-                                    [usage.dependencyKey]: [
-                                        ...existingDeps,
-                                        depName,
-                                    ],
-                                },
-                            };
-                        }, accum);
-                    },
-                    {},
-                );
-
-                const matches = Object.entries(matchedDepsByPackageAndKey);
-
-                if (!matches.length) {
-                    throw new VirmatorNoTraceError(
-                        `No direct dependencies matching '${depPattern}' found in any package.json.`,
-                    );
-                }
-
-                await awaitedBlockingMap(
-                    matches,
-                    async ([
-                        packageDir,
-                        depsByKey,
-                    ]) => {
-                        await awaitedBlockingMap(
-                            getObjectTypedEntries(depsByKey),
-                            async ([
-                                dependencyKey,
-                                depNames,
-                            ]) => {
-                                const flag = installFlagsByDepKey[dependencyKey];
-
-                                /**
-                                 * Defensive guard: upstream filter at 'matchedDepsByPackageAndKey'
-                                 * already drops entries whose dep key maps to an undefined flag, so
-                                 * this branch is unreachable in practice.
-                                 */
-                                /* node:coverage ignore next 3 */
-                                if (flag == undefined) {
-                                    return;
-                                }
-
-                                const command = [
-                                    'npm',
-                                    'i',
-                                    flag,
-                                    ...passthroughArgs,
-                                    ...depNames.map((depName) => `${depName}@${versionSpecifier}`),
-                                ]
-                                    .filter(check.isTruthy)
-                                    .join(' ');
-                                await runShellCommand(
-                                    command,
-                                    {
-                                        cwd: packageDir,
-                                    },
-                                    {
-                                        logPrefix: relative(monoRepoRootPath, packageDir) || '.',
-                                        prefixCommandOnly: true,
-                                    },
-                                );
-                            },
-                        );
-                    },
-                );
+                await runArgBasedUpgrade({
+                    depPattern,
+                    filteredArgs,
+                    monoRepoRootPath,
+                    runShellCommand,
+                });
             } else {
                 await copyConfigFile(configs.deps.subCommands.upgrade.configs.ncu, log);
 
@@ -443,69 +344,46 @@ export const virmatorDepsPlugin = defineVirmatorPlugin(
             const {configValue, passthroughArgs} = extractRegenConfigArg(filteredArgs);
 
             /**
-             * Direct deps that match the allow list but pin a too-recent version are temporarily
-             * downgraded so the install below succeeds, then restored afterwards. When the repo has
-             * no 'min-release-age', this is a no-op.
+             * Allow-listed packages (exact names or globs) that bypass min-release-age during the
+             * install via npm's '--min-release-age-exclude' flag. Empty when there is no config.
              */
-            const recentDepViolators = await prepareRecentDepDowngrades({
-                monoRepoRootPath,
+            const regenExcludes = await resolveRegenExcludes({
                 configPath: resolveRegenConfigPath({
                     configValue,
                     cwd,
                     monoRepoRootPath,
                 }),
                 configIsExplicit: check.isTruthy(configValue),
-                minReleaseAgeDays: await getMinReleaseAgeDays(monoRepoRootPath),
-                log,
             });
 
-            try {
-                const allNodeModulesDirectories = [
-                    ...monoRepoPackages.map((monoPackage) =>
-                        join(monoRepoRootPath, monoPackage.relativePath, 'node_modules'),
-                    ),
-                    join(monoRepoRootPath, 'node_modules'),
-                ];
+            const allNodeModulesDirectories = listRegenNodeModulesDirs({
+                monoRepoRootPath,
+                monoRepoPackages,
+            });
 
-                await awaitedBlockingMap(allNodeModulesDirectories, async (path) => {
-                    log.faint(`Removing ${relative(monoRepoRootPath, path)}...`);
-                    await rm(path, {
-                        force: true,
-                        recursive: true,
-                    });
-                });
-
-                log.faint('Removing package-lock.json...');
-                await rm(join(monoRepoRootPath, 'package-lock.json'), {
+            await awaitedBlockingMap(allNodeModulesDirectories, async (path) => {
+                log.faint(`Removing ${relative(monoRepoRootPath, path)}...`);
+                await rm(path, {
                     force: true,
+                    recursive: true,
                 });
+            });
 
-                const installCommand = [
-                    'npm',
-                    'i',
-                    ...passthroughArgs,
-                ].join(' ');
+            log.faint('Removing package-lock.json...');
+            await rm(join(monoRepoRootPath, 'package-lock.json'), {
+                force: true,
+            });
 
-                await runShellCommand(installCommand);
-                /** Run twice because npm needs this sometimes. */
-                await runShellCommand(installCommand);
+            const installCommand = [
+                'npm',
+                'i',
+                ...passthroughArgs,
+                ...buildMinReleaseAgeExcludeFlags(regenExcludes),
+            ].join(' ');
 
-                /** A no-op when there were no too-recent matches. */
-                await reinstallOriginalDeps({
-                    violators: recentDepViolators,
-                    monoRepoRootPath,
-                    runVirmatorShellCommand: runShellCommand,
-                });
-            } finally {
-                /**
-                 * Always restore the original `package.json` versions, even if regen failed
-                 * partway, so a failed run never leaves dependencies silently downgraded. A no-op
-                 * when there were no matches.
-                 */
-                await restoreOriginalPackageJsonVersions({
-                    violators: recentDepViolators,
-                });
-            }
+            await runShellCommand(installCommand);
+            /** Run twice because npm needs this sometimes. */
+            await runShellCommand(installCommand);
         } else {
             throw new VirmatorNoTraceError(
                 "deps sub-command needed: 'virmator deps check', 'virmator deps upgrade', or 'virmator deps regen'",

@@ -158,7 +158,7 @@ exports[`Deps > rejects a missing sub command 1`] = `
 exports[`Deps > skips matches in the overrides section 1`] = `
 {
   "logs": {
-    "stdout": ". > npm i --loglevel silent htmlhint-plugin-blocked-words@latest\\ndeps finished."
+    "stdout": ". > npm i --loglevel silent 'htmlhint-plugin-blocked-words@latest'\\ndeps finished."
   },
   "cwd": "packages/deps/test-files/upgrade-with-overrides",
   "contentsDiff": {
@@ -170,7 +170,7 @@ exports[`Deps > skips matches in the overrides section 1`] = `
 exports[`Deps > upgrades a dep to a specific version 1`] = `
 {
   "logs": {
-    "stdout": ". > npm i --loglevel silent htmlhint-plugin-blocked-words@1.0.1\\ndeps finished."
+    "stdout": ". > npm i --loglevel silent 'htmlhint-plugin-blocked-words@1.0.1'\\ndeps finished."
   },
   "cwd": "packages/deps/test-files/upgrade",
   "contentsDiff": {
@@ -182,7 +182,7 @@ exports[`Deps > upgrades a dep to a specific version 1`] = `
 exports[`Deps > upgrades a single dep by exact name 1`] = `
 {
   "logs": {
-    "stdout": ". > npm i --loglevel silent htmlhint-plugin-blocked-words@latest\\ndeps finished."
+    "stdout": ". > npm i --loglevel silent 'htmlhint-plugin-blocked-words@latest'\\ndeps finished."
   },
   "cwd": "packages/deps/test-files/upgrade",
   "contentsDiff": {
@@ -206,7 +206,7 @@ exports[`Deps > upgrades deps 1`] = `
 exports[`Deps > upgrades deps matching a glob pattern 1`] = `
 {
   "logs": {
-    "stdout": ". > npm i --loglevel silent htmlhint-plugin-blocked-words@latest\\ndeps finished."
+    "stdout": ". > npm i --loglevel silent 'htmlhint-plugin-blocked-words@latest'\\ndeps finished."
   },
   "cwd": "packages/deps/test-files/upgrade",
   "contentsDiff": {

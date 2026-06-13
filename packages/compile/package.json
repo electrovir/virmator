@@ -1,6 +1,6 @@
 {
     "name": "@virmator/compile",
-    "version": "14.23.1",
+    "version": "14.24.0",
     "description": "Default TS compile plugin for virmator.",
     "keywords": [
         "virmator",
@@ -35,13 +35,13 @@
         "@augment-vir/assert": "^31.71.3",
         "@augment-vir/common": "^31.71.3",
         "@augment-vir/node": "^31.71.3",
-        "@virmator/core": "^14.23.1",
+        "@virmator/core": "^14.24.0",
         "runstorm": "^1.0.2"
     },
     "devDependencies": {
         "@augment-vir/test": "^31.71.3",
         "@types/node": "^25.9.1",
-        "@virmator/plugin-testing": "^14.23.1",
+        "@virmator/plugin-testing": "^14.24.0",
         "c8": "^11.0.0",
         "istanbul-smart-text-reporter": "^1.1.5",
         "mono-vir": "^2.5.0",
