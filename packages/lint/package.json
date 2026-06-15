@@ -32,32 +32,32 @@
         "test:update": "npm test update"
     },
     "dependencies": {
-        "@augment-vir/assert": "^31.71.3",
-        "@augment-vir/common": "^31.71.3",
-        "@augment-vir/node": "^31.71.3",
+        "@augment-vir/assert": "^31.72.1",
+        "@augment-vir/common": "^31.72.1",
+        "@augment-vir/node": "^31.72.1",
         "@virmator/core": "^14.24.0",
         "globals": "^17.6.0",
         "jiti": "^2.7.0",
         "mri": "^1.2.0"
     },
     "devDependencies": {
-        "@augment-vir/test": "^31.71.3",
+        "@augment-vir/test": "^31.72.1",
         "@eslint/js": "10.0.1",
         "@stylistic/eslint-plugin": "^5.10.0",
         "@stylistic/eslint-plugin-ts": "^4.4.1",
         "@types/estree": "^1.0.9",
-        "@types/node": "^25.9.1",
-        "@typescript-eslint/eslint-plugin": "^8.60.0",
+        "@types/node": "^25.9.2",
+        "@typescript-eslint/eslint-plugin": "^8.61.0",
         "c8": "^11.0.0",
-        "eslint": "^10.4.0",
+        "eslint": "^10.4.1",
         "eslint-config-prettier": "^10.1.8",
-        "eslint-plugin-jsdoc": "^63.0.0",
+        "eslint-plugin-jsdoc": "^63.0.2",
         "eslint-plugin-playwright": "^2.10.4",
         "eslint-plugin-prettier": "^5.5.6",
         "eslint-plugin-sonarjs": "^4.0.3",
-        "eslint-plugin-unicorn": "^64.0.0",
+        "eslint-plugin-unicorn": "^65.0.1",
         "istanbul-smart-text-reporter": "^1.1.5",
-        "typescript-eslint": "^8.60.0"
+        "typescript-eslint": "^8.61.0"
     },
     "engines": {
         "node": ">=22"

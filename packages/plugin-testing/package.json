@@ -31,18 +31,18 @@
         "test:update": "npm test update"
     },
     "dependencies": {
-        "@augment-vir/assert": "^31.71.3",
-        "@augment-vir/common": "^31.71.3",
-        "@augment-vir/node": "^31.71.3",
-        "@augment-vir/test": "^31.71.3",
+        "@augment-vir/assert": "^31.72.1",
+        "@augment-vir/common": "^31.72.1",
+        "@augment-vir/node": "^31.72.1",
+        "@augment-vir/test": "^31.72.1",
         "@virmator/core": "^14.24.0",
-        "type-fest": "^5.6.0"
+        "type-fest": "^5.7.0"
     },
     "devDependencies": {
-        "@types/node": "^25.9.1",
+        "@types/node": "^25.9.2",
         "c8": "^11.0.0",
         "istanbul-smart-text-reporter": "^1.1.5",
-        "tsx": "^4.22.3",
+        "tsx": "^4.22.4",
         "typescript": "^6.0.3"
     },
     "engines": {

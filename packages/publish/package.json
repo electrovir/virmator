@@ -34,22 +34,22 @@
         "test:update": "npm test"
     },
     "dependencies": {
-        "@augment-vir/assert": "^31.71.3",
-        "@augment-vir/common": "^31.71.3",
-        "@augment-vir/node": "^31.71.3",
+        "@augment-vir/assert": "^31.72.1",
+        "@augment-vir/common": "^31.72.1",
+        "@augment-vir/node": "^31.72.1",
         "@virmator/core": "^14.24.0",
         "mri": "^1.2.0",
-        "semver": "^7.8.1",
+        "semver": "^7.8.3",
         "simple-git": "^3.36.0",
         "spdx-vir": "^0.0.1",
         "url-vir": "^2.1.9"
     },
     "devDependencies": {
-        "@augment-vir/test": "^31.71.3",
-        "@types/node": "^25.9.1",
+        "@augment-vir/test": "^31.72.1",
+        "@types/node": "^25.9.2",
         "@types/semver": "^7.7.1",
         "markdown-code-example-inserter": "^3.0.5",
-        "type-fest": "^5.6.0",
+        "type-fest": "^5.7.0",
         "typedoc": "^0.28.19"
     },
     "engines": {

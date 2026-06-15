@@ -1,7 +1,13 @@
 import {assert} from '@augment-vir/assert';
 import {describe, it} from '@augment-vir/test';
 import {VirmatorNoTraceError} from '@virmator/core';
-import {assertValidLicense} from './publish.js';
+import {SemVer} from 'semver';
+import {
+    assertValidLicense,
+    ChangeMarker,
+    determineNextVersion,
+    parseCommitChangeMarker,
+} from './publish.js';
 
 describe(assertValidLicense.name, () => {
     it('accepts a simple SPDX identifier', () => {
@@ -112,6 +118,117 @@ describe(assertValidLicense.name, () => {
                 matchConstructor: VirmatorNoTraceError,
                 matchMessage: "Invalid SPDX license expression '(MIT OR)' in 'pkg'.",
             },
+        );
+    });
+});
+
+describe(parseCommitChangeMarker.name, () => {
+    it('parses each bump marker', () => {
+        assert.strictEquals(parseCommitChangeMarker('[patch] fix a bug'), ChangeMarker.Patch);
+        assert.strictEquals(parseCommitChangeMarker('[minor] add a feature'), ChangeMarker.Minor);
+        assert.strictEquals(parseCommitChangeMarker('[major] break things'), ChangeMarker.Major);
+    });
+
+    it('treats dev as an allowed non-bumping tag', () => {
+        assert.isUndefined(parseCommitChangeMarker('[dev] work in progress but allowed'));
+    });
+
+    it('returns undefined when there is no leading tag', () => {
+        assert.isUndefined(parseCommitChangeMarker('just a normal commit message'));
+    });
+
+    it('trims leading whitespace before matching', () => {
+        assert.strictEquals(parseCommitChangeMarker('   [patch] indented'), ChangeMarker.Patch);
+    });
+
+    it('aborts on the wip tag', () => {
+        assert.throws(() => parseCommitChangeMarker('[wip] not done yet'), {
+            matchConstructor: VirmatorNoTraceError,
+            matchMessage: 'wip version tag not allowed',
+        });
+    });
+
+    it('aborts on any other unknown tag', () => {
+        assert.throws(() => parseCommitChangeMarker('[feature] something'), {
+            matchConstructor: VirmatorNoTraceError,
+            matchMessage: 'feature version tag not allowed',
+        });
+    });
+});
+
+describe(determineNextVersion.name, () => {
+    function changeMarkers(
+        overrides: Partial<Record<ChangeMarker, number>>,
+    ): Record<ChangeMarker, number> {
+        return {
+            [ChangeMarker.Patch]: 0,
+            [ChangeMarker.Minor]: 0,
+            [ChangeMarker.Major]: 0,
+            ...overrides,
+        };
+    }
+
+    it('returns undefined without a latest version', () => {
+        assert.isUndefined(
+            determineNextVersion({
+                latestVersion: undefined,
+                changeMarkers: changeMarkers({
+                    [ChangeMarker.Major]: 1,
+                }),
+            }),
+        );
+    });
+
+    it('bumps each part by its marker', () => {
+        assert.strictEquals(
+            determineNextVersion({
+                latestVersion: new SemVer('1.2.3'),
+                changeMarkers: changeMarkers({
+                    [ChangeMarker.Patch]: 1,
+                }),
+            }),
+            '1.2.4',
+        );
+        assert.strictEquals(
+            determineNextVersion({
+                latestVersion: new SemVer('1.2.3'),
+                changeMarkers: changeMarkers({
+                    [ChangeMarker.Minor]: 1,
+                }),
+            }),
+            '1.3.0',
+        );
+        assert.strictEquals(
+            determineNextVersion({
+                latestVersion: new SemVer('1.2.3'),
+                changeMarkers: changeMarkers({
+                    [ChangeMarker.Major]: 1,
+                }),
+            }),
+            '2.0.0',
+        );
+    });
+
+    it('prefers the highest-priority marker present', () => {
+        assert.strictEquals(
+            determineNextVersion({
+                latestVersion: new SemVer('1.2.3'),
+                changeMarkers: changeMarkers({
+                    [ChangeMarker.Patch]: 3,
+                    [ChangeMarker.Minor]: 2,
+                    [ChangeMarker.Major]: 1,
+                }),
+            }),
+            '2.0.0',
+        );
+    });
+
+    it('returns undefined when no markers are present', () => {
+        assert.isUndefined(
+            determineNextVersion({
+                latestVersion: new SemVer('1.2.3'),
+                changeMarkers: changeMarkers({}),
+            }),
         );
     });
 });

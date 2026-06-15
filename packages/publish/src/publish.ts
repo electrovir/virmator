@@ -1,5 +1,11 @@
 import {assert, check} from '@augment-vir/assert';
-import {awaitedBlockingMap, extractErrorMessage, type Logger, safeMatch} from '@augment-vir/common';
+import {
+    awaitedBlockingMap,
+    getObjectTypedValues,
+    type Logger,
+    safeMatch,
+    wrapInTry,
+} from '@augment-vir/common';
 import {
     askQuestionUntilConditionMet,
     readPackageJson,
@@ -122,40 +128,43 @@ export const virmatorPublishPlugin = defineVirmatorPlugin(
 
         const git = simpleGit(monoRepoRootPath);
 
+        /**
+         * Always read the version tags on commits since the last release so a disallowed tag (e.g.
+         * `[wip]`) aborts the publish, even when the current version needs no bump.
+         */
+        const {latestVersion, changeMarkers} = await findChangeMarkersSinceVersion(git);
+
         if (
             await isVersionPublished(version, [
                 cwdValidPackageJson,
                 ...monoRepoPackageJsonFiles,
             ])
         ) {
-            let nextVersion: string | undefined;
-
-            try {
-                nextVersion = await determineNextVersion(git);
-            } catch (error) {
-                log.faint(extractErrorMessage(error));
-            }
-
             const allPackageJsonFiles = [
                 cwdValidPackageJson,
                 ...monoRepoPackageJsonFiles,
             ];
+            const autoNextVersion = determineNextVersion({
+                latestVersion,
+                changeMarkers,
+            });
 
-            if (!nextVersion || (await isVersionPublished(nextVersion, allPackageJsonFiles))) {
-                nextVersion = await askQuestionUntilConditionMet({
-                    async verifyResponseCallback(response): Promise<boolean> {
-                        const version = semver.coerce(response)?.raw;
-                        if (!version) {
-                            return false;
-                        }
+            const nextVersion =
+                autoNextVersion && !(await isVersionPublished(autoNextVersion, allPackageJsonFiles))
+                    ? autoNextVersion
+                    : await askQuestionUntilConditionMet({
+                          async verifyResponseCallback(response): Promise<boolean> {
+                              const version = semver.coerce(response)?.raw;
+                              if (!version) {
+                                  return false;
+                              }
 
-                        return !(await isVersionPublished(version, allPackageJsonFiles));
-                    },
-                    invalidInputMessage: 'Invalid semver version.',
-                    questionToAsk:
-                        'Failed to automatically determine next publish version. Please enter one:',
-                });
-            }
+                              return !(await isVersionPublished(version, allPackageJsonFiles));
+                          },
+                          invalidInputMessage: 'Invalid semver version.',
+                          questionToAsk:
+                              'Failed to automatically determine next publish version. Please enter one:',
+                      });
 
             log.info(`Publishing version ${nextVersion}...`);
 
@@ -365,10 +374,42 @@ async function isPublished({name, version}: {name: string; version: string}) {
 }
 const gitCommitFormatDelimiter = '<**..**>';
 
-enum ChangeMarker {
+/** Commit message version tags that bump the published version. */
+export enum ChangeMarker {
     Patch = 'patch',
     Minor = 'minor',
     Major = 'major',
+}
+
+/**
+ * Every commit-message version tag `virmator publish` accepts. The {@link ChangeMarker} values each
+ * bump their respective semver part; `dev` is allowed but does not bump the version. Any other tag
+ * (e.g. `wip`) aborts the publish.
+ */
+const allowedVersionTags: ReadonlyArray<string> = [
+    ...getObjectTypedValues(ChangeMarker),
+    'dev',
+];
+
+/**
+ * Parses the leading `[tag]` version marker from a commit message. Returns the matching
+ * {@link ChangeMarker}, or `undefined` when there is no tag or the tag is an allowed non-bumping one
+ * (e.g. `dev`). Throws a {@link VirmatorNoTraceError} for any tag outside {@link allowedVersionTags}
+ * so the publish aborts.
+ */
+export function parseCommitChangeMarker(commitMessage: string): ChangeMarker | undefined {
+    const [
+        ,
+        rawChangeMarker,
+    ] = safeMatch(commitMessage.trim(), /^\[([^\]]+)]/);
+
+    if (!rawChangeMarker) {
+        return undefined;
+    } else if (!allowedVersionTags.includes(rawChangeMarker)) {
+        throw new VirmatorNoTraceError(`${rawChangeMarker} version tag not allowed`);
+    }
+
+    return check.isEnumValue(rawChangeMarker, ChangeMarker) ? rawChangeMarker : undefined;
 }
 
 async function getGitCommitVersion(decrement: number, git: Readonly<SimpleGit>) {
@@ -393,23 +434,24 @@ async function getGitCommitVersion(decrement: number, git: Readonly<SimpleGit>) 
     const sortedVersionTags = semver.sort(versionTags);
     const latestVersionTag = sortedVersionTags.slice(-1)[0];
 
-    const [
-        ,
-        rawChangeMarker,
-    ] = message ? safeMatch(message.trim(), /^\[([^\]]+)]/) : [];
-
-    const changeMarker =
-        rawChangeMarker && check.isEnumValue(rawChangeMarker, ChangeMarker)
-            ? rawChangeMarker
-            : undefined;
-
     return {
         version: latestVersionTag,
-        changeMarker,
+        changeMarker: message ? parseCommitChangeMarker(message) : undefined,
     };
 }
 
-async function determineNextVersion(git: SimpleGit): Promise<string> {
+const maxCommitLookBack = 100;
+
+/**
+ * Walks backward from HEAD until the most recent version git-tag (or {@link maxCommitLookBack}
+ * commits / the start of history), tallying the bump markers found on commits since that version.
+ * Reading each commit validates its version tag, so a disallowed tag (e.g. `[wip]`) aborts here —
+ * even when the current version needs no bump.
+ */
+async function findChangeMarkersSinceVersion(git: Readonly<SimpleGit>): Promise<{
+    latestVersion: SemVer | undefined;
+    changeMarkers: Record<ChangeMarker, number>;
+}> {
     const changeMarkers: Record<ChangeMarker, number> = {
         [ChangeMarker.Patch]: 0,
         [ChangeMarker.Minor]: 0,
@@ -417,29 +459,57 @@ async function determineNextVersion(git: SimpleGit): Promise<string> {
     };
     let decrement = 0;
     let latestVersion: SemVer | undefined = undefined;
-    while (!latestVersion) {
-        if (decrement > 100) {
-            throw new Error("Couldn't find a version tag in the past 100 commits.");
+
+    while (!latestVersion && decrement <= maxCommitLookBack) {
+        const commitVersion = await wrapInTry(() => getGitCommitVersion(decrement, git), {
+            handleError(error) {
+                /** A disallowed version tag must abort; any other git error just ends the walk. */
+                if (error instanceof VirmatorNoTraceError) {
+                    throw error;
+                }
+                return undefined;
+            },
+        });
+
+        if (!commitVersion) {
+            break;
+        } else if (commitVersion.version) {
+            latestVersion = commitVersion.version;
+        } else if (commitVersion.changeMarker) {
+            changeMarkers[commitVersion.changeMarker]++;
         }
 
-        const {changeMarker, version} = await getGitCommitVersion(decrement, git);
-
-        if (version) {
-            latestVersion = version;
-        } else if (changeMarker) {
-            changeMarkers[changeMarker]++;
-        }
         decrement++;
     }
 
-    if (changeMarkers[ChangeMarker.Major]) {
+    return {
+        latestVersion,
+        changeMarkers,
+    };
+}
+
+/**
+ * The next semver version to publish, derived from the highest-priority bump marker found since the
+ * last version (major > minor > patch). Returns `undefined` when no version was found or no bump
+ * marker is present, in which case the caller asks for a version manually.
+ */
+export function determineNextVersion({
+    latestVersion,
+    changeMarkers,
+}: {
+    latestVersion: SemVer | undefined;
+    changeMarkers: Readonly<Record<ChangeMarker, number>>;
+}): string | undefined {
+    if (!latestVersion) {
+        return undefined;
+    } else if (changeMarkers[ChangeMarker.Major]) {
         return latestVersion.inc('major').raw;
     } else if (changeMarkers[ChangeMarker.Minor]) {
         return latestVersion.inc('minor').raw;
     } else if (changeMarkers[ChangeMarker.Patch]) {
         return latestVersion.inc('patch').raw;
     } else {
-        throw new Error('No change markers fround since last tagged version.');
+        return undefined;
     }
 }
 
