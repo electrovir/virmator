@@ -15,13 +15,7 @@ import mri from 'mri';
 import {rm} from 'node:fs/promises';
 import {join, relative} from 'node:path';
 import {type RunOptions} from 'npm-check-updates';
-import {
-    buildMinReleaseAgeExcludeFlags,
-    extractRegenConfigArg,
-    listRegenNodeModulesDirs,
-    resolveRegenConfigPath,
-    resolveRegenExcludes,
-} from './regen-recent-deps.js';
+import {listRegenNodeModulesDirs} from './regen-node-modules.js';
 import {runArgBasedUpgrade} from './upgrade-deps.js';
 
 /** A virmator plugin for checking package TS dependencies. */
@@ -197,20 +191,10 @@ export const virmatorDepsPlugin = defineVirmatorPlugin(
                                     node_modules directories and package-lock.json and then
                                     running 'npm i'.
                                 `,
-                                `
-                                    Reads 'configs/deps-regen.config.ts' for a list of packages
-                                    (exact names or globs) to exempt from min-release-age during the
-                                    install, via npm's '--min-release-age-exclude' flag.
-                                `,
                             ],
                             examples: [
                                 {
                                     content: 'virmator deps regen',
-                                },
-                                {
-                                    title: 'use a custom deps-regen allow list',
-                                    content:
-                                        'virmator deps regen --config ./configs/deps-regen.config.ts',
                                 },
                             ],
                         },
@@ -340,22 +324,6 @@ export const virmatorDepsPlugin = defineVirmatorPlugin(
                 );
             }
         } else if (usedCommands.deps?.subCommands.regen) {
-            /** Strip '--config <path>' so it isn't forwarded to 'npm i'. */
-            const {configValue, passthroughArgs} = extractRegenConfigArg(filteredArgs);
-
-            /**
-             * Allow-listed packages (exact names or globs) that bypass min-release-age during the
-             * install via npm's '--min-release-age-exclude' flag. Empty when there is no config.
-             */
-            const regenExcludes = await resolveRegenExcludes({
-                configPath: resolveRegenConfigPath({
-                    configValue,
-                    cwd,
-                    monoRepoRootPath,
-                }),
-                configIsExplicit: check.isTruthy(configValue),
-            });
-
             const allNodeModulesDirectories = listRegenNodeModulesDirs({
                 monoRepoRootPath,
                 monoRepoPackages,
@@ -377,8 +345,7 @@ export const virmatorDepsPlugin = defineVirmatorPlugin(
             const installCommand = [
                 'npm',
                 'i',
-                ...passthroughArgs,
-                ...buildMinReleaseAgeExcludeFlags(regenExcludes),
+                ...filteredArgs,
             ].join(' ');
 
             await runShellCommand(installCommand);

@@ -394,8 +394,8 @@ const allowedVersionTags: ReadonlyArray<string> = [
 /**
  * Parses the leading `[tag]` version marker from a commit message. Returns the matching
  * {@link ChangeMarker}, or `undefined` when there is no tag or the tag is an allowed non-bumping one
- * (e.g. `dev`). Throws a {@link VirmatorNoTraceError} for any tag outside {@link allowedVersionTags}
- * so the publish aborts.
+ * (e.g. `dev`). Throws a `VirmatorNoTraceError` for any tag outside the allowed set so the publish
+ * aborts.
  */
 export function parseCommitChangeMarker(commitMessage: string): ChangeMarker | undefined {
     const [
@@ -443,10 +443,10 @@ async function getGitCommitVersion(decrement: number, git: Readonly<SimpleGit>) 
 const maxCommitLookBack = 100;
 
 /**
- * Walks backward from HEAD until the most recent version git-tag (or {@link maxCommitLookBack}
- * commits / the start of history), tallying the bump markers found on commits since that version.
- * Reading each commit validates its version tag, so a disallowed tag (e.g. `[wip]`) aborts here —
- * even when the current version needs no bump.
+ * Walks backward from HEAD until the most recent version git-tag (or `maxCommitLookBack` commits /
+ * the start of history), tallying the bump markers found on commits since that version. Reading
+ * each commit validates its version tag, so a disallowed tag (e.g. `[wip]`) aborts here — even when
+ * the current version needs no bump.
  */
 async function findChangeMarkersSinceVersion(git: Readonly<SimpleGit>): Promise<{
     latestVersion: SemVer | undefined;

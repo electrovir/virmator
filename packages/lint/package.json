@@ -1,6 +1,6 @@
 {
     "name": "@virmator/lint",
-    "version": "14.24.0",
+    "version": "14.25.0",
     "description": "Default ESLint linting plugin for virmator.",
     "keywords": [
         "virmator",
@@ -35,7 +35,7 @@
         "@augment-vir/assert": "^31.72.1",
         "@augment-vir/common": "^31.72.1",
         "@augment-vir/node": "^31.72.1",
-        "@virmator/core": "^14.24.0",
+        "@virmator/core": "^14.25.0",
         "globals": "^17.6.0",
         "jiti": "^2.7.0",
         "mri": "^1.2.0"
