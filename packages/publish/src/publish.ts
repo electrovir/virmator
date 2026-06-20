@@ -110,7 +110,7 @@ export const virmatorPublishPlugin = defineVirmatorPlugin(
                         throw new VirmatorNoTraceError(
                             `No package.json name in '${monoRepoPackage.relativePath}'`,
                         );
-                    } else if (!packageJson.version) {
+                    } else if (!packageJson.version && !packageJson.private) {
                         throw new VirmatorNoTraceError(
                             `No package.json version in '${packageJson.name}'`,
                         );

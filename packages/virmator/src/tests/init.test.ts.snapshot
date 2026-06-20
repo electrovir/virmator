@@ -35,7 +35,7 @@ exports[`Init > initializes a mono-package node package 1`] = `
       "c8.config.json": "{\\n    \\"100\\": true,\\n    \\"all\\": true,\\n    \\"checkCoverage\\": true,\\n    \\"clean\\": true,\\n    \\"exclude\\": [\\n        \\"**/*.test.ts\\",\\n        \\"**/*.example.ts\\"\\n    ],\\n    \\"include\\": [\\n        \\"src/**/*.ts\\"\\n    ],\\n    \\"perFile\\": true,\\n    \\"reporter\\": [\\n        \\"html\\",\\n        \\"istanbul-smart-text-reporter\\"\\n    ],\\n    \\"skipFull\\": true\\n}\\n",
       "typedoc.config.ts": "import {baseTypedocConfig} from '@virmator/docs/configs/typedoc.config.base';\\nimport {dirname, join} from 'node:path';\\nimport {fileURLToPath} from 'node:url';\\nimport {type TypeDocOptions} from 'typedoc';\\n\\nconst indexTsFile = join(dirname(dirname(fileURLToPath(import.meta.url))), 'src', 'index.ts');\\nconst outDirPath = join(dirname(dirname(fileURLToPath(import.meta.url))), 'dist-docs');\\n\\nexport const typeDocConfig: Partial<TypeDocOptions> = {\\n    ...baseTypedocConfig,\\n    out: outDirPath,\\n    entryPoints: [\\n        indexTsFile.replaceAll('\\\\\\\\', '/'),\\n    ],\\n    intentionallyNotExported: [],\\n    defaultCategory: 'MISSING CATEGORY',\\n    categoryOrder: [\\n        'Main',\\n        'Internal',\\n    ],\\n};\\n"
     },
-    "tsconfig.json": "{\\n    \\"compilerOptions\\": {\\n        \\"outDir\\": \\"./dist/\\",\\n        \\"rootDir\\": \\"./src/\\"\\n    },\\n    \\"exclude\\": [\\n        \\"./configs/\\",\\n        \\"./coverage/\\",\\n        \\"./dist-*/\\",\\n        \\"./dist/\\",\\n        \\"./node_modules/\\",\\n        \\"./test-files/\\",\\n        \\"eslint.config.ts\\",\\n        \\"src/all-files-for-code-coverage.test.ts\\"\\n    ],\\n    \\"extends\\": \\"../../configs/tsconfig.base.json\\"\\n}\\n"
+    "tsconfig.json": "{\\n    \\"compilerOptions\\": {\\n        \\"outDir\\": \\"./dist/\\",\\n        \\"rootDir\\": \\"./src/\\"\\n    },\\n    \\"exclude\\": [\\n        \\"./configs/\\",\\n        \\"./coverage/\\",\\n        \\"./dist-*/\\",\\n        \\"./dist/\\",\\n        \\"./node_modules/\\",\\n        \\"./test-files/\\",\\n        \\"src/all-files-for-code-coverage.test.ts\\"\\n    ],\\n    \\"extends\\": \\"../../configs/tsconfig.base.json\\"\\n}\\n"
   }
 }
 `;
@@ -62,7 +62,7 @@ exports[`Init > initializes a mono-package web package 1`] = `
         }
       }
     },
-    "tsconfig.json": "{\\n    \\"compilerOptions\\": {\\n        \\"outDir\\": \\"./dist/\\",\\n        \\"rootDir\\": \\"./src/\\"\\n    },\\n    \\"exclude\\": [\\n        \\"./configs/\\",\\n        \\"./coverage/\\",\\n        \\"./dist-*/\\",\\n        \\"./dist/\\",\\n        \\"./node_modules/\\",\\n        \\"./test-files/\\",\\n        \\"eslint.config.ts\\",\\n        \\"src/all-files-for-code-coverage.test.ts\\"\\n    ],\\n    \\"extends\\": \\"../../configs/tsconfig.base.json\\"\\n}\\n",
+    "tsconfig.json": "{\\n    \\"compilerOptions\\": {\\n        \\"outDir\\": \\"./dist/\\",\\n        \\"rootDir\\": \\"./src/\\"\\n    },\\n    \\"exclude\\": [\\n        \\"./configs/\\",\\n        \\"./coverage/\\",\\n        \\"./dist-*/\\",\\n        \\"./dist/\\",\\n        \\"./node_modules/\\",\\n        \\"./test-files/\\",\\n        \\"src/all-files-for-code-coverage.test.ts\\"\\n    ],\\n    \\"extends\\": \\"../../configs/tsconfig.base.json\\"\\n}\\n",
     "www-static": {
       "_redirects": "/* /index.html 200\\n",
       "index.css": "html,\\nbody {\\n    margin: 0;\\n    padding: 0;\\n    height: 100%;\\n    width: 100%;\\n}\\n"

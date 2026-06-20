@@ -10,7 +10,6 @@
         "./dist/",
         "./node_modules/",
         "./test-files/",
-        "eslint.config.ts",
         "src/all-files-for-code-coverage.test.ts"
     ],
     "extends": "../../configs/tsconfig.base.json"
