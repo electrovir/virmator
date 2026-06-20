@@ -7,6 +7,24 @@ import {cpus} from 'node:os';
 
 const allChildTestFilesGlob = '**/*.test.ts';
 
+/**
+ * Maps the current working directory to a stable port in the unprivileged range so that different
+ * repos running their web tests simultaneously are unlikely to clash on the same port. Uses a djb2
+ * string hash.
+ */
+function cwdToPort() {
+    const cwd = process.cwd();
+    const minPort = 10_000;
+    const maxPort = 60_000;
+
+    const hash = Array.from(cwd).reduce(
+        (accum, char) => (accum * 33 + char.charCodeAt(0)) >>> 0,
+        5381,
+    );
+
+    return minPort + (hash % (maxPort - minPort));
+}
+
 const configFileIndex = process.argv.findIndex((arg) => arg.match(/\.config\.[cm]?[tj]s$/));
 const possibleTestFilesOrDirs = process.argv
     .slice(configFileIndex + 1)
@@ -47,6 +65,7 @@ export function defineConfig({coveragePercent = 0, packageRootDirPath = ''}) {
     /** @type {import('@web/test-runner').TestRunnerConfig} */
     const webTestRunnerConfig = {
         browsers,
+        port: cwdToPort(),
         reporters: [
             summaryReporter(),
             defaultReporter({reportTestResults: true, reportTestProgress: false}),
