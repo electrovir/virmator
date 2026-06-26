@@ -10,7 +10,11 @@ const pluginReadmes = defaultVirmatorPlugins.reduce((accum: Record<string, strin
     accum[relative(monoRepoPath, plugin.pluginPackageRootPath)] =
         `# @virmator/${basename(plugin.pluginPackageRootPath)}\n\n` +
         'A default plugin for [virmator](https://www.npmjs.com/package/virmator).\n\n' +
-        generateHelpMessageFromPlugins([plugin], HelpMessageSyntax.Markdown, true);
+        generateHelpMessageFromPlugins({
+            plugins: [plugin],
+            syntax: HelpMessageSyntax.Markdown,
+            hideVirmatorExplanations: true,
+        });
     return accum;
 }, {});
 

@@ -9,6 +9,12 @@ const helpTestDir = join(packageDir, 'test-files', 'help-test');
 
 describe(virmatorHelpPlugin.name, () => {
     it('prints help', async (context) => {
-        await testPlugin(true, context, virmatorHelpPlugin, 'help', helpTestDir);
+        await testPlugin({
+            shouldPass: true,
+            context,
+            plugin: virmatorHelpPlugin,
+            cliCommand: 'help',
+            cwd: helpTestDir,
+        });
     });
 });

@@ -4,6 +4,7 @@ import {
     getObjectTypedEntries,
     logColors,
     mapObjectValues,
+    type PartialWithUndefined,
     safeMatch,
 } from '@augment-vir/common';
 import {toPosixPath} from '@augment-vir/node';
@@ -30,31 +31,49 @@ function flattenCommands(
     }, {});
 }
 
+/** Inputs for {@link generateHelpMessageFromPlugins}. */
+export type GenerateHelpMessageFromPluginsParams = {
+    plugins: ReadonlyArray<Readonly<Pick<VirmatorPlugin, 'cliCommands'>>>;
+    syntax: HelpMessageSyntax;
+} & PartialWithUndefined<{
+    hideVirmatorExplanations: boolean;
+    cliWrapIfMoreThanThisManyColumns: number;
+}>;
+
 /** Generate a help message from a list of `VirmatorPlugin` instances. */
-export function generateHelpMessageFromPlugins(
-    plugins: ReadonlyArray<Readonly<Pick<VirmatorPlugin, 'cliCommands'>>>,
-    syntax: HelpMessageSyntax,
+export function generateHelpMessageFromPlugins({
+    plugins,
+    syntax,
     hideVirmatorExplanations = false,
     cliWrapIfMoreThanThisManyColumns = 100,
-) {
-    return generateHelpMessage(
-        plugins.map((plugin) => plugin.cliCommands as VirmatorPluginCliCommands),
+}: Readonly<GenerateHelpMessageFromPluginsParams>) {
+    return generateHelpMessage({
+        cliCommands: plugins.map((plugin) => plugin.cliCommands as VirmatorPluginCliCommands),
         syntax,
         hideVirmatorExplanations,
         cliWrapIfMoreThanThisManyColumns,
-    );
+    });
 }
+
+/** Inputs for {@link generateHelpMessage}. */
+export type GenerateHelpMessageParams = {
+    cliCommands: ReadonlyArray<Readonly<VirmatorPluginCliCommands>>;
+    syntax: HelpMessageSyntax;
+} & PartialWithUndefined<{
+    hideVirmatorExplanations: boolean;
+    cliWrapIfMoreThanThisManyColumns: number;
+}>;
 
 /**
  * Generate a help message directly from `VirmatorPluginCliCommands`. Used by
  * {@link generateHelpMessageFromPlugins}.
  */
-export function generateHelpMessage(
-    cliCommands: ReadonlyArray<Readonly<VirmatorPluginCliCommands>>,
-    syntax: HelpMessageSyntax,
+export function generateHelpMessage({
+    cliCommands,
+    syntax,
     hideVirmatorExplanations = false,
     cliWrapIfMoreThanThisManyColumns = 100,
-) {
+}: Readonly<GenerateHelpMessageParams>) {
     const allCommands = flattenCommands(cliCommands);
     const format = createFormatter(syntax);
 
@@ -67,7 +86,12 @@ export function generateHelpMessage(
                 commandName,
                 command,
             ]) => {
-                return commandToHelpString(commandName, command, format, 0);
+                return commandToHelpString({
+                    commandName,
+                    command,
+                    format,
+                    indentCount: 0,
+                });
             },
         )
         .join('\n\n');
@@ -146,7 +170,11 @@ function bold(input: string, format: Formatter): string {
     return `${format.bold}${input}${format.unBold}`;
 }
 
-function flagToHelpString(flagName: string, description: string, format: Formatter): string {
+function flagToHelpString({
+    flagName,
+    description,
+    format,
+}: Readonly<{flagName: string; description: string; format: Formatter}>): string {
     return `${format.bullet}${bold(flagName, format)}: ${collapseWhiteSpace(description)}`;
 }
 
@@ -156,18 +184,27 @@ function flagsToHelpString(flags: Record<string, {doc: string}>, format: Formatt
             ([
                 flagName,
                 entry,
-            ]) => flagToHelpString(flagName, entry.doc, format),
+            ]) =>
+                flagToHelpString({
+                    flagName,
+                    description: entry.doc,
+                    format,
+                }),
         )
         .join('\n');
 }
 
-function commandToHelpString(
-    commandName: string,
-    command: IndividualPluginCommand,
-    format: Formatter,
-    /** Used for sub commands. Set to 0 for top level commands. */
-    indentCount: number,
-): string {
+function commandToHelpString({
+    commandName,
+    command,
+    format,
+    indentCount,
+}: Readonly<{
+    commandName: string;
+    command: IndividualPluginCommand;
+    format: Formatter;
+    indentCount: number;
+}>): string {
     const title = `${indent(indentCount, format)}${format.bullet}${bold(commandName, format)}${format.reset}`;
 
     const description = commandDocToString(command, format, indentCount);
@@ -175,7 +212,13 @@ function commandToHelpString(
         ([
             subCommandName,
             subCommand,
-        ]) => commandToHelpString(subCommandName, subCommand, format, indentCount + 2),
+        ]) =>
+            commandToHelpString({
+                commandName: subCommandName,
+                command: subCommand,
+                format,
+                indentCount: indentCount + 2,
+            }),
     );
     const subCommandsBlock = subCommands.length
         ? `\n${indent(indentCount + 1, format)}${format.bullet}Sub Commands\n\n${subCommands.join('\n\n')}`
@@ -188,12 +231,17 @@ function indent(count: number, format: Formatter): string {
     return format.indent.repeat(count);
 }
 
-function docEntryToString(
-    entry: PluginDocEntry,
-    indentCount: number,
-    useBullets: boolean,
-    format: Formatter,
-): string {
+function docEntryToString({
+    entry,
+    indentCount,
+    useBullets,
+    format,
+}: Readonly<{
+    entry: PluginDocEntry;
+    indentCount: number;
+    useBullets: boolean;
+    format: Formatter;
+}>): string {
     const title = entry.title ? `${entry.title}: ` : '';
     const trimmedEntry = collapseWhiteSpace(entry.content);
     const content = useBullets ? code(trimmedEntry, format) : trimmedEntry;
@@ -207,18 +255,23 @@ function commandDocToString(
     indentCount: number,
 ): string {
     const sections = command.doc.sections.map((section) =>
-        docEntryToString(
-            {
+        docEntryToString({
+            entry: {
                 content: section,
             },
             indentCount,
-            false,
+            useBullets: false,
             format,
-        ),
+        }),
     );
 
     const examples = command.doc.examples.map((example) =>
-        docEntryToString(example, indentCount + 1, true, format),
+        docEntryToString({
+            entry: example,
+            indentCount: indentCount + 1,
+            useBullets: true,
+            format,
+        }),
     );
 
     const exampleBlock = examples.length

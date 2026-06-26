@@ -50,7 +50,7 @@ export async function padImage(image: Buffer, {height, width}: Dimensions) {
  *
  * @category Internal
  */
-export async function padToSameCanvas(aBuf: Buffer, bBuf: Buffer) {
+export async function padToSameCanvas({aBuf, bBuf}: Readonly<{aBuf: Buffer; bBuf: Buffer}>) {
     const [
         aMeta,
         bMeta,
@@ -99,18 +99,25 @@ export async function readImageDimensions(imageFilePath: string): Promise<Dimens
  *
  * @category Internal
  */
-export async function compareImages(
-    baseImageBuffer: Buffer,
-    currentImageBuffer: Buffer,
-    userOptions?: Readonly<ImageComparisonOptions> | undefined,
-): Promise<ImageComparisonResult> {
+export async function compareImages({
+    baseImageBuffer,
+    currentImageBuffer,
+    userOptions,
+}: Readonly<{
+    baseImageBuffer: Buffer;
+    currentImageBuffer: Buffer;
+    userOptions?: Readonly<ImageComparisonOptions> | undefined;
+}>): Promise<ImageComparisonResult> {
     const options = mergeDefinedProperties(defaultImageComparisonOptions, userOptions);
 
     const {
         aPng: basePng,
         bPng: currentPng,
         dimensions,
-    } = await padToSameCanvas(baseImageBuffer, currentImageBuffer);
+    } = await padToSameCanvas({
+        aBuf: baseImageBuffer,
+        bBuf: currentImageBuffer,
+    });
 
     const diffPng = new PNG(dimensions);
     const diffPixelCount = pixelmatch(

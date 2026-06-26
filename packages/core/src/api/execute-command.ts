@@ -124,11 +124,15 @@ function resolveConfigs(
     });
 }
 
-async function determinePackageType(
-    cwdPackagePath: string,
-    monoRepoRootPath: string,
-    cwdPackageJson: PackageJson,
-): Promise<{
+async function determinePackageType({
+    cwdPackagePath,
+    monoRepoRootPath,
+    cwdPackageJson,
+}: Readonly<{
+    cwdPackagePath: string;
+    monoRepoRootPath: string;
+    cwdPackageJson: PackageJson;
+}>): Promise<{
     packageType: PackageType;
     monoRepoPackages: MonoRepoPackage[][];
 }> {
@@ -206,11 +210,11 @@ async function getMonoRepoPackages(cwdPackagePath: string): Promise<MonoRepoPack
 
 async function getMonoRepoDetails(cwdPackagePath: string, cwdPackageJson: PackageJson) {
     const monoRepoRootPath = await findMonoRepoDir(cwdPackagePath);
-    const {packageType, monoRepoPackages} = await determinePackageType(
+    const {packageType, monoRepoPackages} = await determinePackageType({
         cwdPackagePath,
         monoRepoRootPath,
         cwdPackageJson,
-    );
+    });
 
     const isPartOfMonoRepo =
         packageType === PackageType.MonoPackage &&
@@ -246,12 +250,17 @@ async function findMonoRepoDir(cwdPackagePath: string) {
     return parentPackageDir || cwdPackagePath;
 }
 
-function writeLog(
-    arg: string,
-    log: Logger,
-    logType: LogOutputType,
-    extraOptions: PartialWithUndefined<ExtraRunShellCommandOptions> | undefined,
-) {
+function writeLog({
+    arg,
+    log,
+    logType,
+    extraOptions,
+}: Readonly<{
+    arg: string;
+    log: Logger;
+    logType: LogOutputType;
+    extraOptions: PartialWithUndefined<ExtraRunShellCommandOptions> | undefined;
+}>) {
     const transformed: string = extraOptions?.logTransform?.[logType]
         ? extraOptions.logTransform[logType](arg)
         : arg;
@@ -349,10 +358,20 @@ export async function executeVirmatorCommand({
                 cwd,
                 shell: 'bash',
                 stderrCallback(stderr) {
-                    writeLog(stderr, log, LogOutputType.Error, outputExtraOptions);
+                    writeLog({
+                        arg: stderr,
+                        log,
+                        logType: LogOutputType.Error,
+                        extraOptions: outputExtraOptions,
+                    });
                 },
                 stdoutCallback(stdout) {
-                    writeLog(stdout, log, LogOutputType.Standard, outputExtraOptions);
+                    writeLog({
+                        arg: stdout,
+                        log,
+                        logType: LogOutputType.Standard,
+                        extraOptions: outputExtraOptions,
+                    });
                 },
                 ...options,
             });
@@ -491,14 +510,14 @@ export async function executeVirmatorCommand({
     };
 
     if (!args.virmatorFlags['--no-configs']) {
-        await copyPluginConfigs(
-            args.usedCommands,
+        await copyPluginConfigs({
+            usedCommands: args.usedCommands,
             resolvedConfigs,
             packageType,
-            monoRepoPackages.flat(),
+            monoRepoPackages: monoRepoPackages.flat(),
             log,
             filteredArgs,
-        );
+        });
     }
     if (!args.virmatorFlags['--no-deps']) {
         await installPluginNpmDeps({

@@ -11,6 +11,11 @@ function isTerminating(node: IfStatement): boolean {
     return last != undefined && (last.type === 'ReturnStatement' || last.type === 'ThrowStatement');
 }
 
+/**
+ * A type predicate cannot reference a destructured binding, so this function must keep positional
+ * parameters to narrow `curr`.
+ */
+// eslint-disable-next-line @virmator/prefer-params-object
 function isConsecutiveTerminatingIfs(
     curr: AnyStatement,
     next: AnyStatement,

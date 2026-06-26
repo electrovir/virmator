@@ -91,19 +91,24 @@ export type TestPluginOptions = PartialWithUndefined<{
     beforeCleanupCallback: (cwd: string) => MaybePromise<void>;
 }>;
 
+const defaultLogTransform: LogTransform = (logType, arg) => arg;
+
 /** Tests a virmator plugin and saves a snapshot of the results. */
-export async function testPlugin(
-    shouldPass: boolean,
-    context: UniversalTestContext,
-    plugin: Readonly<VirmatorPlugin> | ReadonlyArray<Readonly<VirmatorPlugin>>,
-    cliCommand: string,
-    cwd: string,
-    {
-        excludeContents = [],
-        logTransform = (type, arg) => arg,
-        beforeCleanupCallback,
-    }: TestPluginOptions = {},
-): Promise<void> {
+export async function testPlugin({
+    shouldPass,
+    context,
+    plugin,
+    cliCommand,
+    cwd,
+    options = {},
+}: Readonly<{
+    shouldPass: boolean;
+    context: UniversalTestContext;
+    plugin: Readonly<VirmatorPlugin> | ReadonlyArray<Readonly<VirmatorPlugin>>;
+    cliCommand: string;
+    cwd: string;
+    options?: TestPluginOptions | undefined;
+}>): Promise<void> {
     assertTestContext(context, TestEnv.Node);
 
     const logs: Partial<Record<LogOutputType, string[]>> = {};
@@ -118,7 +123,7 @@ export async function testPlugin(
     });
 
     const fullExcludeList = [
-        ...excludeContents,
+        ...(options.excludeContents ?? []),
         ...defaultContentsExcludeList,
     ];
 
@@ -153,7 +158,7 @@ export async function testPlugin(
             console.error(error);
         }
 
-        await beforeCleanupCallback?.(cwd);
+        await options.beforeCleanupCallback?.(cwd);
 
         const contentsAfter = await readAllDirContents(readDir, {
             recursive: true,
@@ -164,7 +169,9 @@ export async function testPlugin(
 
         const result: TestPluginResult = {
             logs: mapObjectValues(logs, (logType, logs) => {
-                return toPosixPath(logTransform(logType, logs.join('\n'))).replaceAll('\r', '');
+                return toPosixPath(
+                    (options.logTransform ?? defaultLogTransform)(logType, logs.join('\n')),
+                ).replaceAll('\r', '');
             }),
             cwd: toPosixPath(relative(monoRepoDir, cwd)),
             contentsDiff,

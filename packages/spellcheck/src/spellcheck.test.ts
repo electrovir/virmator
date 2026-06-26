@@ -8,52 +8,69 @@ const packageDir = resolve(import.meta.dirname, '..');
 const testFilesDir = join(packageDir, 'test-files');
 
 describe(virmatorSpellcheckPlugin.name, () => {
-    async function testSpellcheckPlugin(
-        shouldPass: boolean,
-        context: UniversalTestContext,
-        dir: string,
-        extraCommand?: string,
-    ) {
-        await testPlugin(
+    async function testSpellcheckPlugin({
+        shouldPass,
+        context,
+        dir,
+        extraCommand,
+    }: Readonly<{
+        shouldPass: boolean;
+        context: UniversalTestContext;
+        dir: string;
+        extraCommand?: string;
+    }>) {
+        await testPlugin({
             shouldPass,
             context,
-            virmatorSpellcheckPlugin,
-            `spellcheck ${extraCommand || ''}`,
-            dir,
-        );
+            plugin: virmatorSpellcheckPlugin,
+            cliCommand: `spellcheck ${extraCommand || ''}`,
+            cwd: dir,
+        });
     }
 
     it('spellchecks a valid package', async (context) => {
-        await testSpellcheckPlugin(true, context, join(testFilesDir, 'pass-spellcheck'));
+        await testSpellcheckPlugin({
+            shouldPass: true,
+            context,
+            dir: join(testFilesDir, 'pass-spellcheck'),
+        });
     });
     it('rejects an invalid project', async (context) => {
-        await testSpellcheckPlugin(false, context, join(testFilesDir, 'fail-spellcheck'));
+        await testSpellcheckPlugin({
+            shouldPass: false,
+            context,
+            dir: join(testFilesDir, 'fail-spellcheck'),
+        });
     });
     it('uses a custom config', async (context) => {
-        await testSpellcheckPlugin(
-            true,
+        await testSpellcheckPlugin({
+            shouldPass: true,
             context,
-            join(testFilesDir, 'custom-config'),
-            '--config custom-cspell.config.cjs',
-        );
+            dir: join(testFilesDir, 'custom-config'),
+            extraCommand: '--config custom-cspell.config.cjs',
+        });
     });
     it('uses custom file list', async (context) => {
-        await testSpellcheckPlugin(
-            true,
+        await testSpellcheckPlugin({
+            shouldPass: true,
             context,
-            join(testFilesDir, 'fail-spellcheck'),
-            'nested/file.txt',
-        );
+            dir: join(testFilesDir, 'fail-spellcheck'),
+            extraCommand: 'nested/file.txt',
+        });
     });
     it('uses file flag', async (context) => {
-        await testSpellcheckPlugin(
-            true,
+        await testSpellcheckPlugin({
+            shouldPass: true,
             context,
-            join(testFilesDir, 'fail-spellcheck'),
-            '--file nested/file.txt',
-        );
+            dir: join(testFilesDir, 'fail-spellcheck'),
+            extraCommand: '--file nested/file.txt',
+        });
     });
     it('spellchecks only at the current directory', async (context) => {
-        await testSpellcheckPlugin(true, context, join(testFilesDir, 'fail-spellcheck', 'nested'));
+        await testSpellcheckPlugin({
+            shouldPass: true,
+            context,
+            dir: join(testFilesDir, 'fail-spellcheck', 'nested'),
+        });
     });
 });

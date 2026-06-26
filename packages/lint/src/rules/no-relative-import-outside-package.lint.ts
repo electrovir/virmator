@@ -45,7 +45,7 @@ function isRelativeImport(specifier: string): boolean {
     );
 }
 
-function isWithinDir(target: string, baseDir: string): boolean {
+function isWithinDir({target, baseDir}: Readonly<{target: string; baseDir: string}>): boolean {
     if (target === baseDir) {
         return true;
     }
@@ -74,7 +74,12 @@ function checkImport(
     }
 
     const resolvedImport = resolve(fileDir, importPath);
-    if (isWithinDir(resolvedImport, packageInfo.dir)) {
+    if (
+        isWithinDir({
+            target: resolvedImport,
+            baseDir: packageInfo.dir,
+        })
+    ) {
         return;
     }
 

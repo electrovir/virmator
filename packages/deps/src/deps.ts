@@ -286,7 +286,10 @@ export const virmatorDepsPlugin = defineVirmatorPlugin(
                     runShellCommand,
                 });
             } else {
-                await copyConfigFile(configs.deps.subCommands.upgrade.configs.ncu, log);
+                await copyConfigFile({
+                    config: configs.deps.subCommands.upgrade.configs.ncu,
+                    log,
+                });
 
                 await withImportedTsFile(
                     {

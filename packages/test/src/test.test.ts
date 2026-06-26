@@ -9,19 +9,24 @@ const packageDir = resolve(import.meta.dirname, '..');
 const testFilesDir = join(packageDir, 'test-files');
 
 describe(virmatorTestPlugin.name, () => {
-    async function testTestPlugin(
-        shouldPass: boolean,
-        context: UniversalTestContext,
-        dir: string,
-        extraCommand: string,
-    ) {
-        await testPlugin(
+    async function testTestPlugin({
+        shouldPass,
+        context,
+        dir,
+        extraCommand,
+    }: Readonly<{
+        shouldPass: boolean;
+        context: UniversalTestContext;
+        dir: string;
+        extraCommand: string;
+    }>) {
+        await testPlugin({
             shouldPass,
             context,
-            virmatorTestPlugin,
-            `test ${extraCommand || ''}`,
-            dir,
-            {
+            plugin: virmatorTestPlugin,
+            cliCommand: `test ${extraCommand || ''}`,
+            cwd: dir,
+            options: {
                 logTransform(logType, arg) {
                     return collapseWhiteSpace(arg).replaceAll(/\s+/g, ' ');
                 },
@@ -32,35 +37,40 @@ describe(virmatorTestPlugin.name, () => {
                     }),
                 ],
             },
-        );
+        });
     }
     /** Can't run node tests because then node complains about nested node tests. */
 
     it('runs web tests', async (context) => {
-        await testTestPlugin(
-            false,
+        await testTestPlugin({
+            shouldPass: false,
             context,
-            join(testFilesDir, 'browser-tests'),
-            'web --one-browser',
-        );
+            dir: join(testFilesDir, 'browser-tests'),
+            extraCommand: 'web --one-browser',
+        });
     });
     it('tests a specific web file', async (context) => {
-        await testTestPlugin(
-            true,
+        await testTestPlugin({
+            shouldPass: true,
             context,
-            join(testFilesDir, 'browser-tests'),
-            `web ${join('src', 'good.test.ts')} --one-browser`,
-        );
+            dir: join(testFilesDir, 'browser-tests'),
+            extraCommand: `web ${join('src', 'good.test.ts')} --one-browser`,
+        });
     });
     it('tests web coverage', async (context) => {
-        await testTestPlugin(
-            false,
+        await testTestPlugin({
+            shouldPass: false,
             context,
-            join(testFilesDir, 'coverage-browser-tests'),
-            'web coverage --one-browser',
-        );
+            dir: join(testFilesDir, 'coverage-browser-tests'),
+            extraCommand: 'web coverage --one-browser',
+        });
     });
     it('rejects missing env', async (context) => {
-        await testTestPlugin(false, context, join(testFilesDir, 'node-tests'), '');
+        await testTestPlugin({
+            shouldPass: false,
+            context,
+            dir: join(testFilesDir, 'node-tests'),
+            extraCommand: '',
+        });
     });
 });

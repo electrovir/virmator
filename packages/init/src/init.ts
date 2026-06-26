@@ -409,7 +409,11 @@ export const virmatorInitPlugin = defineVirmatorPlugin(
         });
 
         await awaitedBlockingMap(relevantConfigs, async (config) => {
-            await copyConfigFile(config, log, true);
+            await copyConfigFile({
+                config,
+                log,
+                force: true,
+            });
         });
 
         await writePackageJson(cwdPackageJson, cwdPackagePath);

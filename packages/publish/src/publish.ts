@@ -168,7 +168,12 @@ export const virmatorPublishPlugin = defineVirmatorPlugin(
 
             log.info(`Publishing version ${nextVersion}...`);
 
-            await updateVersions(nextVersion, monoRepoRootPath, monoRepoPackages, log);
+            await updateVersions({
+                version: nextVersion,
+                monoRepoRootPath,
+                monoPackages: monoRepoPackages,
+                log,
+            });
 
             await runHiddenShellCommand('npm i');
         }
@@ -513,12 +518,17 @@ export function determineNextVersion({
     }
 }
 
-async function updateVersions(
-    version: string,
-    monoRepoRootPath: string,
-    monoPackages: ReadonlyArray<Readonly<MonoRepoPackage>>,
-    log: Logger,
-) {
+async function updateVersions({
+    version,
+    monoRepoRootPath,
+    monoPackages,
+    log,
+}: Readonly<{
+    version: string;
+    monoRepoRootPath: string;
+    monoPackages: ReadonlyArray<Readonly<MonoRepoPackage>>;
+    log: Logger;
+}>) {
     const packagePaths = [
         monoRepoRootPath,
         ...monoPackages.map((monoPackage) => {
@@ -532,15 +542,23 @@ async function updateVersions(
             join(monoRepoRootPath, packagePath, 'package.json'),
         );
         log.faint(`Updating ${logPath}...`);
-        await updateVersion(version, packagePath, monoPackages);
+        await updateVersion({
+            version,
+            packagePath,
+            monoPackages,
+        });
     });
 }
 
-async function updateVersion(
-    version: string,
-    packagePath: string,
-    monoPackages: ReadonlyArray<Readonly<MonoRepoPackage>>,
-) {
+async function updateVersion({
+    version,
+    packagePath,
+    monoPackages,
+}: Readonly<{
+    version: string;
+    packagePath: string;
+    monoPackages: ReadonlyArray<Readonly<MonoRepoPackage>>;
+}>) {
     const packageJsonPath = join(packagePath, 'package.json');
     const packageJsonContents = (await readFile(packageJsonPath)).toString();
     const packageJson = JSON.parse(packageJsonContents);

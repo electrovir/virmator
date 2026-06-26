@@ -12,20 +12,26 @@ const packageDir = resolve(import.meta.dirname, '..');
 const testFilesDir = join(packageDir, 'test-files');
 
 describe(virmatorDocsPlugin.name, () => {
-    async function testDocsPlugin(
-        shouldPass: boolean,
-        context: UniversalTestContext,
-        dir: string,
-        extraCommand?: string,
-        beforeCleanupCallback?: (cwd: string) => MaybePromise<void>,
-    ) {
-        await testPlugin(
+    async function testDocsPlugin({
+        shouldPass,
+        context,
+        dir,
+        extraCommand,
+        beforeCleanupCallback,
+    }: Readonly<{
+        shouldPass: boolean;
+        context: UniversalTestContext;
+        dir: string;
+        extraCommand?: string;
+        beforeCleanupCallback?: (cwd: string) => MaybePromise<void>;
+    }>) {
+        await testPlugin({
             shouldPass,
             context,
-            virmatorDocsPlugin,
-            `docs ${extraCommand || ''}`,
-            dir,
-            {
+            plugin: virmatorDocsPlugin,
+            cliCommand: `docs ${extraCommand || ''}`,
+            cwd: dir,
+            options: {
                 beforeCleanupCallback,
                 excludeContents: [
                     wrapString({
@@ -38,24 +44,29 @@ describe(virmatorDocsPlugin.name, () => {
                     }),
                 ],
             },
-        );
+        });
     }
 
     it('runs typedoc and md-code', async (context) => {
-        await testDocsPlugin(true, context, join(testFilesDir, 'unfinished-readme'), '', (cwd) => {
-            assert.strictEquals(existsSync(join(cwd, 'dist-docs', 'index.html')), true);
+        await testDocsPlugin({
+            shouldPass: true,
+            context,
+            dir: join(testFilesDir, 'unfinished-readme'),
+            beforeCleanupCallback: (cwd) => {
+                assert.strictEquals(existsSync(join(cwd, 'dist-docs', 'index.html')), true);
+            },
         });
     });
     it('fails unfinished readme', async (context) => {
-        await testDocsPlugin(
-            false,
+        await testDocsPlugin({
+            shouldPass: false,
             context,
-            join(testFilesDir, 'unfinished-readme'),
-            'check',
-            (cwd) => {
+            dir: join(testFilesDir, 'unfinished-readme'),
+            extraCommand: 'check',
+            beforeCleanupCallback: (cwd) => {
                 assert.strictEquals(existsSync(join(cwd, 'dist-docs', 'index.html')), false);
             },
-        );
+        });
     });
     it('runs on mono-repo packages', async (context) => {
         /** The failure logs won't show up in the snapshot; typedoc logs directly to the console. */
@@ -63,12 +74,12 @@ describe(virmatorDocsPlugin.name, () => {
         await runShellCommand('npm i', {
             cwd: dir,
         });
-        await testDocsPlugin(
+        await testDocsPlugin({
             /** This fails because one of the mono-repo sub-packages has missing docs. */
-            false,
+            shouldPass: false,
             context,
             dir,
-        );
+        });
     });
     it('skips private repo typedoc', async (context) => {
         const monoDir = join(testFilesDir, 'mono-repo');
@@ -79,8 +90,13 @@ describe(virmatorDocsPlugin.name, () => {
         await runShellCommand('npm i', {
             cwd: monoDir,
         });
-        await testDocsPlugin(true, context, join(monoDir, 'packages', 'b'), '', (cwd) => {
-            assert.strictEquals(existsSync(join(cwd, 'dist-docs', 'index.html')), false);
+        await testDocsPlugin({
+            shouldPass: true,
+            context,
+            dir: join(monoDir, 'packages', 'b'),
+            beforeCleanupCallback: (cwd) => {
+                assert.strictEquals(existsSync(join(cwd, 'dist-docs', 'index.html')), false);
+            },
         });
         await resetDirContents(monoDir, dirContents);
     });
@@ -93,35 +109,45 @@ describe(virmatorDocsPlugin.name, () => {
         await runShellCommand('npm i', {
             cwd: monoDir,
         });
-        await testDocsPlugin(true, context, join(monoDir, 'packages', 'c'));
+        await testDocsPlugin({
+            shouldPass: true,
+            context,
+            dir: join(monoDir, 'packages', 'c'),
+        });
         await resetDirContents(monoDir, dirContents);
     });
     it('passes docs check', async (context) => {
-        await testDocsPlugin(true, context, join(testFilesDir, 'valid-docs'), 'check', (cwd) => {
-            assert.strictEquals(existsSync(join(cwd, 'dist-docs', 'index.html')), false);
+        await testDocsPlugin({
+            shouldPass: true,
+            context,
+            dir: join(testFilesDir, 'valid-docs'),
+            extraCommand: 'check',
+            beforeCleanupCallback: (cwd) => {
+                assert.strictEquals(existsSync(join(cwd, 'dist-docs', 'index.html')), false);
+            },
         });
     });
     it('allows custom file inputs', async (context) => {
-        await testDocsPlugin(
-            true,
+        await testDocsPlugin({
+            shouldPass: true,
             context,
-            join(testFilesDir, 'valid-docs'),
-            'check something-else.md',
-            (cwd) => {
+            dir: join(testFilesDir, 'valid-docs'),
+            extraCommand: 'check something-else.md',
+            beforeCleanupCallback: (cwd) => {
                 assert.strictEquals(existsSync(join(cwd, 'dist-docs', 'index.html')), false);
             },
-        );
+        });
     });
     it('fails typedoc check', async (context) => {
         /** The failure logs won't show up in the snapshot; typedoc logs directly to the console. */
-        await testDocsPlugin(
-            false,
+        await testDocsPlugin({
+            shouldPass: false,
             context,
-            join(testFilesDir, 'invalid-typedoc'),
-            'check',
-            (cwd) => {
+            dir: join(testFilesDir, 'invalid-typedoc'),
+            extraCommand: 'check',
+            beforeCleanupCallback: (cwd) => {
                 assert.strictEquals(existsSync(join(cwd, 'dist-docs', 'index.html')), false);
             },
-        );
+        });
     });
 });

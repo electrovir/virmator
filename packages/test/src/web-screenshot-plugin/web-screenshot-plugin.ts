@@ -195,7 +195,11 @@ export function screenshotPlugin(
                         }
 
                         const baseScreenshot: Buffer = await readFile(screenshotFilePath);
-                        const result = await compareImages(baseScreenshot, newScreenshot, payload);
+                        const result = await compareImages({
+                            baseImageBuffer: baseScreenshot,
+                            currentImageBuffer: newScreenshot,
+                            userOptions: payload,
+                        });
 
                         if (!result.passed) {
                             const screenshotDebugOutputsDirPath = join(

@@ -114,16 +114,14 @@ export const virmatorCompilePlugin = defineVirmatorPlugin(
 
         if (packageType === PackageType.MonoRoot) {
             await runPerPackage(async ({packageCwd, packageName, color}) => {
-                await copyConfigFile(
-                    {
+                await copyConfigFile({
+                    config: {
                         ...configs.compile.configs.tsconfigMonoPackage,
                         fullCopyToPath: join(packageCwd, 'tsconfig.json'),
                     },
                     log,
-                    false,
-                    undefined,
                     packageName,
-                );
+                });
                 return await createCompileCommandString(
                     {
                         ...params,

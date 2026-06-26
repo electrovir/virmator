@@ -8,19 +8,24 @@ const packageDir = resolve(import.meta.dirname, '..');
 const testFilesDir = join(packageDir, 'test-files');
 
 describe(virmatorFrontendPlugin.name, () => {
-    async function testFormatPlugin(
-        shouldPass: boolean,
-        context: UniversalTestContext,
-        dir: string,
-        extraCommand?: string,
-    ) {
-        await testPlugin(
+    async function testFormatPlugin({
+        shouldPass,
+        context,
+        dir,
+        extraCommand,
+    }: Readonly<{
+        shouldPass: boolean;
+        context: UniversalTestContext;
+        dir: string;
+        extraCommand?: string;
+    }>) {
+        await testPlugin({
             shouldPass,
             context,
-            virmatorFrontendPlugin,
-            `frontend ${extraCommand || ''}`,
-            dir,
-            {
+            plugin: virmatorFrontendPlugin,
+            cliCommand: `frontend ${extraCommand || ''}`,
+            cwd: dir,
+            options: {
                 logTransform(logType, log) {
                     return log
                         .replaceAll('\r', '')
@@ -28,11 +33,16 @@ describe(virmatorFrontendPlugin.name, () => {
                         .replace(/\n{2,}/g, '\n');
                 },
             },
-        );
+        });
     }
 
     it('builds', async (context) => {
-        await testFormatPlugin(true, context, join(testFilesDir, 'valid-frontend'), 'build');
+        await testFormatPlugin({
+            shouldPass: true,
+            context,
+            dir: join(testFilesDir, 'valid-frontend'),
+            extraCommand: 'build',
+        });
     });
     /** Can't test server startup because it never ends. */
 });

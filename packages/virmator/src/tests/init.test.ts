@@ -12,91 +12,103 @@ const packageDir = resolve(import.meta.dirname, '..', '..');
 const testFilesDir = join(packageDir, 'test-files');
 
 describe(virmatorInitPlugin.name, () => {
-    async function testDocsPlugin(
-        shouldPass: boolean,
-        context: UniversalTestContext,
-        dir: string,
-        env: RuntimeEnv | undefined,
-        packageType: PackageType | undefined,
-    ) {
-        await testVirmator(shouldPass, context, `init ${env || ''} ${packageType || ''}`, dir, {
-            excludeContents: [
-                'LICENSE-',
-            ],
+    async function testDocsPlugin({
+        shouldPass,
+        context,
+        dir,
+        env,
+        packageType,
+    }: Readonly<{
+        shouldPass: boolean;
+        context: UniversalTestContext;
+        dir: string;
+        env: RuntimeEnv | undefined;
+        packageType: PackageType | undefined;
+    }>) {
+        await testVirmator({
+            shouldPass,
+            context,
+            command: `init ${env || ''} ${packageType || ''}`,
+            cwd: dir,
+            testOptions: {
+                excludeContents: [
+                    'LICENSE-',
+                ],
+            },
         });
     }
 
     it('errors without env', async (context) => {
-        await testDocsPlugin(
-            false,
+        await testDocsPlugin({
+            shouldPass: false,
             context,
-            join(testFilesDir, 'top-package'),
-            undefined,
-            undefined,
-        );
+            dir: join(testFilesDir, 'top-package'),
+            env: undefined,
+            packageType: undefined,
+        });
     });
     it('errors without package type', async (context) => {
-        await testDocsPlugin(
-            false,
+        await testDocsPlugin({
+            shouldPass: false,
             context,
-            join(testFilesDir, 'top-package'),
-            RuntimeEnv.Node,
-            undefined,
-        );
+            dir: join(testFilesDir, 'top-package'),
+            env: RuntimeEnv.Node,
+            packageType: undefined,
+        });
     });
     it('initializes a top-level node package', async (context) => {
-        await testDocsPlugin(
-            true,
+        await testDocsPlugin({
+            shouldPass: true,
             context,
-            join(testFilesDir, 'top-package'),
-            RuntimeEnv.Node,
-            PackageType.TopPackage,
-        );
+            dir: join(testFilesDir, 'top-package'),
+            env: RuntimeEnv.Node,
+            packageType: PackageType.TopPackage,
+        });
     });
     it('initializes a top-level web package', async (context) => {
-        await testDocsPlugin(
-            true,
+        await testDocsPlugin({
+            shouldPass: true,
             context,
-            join(testFilesDir, 'top-package'),
-            RuntimeEnv.Web,
-            PackageType.TopPackage,
-        );
+            dir: join(testFilesDir, 'top-package'),
+            env: RuntimeEnv.Web,
+            packageType: PackageType.TopPackage,
+        });
     });
     it('initializes a mono-root node package', async (context) => {
-        await testDocsPlugin(
-            true,
+        await testDocsPlugin({
+            shouldPass: true,
             context,
-            join(testFilesDir, PackageType.MonoRoot),
-            RuntimeEnv.Node,
-            PackageType.MonoRoot,
-        );
+            dir: join(testFilesDir, PackageType.MonoRoot),
+            env: RuntimeEnv.Node,
+            packageType: PackageType.MonoRoot,
+        });
     });
     it('initializes a mono-root web package', async (context) => {
-        await testDocsPlugin(
-            true,
+        await testDocsPlugin({
+            shouldPass: true,
             context,
-            join(testFilesDir, PackageType.MonoRoot),
-            RuntimeEnv.Web,
-            PackageType.MonoRoot,
-        );
+            dir: join(testFilesDir, PackageType.MonoRoot),
+            env: RuntimeEnv.Web,
+            packageType: PackageType.MonoRoot,
+        });
     });
     it('initializes a mono-package web package', async (context) => {
-        await testDocsPlugin(
-            true,
+        await testDocsPlugin({
+            shouldPass: true,
             context,
-            join(testFilesDir, PackageType.MonoPackage),
-            RuntimeEnv.Web,
-            PackageType.MonoPackage,
-        );
+            dir: join(testFilesDir, PackageType.MonoPackage),
+            env: RuntimeEnv.Web,
+            packageType: PackageType.MonoPackage,
+        });
     });
     it('initializes a mono-package node package', async (context) => {
-        await testDocsPlugin(
-            true,
+        await testDocsPlugin({
+            shouldPass: true,
             context,
-            join(testFilesDir, PackageType.MonoPackage),
-            RuntimeEnv.Node,
-            PackageType.MonoPackage,
-        );
+            dir: join(testFilesDir, PackageType.MonoPackage),
+            env: RuntimeEnv.Node,
+            packageType: PackageType.MonoPackage,
+        });
     });
     it('copies an MIT license with the current year', async () => {
         const licenseConfig = virmatorInitPlugin.cliCommands.init.configFiles.licenseMit;
@@ -106,6 +118,7 @@ describe(virmatorInitPlugin.name, () => {
             licenseConfig.copyFromPath,
         );
         const licenseText = await readFile(licensePath, 'utf8');
+        // eslint-disable-next-line @virmator/no-raw-date -- virmator itself has no date-vir dependency; reading the current year for this license-year assertion is fine.
         const currentYear = new Date().getUTCFullYear();
         assert.matches(licenseText, new RegExp(String.raw`Copyright \(c\) ${currentYear} `));
     });

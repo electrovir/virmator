@@ -10,63 +10,98 @@ const packageDir = resolve(import.meta.dirname, '..');
 const testFilesDir = join(packageDir, 'test-files');
 
 describe(virmatorDepsPlugin.name, () => {
-    async function testDepsPlugin(
-        shouldPass: boolean,
-        context: UniversalTestContext,
-        dir: string,
-        extraCommand: string,
-    ) {
-        await testPlugin(
+    async function testDepsPlugin({
+        shouldPass,
+        context,
+        dir,
+        extraCommand,
+    }: Readonly<{
+        shouldPass: boolean;
+        context: UniversalTestContext;
+        dir: string;
+        extraCommand: string;
+    }>) {
+        await testPlugin({
             shouldPass,
             context,
-            virmatorDepsPlugin,
-            `${virmatorFlags['--no-deps'].name} deps ${extraCommand}`,
-            dir,
-            {
+            plugin: virmatorDepsPlugin,
+            cliCommand: `${virmatorFlags['--no-deps'].name} deps ${extraCommand}`,
+            cwd: dir,
+            options: {
                 logTransform(logType, arg) {
                     return arg.replaceAll('\r', '');
                 },
             },
-        );
+        });
     }
 
     it('passes valid deps', async (context) => {
-        await testDepsPlugin(true, context, join(testFilesDir, 'valid-deps'), 'check');
+        await testDepsPlugin({
+            shouldPass: true,
+            context,
+            dir: join(testFilesDir, 'valid-deps'),
+            extraCommand: 'check',
+        });
     });
     it('passes with custom config', async (context) => {
-        await testDepsPlugin(
-            true,
+        await testDepsPlugin({
+            shouldPass: true,
             context,
-            join(testFilesDir, 'with-config'),
-            'check --config dep-cruiser.cjs',
-        );
+            dir: join(testFilesDir, 'with-config'),
+            extraCommand: 'check --config dep-cruiser.cjs',
+        });
     });
     it('checks a custom path', async (context) => {
-        await testDepsPlugin(true, context, join(testFilesDir, 'valid-deps'), 'check src/index.ts');
+        await testDepsPlugin({
+            shouldPass: true,
+            context,
+            dir: join(testFilesDir, 'valid-deps'),
+            extraCommand: 'check src/index.ts',
+        });
     });
     it('fails invalid deps', async (context) => {
-        await testDepsPlugin(false, context, join(testFilesDir, 'invalid-deps'), 'check');
+        await testDepsPlugin({
+            shouldPass: false,
+            context,
+            dir: join(testFilesDir, 'invalid-deps'),
+            extraCommand: 'check',
+        });
     });
     it('passes valid mono repo deps', async (context) => {
         const dir = join(testFilesDir, 'valid-mono-repo');
         await runShellCommand('npm i', {
             cwd: dir,
         });
-        await testDepsPlugin(true, context, dir, 'check');
+        await testDepsPlugin({
+            shouldPass: true,
+            context,
+            dir,
+            extraCommand: 'check',
+        });
     });
     it('checks a custom mono repo path', async (context) => {
         const dir = join(testFilesDir, 'valid-mono-repo');
         await runShellCommand('npm i', {
             cwd: dir,
         });
-        await testDepsPlugin(true, context, dir, 'check packages/a/src');
+        await testDepsPlugin({
+            shouldPass: true,
+            context,
+            dir,
+            extraCommand: 'check packages/a/src',
+        });
     });
     it('fails invalid mono repo deps', async (context) => {
         const dir = join(testFilesDir, 'invalid-mono-repo');
         await runShellCommand('npm i', {
             cwd: dir,
         });
-        await testDepsPlugin(false, context, dir, 'check');
+        await testDepsPlugin({
+            shouldPass: false,
+            context,
+            dir,
+            extraCommand: 'check',
+        });
     });
     /**
      * Verifies that deps check catches circular dependencies across packages that go through deep
@@ -79,20 +114,30 @@ describe(virmatorDepsPlugin.name, () => {
         await runShellCommand('npm i', {
             cwd: dir,
         });
-        await testDepsPlugin(false, context, dir, 'check');
+        await testDepsPlugin({
+            shouldPass: false,
+            context,
+            dir,
+            extraCommand: 'check',
+        });
     });
 
     it('upgrades deps', async (context) => {
-        await testDepsPlugin(true, context, join(testFilesDir, 'upgrade'), 'upgrade');
+        await testDepsPlugin({
+            shouldPass: true,
+            context,
+            dir: join(testFilesDir, 'upgrade'),
+            extraCommand: 'upgrade',
+        });
     });
 
     it('errors when upgrade target matches no direct deps', async (context) => {
-        await testDepsPlugin(
-            false,
+        await testDepsPlugin({
+            shouldPass: false,
             context,
-            join(testFilesDir, 'upgrade'),
-            'upgrade @no-such-scope/*',
-        );
+            dir: join(testFilesDir, 'upgrade'),
+            extraCommand: 'upgrade @no-such-scope/*',
+        });
     });
 
     it('upgrades a single dep by exact name', async (context) => {
@@ -100,12 +145,12 @@ describe(virmatorDepsPlugin.name, () => {
         await runShellCommand('npm i', {
             cwd: dir,
         });
-        await testDepsPlugin(
-            true,
+        await testDepsPlugin({
+            shouldPass: true,
             context,
             dir,
-            'upgrade htmlhint-plugin-blocked-words --loglevel silent',
-        );
+            extraCommand: 'upgrade htmlhint-plugin-blocked-words --loglevel silent',
+        });
     });
 
     it('upgrades deps matching a glob pattern', async (context) => {
@@ -113,7 +158,12 @@ describe(virmatorDepsPlugin.name, () => {
         await runShellCommand('npm i', {
             cwd: dir,
         });
-        await testDepsPlugin(true, context, dir, 'upgrade htmlhint-* --loglevel silent');
+        await testDepsPlugin({
+            shouldPass: true,
+            context,
+            dir,
+            extraCommand: 'upgrade htmlhint-* --loglevel silent',
+        });
     });
 
     it('upgrades a dep to a specific version', async (context) => {
@@ -121,7 +171,12 @@ describe(virmatorDepsPlugin.name, () => {
         await runShellCommand('npm i', {
             cwd: dir,
         });
-        await testDepsPlugin(true, context, dir, 'upgrade htmlhint-*@1.0.1 --loglevel silent');
+        await testDepsPlugin({
+            shouldPass: true,
+            context,
+            dir,
+            extraCommand: 'upgrade htmlhint-*@1.0.1 --loglevel silent',
+        });
     });
 
     it('skips matches in the overrides section', async (context) => {
@@ -129,7 +184,12 @@ describe(virmatorDepsPlugin.name, () => {
         await runShellCommand('npm i', {
             cwd: dir,
         });
-        await testDepsPlugin(true, context, dir, 'upgrade htmlhint-* --loglevel silent');
+        await testDepsPlugin({
+            shouldPass: true,
+            context,
+            dir,
+            extraCommand: 'upgrade htmlhint-* --loglevel silent',
+        });
     });
 
     it('regenerates deps', async (context) => {
@@ -141,10 +201,20 @@ describe(virmatorDepsPlugin.name, () => {
          * Silent log level is necessary to disable the "installed in X milliseconds" logs that npm
          * spits out. With those logs, the tests are completely unstable.
          */
-        await testDepsPlugin(true, context, dir, 'regen --loglevel silent');
+        await testDepsPlugin({
+            shouldPass: true,
+            context,
+            dir,
+            extraCommand: 'regen --loglevel silent',
+        });
     });
 
     it('rejects a missing sub command', async (context) => {
-        await testDepsPlugin(false, context, join(testFilesDir, 'valid-mono-repo'), '');
+        await testDepsPlugin({
+            shouldPass: false,
+            context,
+            dir: join(testFilesDir, 'valid-mono-repo'),
+            extraCommand: '',
+        });
     });
 });

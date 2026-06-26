@@ -38,13 +38,13 @@ describe(testPlugin.name, () => {
         context: UniversalTestContext,
         extraCliArgs: string = '',
     ) {
-        await testPlugin(
+        await testPlugin({
             shouldPass,
             context,
-            virmatorExamplePlugin,
-            `example ${extraCliArgs}`,
-            dirContentsTestPath,
-        );
+            plugin: virmatorExamplePlugin,
+            cliCommand: `example ${extraCliArgs}`,
+            cwd: dirContentsTestPath,
+        });
     }
 
     it('tests a plugin', async (context) => {
@@ -61,12 +61,25 @@ describe(testPlugin.name, () => {
         await testExamplePlugin(false, context, 'empty-error');
     });
     it('handles a plugin array', async (context) => {
-        await testPlugin(true, context, [virmatorExamplePlugin], 'example', dirContentsTestPath);
+        await testPlugin({
+            shouldPass: true,
+            context,
+            plugin: [virmatorExamplePlugin],
+            cliCommand: 'example',
+            cwd: dirContentsTestPath,
+        });
     });
     it('handles a cleanup callback', async (context) => {
-        await testPlugin(true, context, virmatorExamplePlugin, 'example', dirContentsTestPath, {
-            beforeCleanupCallback(cwd) {
-                assert.strictEquals(!!cwd, true);
+        await testPlugin({
+            shouldPass: true,
+            context,
+            plugin: virmatorExamplePlugin,
+            cliCommand: 'example',
+            cwd: dirContentsTestPath,
+            options: {
+                beforeCleanupCallback(cwd) {
+                    assert.strictEquals(!!cwd, true);
+                },
             },
         });
     });

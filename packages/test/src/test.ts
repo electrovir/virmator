@@ -394,11 +394,11 @@ export const virmatorTestPlugin = defineVirmatorPlugin(
                 const updateTestArgs = shouldUpdateTest ? ['--update'] : [];
 
                 if (includeCoverage) {
-                    await createTestThatImportsAllFilesForCoverage(
+                    await createTestThatImportsAllFilesForCoverage({
                         webTestRunnerConfig,
                         cwd,
                         allFilesTestFilePath,
-                    );
+                    });
                 }
 
                 const testCommand = [
@@ -536,11 +536,15 @@ function extractTestSubCommandChain(
     return [];
 }
 
-async function createTestThatImportsAllFilesForCoverage(
-    webTestRunnerConfig: Partial<Pick<TestRunnerConfig, 'coverageConfig'>>,
-    cwd: string,
-    allFilesTestFilePath: string,
-) {
+async function createTestThatImportsAllFilesForCoverage({
+    webTestRunnerConfig,
+    cwd,
+    allFilesTestFilePath,
+}: Readonly<{
+    webTestRunnerConfig: Partial<Pick<TestRunnerConfig, 'coverageConfig'>>;
+    cwd: string;
+    allFilesTestFilePath: string;
+}>) {
     const coverageInclude = webTestRunnerConfig.coverageConfig?.include;
     const filesToIncludeInCoverage = coverageInclude
         ? Array.isArray(coverageInclude)

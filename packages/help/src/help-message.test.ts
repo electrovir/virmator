@@ -50,16 +50,16 @@ describe(generateHelpMessage.name, () => {
             },
         );
 
-        const newMarkdown = generateHelpMessage(
-            plugins,
-            HelpMessageSyntax.Markdown,
+        const newMarkdown = generateHelpMessage({
+            cliCommands: plugins,
+            syntax: HelpMessageSyntax.Markdown,
             hideVirmatorExplanations,
-        );
-        const newCli = generateHelpMessage(
-            plugins,
-            HelpMessageSyntax.Cli,
+        });
+        const newCli = generateHelpMessage({
+            cliCommands: plugins,
+            syntax: HelpMessageSyntax.Cli,
             hideVirmatorExplanations,
-        );
+        });
 
         await writeFile(outputMarkdownPath, newMarkdown);
         await writeFile(outputCliPath, newCli);

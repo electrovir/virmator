@@ -120,11 +120,11 @@ export const virmatorDocsPlugin = defineVirmatorPlugin(
             .filter(check.isTruthy)
             .join(' ');
 
-        async function runDocs(
-            packageDir: string,
-            packageName: string,
-            color: ColorKey | undefined,
-        ) {
+        async function runDocs({
+            packageDir,
+            packageName,
+            color,
+        }: Readonly<{packageDir: string; packageName: string; color: ColorKey | undefined}>) {
             try {
                 await runShellCommand(
                     mdCodeCommand,
@@ -193,15 +193,19 @@ export const virmatorDocsPlugin = defineVirmatorPlugin(
         /* node:coverage ignore next 12 */
         if (packageType === PackageType.MonoRoot) {
             await runPerPackage(async ({color, packageCwd, packageName}) => {
-                await runDocs(packageCwd, packageName, color);
+                await runDocs({
+                    packageDir: packageCwd,
+                    packageName,
+                    color,
+                });
                 return undefined;
             });
         } else {
-            await runDocs(
-                cwdPackagePath,
-                cwdPackageJson.name || basename(cwdPackagePath),
-                undefined,
-            );
+            await runDocs({
+                packageDir: cwdPackagePath,
+                packageName: cwdPackageJson.name || basename(cwdPackagePath),
+                color: undefined,
+            });
         }
     },
 );

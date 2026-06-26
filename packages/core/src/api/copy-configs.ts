@@ -3,6 +3,7 @@ import {
     extractErrorMessage,
     type Logger,
     type MaybePromise,
+    type PartialWithUndefined,
 } from '@augment-vir/common';
 import {existsSync} from 'node:fs';
 import {mkdir, readFile, writeFile} from 'node:fs/promises';
@@ -46,14 +47,21 @@ export function flattenConfigs(
 }
 
 /** Copies a plugin's entire set of configs based on the used command. */
-export async function copyPluginConfigs(
-    usedCommands: Readonly<UsedVirmatorPluginCommands>,
-    resolvedConfigs: Readonly<VirmatorPluginResolvedConfigs<any>>,
-    packageType: PackageType,
-    monoRepoPackages: MonoRepoPackage[],
-    log: Logger,
-    filteredArgs: string[],
-) {
+export async function copyPluginConfigs({
+    usedCommands,
+    resolvedConfigs,
+    packageType,
+    monoRepoPackages,
+    log,
+    filteredArgs,
+}: Readonly<{
+    usedCommands: Readonly<UsedVirmatorPluginCommands>;
+    resolvedConfigs: Readonly<VirmatorPluginResolvedConfigs<any>>;
+    packageType: PackageType;
+    monoRepoPackages: MonoRepoPackage[];
+    log: Logger;
+    filteredArgs: string[];
+}>) {
     const configs = flattenConfigs(usedCommands, resolvedConfigs).sort((a, b) =>
         basename(a.copyToPath).localeCompare(basename(b.copyToPath)),
     );
@@ -68,37 +76,51 @@ export async function copyPluginConfigs(
         ) {
             await Promise.all(
                 monoRepoPackages.map(async (repoPackage) => {
-                    await copyConfigFile(
-                        {
+                    await copyConfigFile({
+                        config: {
                             ...config,
                             fullCopyToPath: join(repoPackage.fullPath, config.copyToPath),
                         },
                         log,
-                    );
+                    });
                 }),
             );
         } else if (!config.required || !config.packageType[packageType]) {
             return;
         } else {
-            await copyConfigFile(config, log);
+            await copyConfigFile({
+                config,
+                log,
+            });
         }
     });
 }
 
-/** Copies a single virmator plugin config file. */
-export async function copyConfigFile(
-    config: Readonly<Pick<VirmatorPluginResolvedConfigFile, 'fullCopyFromPath' | 'fullCopyToPath'>>,
-    log: Logger,
+/** Inputs for {@link copyConfigFile}. */
+export type CopyConfigFileParams = {
+    config: Readonly<Pick<VirmatorPluginResolvedConfigFile, 'fullCopyFromPath' | 'fullCopyToPath'>>;
+    log: Logger;
+} & PartialWithUndefined<{
     /**
      * If `true`, the config will be copied even if the copy destination already exists.
      *
      * @default false
      */
-    force = false,
-    transform?: ((currentContents: string) => MaybePromise<string>) | undefined,
+    force: boolean;
+    /** Optional transform callback. */
+    transform: (currentContents: string) => MaybePromise<string>;
     /** Package name when this is being run within a sub-package. */
-    packageName?: string | undefined,
-) {
+    packageName: string;
+}>;
+
+/** Copies a single virmator plugin config file. */
+export async function copyConfigFile({
+    config,
+    log,
+    force = false,
+    transform,
+    packageName,
+}: Readonly<CopyConfigFileParams>) {
     if (existsSync(config.fullCopyToPath) && !force) {
         return;
     }

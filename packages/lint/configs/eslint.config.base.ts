@@ -6,10 +6,22 @@ import sonarJsEslint from 'eslint-plugin-sonarjs';
 import eslintPluginUnicorn from 'eslint-plugin-unicorn';
 import globals from 'globals';
 import tsEslint from 'typescript-eslint';
+import errorNameAsClassFieldRule from '../src/rules/error-name-as-class-field.lint.js';
+import noRawDateRule from '../src/rules/no-raw-date.lint.js';
+import noReadonlyPrimitiveRule from '../src/rules/no-readonly-primitive.lint.js';
 import noRelativeImportOutsidePackageRule from '../src/rules/no-relative-import-outside-package.lint.js';
+import noShouldInTestDescriptionRule from '../src/rules/no-should-in-test-description.lint.js';
+import noUnderscoreVariableRule from '../src/rules/no-underscore-variable.lint.js';
+import preferArrowObjectBlockBodyRule from '../src/rules/prefer-arrow-object-block-body.lint.js';
+import preferEnsureErrorRule from '../src/rules/prefer-ensure-error.lint.js';
 import preferIfElseChainRule from '../src/rules/prefer-if-else-chain.lint.js';
+import preferMapEnumToObjectRule from '../src/rules/prefer-map-enum-to-object.lint.js';
+import preferParamsObjectRule from '../src/rules/prefer-params-object.lint.js';
 import preferParseUrlRule from '../src/rules/prefer-parse-url.lint.js';
+import preferProtectedOverPrivateRule from '../src/rules/prefer-protected-over-private.lint.js';
+import preferRemoveDuplicatesRule from '../src/rules/prefer-remove-duplicates.lint.js';
 import preferSingleQuotesRule from '../src/rules/prefer-single-quotes.lint.js';
+import preferToSortedRule from '../src/rules/prefer-to-sorted.lint.js';
 import requireImportExtensionsRule from '../src/rules/require-import-extensions.lint.js';
 
 export const globalVars = {
@@ -60,10 +72,22 @@ export function defineEslintConfig(repoDir: string) {
                 unicorn: eslintPluginUnicorn,
                 '@virmator': {
                     rules: {
+                        'error-name-as-class-field': errorNameAsClassFieldRule,
+                        'no-raw-date': noRawDateRule,
+                        'no-readonly-primitive': noReadonlyPrimitiveRule,
                         'no-relative-import-outside-package': noRelativeImportOutsidePackageRule,
+                        'no-should-in-test-description': noShouldInTestDescriptionRule,
+                        'no-underscore-variable': noUnderscoreVariableRule,
+                        'prefer-arrow-object-block-body': preferArrowObjectBlockBodyRule,
+                        'prefer-ensure-error': preferEnsureErrorRule,
                         'prefer-if-else-chain': preferIfElseChainRule,
+                        'prefer-map-enum-to-object': preferMapEnumToObjectRule,
+                        'prefer-params-object': preferParamsObjectRule,
                         'prefer-parse-url': preferParseUrlRule,
+                        'prefer-protected-over-private': preferProtectedOverPrivateRule,
+                        'prefer-remove-duplicates': preferRemoveDuplicatesRule,
                         'prefer-single-quotes': preferSingleQuotesRule,
+                        'prefer-to-sorted': preferToSortedRule,
                         'require-import-extensions': requireImportExtensionsRule,
                     },
                 },
@@ -166,10 +190,22 @@ export function defineEslintConfig(repoDir: string) {
                 '@jsdoc/no-undefined-types': 'error',
                 '@typescript-eslint/await-thenable': 'error',
                 '@typescript-eslint/no-unused-vars': 'error',
+                '@virmator/error-name-as-class-field': 'error',
+                '@virmator/no-raw-date': 'error',
+                '@virmator/no-readonly-primitive': 'error',
                 '@virmator/no-relative-import-outside-package': 'error',
+                '@virmator/no-should-in-test-description': 'error',
+                '@virmator/no-underscore-variable': 'error',
+                '@virmator/prefer-arrow-object-block-body': 'error',
+                '@virmator/prefer-ensure-error': 'error',
                 '@virmator/prefer-if-else-chain': 'error',
+                '@virmator/prefer-map-enum-to-object': 'error',
+                '@virmator/prefer-params-object': 'error',
                 '@virmator/prefer-parse-url': 'error',
+                '@virmator/prefer-protected-over-private': 'error',
+                '@virmator/prefer-remove-duplicates': 'error',
                 '@virmator/prefer-single-quotes': 'error',
+                '@virmator/prefer-to-sorted': 'error',
                 '@virmator/require-import-extensions': 'error',
                 'no-lonely-if': 'error',
                 curly: 'error',

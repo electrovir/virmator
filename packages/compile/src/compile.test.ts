@@ -12,16 +12,23 @@ describe(virmatorCompilePlugin.name, () => {
         context: UniversalTestContext,
         cwd: string,
     ) {
-        await testPlugin(shouldPass, context, virmatorCompilePlugin, 'compile', cwd, {
-            logTransform(logType, arg) {
-                /**
-                 * This log transform removes excessive TypeScript help logging so that test results
-                 * are stable.
-                 */
-                if (logType === LogOutputType.Standard) {
+        await testPlugin({
+            shouldPass,
+            context,
+            plugin: virmatorCompilePlugin,
+            cliCommand: 'compile',
+            cwd,
+            options: {
+                logTransform(logType, arg) {
+                    /**
+                     * This log transform removes excessive TypeScript help logging so that test
+                     * results are stable.
+                     */
+                    if (logType === LogOutputType.Standard) {
+                        return arg;
+                    }
                     return arg;
-                }
-                return arg;
+                },
             },
         });
     }
