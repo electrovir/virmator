@@ -41,6 +41,18 @@ describe('prefer-params-object', () => {
                     name: 'untyped parameters are not compared for duplicate types',
                     code: 'const f = (a, b) => a + b;',
                 },
+                {
+                    name: 'inline arrow callback with four parameters',
+                    code: 'array.reduce((accum: number[], entry: number, index: number, wholeArray: number[]) => accum, []);',
+                },
+                {
+                    name: 'inline arrow callback with two same-typed parameters',
+                    code: 'array.sort((a: number, b: number) => a - b);',
+                },
+                {
+                    name: 'inline function expression callback',
+                    code: 'array.reduce(function (accum: number[], entry: number, index: number, wholeArray: number[]) { return accum; }, []);',
+                },
             ],
             invalid: [
                 {

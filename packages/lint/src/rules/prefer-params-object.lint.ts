@@ -27,6 +27,25 @@ type FixableParam = {
 };
 
 /**
+ * Inline callbacks (function or arrow expressions passed directly as call arguments, like
+ * `array.reduce((accum, entry, index, wholeArray) => ...)`) have a signature dictated by their
+ * caller, so they cannot adopt a params object. Such callbacks should be skipped.
+ */
+function isInlineCallbackArgument(node: AnyFunctionNode): boolean {
+    if (node.type === 'FunctionDeclaration') {
+        return false;
+    }
+
+    const parent = (node as Rule.Node).parent;
+
+    if (!parent || parent.type !== 'CallExpression') {
+        return false;
+    }
+
+    return parent.arguments.includes(node);
+}
+
+/**
  * Excludes a leading `this` parameter (which is a type-only annotation in TypeScript, not a real
  * positional argument).
  */
@@ -157,6 +176,10 @@ const rule: Rule.RuleModule = {
         const sourceCode = context.sourceCode;
 
         function check(node: AnyFunctionNode) {
+            if (isInlineCallbackArgument(node)) {
+                return;
+            }
+
             const realParams = getRealParams(node.params);
 
             const messageId =
