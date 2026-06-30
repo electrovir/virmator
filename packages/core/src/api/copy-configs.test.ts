@@ -268,10 +268,14 @@ describe(copyPluginConfigs.name, () => {
             join(tempDir, 'packages', 'b'),
         ];
 
-        await mkdir(sourceDir, {recursive: true});
+        await mkdir(sourceDir, {
+            recursive: true,
+        });
         await Promise.all(
             packagePaths.map(async (packagePath) => {
-                await mkdir(packagePath, {recursive: true});
+                await mkdir(packagePath, {
+                    recursive: true,
+                });
             }),
         );
         await writeFile(join(sourceDir, 'required-config.txt'), 'required');
@@ -367,7 +371,10 @@ describe(copyPluginConfigs.name, () => {
                 ],
             );
         } finally {
-            await rm(tempDir, {recursive: true, force: true});
+            await rm(tempDir, {
+                recursive: true,
+                force: true,
+            });
         }
     });
 });

@@ -1,6 +1,6 @@
 {
     "name": "@virmator/scripts",
-    "version": "14.27.1",
+    "version": "14.27.2",
     "private": true,
     "description": "Internal virmator scripts.",
     "keywords": [
@@ -28,15 +28,15 @@
         "test:update": "npm start"
     },
     "dependencies": {
-        "@augment-vir/assert": "^31.72.1",
-        "@augment-vir/common": "^31.72.1",
-        "@augment-vir/node": "^31.72.1",
+        "@augment-vir/assert": "^31.73.2",
+        "@augment-vir/common": "^31.73.2",
+        "@augment-vir/node": "^31.73.2",
         "mri": "^1.2.0",
         "tsx": "^4.22.4",
-        "virmator": "^14.27.1"
+        "virmator": "^14.27.2"
     },
     "devDependencies": {
-        "@types/node": "^25.9.2"
+        "@types/node": "^26.0.1"
     },
     "engines": {
         "node": ">=22"
