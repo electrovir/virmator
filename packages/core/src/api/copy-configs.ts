@@ -70,7 +70,14 @@ export async function copyPluginConfigs({
         if ((config.configFlags || []).some((configFlag) => filteredArgs.includes(configFlag))) {
             return;
         } else if (
+            /**
+             * When run from a mono-repo root, a required mono-package config (e.g. each package's
+             * tsconfig needed to compile) is distributed into every package. Optional configs are
+             * never force-distributed: that would dump per-package scaffolding (such as `init`'s
+             * `index.html`) into packages the user never asked to populate.
+             */
             packageType === PackageType.MonoRoot &&
+            config.required &&
             !config.packageType[PackageType.MonoRoot] &&
             config.packageType[PackageType.MonoPackage]
         ) {
