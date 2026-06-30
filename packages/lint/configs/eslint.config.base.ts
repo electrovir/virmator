@@ -6,6 +6,7 @@ import sonarJsEslint from 'eslint-plugin-sonarjs';
 import eslintPluginUnicorn from 'eslint-plugin-unicorn';
 import globals from 'globals';
 import tsEslint from 'typescript-eslint';
+import assertionsInTestsRule from '../src/rules/assertions-in-tests.lint.js';
 import errorNameAsClassFieldRule from '../src/rules/error-name-as-class-field.lint.js';
 import noRawDateRule from '../src/rules/no-raw-date.lint.js';
 import noReadonlyPrimitiveRule from '../src/rules/no-readonly-primitive.lint.js';
@@ -72,6 +73,7 @@ export function defineEslintConfig(repoDir: string) {
                 unicorn: eslintPluginUnicorn,
                 '@virmator': {
                     rules: {
+                        'assertions-in-tests': assertionsInTestsRule,
                         'error-name-as-class-field': errorNameAsClassFieldRule,
                         'no-raw-date': noRawDateRule,
                         'no-readonly-primitive': noReadonlyPrimitiveRule,
@@ -134,6 +136,8 @@ export function defineEslintConfig(repoDir: string) {
                 'sonarjs/use-type-alias': 'off',
                 'sonarjs/void-use': 'off',
                 'sonarjs/deprecation': 'off', // duplicates @typescript-eslint/no-deprecated
+                // replaced by @virmator/assertions-in-tests, which also recognizes @augment-vir/assert
+                'sonarjs/assertions-in-tests': 'off',
 
                 'no-async-promise-executor': 'off',
                 'no-prototype-builtins': 'off',
@@ -190,6 +194,7 @@ export function defineEslintConfig(repoDir: string) {
                 '@jsdoc/no-undefined-types': 'error',
                 '@typescript-eslint/await-thenable': 'error',
                 '@typescript-eslint/no-unused-vars': 'error',
+                '@virmator/assertions-in-tests': 'error',
                 '@virmator/error-name-as-class-field': 'error',
                 '@virmator/no-raw-date': 'error',
                 '@virmator/no-readonly-primitive': 'error',

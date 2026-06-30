@@ -13,4 +13,24 @@ export default [
             'packages/spellcheck/test-files/custom-config/custom-cspell.config.cjs',
         ],
     },
+    {
+        rules: {
+            /**
+             * These are this repo's assertion-style test helpers: `testPlugin` (and the
+             * `testVirmator` wrapper around it) assert via snapshots, and `assertValidLicense`
+             * throws on an invalid license. The rule can't see through these imported helpers, so
+             * they're registered as assertion entry points.
+             */
+            '@virmator/assertions-in-tests': [
+                'error',
+                {
+                    additionalAssertionNames: [
+                        'assertValidLicense',
+                        'testPlugin',
+                        'testVirmator',
+                    ],
+                },
+            ],
+        },
+    },
 ];
