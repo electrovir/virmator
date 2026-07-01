@@ -39,7 +39,7 @@
         "@augment-vir/node": "^32.0.0",
         "@npm/types": "^2.1.0",
         "@virmator/core": "^14.27.3",
-        "date-vir": "^8.6.1",
+        "date-vir": "^8.6.2",
         "mri": "^1.2.0"
     },
     "devDependencies": {

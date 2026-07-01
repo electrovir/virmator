@@ -48,7 +48,7 @@
         "@augment-vir/test": "^32.0.0",
         "@types/node": "^26.0.1",
         "@types/semver": "^7.7.1",
-        "markdown-code-example-inserter": "^3.0.5",
+        "markdown-code-example-inserter": "^3.0.6",
         "type-fest": "^5.7.0",
         "typedoc": "^0.28.19"
     },
