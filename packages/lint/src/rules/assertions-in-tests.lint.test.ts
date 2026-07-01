@@ -105,6 +105,13 @@ describe('assertions-in-tests', () => {
                         },
                     ],
                 },
+                {
+                    name: "recognizes object-shape-tester's assertValidShape",
+                    code: [
+                        "import {assertValidShape} from 'object-shape-tester';",
+                        "it('works', () => { assertValidShape(value, shape); });",
+                    ].join('\n'),
+                },
             ],
             invalid: [
                 {
@@ -124,6 +131,18 @@ describe('assertions-in-tests', () => {
                     code: [
                         "import {assert} from '@augment-vir/assert';",
                         "it('does nothing useful', () => { doSomething(); });",
+                    ].join('\n'),
+                    errors: [
+                        {
+                            messageId: 'noAssertion',
+                        },
+                    ],
+                },
+                {
+                    name: "object-shape-tester's checkValidShape is not an assertion on its own",
+                    code: [
+                        "import {assertValidShape, checkValidShape} from 'object-shape-tester';",
+                        "it('only checks', () => { checkValidShape(value, shape); });",
                     ].join('\n'),
                     errors: [
                         {

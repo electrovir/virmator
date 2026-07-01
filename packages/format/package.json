@@ -1,6 +1,6 @@
 {
     "name": "@virmator/format",
-    "version": "14.27.3",
+    "version": "14.27.4",
     "description": "Default format plugin for virmator.",
     "keywords": [
         "virmator",
@@ -34,7 +34,7 @@
     "dependencies": {
         "@augment-vir/assert": "^32.0.0",
         "@augment-vir/common": "^32.0.0",
-        "@virmator/core": "^14.27.3",
+        "@virmator/core": "^14.27.4",
         "mri": "^1.2.0"
     },
     "devDependencies": {

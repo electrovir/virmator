@@ -37,6 +37,18 @@ const augmentVirAssertionNames: ReadonlyArray<string> = [
     'waitUntil',
 ];
 
+/**
+ * Names of `object-shape-tester` exports that throw on an invalid shape, so a test that calls one
+ * is asserting. Recognized by name (regardless of import path) because `object-shape-tester` is a
+ * shape-definition package rather than a dedicated assertion package: most of its exports (for
+ * example `defineShape` and `checkValidShape`) are not assertions, so the whole module cannot be
+ * treated as assertion utilities.
+ */
+const objectShapeTesterAssertionNames: ReadonlyArray<string> = [
+    'assertValidShape',
+    'assertWrapValidShape',
+];
+
 /** Names of the test-defining functions whose callbacks must contain at least one assertion. */
 const testFunctionNames: ReadonlyArray<string> = [
     'it',
@@ -282,6 +294,7 @@ const rule: Rule.RuleModule = {
         ];
         const names = [
             ...augmentVirAssertionNames,
+            ...objectShapeTesterAssertionNames,
             ...(options.additionalAssertionNames || []),
         ];
 
