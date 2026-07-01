@@ -1,6 +1,6 @@
 {
     "name": "@virmator/help",
-    "version": "14.27.2",
+    "version": "14.27.3",
     "description": "Default help plugin for virmator.",
     "keywords": [
         "virmator",
@@ -32,13 +32,13 @@
         "test:update": "npm test update"
     },
     "dependencies": {
-        "@augment-vir/assert": "^31.73.2",
-        "@augment-vir/common": "^31.73.2",
-        "@augment-vir/node": "^31.73.2",
-        "@virmator/core": "^14.27.2"
+        "@augment-vir/assert": "^32.0.0",
+        "@augment-vir/common": "^32.0.0",
+        "@augment-vir/node": "^32.0.0",
+        "@virmator/core": "^14.27.3"
     },
     "devDependencies": {
-        "@augment-vir/test": "^31.73.2",
+        "@augment-vir/test": "^32.0.0",
         "@types/node": "^26.0.1",
         "c8": "^11.0.0",
         "istanbul-smart-text-reporter": "^1.1.5"

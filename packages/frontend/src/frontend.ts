@@ -137,7 +137,12 @@ export const virmatorFrontendPlugin = defineVirmatorPlugin(
                 force: true,
                 recursive: true,
             });
-            if (doesPathContain(monoRepoRootPath, outDir)) {
+            if (
+                doesPathContain({
+                    potentialParentPath: monoRepoRootPath,
+                    potentialChildPath: outDir,
+                })
+            ) {
                 await rm(outDir, {
                     recursive: true,
                     force: true,

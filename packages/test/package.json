@@ -1,6 +1,6 @@
 {
     "name": "@virmator/test",
-    "version": "14.27.2",
+    "version": "14.27.3",
     "description": "Default test plugin for virmator.",
     "keywords": [
         "virmator",
@@ -36,10 +36,10 @@
         "test:web": "npm run compile && virmator test web src/web-snapshot-plugin/web-snapshot-plugin.test.ts src/web-screenshot-plugin/web-screenshot-plugin.test.ts"
     },
     "dependencies": {
-        "@augment-vir/assert": "^31.73.2",
-        "@augment-vir/common": "^31.73.2",
-        "@augment-vir/node": "^31.73.2",
-        "@virmator/core": "^14.27.2",
+        "@augment-vir/assert": "^32.0.0",
+        "@augment-vir/common": "^32.0.0",
+        "@augment-vir/node": "^32.0.0",
+        "@virmator/core": "^14.27.3",
         "@web/dev-server-core": "^0.7.5",
         "@web/test-runner-core": "^0.13.4",
         "glob": "^13.0.6",
@@ -51,7 +51,7 @@
         "typed-event-target": "^4.3.1"
     },
     "devDependencies": {
-        "@augment-vir/test": "^31.73.2",
+        "@augment-vir/test": "^32.0.0",
         "@open-wc/testing": "^4.0.0",
         "@types/mocha": "^10.0.10",
         "@types/node": "^26.0.1",

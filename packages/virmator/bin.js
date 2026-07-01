@@ -5,4 +5,8 @@ import {join} from 'node:path';
 
 const cliPath = join(import.meta.dirname, 'src', 'cli.script.ts');
 
-await runCliScript(cliPath, import.meta.filename, 'virmator');
+await runCliScript({
+    scriptPath: cliPath,
+    cliScriptFilePath: import.meta.filename,
+    binName: 'virmator',
+});
