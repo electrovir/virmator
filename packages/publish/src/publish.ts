@@ -31,6 +31,15 @@ import {buildUrl} from 'url-vir';
 
 const inVirmatorEnvKey = 'IN_VIRMATOR';
 
+/**
+ * When true, publish through npm's staged publishing (`npm stage publish`), which requires later
+ * approval before packages go live. When false, publish directly (`npm publish`).
+ *
+ * Ideally, this would always use staged publishing. However, npm's current approval process for
+ * staged publishes is terrible. If they fix that, then we can flip this back to `true`.
+ */
+const useStagedPublishing = false as boolean;
+
 /** A virmator plugin for publishing a package to npm. */
 export const virmatorPublishPlugin = defineVirmatorPlugin(
     import.meta.dirname,
@@ -187,7 +196,7 @@ export const virmatorPublishPlugin = defineVirmatorPlugin(
         const publishCommand: string = [
             `${inVirmatorEnvKey}=true`,
             'npm',
-            'stage',
+            useStagedPublishing && 'stage',
             'publish',
             ...publishArgs,
         ]
@@ -292,19 +301,21 @@ export const virmatorPublishPlugin = defineVirmatorPlugin(
             if (!isDryRun) {
                 await updateGit(monoRepoRootPath);
 
-                const npmUsername = (await runHiddenShellCommand('npm whoami')).stdout.trim();
-                log.info(
-                    [
-                        'Staged packages must be approved before they go live. Approve them here:',
-                        buildUrl('https://www.npmjs.com', {
-                            paths: [
-                                'settings',
-                                npmUsername,
-                                'staged-packages',
-                            ],
-                        }).href,
-                    ].join(' '),
-                );
+                if (useStagedPublishing) {
+                    const npmUsername = (await runHiddenShellCommand('npm whoami')).stdout.trim();
+                    log.info(
+                        [
+                            'Staged packages must be approved before they go live. Approve them here:',
+                            buildUrl('https://www.npmjs.com', {
+                                paths: [
+                                    'settings',
+                                    npmUsername,
+                                    'staged-packages',
+                                ],
+                            }).href,
+                        ].join(' '),
+                    );
+                }
             }
 
             return;
