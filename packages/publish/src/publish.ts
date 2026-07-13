@@ -27,6 +27,7 @@ import semver, {type SemVer} from 'semver';
 import {simpleGit, type SimpleGit} from 'simple-git';
 import {isValidSpdxExpression} from 'spdx-vir';
 import {type PackageJson, type SetRequired} from 'type-fest';
+import {buildUrl} from 'url-vir';
 
 const inVirmatorEnvKey = 'IN_VIRMATOR';
 
@@ -40,7 +41,10 @@ export const virmatorPublishPlugin = defineVirmatorPlugin(
                 doc: {
                     sections: [
                         `
-                            Publish a package or mono-repo to NPM with an optional test script and auto-incrementing package version.
+                            Stage a package or mono-repo for publishing to NPM (via npm's staged publishing) with an optional test script and auto-incrementing package version.
+                        `,
+                        `
+                            Staged versions are not live on NPM until they are approved on the npm website or via 'npm stage approve' (both require 2FA). Requires npm >= 11.15.0.
                         `,
                     ],
                     examples: [
@@ -183,6 +187,7 @@ export const virmatorPublishPlugin = defineVirmatorPlugin(
         const publishCommand: string = [
             `${inVirmatorEnvKey}=true`,
             'npm',
+            'stage',
             'publish',
             ...publishArgs,
         ]
@@ -286,6 +291,20 @@ export const virmatorPublishPlugin = defineVirmatorPlugin(
 
             if (!isDryRun) {
                 await updateGit(monoRepoRootPath);
+
+                const npmUsername = (await runHiddenShellCommand('npm whoami')).stdout.trim();
+                log.info(
+                    [
+                        'Staged packages must be approved before they go live. Approve them here:',
+                        buildUrl('https://www.npmjs.com', {
+                            paths: [
+                                'settings',
+                                npmUsername,
+                                'staged-packages',
+                            ],
+                        }).href,
+                    ].join(' '),
+                );
             }
 
             return;
