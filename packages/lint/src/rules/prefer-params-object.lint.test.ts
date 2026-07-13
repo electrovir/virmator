@@ -53,6 +53,22 @@ describe('prefer-params-object', () => {
                     name: 'inline function expression callback',
                     code: 'array.reduce(function (accum: number[], entry: number, index: number, wholeArray: number[]) { return accum; }, []);',
                 },
+                {
+                    name: 'constructor with only parameter properties (none counted)',
+                    code: 'class C { constructor(private a: string, private b: number, private c: boolean, private d: string) {} }',
+                },
+                {
+                    name: 'parameter properties excluded from duplicate-type comparison',
+                    code: 'class C { constructor(public a: string, readonly b: string) {} }',
+                },
+                {
+                    name: 'parameter property leaves only one plain param, so no duplicate fires',
+                    code: 'class C { constructor(public a: string, b: string) {} }',
+                },
+                {
+                    name: 'parameter property drops the plain-param count to three',
+                    code: 'class C { constructor(public a: string, b: number, c: boolean, d: string) {} }',
+                },
             ],
             invalid: [
                 {
@@ -142,6 +158,46 @@ describe('prefer-params-object', () => {
                     errors: [
                         {
                             messageId: 'tooManyPositionalParams',
+                        },
+                    ],
+                },
+                {
+                    name: 'class constructor with four plain parameters',
+                    code: 'class C { constructor(a: string, b: number, c: boolean, d: string) {} }',
+                    output: 'class C { constructor({a, b, c, d}: Readonly<{a: string; b: number; c: boolean; d: string}>) {} }',
+                    errors: [
+                        {
+                            messageId: 'tooManyPositionalParams',
+                        },
+                    ],
+                },
+                {
+                    name: 'class constructor with two same-typed plain parameters',
+                    code: 'class C { constructor(a: string, b: string) {} }',
+                    output: 'class C { constructor({a, b}: Readonly<{a: string; b: string}>) {} }',
+                    errors: [
+                        {
+                            messageId: 'duplicateParamType',
+                        },
+                    ],
+                },
+                {
+                    name: 'plain params still trigger tooManyPositionalParams alongside a parameter property',
+                    code: 'class C { constructor(private x: number, a: string, b: number, c: boolean, d: string) {} }',
+                    output: null,
+                    errors: [
+                        {
+                            messageId: 'tooManyPositionalParams',
+                        },
+                    ],
+                },
+                {
+                    name: 'plain params still trigger duplicateParamType alongside a parameter property',
+                    code: 'class C { constructor(private x: number, a: string, b: string) {} }',
+                    output: null,
+                    errors: [
+                        {
+                            messageId: 'duplicateParamType',
                         },
                     ],
                 },

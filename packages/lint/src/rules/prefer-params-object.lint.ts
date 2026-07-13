@@ -46,6 +46,16 @@ function isInlineCallbackArgument(node: AnyFunctionNode): boolean {
 }
 
 /**
+ * The typescript-eslint parser emits `TSParameterProperty` nodes for constructor parameters that
+ * use an accessibility (`public`/`private`/`protected`) or `readonly` modifier. These are absent
+ * from the base estree `Pattern` union. Such parameters declare class fields rather than plain
+ * positional arguments, so the rule ignores them when counting/comparing parameters.
+ */
+function isParameterProperty(param: Pattern): boolean {
+    return (param as {type: string}).type === 'TSParameterProperty';
+}
+
+/**
  * Excludes a leading `this` parameter (which is a type-only annotation in TypeScript, not a real
  * positional argument).
  */
@@ -181,11 +191,17 @@ const rule: Rule.RuleModule = {
             }
 
             const realParams = getRealParams(node.params);
+            /**
+             * Constructor parameter properties (those with an access modifier) declare class fields
+             * rather than plain positional arguments, so they are excluded from the count and
+             * duplicate-type comparison.
+             */
+            const consideredParams = realParams.filter((param) => !isParameterProperty(param));
 
             const messageId =
-                realParams.length > 3
+                consideredParams.length > 3
                     ? 'tooManyPositionalParams'
-                    : hasDuplicateType(realParams, sourceCode)
+                    : hasDuplicateType(consideredParams, sourceCode)
                       ? 'duplicateParamType'
                       : undefined;
 
@@ -193,7 +209,15 @@ const rule: Rule.RuleModule = {
                 return;
             }
 
-            const fix = buildParamsObjectFix(realParams, sourceCode);
+            /**
+             * A params object can only wrap the plain parameters. When parameter properties are
+             * interspersed there is no safe single-range replacement, so the fix is omitted and the
+             * developer resolves it manually.
+             */
+            const fix =
+                consideredParams.length === realParams.length
+                    ? buildParamsObjectFix(consideredParams, sourceCode)
+                    : undefined;
 
             context.report({
                 node,
