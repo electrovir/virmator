@@ -16,9 +16,9 @@ function getCalleeBaseName(callee: CallExpression['callee']): string | undefined
         return callee.name;
     } else if (callee.type === 'MemberExpression' && callee.object.type === 'Identifier') {
         return callee.object.name;
+    } else {
+        return undefined;
     }
-
-    return undefined;
 }
 
 /**
@@ -34,8 +34,9 @@ function getStaticStringValue(node: Node | undefined): string | undefined {
         node.quasis[0]
     ) {
         return node.quasis[0].value.cooked ?? undefined;
+    } else {
+        return undefined;
     }
-    return undefined;
 }
 
 function startsWithShould(value: string | undefined): boolean {

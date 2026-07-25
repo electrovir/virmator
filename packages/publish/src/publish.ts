@@ -440,11 +440,11 @@ export function parseCommitChangeMarker(commitMessage: string): ChangeMarker | u
 
     if (!rawChangeMarker) {
         return undefined;
-    } else if (!allowedVersionTags.includes(rawChangeMarker)) {
+    } else if (allowedVersionTags.includes(rawChangeMarker)) {
+        return check.isEnumValue(rawChangeMarker, ChangeMarker) ? rawChangeMarker : undefined;
+    } else {
         throw new VirmatorNoTraceError(`${rawChangeMarker} version tag not allowed`);
     }
-
-    return check.isEnumValue(rawChangeMarker, ChangeMarker) ? rawChangeMarker : undefined;
 }
 
 async function getGitCommitVersion(decrement: number, git: Readonly<SimpleGit>) {

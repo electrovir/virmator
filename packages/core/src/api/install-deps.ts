@@ -209,8 +209,9 @@ function extractVersionPrefix(versionString: string): VersionPrefix {
         return '^';
     } else if (versionString.startsWith('~')) {
         return '~';
+    } else {
+        return '';
     }
-    return '';
 }
 
 function combineDeps(packageJson: Readonly<PackageJson>) {

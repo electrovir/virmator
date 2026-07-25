@@ -354,19 +354,19 @@ export const virmatorTestPlugin = defineVirmatorPlugin(
                     cwd: targetWorkspace.fullPath,
                 });
                 return;
+            } else {
+                await runPerPackage(() => {
+                    return [
+                        'virmator',
+                        'test',
+                        ...subCommandChain,
+                        ...otherArgs,
+                    ]
+                        .filter(check.isTruthy)
+                        .join(' ');
+                });
+                return;
             }
-
-            await runPerPackage(() => {
-                return [
-                    'virmator',
-                    'test',
-                    ...subCommandChain,
-                    ...otherArgs,
-                ]
-                    .filter(check.isTruthy)
-                    .join(' ');
-            });
-            return;
         }
 
         if (usedCommands.test?.subCommands.web) {

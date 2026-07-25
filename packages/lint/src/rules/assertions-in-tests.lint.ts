@@ -121,9 +121,9 @@ function getRootIdentifier(node: Node): Identifier | undefined {
         return getRootIdentifier(node.callee);
     } else if (node.type === 'ChainExpression') {
         return getRootIdentifier(node.expression);
+    } else {
+        return undefined;
     }
-
-    return undefined;
 }
 
 function isAssertionCall(node: CallExpression, assertionIdentifiers: ReadonlySet<string>): boolean {
@@ -148,9 +148,9 @@ function childrenOf(
             );
         } else if (value != undefined && typeof (value as Node).type === 'string') {
             return [value as Node];
+        } else {
+            return [];
         }
-
-        return [];
     });
 }
 
@@ -229,9 +229,9 @@ function isTestCall(node: CallExpression): boolean {
     } else if (callee.type === 'MemberExpression' && callee.object.type === 'Identifier') {
         /** Catches `it.only(...)`, `it.skip(...)`, `test.only(...)`, etc. */
         return testFunctionNames.includes(callee.object.name);
+    } else {
+        return false;
     }
-
-    return false;
 }
 
 function getTestCallback(

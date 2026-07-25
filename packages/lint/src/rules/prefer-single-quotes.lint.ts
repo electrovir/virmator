@@ -9,8 +9,9 @@ function templateRawToSingleQuoted(raw: string): string {
             return '${';
         } else if (match === "'") {
             return String.raw`\'`;
+        } else {
+            return match;
         }
-        return match;
     });
     return "'" + escaped + "'";
 }

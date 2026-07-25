@@ -23,6 +23,7 @@ import preferProtectedOverPrivateRule from '../src/rules/prefer-protected-over-p
 import preferRemoveDuplicatesRule from '../src/rules/prefer-remove-duplicates.lint.js';
 import preferSingleQuotesRule from '../src/rules/prefer-single-quotes.lint.js';
 import preferToSortedRule from '../src/rules/prefer-to-sorted.lint.js';
+import requireElseForTerminalBranchRule from '../src/rules/require-else-for-terminal-branch.lint.js';
 import requireImportExtensionsRule from '../src/rules/require-import-extensions.lint.js';
 
 export const globalVars = {
@@ -90,6 +91,7 @@ export function defineEslintConfig(repoDir: string) {
                         'prefer-remove-duplicates': preferRemoveDuplicatesRule,
                         'prefer-single-quotes': preferSingleQuotesRule,
                         'prefer-to-sorted': preferToSortedRule,
+                        'require-else-for-terminal-branch': requireElseForTerminalBranchRule,
                         'require-import-extensions': requireImportExtensionsRule,
                     },
                 },
@@ -211,6 +213,7 @@ export function defineEslintConfig(repoDir: string) {
                 '@virmator/prefer-remove-duplicates': 'error',
                 '@virmator/prefer-single-quotes': 'error',
                 '@virmator/prefer-to-sorted': 'error',
+                '@virmator/require-else-for-terminal-branch': 'error',
                 '@virmator/require-import-extensions': 'error',
                 'no-lonely-if': 'error',
                 curly: 'error',
