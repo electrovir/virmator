@@ -168,6 +168,21 @@ export const virmatorTestPlugin = defineVirmatorPlugin(
                                 },
                                 type: NpmDepType.Dev,
                             },
+                            /**
+                             * Loading the web-test-runner config pulls in `@augment-vir/node`,
+                             * which imports named exports from `typescript` that only exist in v6
+                             * and below. Without this pin, npm satisfies that transitive `*` peer
+                             * with the latest major and the config fails to load.
+                             */
+                            typescript: {
+                                env: {
+                                    [RuntimeEnv.Web]: true,
+                                },
+                                packageType: {
+                                    [PackageType.TopPackage]: true,
+                                },
+                                type: NpmDepType.Dev,
+                            },
                         },
                     },
                     node: {

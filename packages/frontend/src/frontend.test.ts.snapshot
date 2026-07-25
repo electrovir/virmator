@@ -1,11 +1,11 @@
 exports[`Frontend > builds 1`] = `
 {
   "logs": {
-    "stdout": "Installing typescript@6.0.3 vite@8.1.3...\\nBuilding...\\n> NODE_OPTIONS=\\"--import tsx\\" npx vite build --config configs/vite.config.ts\\npublic dir: www-static\\nroot dir:   src\\nout dir:    dist\\nbase path:  /\\nvite v8.1.3 building client environment for production...\\ntransforming...\\n✓ 4 modules transformed.\\nrendering chunks...\\ncomputing gzip size...\\ndist/index.html                0.28 kB │ gzip: 0.20 kB\\ndist/assets/index-BTFs8jAX.js  0.78 kB │ gzip: 0.43 kB\\n✓ built\\nCreating 404 page...\\nfrontend finished."
+    "stdout": "Installing typescript@6.0.3 vite@8.1.5...\\nBuilding...\\n> NODE_OPTIONS=\\"--import tsx\\" npx vite build --config configs/vite.config.ts\\npublic dir: www-static\\nroot dir:   src\\nout dir:    dist\\nbase path:  /\\nvite v8.1.5 building client environment for production...\\ntransforming...\\n✓ 4 modules transformed.\\nrendering chunks...\\ncomputing gzip size...\\ndist/index.html                0.28 kB │ gzip: 0.20 kB\\ndist/assets/index-BTFs8jAX.js  0.78 kB │ gzip: 0.43 kB\\n✓ built\\nCreating 404 page...\\nfrontend finished."
   },
   "cwd": "packages/frontend/test-files/valid-frontend",
   "contentsDiff": {
-    "package.json": "{\\n    \\"type\\": \\"module\\",\\n    \\"devDependencies\\": {\\n        \\"typescript\\": \\"^6.0.3\\",\\n        \\"vite\\": \\"^8.1.3\\"\\n    }\\n}\\n",
+    "package.json": "{\\n    \\"type\\": \\"module\\",\\n    \\"devDependencies\\": {\\n        \\"typescript\\": \\"^6.0.3\\",\\n        \\"vite\\": \\"^8.1.5\\"\\n    }\\n}\\n",
     "dist": {
       "404.html": "<!doctype html>\\n<html>\\n    <head>\\n        <title>Test File</title>\\n        <meta name=\\"viewport\\" content=\\"width=device-width, minimum-scale=1.0, maximum-scale=1.0\\" />\\n      <script type=\\"module\\" crossorigin src=\\"/assets/index-BTFs8jAX.js\\"></script>\\n    </head>\\n    <body></body>\\n</html>\\n",
       "assets": {

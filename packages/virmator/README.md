@@ -261,6 +261,7 @@ Note that as of v13, this package is now in ESM.
                 -   [@web/test-runner-playwright](https://npmjs.com/package/@web/test-runner-playwright)
                 -   [@web/test-runner](https://npmjs.com/package/@web/test-runner)
                 -   [istanbul-smart-text-reporter](https://npmjs.com/package/istanbul-smart-text-reporter)
+                -   [typescript](https://npmjs.com/package/typescript)
             -   Sub Commands
 
                 -   **coverage**

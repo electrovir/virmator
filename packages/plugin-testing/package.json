@@ -1,6 +1,6 @@
 {
     "name": "@virmator/plugin-testing",
-    "version": "14.28.1",
+    "version": "14.29.0",
     "description": "Testing for virmator plugins.",
     "keywords": [
         "virmator",
@@ -35,14 +35,14 @@
         "@augment-vir/common": "^32.1.0",
         "@augment-vir/node": "^32.1.0",
         "@augment-vir/test": "^32.1.0",
-        "@virmator/core": "^14.28.1",
+        "@virmator/core": "^14.29.0",
         "type-fest": "^5.8.0"
     },
     "devDependencies": {
         "@types/node": "^26.1.1",
-        "c8": "^11.0.0",
+        "c8": "^12.0.0",
         "istanbul-smart-text-reporter": "^1.1.5",
-        "tsx": "^4.23.0",
+        "tsx": "^4.23.1",
         "typescript": "^6.0.3"
     },
     "engines": {
