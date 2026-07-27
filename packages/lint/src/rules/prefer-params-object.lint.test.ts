@@ -54,20 +54,24 @@ describe('prefer-params-object', () => {
                     code: 'array.reduce(function (accum: number[], entry: number, index: number, wholeArray: number[]) { return accum; }, []);',
                 },
                 {
-                    name: 'constructor with only parameter properties (none counted)',
+                    name: 'constructor with parameter properties',
                     code: 'class C { constructor(private a: string, private b: number, private c: boolean, private d: string) {} }',
                 },
                 {
-                    name: 'parameter properties excluded from duplicate-type comparison',
-                    code: 'class C { constructor(public a: string, readonly b: string) {} }',
+                    name: 'constructor with four plain parameters',
+                    code: 'class C { constructor(a: string, b: number, c: boolean, d: string) {} }',
                 },
                 {
-                    name: 'parameter property leaves only one plain param, so no duplicate fires',
-                    code: 'class C { constructor(public a: string, b: string) {} }',
+                    name: 'constructor with two same-typed plain parameters',
+                    code: 'class C { constructor(a: string, b: string) {} }',
                 },
                 {
-                    name: 'parameter property drops the plain-param count to three',
-                    code: 'class C { constructor(public a: string, b: number, c: boolean, d: string) {} }',
+                    name: 'constructor mixing parameter properties and plain parameters',
+                    code: 'class C { constructor(private x: number, a: string, b: string) {} }',
+                },
+                {
+                    name: 'class method is still checked',
+                    code: 'class C { method(a: string, b: number, c: boolean) {} }',
                 },
             ],
             invalid: [
@@ -162,39 +166,9 @@ describe('prefer-params-object', () => {
                     ],
                 },
                 {
-                    name: 'class constructor with four plain parameters',
-                    code: 'class C { constructor(a: string, b: number, c: boolean, d: string) {} }',
-                    output: 'class C { constructor({a, b, c, d}: Readonly<{a: string; b: number; c: boolean; d: string}>) {} }',
-                    errors: [
-                        {
-                            messageId: 'tooManyPositionalParams',
-                        },
-                    ],
-                },
-                {
-                    name: 'class constructor with two same-typed plain parameters',
-                    code: 'class C { constructor(a: string, b: string) {} }',
-                    output: 'class C { constructor({a, b}: Readonly<{a: string; b: string}>) {} }',
-                    errors: [
-                        {
-                            messageId: 'duplicateParamType',
-                        },
-                    ],
-                },
-                {
-                    name: 'plain params still trigger tooManyPositionalParams alongside a parameter property',
-                    code: 'class C { constructor(private x: number, a: string, b: number, c: boolean, d: string) {} }',
-                    output: null,
-                    errors: [
-                        {
-                            messageId: 'tooManyPositionalParams',
-                        },
-                    ],
-                },
-                {
-                    name: 'plain params still trigger duplicateParamType alongside a parameter property',
-                    code: 'class C { constructor(private x: number, a: string, b: string) {} }',
-                    output: null,
+                    name: 'class method with two same-typed parameters',
+                    code: 'class C { method(a: string, b: string) {} }',
+                    output: 'class C { method({a, b}: Readonly<{a: string; b: string}>) {} }',
                     errors: [
                         {
                             messageId: 'duplicateParamType',

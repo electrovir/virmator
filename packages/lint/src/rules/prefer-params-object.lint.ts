@@ -46,13 +46,14 @@ function isInlineCallbackArgument(node: AnyFunctionNode): boolean {
 }
 
 /**
- * The typescript-eslint parser emits `TSParameterProperty` nodes for constructor parameters that
- * use an accessibility (`public`/`private`/`protected`) or `readonly` modifier. These are absent
- * from the base estree `Pattern` union. Such parameters declare class fields rather than plain
- * positional arguments, so the rule ignores them when counting/comparing parameters.
+ * Class constructors are exempt: they can declare class fields through parameter properties and
+ * their signatures are constrained by `super()` calls in subclasses, so a params object is not
+ * always an available refactor.
  */
-function isParameterProperty(param: Pattern): boolean {
-    return (param as {type: string}).type === 'TSParameterProperty';
+function isClassConstructor(node: AnyFunctionNode): boolean {
+    const parent = (node as Rule.Node).parent;
+
+    return parent?.type === 'MethodDefinition' && parent.kind === 'constructor';
 }
 
 /**
@@ -186,22 +187,16 @@ const rule: Rule.RuleModule = {
         const sourceCode = context.sourceCode;
 
         function check(node: AnyFunctionNode) {
-            if (isInlineCallbackArgument(node)) {
+            if (isInlineCallbackArgument(node) || isClassConstructor(node)) {
                 return;
             }
 
             const realParams = getRealParams(node.params);
-            /**
-             * Constructor parameter properties (those with an access modifier) declare class fields
-             * rather than plain positional arguments, so they are excluded from the count and
-             * duplicate-type comparison.
-             */
-            const consideredParams = realParams.filter((param) => !isParameterProperty(param));
 
             const messageId =
-                consideredParams.length > 3
+                realParams.length > 3
                     ? 'tooManyPositionalParams'
-                    : hasDuplicateType(consideredParams, sourceCode)
+                    : hasDuplicateType(realParams, sourceCode)
                       ? 'duplicateParamType'
                       : undefined;
 
@@ -209,20 +204,10 @@ const rule: Rule.RuleModule = {
                 return;
             }
 
-            /**
-             * A params object can only wrap the plain parameters. When parameter properties are
-             * interspersed there is no safe single-range replacement, so the fix is omitted and the
-             * developer resolves it manually.
-             */
-            const fix =
-                consideredParams.length === realParams.length
-                    ? buildParamsObjectFix(consideredParams, sourceCode)
-                    : undefined;
-
             context.report({
                 node,
                 messageId,
-                fix: fix ?? null,
+                fix: buildParamsObjectFix(realParams, sourceCode) ?? null,
             });
         }
 
