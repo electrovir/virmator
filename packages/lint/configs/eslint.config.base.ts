@@ -12,6 +12,7 @@ import noRawDateRule from '../src/rules/no-raw-date.lint.js';
 import noReadonlyPrimitiveRule from '../src/rules/no-readonly-primitive.lint.js';
 import noRelativeImportOutsidePackageRule from '../src/rules/no-relative-import-outside-package.lint.js';
 import noShouldInTestDescriptionRule from '../src/rules/no-should-in-test-description.lint.js';
+import noSwitchRule from '../src/rules/no-switch.lint.js';
 import noUnderscoreVariableRule from '../src/rules/no-underscore-variable.lint.js';
 import preferArrowObjectBlockBodyRule from '../src/rules/prefer-arrow-object-block-body.lint.js';
 import preferEnsureErrorRule from '../src/rules/prefer-ensure-error.lint.js';
@@ -80,6 +81,7 @@ export function defineEslintConfig(repoDir: string) {
                         'no-readonly-primitive': noReadonlyPrimitiveRule,
                         'no-relative-import-outside-package': noRelativeImportOutsidePackageRule,
                         'no-should-in-test-description': noShouldInTestDescriptionRule,
+                        'no-switch': noSwitchRule,
                         'no-underscore-variable': noUnderscoreVariableRule,
                         'prefer-arrow-object-block-body': preferArrowObjectBlockBodyRule,
                         'prefer-ensure-error': preferEnsureErrorRule,
@@ -166,7 +168,6 @@ export function defineEslintConfig(repoDir: string) {
                 'unicorn/no-useless-fallback-in-spread': 'error',
                 'unicorn/no-useless-length-check': 'error',
                 'unicorn/no-useless-spread': 'error',
-                'unicorn/no-useless-switch-case': 'error',
                 'unicorn/no-zero-fractions': 'error',
                 'unicorn/numeric-separators-style': 'error',
                 'unicorn/prefer-array-find': 'error',
@@ -202,6 +203,7 @@ export function defineEslintConfig(repoDir: string) {
                 '@virmator/no-readonly-primitive': 'error',
                 '@virmator/no-relative-import-outside-package': 'error',
                 '@virmator/no-should-in-test-description': 'error',
+                '@virmator/no-switch': 'error',
                 '@virmator/no-underscore-variable': 'error',
                 '@virmator/prefer-arrow-object-block-body': 'error',
                 '@virmator/prefer-ensure-error': 'error',
