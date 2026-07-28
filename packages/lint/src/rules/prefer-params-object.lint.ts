@@ -27,22 +27,48 @@ type FixableParam = {
 };
 
 /**
- * Inline callbacks (function or arrow expressions passed directly as call arguments, like
- * `array.reduce((accum, entry, index, wholeArray) => ...)`) have a signature dictated by their
- * caller, so they cannot adopt a params object. Such callbacks should be skipped.
+ * Determines whether the given node sits inside an argument of a call or `new` expression, looking
+ * through object and array literals so that callbacks nested in a config object still count.
+ */
+function isWithinCallArgument(node: Node): boolean {
+    const parent = (node as Rule.Node).parent;
+
+    if (!parent) {
+        return false;
+    }
+
+    if (parent.type === 'CallExpression' || parent.type === 'NewExpression') {
+        return parent.arguments.some((argument) => argument === node);
+    }
+
+    if (parent.type === 'Property') {
+        return parent.value === node && isWithinCallArgument(parent);
+    }
+
+    if (
+        parent.type === 'ObjectExpression' ||
+        parent.type === 'ArrayExpression' ||
+        parent.type === 'SpreadElement'
+    ) {
+        return isWithinCallArgument(parent);
+    }
+
+    return false;
+}
+
+/**
+ * Callbacks passed to an interface we don't control have a signature dictated by that interface, so
+ * they cannot adopt a params object. This covers both function or arrow expressions passed directly
+ * as call arguments (like `array.reduce((accum, entry, index, wholeArray) => ...)`) and methods or
+ * function properties within an object literal passed as a call argument (like `new
+ * IntervalObservable({equalityCheck(a, b) {...}})`). Such callbacks should be skipped.
  */
 function isInlineCallbackArgument(node: AnyFunctionNode): boolean {
     if (node.type === 'FunctionDeclaration') {
         return false;
     }
 
-    const parent = (node as Rule.Node).parent;
-
-    if (!parent || parent.type !== 'CallExpression') {
-        return false;
-    }
-
-    return parent.arguments.includes(node);
+    return isWithinCallArgument(node);
 }
 
 /**

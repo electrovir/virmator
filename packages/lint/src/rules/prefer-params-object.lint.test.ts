@@ -54,6 +54,18 @@ describe('prefer-params-object', () => {
                     code: 'array.reduce(function (accum: number[], entry: number, index: number, wholeArray: number[]) { return accum; }, []);',
                 },
                 {
+                    name: 'method inside an object literal passed to a constructor',
+                    code: 'const instance = new IntervalObservable({equalityCheck(a: any, b: any) { return a === b; }});',
+                },
+                {
+                    name: 'arrow property inside an object literal passed to a function',
+                    code: 'subscribe({compare: (a: number, b: number) => a - b});',
+                },
+                {
+                    name: 'deeply nested callback inside a config object',
+                    code: 'register({handlers: [{compare(a: number, b: number) { return a - b; }}]});',
+                },
+                {
                     name: 'constructor with parameter properties',
                     code: 'class C { constructor(private a: string, private b: number, private c: boolean, private d: string) {} }',
                 },
