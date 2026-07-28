@@ -1,6 +1,6 @@
 {
     "name": "@virmator/docs",
-    "version": "14.30.0",
+    "version": "14.30.1",
     "description": "Default TS docs plugin for virmator.",
     "keywords": [
         "virmator",
@@ -33,16 +33,15 @@
         "test:update": "npm test update"
     },
     "dependencies": {
-        "@augment-vir/assert": "^32.1.0",
-        "@augment-vir/common": "^32.1.0",
-        "@augment-vir/node": "^32.1.0",
-        "@virmator/core": "^14.30.0",
+        "@augment-vir/assert": "^32.2.1",
+        "@augment-vir/common": "^32.2.1",
+        "@augment-vir/node": "^32.2.1",
+        "@virmator/core": "^14.30.1",
         "mri": "^1.2.0",
-        "runstorm": "^1.0.5",
-        "type-fest": "^5.8.0"
+        "runstorm": "^1.0.5"
     },
     "devDependencies": {
-        "@augment-vir/test": "^32.1.0",
+        "@augment-vir/test": "^32.2.1",
         "@types/node": "^26.1.1",
         "c8": "^12.0.0",
         "esbuild": "^0.28.1",

@@ -1,15 +1,17 @@
 import {
     type AnyObject,
+    type EmptyObject,
     type Logger,
     type LogOutputType,
     type MaybePromise,
+    type PackageJson,
     type PartialWithUndefined,
     type RuntimeEnv,
+    type SetRequired,
     type TypedFunction,
 } from '@augment-vir/common';
 import {type runShellCommand} from '@augment-vir/node';
 import {type ColorKey} from 'runstorm';
-import {type EmptyObject, type PackageJson, type SetRequired} from 'type-fest';
 import {type VirmatorPluginResolvedConfigFile} from './plugin-configs.js';
 import {type PackageType} from './plugin-env.js';
 import {

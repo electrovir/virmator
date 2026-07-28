@@ -1,6 +1,6 @@
 {
     "name": "@virmator/mono-repo-root",
-    "version": "14.30.0",
+    "version": "14.30.1",
     "private": true,
     "sideEffects": false,
     "type": "module",
@@ -33,7 +33,7 @@
         "@eslint/js": "10.0.1",
         "@stylistic/eslint-plugin": "^5.10.0",
         "@stylistic/eslint-plugin-ts": "^4.4.1",
-        "@typescript-eslint/eslint-plugin": "^8.64.0",
+        "@typescript-eslint/eslint-plugin": "^8.65.0",
         "cspell": "^10.0.1",
         "dependency-cruiser": "^18.1.0",
         "esbuild": "^0.28.1",
@@ -56,7 +56,7 @@
         "prettier-plugin-sort-json": "^4.2.0",
         "prettier-plugin-toml": "^2.0.6",
         "typescript": "^6.0.3",
-        "typescript-eslint": "^8.64.0",
+        "typescript-eslint": "^8.65.0",
         "virmator": "*"
     },
     "engines": {

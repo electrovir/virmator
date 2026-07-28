@@ -1,4 +1,4 @@
-import {type PartialDeep} from 'type-fest';
+import {type PartialDeep} from '@augment-vir/common';
 import {type TypeDocOptionMap} from 'typedoc';
 
 export const defaultDocumentationRequirements: TypeDocOptionMap['requiredToBeDocumented'] = [

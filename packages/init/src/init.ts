@@ -8,6 +8,7 @@ import {
     awaitedBlockingMap,
     getEnumValues,
     joinWithFinalConjunction,
+    type PackageJson,
     pickObjectKeys,
     RuntimeEnv,
     safeMatch,
@@ -27,7 +28,6 @@ import {
 } from '@virmator/core';
 import {basename, join} from 'node:path';
 import {simpleGit} from 'simple-git';
-import {type PackageJson} from 'type-fest';
 
 const deps: PluginNpmDeps = {
     'mono-vir': {

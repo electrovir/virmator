@@ -9,6 +9,7 @@ import {
     mapObjectValues,
     wrapInTry,
     type Logger,
+    type PackageJson,
     type PartialWithUndefined,
 } from '@augment-vir/common';
 import {readPackageJson, runShellCommand} from '@augment-vir/node';
@@ -23,7 +24,6 @@ import {
     runCommands,
     type Command,
 } from 'runstorm';
-import {type PackageJson} from 'type-fest';
 import {findClosestPackageDir} from '../augments/index.js';
 import {hideNoTraceTraces, VirmatorNoTraceError} from '../errors/virmator-no-trace.error.js';
 import {type VirmatorPluginResolvedConfigFile} from '../plugin/plugin-configs.js';

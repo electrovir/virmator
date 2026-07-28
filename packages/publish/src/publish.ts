@@ -3,7 +3,9 @@ import {
     awaitedBlockingMap,
     getObjectTypedValues,
     type Logger,
+    type PackageJson,
     safeMatch,
+    type SetRequired,
     wrapInTry,
 } from '@augment-vir/common';
 import {
@@ -26,7 +28,6 @@ import {join, relative, resolve} from 'node:path';
 import semver, {type SemVer} from 'semver';
 import {simpleGit, type SimpleGit} from 'simple-git';
 import {isValidSpdxExpression} from 'spdx-vir';
-import {type PackageJson, type SetRequired} from 'type-fest';
 import {buildUrl} from 'url-vir';
 
 const inVirmatorEnvKey = 'IN_VIRMATOR';

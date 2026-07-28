@@ -5,6 +5,7 @@ import {
     RuntimeEnv,
     type AnyObject,
     type Logger,
+    type PartialDeep,
 } from '@augment-vir/common';
 import {readPackageJson} from '@augment-vir/node';
 import {defineVirmatorPlugin, NpmDepType, PackageType, VirmatorNoTraceError} from '@virmator/core';
@@ -12,7 +13,6 @@ import mri from 'mri';
 import {basename, join} from 'node:path';
 import {pathToFileURL} from 'node:url';
 import {createCommandLogPrefix, type ColorKey} from 'runstorm';
-import {type PartialDeep} from 'type-fest';
 import type * as Typedoc from 'typedoc';
 
 /** A virmator plugin for checking and generating documentation. */

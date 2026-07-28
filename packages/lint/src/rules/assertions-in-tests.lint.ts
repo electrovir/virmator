@@ -49,6 +49,13 @@ const objectShapeTesterAssertionNames: ReadonlyArray<string> = [
     'assertWrapValidShape',
 ];
 
+/**
+ * Names of `@augment-vir/test` exports that assert, so a test that calls one is asserting.
+ * Recognized by name rather than by treating the whole module as assertion utilities because most
+ * of its exports (`describe`, `it`, etc.) define tests instead of asserting within them.
+ */
+const augmentVirTestAssertionNames: ReadonlyArray<string> = ['assertSnapshot'];
+
 /** Names of the test-defining functions whose callbacks must contain at least one assertion. */
 const testFunctionNames: ReadonlyArray<string> = [
     'it',
@@ -295,6 +302,7 @@ const rule: Rule.RuleModule = {
         const names = [
             ...augmentVirAssertionNames,
             ...objectShapeTesterAssertionNames,
+            ...augmentVirTestAssertionNames,
             ...(options.additionalAssertionNames || []),
         ];
 

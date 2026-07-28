@@ -112,6 +112,13 @@ describe('assertions-in-tests', () => {
                         "it('works', () => { assertValidShape(value, shape); });",
                     ].join('\n'),
                 },
+                {
+                    name: "recognizes @augment-vir/test's assertSnapshot",
+                    code: [
+                        "import {assertSnapshot, it} from '@augment-vir/test';",
+                        "it('works', (context) => { assertSnapshot(context, value); });",
+                    ].join('\n'),
+                },
             ],
             invalid: [
                 {

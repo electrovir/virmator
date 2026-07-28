@@ -1,3 +1,4 @@
+import {check} from '@augment-vir/assert';
 import {type Rule, type SourceCode} from 'eslint';
 import type {
     ArrowFunctionExpression,
@@ -35,25 +36,19 @@ function isWithinCallArgument(node: Node): boolean {
 
     if (!parent) {
         return false;
-    }
-
-    if (parent.type === 'CallExpression' || parent.type === 'NewExpression') {
-        return parent.arguments.some((argument) => argument === node);
-    }
-
-    if (parent.type === 'Property') {
+    } else if (parent.type === 'CallExpression' || parent.type === 'NewExpression') {
+        return check.hasValue(parent.arguments, node);
+    } else if (parent.type === 'Property') {
         return parent.value === node && isWithinCallArgument(parent);
-    }
-
-    if (
+    } else if (
         parent.type === 'ObjectExpression' ||
         parent.type === 'ArrayExpression' ||
         parent.type === 'SpreadElement'
     ) {
         return isWithinCallArgument(parent);
+    } else {
+        return false;
     }
-
-    return false;
 }
 
 /**

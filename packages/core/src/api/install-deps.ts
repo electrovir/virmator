@@ -4,11 +4,11 @@ import {
     awaitedForEach,
     getObjectTypedEntries,
     type Logger,
+    type PackageJson,
     type RuntimeEnv,
 } from '@augment-vir/common';
 import {readPackageJson, runShellCommand} from '@augment-vir/node';
 import * as semver from 'semver';
-import {type PackageJson} from 'type-fest';
 import {VirmatorNoTraceError} from '../errors/virmator-no-trace.error.js';
 import {type PackageType} from '../plugin/plugin-env.js';
 import {type UsedVirmatorPluginCommands} from '../plugin/plugin-executor.js';
