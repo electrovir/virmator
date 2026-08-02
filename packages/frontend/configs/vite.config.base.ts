@@ -1,5 +1,5 @@
 import {log, logColors} from '@augment-vir/common';
-import {alwaysReloadPlugin} from '@virmator/frontend/src/always-reload.vite';
+import {alwaysReloadPlugin} from '@virmator/frontend/src/always-reload.vite.js';
 import {existsSync} from 'node:fs';
 import {basename, dirname, join, relative} from 'node:path';
 import {type UserConfig, type UserConfigExport} from 'vite';
