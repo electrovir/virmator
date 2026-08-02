@@ -254,6 +254,11 @@ export function defineConfig({
     return {
         forbidden: forbiddenRules.filter((rule) => !omitRules.includes(rule.name)),
         options: {
+            enhancedResolveOptions: {
+                exportsFields: [
+                    'exports',
+                ],
+            },
             doNotFollow: {
                 dependencyTypes: [
                     'core',
