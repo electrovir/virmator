@@ -119,6 +119,13 @@ describe('assertions-in-tests', () => {
                         "it('works', (context) => { assertSnapshot(context, value); });",
                     ].join('\n'),
                 },
+                {
+                    name: "recognizes date-vir's assertValidFullDate",
+                    code: [
+                        "import {assertValidFullDate} from 'date-vir';",
+                        "it('works', () => { assertValidFullDate(value); });",
+                    ].join('\n'),
+                },
             ],
             invalid: [
                 {

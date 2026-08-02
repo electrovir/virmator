@@ -56,6 +56,17 @@ const objectShapeTesterAssertionNames: ReadonlyArray<string> = [
  */
 const augmentVirTestAssertionNames: ReadonlyArray<string> = ['assertSnapshot'];
 
+/**
+ * Names of `date-vir` exports that throw on invalid input, so a test that calls one is asserting.
+ * Recognized by name rather than by treating the whole module as assertion utilities because nearly
+ * all of `date-vir`'s exports create or format dates instead of asserting.
+ */
+const dateVirAssertionNames: ReadonlyArray<string> = [
+    'assertHasFullDateKeys',
+    'assertValidFullDate',
+    'assertValidTimezone',
+];
+
 /** Names of the test-defining functions whose callbacks must contain at least one assertion. */
 const testFunctionNames: ReadonlyArray<string> = [
     'it',
@@ -303,6 +314,7 @@ const rule: Rule.RuleModule = {
             ...augmentVirAssertionNames,
             ...objectShapeTesterAssertionNames,
             ...augmentVirTestAssertionNames,
+            ...dateVirAssertionNames,
             ...(options.additionalAssertionNames || []),
         ];
 
