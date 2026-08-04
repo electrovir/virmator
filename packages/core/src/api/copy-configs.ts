@@ -54,6 +54,7 @@ export async function copyPluginConfigs({
     monoRepoPackages,
     log,
     filteredArgs,
+    isCwdPackagePrivate = false,
 }: Readonly<{
     usedCommands: Readonly<UsedVirmatorPluginCommands>;
     resolvedConfigs: Readonly<VirmatorPluginResolvedConfigs<any>>;
@@ -61,7 +62,11 @@ export async function copyPluginConfigs({
     monoRepoPackages: MonoRepoPackage[];
     log: Logger;
     filteredArgs: string[];
-}>) {
+}> &
+    PartialWithUndefined<{
+        /** `true` if the current package's `package.json` has `"private": true`. */
+        isCwdPackagePrivate: boolean;
+    }>) {
     const configs = flattenConfigs(usedCommands, resolvedConfigs).sort((a, b) =>
         basename(a.copyToPath).localeCompare(basename(b.copyToPath)),
     );
@@ -82,17 +87,21 @@ export async function copyPluginConfigs({
             config.packageType[PackageType.MonoPackage]
         ) {
             await Promise.all(
-                monoRepoPackages.map(async (repoPackage) => {
-                    await copyConfigFile({
-                        config: {
-                            ...config,
-                            fullCopyToPath: join(repoPackage.fullPath, config.copyToPath),
-                        },
-                        log,
-                    });
-                }),
+                monoRepoPackages
+                    .filter((repoPackage) => !config.skipPrivatePackages || !repoPackage.isPrivate)
+                    .map(async (repoPackage) => {
+                        await copyConfigFile({
+                            config: {
+                                ...config,
+                                fullCopyToPath: join(repoPackage.fullPath, config.copyToPath),
+                            },
+                            log,
+                        });
+                    }),
             );
         } else if (!config.required || !config.packageType[packageType]) {
+            return;
+        } else if (config.skipPrivatePackages && isCwdPackagePrivate) {
             return;
         } else {
             await copyConfigFile({

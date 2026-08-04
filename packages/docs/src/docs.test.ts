@@ -79,9 +79,22 @@ describe(virmatorDocsPlugin.name, () => {
             shouldPass: false,
             context,
             dir,
+            beforeCleanupCallback: (cwd) => {
+                assert.deepEquals(
+                    {
+                        a: existsSync(join(cwd, 'packages', 'a', 'configs', 'typedoc.config.ts')),
+                        /** Package `b` is private. */
+                        b: existsSync(join(cwd, 'packages', 'b', 'configs', 'typedoc.config.ts')),
+                    },
+                    {
+                        a: true,
+                        b: false,
+                    },
+                );
+            },
         });
     });
-    it('skips private repo typedoc', async (context) => {
+    it('skips private packages', async (context) => {
         const monoDir = join(testFilesDir, 'mono-repo');
         const dirContents = await readAllDirContents(monoDir, {
             recursive: true,
@@ -95,7 +108,16 @@ describe(virmatorDocsPlugin.name, () => {
             context,
             dir: join(monoDir, 'packages', 'b'),
             beforeCleanupCallback: (cwd) => {
-                assert.strictEquals(existsSync(join(cwd, 'dist-docs', 'index.html')), false);
+                assert.deepEquals(
+                    {
+                        docs: existsSync(join(cwd, 'dist-docs', 'index.html')),
+                        typedocConfig: existsSync(join(cwd, 'configs', 'typedoc.config.ts')),
+                    },
+                    {
+                        docs: false,
+                        typedocConfig: false,
+                    },
+                );
             },
         });
         await resetDirContents(monoDir, dirContents);

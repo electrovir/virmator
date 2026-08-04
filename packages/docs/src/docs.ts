@@ -65,6 +65,7 @@ export const virmatorDocsPlugin = defineVirmatorPlugin(
                             [PackageType.MonoPackage]: true,
                         },
                         required: true,
+                        skipPrivatePackages: true,
                     },
                 },
                 npmDeps: {
@@ -125,6 +126,14 @@ export const virmatorDocsPlugin = defineVirmatorPlugin(
             packageName,
             color,
         }: Readonly<{packageDir: string; packageName: string; color: ColorKey | undefined}>) {
+            const packageJson = await readPackageJson(packageDir);
+
+            /** Private packages are never published, so they are never documented either. */
+            if (packageJson.private) {
+                log.faint(`Skipping docs in private package ${packageName}`);
+                return;
+            }
+
             try {
                 await runShellCommand(
                     mdCodeCommand,
@@ -159,15 +168,6 @@ export const virmatorDocsPlugin = defineVirmatorPlugin(
             }
 
             /** Run typedoc */
-            const typedocVerb = checkOnly ? 'check' : 'generation';
-
-            const packageJson = await readPackageJson(packageDir);
-
-            if (packageJson.private) {
-                log.faint(`Skipping typedoc ${typedocVerb} in private repo ${packageName}`);
-                return;
-            }
-
             // dynamic imports are not branches
             /* node:coverage ignore next 7 */
             const config = (

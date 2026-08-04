@@ -23,6 +23,13 @@ export type VirmatorPluginConfigFile = {
      * config doesn't exist, unless `'--no-configs'` was set.
      */
     required: boolean;
+    /**
+     * If set to `true`, this config will not be copied into packages whose `package.json` has
+     * `"private": true`. Use this for configs that only support commands which skip private
+     * packages (such as typedoc, since private packages are never published and thus never
+     * documented).
+     */
+    skipPrivatePackages?: boolean | undefined;
     configFlags?: string[];
 };
 

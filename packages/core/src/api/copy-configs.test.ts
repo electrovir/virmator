@@ -280,6 +280,7 @@ describe(copyPluginConfigs.name, () => {
         );
         await writeFile(join(sourceDir, 'required-config.txt'), 'required');
         await writeFile(join(sourceDir, 'optional-config.txt'), 'optional');
+        await writeFile(join(sourceDir, 'public-only-config.txt'), 'public only');
 
         const baseConfig = {
             env: {
@@ -325,6 +326,15 @@ describe(copyPluginConfigs.name, () => {
                             fullCopyToPath: join(tempDir, 'optional-config.txt'),
                             required: false,
                         },
+                        publicOnlyMonoPackage: {
+                            ...baseConfig,
+                            copyFromPath: join('source', 'public-only-config.txt'),
+                            copyToPath: 'public-only-config.txt',
+                            fullCopyFromPath: join(sourceDir, 'public-only-config.txt'),
+                            fullCopyToPath: join(tempDir, 'public-only-config.txt'),
+                            required: true,
+                            skipPrivatePackages: true,
+                        },
                     },
                 },
             },
@@ -333,12 +343,46 @@ describe(copyPluginConfigs.name, () => {
                     packageName: basename(fullPath),
                     relativePath: join('packages', basename(fullPath)),
                     fullPath,
+                    /** Package `b` is the private one. */
+                    isPrivate: basename(fullPath) === 'b',
                 };
             }),
         };
     }
 
-    it('distributes required mono-package configs to each package but not optional ones', async () => {
+    it('skips a private-skipping config within a private package', async () => {
+        const {tempDir, usedCommands, resolvedConfigs, monoRepoPackages} = await setupMonoRepo();
+
+        try {
+            await copyPluginConfigs({
+                usedCommands,
+                resolvedConfigs,
+                packageType: PackageType.MonoPackage,
+                monoRepoPackages,
+                log: emptyLog,
+                filteredArgs: [],
+                isCwdPackagePrivate: true,
+            });
+
+            assert.deepEquals(
+                {
+                    required: existsSync(join(tempDir, 'required-config.txt')),
+                    publicOnly: existsSync(join(tempDir, 'public-only-config.txt')),
+                },
+                {
+                    required: true,
+                    publicOnly: false,
+                },
+            );
+        } finally {
+            await rm(tempDir, {
+                recursive: true,
+                force: true,
+            });
+        }
+    });
+
+    it('distributes required mono-package configs to each package but not optional or private-skipping ones', async () => {
         const {tempDir, packagePaths, usedCommands, resolvedConfigs, monoRepoPackages} =
             await setupMonoRepo();
 
@@ -357,16 +401,19 @@ describe(copyPluginConfigs.name, () => {
                     return {
                         required: existsSync(join(packagePath, 'required-config.txt')),
                         optional: existsSync(join(packagePath, 'optional-config.txt')),
+                        publicOnly: existsSync(join(packagePath, 'public-only-config.txt')),
                     };
                 }),
                 [
                     {
                         required: true,
                         optional: false,
+                        publicOnly: true,
                     },
                     {
                         required: true,
                         optional: false,
+                        publicOnly: false,
                     },
                 ],
             );

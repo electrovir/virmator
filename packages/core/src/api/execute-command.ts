@@ -194,13 +194,15 @@ async function getMonoRepoPackages(cwdPackagePath: string): Promise<MonoRepoPack
         relativePackagePathsInOrder.map(async (dependencyLayer): Promise<MonoRepoPackage[]> => {
             return await Promise.all(
                 dependencyLayer.map(async (packagePath) => {
-                    const packageJson = await wrapInTry(() => readPackageJson(packagePath), {
+                    const fullPath = join(cwdPackagePath, packagePath);
+                    const packageJson = await wrapInTry(() => readPackageJson(fullPath), {
                         fallbackValue: undefined,
                     });
                     return {
                         packageName: packageJson?.name || packagePath,
                         relativePath: packagePath,
-                        fullPath: join(cwdPackagePath, packagePath),
+                        fullPath,
+                        isPrivate: !!packageJson?.private,
                     };
                 }),
             );
@@ -517,6 +519,7 @@ export async function executeVirmatorCommand({
             monoRepoPackages: monoRepoPackages.flat(),
             log,
             filteredArgs,
+            isCwdPackagePrivate: !!cwdPackageJson.private,
         });
     }
     if (!args.virmatorFlags['--no-deps']) {

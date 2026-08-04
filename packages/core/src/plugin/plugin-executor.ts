@@ -62,6 +62,8 @@ export type MonoRepoPackage = {
     packageName: string;
     relativePath: string;
     fullPath: string;
+    /** `true` if the package's `package.json` has `"private": true`. */
+    isPrivate: boolean;
 };
 
 /** Run a command per npm package nested within a mono repo. */

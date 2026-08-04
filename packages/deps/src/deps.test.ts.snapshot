@@ -1,8 +1,8 @@
 exports[`Deps > catches circular deps across packages via file-level imports 1`] = `
 {
   "logs": {
-    "stdout": "Copied dep-cruiser.config.cts\\n[packages/a] > cd ../.. && npx depcruise --config node_modules/.virmator/dep-cruiser.config.cjs packages/a/src\\n[packages/b] > cd ../.. && npx depcruise --config node_modules/.virmator/dep-cruiser.config.cjs packages/b/src\\n[packages/a] \\n[packages/a]   error no-circular: packages/a/src/a.ts → \\n[packages/a]       packages/b/src/b.ts →\\n[packages/a]       packages/a/src/a.ts\\n[packages/a] \\n[packages/a] x 1 dependency violations (1 errors, 0 warnings). 2 modules, 2 dependencies cruised.\\n[packages/a] \\n\\n\\nRunStorm Summary:\\n[packages/a] failed.\\n[packages/b] cancelled.\\n\\n",
-    "stderr": "[packages/a] exited with exit code 1.\\nExited with 1.\\ndeps failed."
+    "stdout": "Copied dep-cruiser.config.cts\\n[a] > cd ../.. && npx depcruise --config node_modules/.virmator/dep-cruiser.config.cjs packages/a/src\\n[b] > cd ../.. && npx depcruise --config node_modules/.virmator/dep-cruiser.config.cjs packages/b/src\\n[a] \\n[a]   error no-circular: packages/a/src/a.ts → \\n[a]       packages/b/src/b.ts →\\n[a]       packages/a/src/a.ts\\n[a] \\n[a] x 1 dependency violations (1 errors, 0 warnings). 2 modules, 2 dependencies cruised.\\n[a] \\n\\n\\nRunStorm Summary:\\n[a] failed.\\n[b] cancelled.\\n\\n",
+    "stderr": "[a] exited with exit code 1.\\nExited with 1.\\ndeps failed."
   },
   "cwd": "packages/deps/test-files/circular-file-imports-mono-repo",
   "contentsDiff": {
@@ -19,7 +19,7 @@ exports[`Deps > catches circular deps across packages via file-level imports 1`]
 exports[`Deps > checks a custom mono repo path 1`] = `
 {
   "logs": {
-    "stdout": "Copied dep-cruiser.config.cts\\n[packages/a] > cd ../.. && npx depcruise --config node_modules/.virmator/dep-cruiser.config.cjs packages/a/src\\n[packages/b] > cd ../.. && npx depcruise --config node_modules/.virmator/dep-cruiser.config.cjs packages/a/src\\n[packages/a] \\n[packages/a] ✔ no dependency violations found (1 modules, 0 dependencies cruised)\\n[packages/a] \\n[packages/a] exited with exit code 0.\\n[packages/b] \\n[packages/b] ✔ no dependency violations found (1 modules, 0 dependencies cruised)\\n[packages/b] \\n[packages/b] exited with exit code 0.\\n\\n\\nRunStorm Summary:\\n[packages/a] succeeded.\\n[packages/b] succeeded.\\n\\n\\ndeps finished."
+    "stdout": "Copied dep-cruiser.config.cts\\n[a] > cd ../.. && npx depcruise --config node_modules/.virmator/dep-cruiser.config.cjs packages/a/src\\n[b] > cd ../.. && npx depcruise --config node_modules/.virmator/dep-cruiser.config.cjs packages/a/src\\n[a] \\n[a] ✔ no dependency violations found (1 modules, 0 dependencies cruised)\\n[a] \\n[a] exited with exit code 0.\\n[b] \\n[b] ✔ no dependency violations found (1 modules, 0 dependencies cruised)\\n[b] \\n[b] exited with exit code 0.\\n\\n\\nRunStorm Summary:\\n[a] succeeded.\\n[b] succeeded.\\n\\n\\ndeps finished."
   },
   "cwd": "packages/deps/test-files/valid-mono-repo",
   "contentsDiff": {
@@ -77,8 +77,8 @@ exports[`Deps > fails invalid deps 1`] = `
 exports[`Deps > fails invalid mono repo deps 1`] = `
 {
   "logs": {
-    "stdout": "Copied dep-cruiser.config.cts\\n[packages/a] > cd ../.. && npx depcruise --config node_modules/.virmator/dep-cruiser.config.cjs packages/a/src\\n[packages/b] > cd ../.. && npx depcruise --config node_modules/.virmator/dep-cruiser.config.cjs packages/b/src\\n[packages/a] \\n[packages/a]   error no-circular: packages/a/src/a.ts → \\n[packages/a]       packages/a/src/aa.ts →\\n[packages/a]       packages/a/src/a.ts\\n[packages/a] \\n[packages/a] x 1 dependency violations (1 errors, 0 warnings). 2 modules, 2 dependencies cruised.\\n[packages/a] \\n\\n\\nRunStorm Summary:\\n[packages/a] failed.\\n[packages/b] cancelled.\\n\\n",
-    "stderr": "[packages/a] exited with exit code 1.\\nExited with 1.\\ndeps failed."
+    "stdout": "Copied dep-cruiser.config.cts\\n[a] > cd ../.. && npx depcruise --config node_modules/.virmator/dep-cruiser.config.cjs packages/a/src\\n[b] > cd ../.. && npx depcruise --config node_modules/.virmator/dep-cruiser.config.cjs packages/b/src\\n[a] \\n[a]   error no-circular: packages/a/src/a.ts → \\n[a]       packages/a/src/aa.ts →\\n[a]       packages/a/src/a.ts\\n[a] \\n[a] x 1 dependency violations (1 errors, 0 warnings). 2 modules, 2 dependencies cruised.\\n[a] \\n\\n\\nRunStorm Summary:\\n[a] failed.\\n[b] cancelled.\\n\\n",
+    "stderr": "[a] exited with exit code 1.\\nExited with 1.\\ndeps failed."
   },
   "cwd": "packages/deps/test-files/invalid-mono-repo",
   "contentsDiff": {
@@ -109,7 +109,7 @@ exports[`Deps > passes valid deps 1`] = `
 exports[`Deps > passes valid mono repo deps 1`] = `
 {
   "logs": {
-    "stdout": "Copied dep-cruiser.config.cts\\n[packages/a] > cd ../.. && npx depcruise --config node_modules/.virmator/dep-cruiser.config.cjs packages/a/src\\n[packages/b] > cd ../.. && npx depcruise --config node_modules/.virmator/dep-cruiser.config.cjs packages/b/src\\n[packages/a] \\n[packages/a] ✔ no dependency violations found (1 modules, 0 dependencies cruised)\\n[packages/a] \\n[packages/a] exited with exit code 0.\\n[packages/b] \\n[packages/b] ✔ no dependency violations found (1 modules, 0 dependencies cruised)\\n[packages/b] \\n[packages/b] exited with exit code 0.\\n\\n\\nRunStorm Summary:\\n[packages/a] succeeded.\\n[packages/b] succeeded.\\n\\n\\ndeps finished."
+    "stdout": "Copied dep-cruiser.config.cts\\n[a] > cd ../.. && npx depcruise --config node_modules/.virmator/dep-cruiser.config.cjs packages/a/src\\n[b] > cd ../.. && npx depcruise --config node_modules/.virmator/dep-cruiser.config.cjs packages/b/src\\n[a] \\n[a] ✔ no dependency violations found (1 modules, 0 dependencies cruised)\\n[a] \\n[a] exited with exit code 0.\\n[b] \\n[b] ✔ no dependency violations found (1 modules, 0 dependencies cruised)\\n[b] \\n[b] exited with exit code 0.\\n\\n\\nRunStorm Summary:\\n[a] succeeded.\\n[b] succeeded.\\n\\n\\ndeps finished."
   },
   "cwd": "packages/deps/test-files/valid-mono-repo",
   "contentsDiff": {
