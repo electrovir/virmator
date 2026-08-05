@@ -14,9 +14,9 @@ export function listRegenNodeModulesDirs({
     monoRepoPackages: ReadonlyArray<Pick<MonoRepoPackage, 'relativePath'>>;
 }): string[] {
     return [
-        ...monoRepoPackages.map((monoPackage) =>
-            join(monoRepoRootPath, monoPackage.relativePath, 'node_modules'),
-        ),
+        ...monoRepoPackages.map((monoPackage) => {
+            return join(monoRepoRootPath, monoPackage.relativePath, 'node_modules');
+        }),
         join(monoRepoRootPath, 'node_modules'),
     ];
 }

@@ -42,18 +42,20 @@ function findRemoveDuplicatesImport(program: Readonly<Rule.Node>): RemoveDuplica
                 return accum;
             }
 
-            const namedSpecifiers = importDecl.specifiers.filter(
-                (spec) =>
+            const namedSpecifiers = importDecl.specifiers.filter((spec) => {
+                return (
                     spec.type === 'ImportSpecifier' &&
-                    (spec as unknown as {importKind?: string}).importKind !== 'type',
-            );
+                    (spec as unknown as {importKind?: string}).importKind !== 'type'
+                );
+            });
 
-            const removeDuplicatesSpecifier = namedSpecifiers.find(
-                (spec) =>
+            const removeDuplicatesSpecifier = namedSpecifiers.find((spec) => {
+                return (
                     spec.type === 'ImportSpecifier' &&
                     spec.imported.type === 'Identifier' &&
-                    spec.imported.name === 'removeDuplicates',
-            );
+                    spec.imported.name === 'removeDuplicates'
+                );
+            });
 
             const localName =
                 removeDuplicatesSpecifier?.type === 'ImportSpecifier'

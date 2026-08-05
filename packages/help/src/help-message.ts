@@ -184,12 +184,13 @@ function flagsToHelpString(flags: Record<string, {doc: string}>, format: Formatt
             ([
                 flagName,
                 entry,
-            ]) =>
-                flagToHelpString({
+            ]) => {
+                return flagToHelpString({
                     flagName,
                     description: entry.doc,
                     format,
-                }),
+                });
+            },
         )
         .join('\n');
 }
@@ -212,13 +213,14 @@ function commandToHelpString({
         ([
             subCommandName,
             subCommand,
-        ]) =>
-            commandToHelpString({
+        ]) => {
+            return commandToHelpString({
                 commandName: subCommandName,
                 command: subCommand,
                 format,
                 indentCount: indentCount + 2,
-            }),
+            });
+        },
     );
     const subCommandsBlock = subCommands.length
         ? `\n${indent(indentCount + 1, format)}${format.bullet}Sub Commands\n\n${subCommands.join('\n\n')}`
@@ -254,25 +256,25 @@ function commandDocToString(
     format: Readonly<Formatter>,
     indentCount: number,
 ): string {
-    const sections = command.doc.sections.map((section) =>
-        docEntryToString({
+    const sections = command.doc.sections.map((section) => {
+        return docEntryToString({
             entry: {
                 content: section,
             },
             indentCount,
             useBullets: false,
             format,
-        }),
-    );
+        });
+    });
 
-    const examples = command.doc.examples.map((example) =>
-        docEntryToString({
+    const examples = command.doc.examples.map((example) => {
+        return docEntryToString({
             entry: example,
             indentCount: indentCount + 1,
             useBullets: true,
             format,
-        }),
-    );
+        });
+    });
 
     const exampleBlock = examples.length
         ? `${indent(indentCount + 1, format)}${format.bullet}Examples\n${examples.join('\n')}`

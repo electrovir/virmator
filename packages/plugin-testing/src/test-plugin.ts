@@ -138,15 +138,15 @@ export async function testPlugin({
     });
 
     try {
-        const error = await wrapInTry(() =>
-            executeVirmatorCommand({
+        const error = await wrapInTry(() => {
+            return executeVirmatorCommand({
                 plugins: Array.isArray(plugin) ? plugin : [plugin],
                 cliCommand,
                 cwd,
                 log: logger,
                 concurrency: 1,
-            }),
-        );
+            });
+        });
 
         if (error instanceof VirmatorNoTraceError && hideNoTraceTraces) {
             if (error.message) {

@@ -149,11 +149,12 @@ export const virmatorDocsPlugin = defineVirmatorPlugin(
                                   })
                                 : undefined,
                         logTransform: {
-                            stderr: (stderrInput) =>
-                                stderrInput.replace(
+                            stderr: (stderrInput) => {
+                                return stderrInput.replace(
                                     'Run without --check to update.',
                                     'Run without the "check" sub-command to update.',
-                                ),
+                                );
+                            },
                         },
                         includeErrorMessage: true,
                     },

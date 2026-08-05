@@ -25,12 +25,13 @@ function addParseUrlImport(
     const existingUrlVirImport = importDeclarations.find((imp) => imp.source.value === 'url-vir');
 
     if (existingUrlVirImport) {
-        const hasParseUrl = existingUrlVirImport.specifiers.some(
-            (specifier) =>
+        const hasParseUrl = existingUrlVirImport.specifiers.some((specifier) => {
+            return (
                 specifier.type === 'ImportSpecifier' &&
                 specifier.imported.type === 'Identifier' &&
-                specifier.imported.name === 'parseUrl',
-        );
+                specifier.imported.name === 'parseUrl'
+            );
+        });
 
         if (!hasParseUrl) {
             const lastSpecifier = existingUrlVirImport.specifiers.at(-1);

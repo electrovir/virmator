@@ -39,9 +39,9 @@ const rule: Rule.RuleModule = {
                     node,
                     messageId: 'preferToSorted',
                     fix(fixer) {
-                        const argumentSourceTexts = node.arguments.map((argument) =>
-                            context.sourceCode.getText(argument as unknown as Rule.Node),
-                        );
+                        const argumentSourceTexts = node.arguments.map((argument) => {
+                            return context.sourceCode.getText(argument as unknown as Rule.Node);
+                        });
                         const sourceText = context.sourceCode.getText(
                             spreadArgument as unknown as Rule.Node,
                         );

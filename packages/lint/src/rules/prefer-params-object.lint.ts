@@ -165,9 +165,11 @@ function buildParamsObjectFix(
     const definedParams = fixableParams.filter((fixable) => fixable != undefined);
 
     const patternText = definedParams
-        .map((param) =>
-            param.defaultText == undefined ? param.name : `${param.name} = ${param.defaultText}`,
-        )
+        .map((param) => {
+            return param.defaultText == undefined
+                ? param.name
+                : `${param.name} = ${param.defaultText}`;
+        })
         .join(', ');
     const typeText = definedParams
         .map((param) => `${param.name}${param.optional ? '?' : ''}: ${param.typeText}`)
@@ -182,14 +184,15 @@ function buildParamsObjectFix(
     const start = sourceCode.getRange(firstParam)[0];
     const end = sourceCode.getRange(lastParam)[1];
 
-    return (fixer) =>
-        fixer.replaceTextRange(
+    return (fixer) => {
+        return fixer.replaceTextRange(
             [
                 start,
                 end,
             ],
             `{${patternText}}: Readonly<{${typeText}}>`,
         );
+    };
 }
 
 const rule: Rule.RuleModule = {

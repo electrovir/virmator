@@ -510,11 +510,12 @@ function findWorkspaceForFiles({
 
     const matches = fileArgs.map((fileArg) => {
         const absoluteFilePath = join(monoRepoRootPath, fileArg);
-        return deepestFirst.find(
-            (workspace) =>
+        return deepestFirst.find((workspace) => {
+            return (
                 absoluteFilePath === workspace.fullPath ||
-                absoluteFilePath.startsWith(workspace.fullPath + sep),
-        );
+                absoluteFilePath.startsWith(workspace.fullPath + sep)
+            );
+        });
     });
 
     const first = matches[0];

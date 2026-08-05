@@ -44,12 +44,13 @@ describe(assertValidLicense.name, () => {
 
     it('throws when the license field is missing', () => {
         assert.throws(
-            () =>
-                assertValidLicense({
+            () => {
+                return assertValidLicense({
                     license: undefined,
                     isPrivate: false,
                     displayName: 'pkg',
-                }),
+                });
+            },
             {
                 matchConstructor: VirmatorNoTraceError,
                 matchMessage: "Missing 'license' field in 'pkg'.",
@@ -59,12 +60,13 @@ describe(assertValidLicense.name, () => {
 
     it('throws when the license field is an empty string', () => {
         assert.throws(
-            () =>
-                assertValidLicense({
+            () => {
+                return assertValidLicense({
                     license: '',
                     isPrivate: false,
                     displayName: 'pkg',
-                }),
+                });
+            },
             {
                 matchConstructor: VirmatorNoTraceError,
                 matchMessage: "Missing 'license' field in 'pkg'.",
@@ -74,8 +76,8 @@ describe(assertValidLicense.name, () => {
 
     it('throws when the license field is a legacy object form', () => {
         assert.throws(
-            () =>
-                assertValidLicense({
+            () => {
+                return assertValidLicense({
                     // @ts-expect-error: intentionally incorrect license
                     license: {
                         type: 'MIT',
@@ -83,7 +85,8 @@ describe(assertValidLicense.name, () => {
                     },
                     isPrivate: false,
                     displayName: 'pkg',
-                }),
+                });
+            },
             {
                 matchConstructor: VirmatorNoTraceError,
                 matchMessage: "Missing 'license' field in 'pkg'.",
@@ -93,12 +96,13 @@ describe(assertValidLicense.name, () => {
 
     it('throws on an unknown SPDX identifier', () => {
         assert.throws(
-            () =>
-                assertValidLicense({
+            () => {
+                return assertValidLicense({
                     license: 'not-a-real-license',
                     isPrivate: false,
                     displayName: 'pkg',
-                }),
+                });
+            },
             {
                 matchConstructor: VirmatorNoTraceError,
                 matchMessage: "Invalid SPDX license expression 'not-a-real-license' in 'pkg'.",
@@ -108,12 +112,13 @@ describe(assertValidLicense.name, () => {
 
     it('throws on a malformed SPDX expression', () => {
         assert.throws(
-            () =>
-                assertValidLicense({
+            () => {
+                return assertValidLicense({
                     license: '(MIT OR)',
                     isPrivate: false,
                     displayName: 'pkg',
-                }),
+                });
+            },
             {
                 matchConstructor: VirmatorNoTraceError,
                 matchMessage: "Invalid SPDX license expression '(MIT OR)' in 'pkg'.",

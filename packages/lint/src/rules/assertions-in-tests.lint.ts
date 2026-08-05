@@ -160,10 +160,9 @@ function childrenOf(
         const value = (node as unknown as Record<string, unknown>)[key];
 
         if (Array.isArray(value)) {
-            return value.filter(
-                (item): item is Node =>
-                    item != undefined && typeof (item as Node).type === 'string',
-            );
+            return value.filter((item): item is Node => {
+                return item != undefined && typeof (item as Node).type === 'string';
+            });
         } else if (value != undefined && typeof (value as Node).type === 'string') {
             return [value as Node];
         } else {
@@ -256,8 +255,12 @@ function getTestCallback(
     node: CallExpression,
 ): ArrowFunctionExpression | FunctionExpression | undefined {
     return node.arguments.find(
-        (argument): argument is ArrowFunctionExpression | FunctionExpression =>
-            argument.type === 'FunctionExpression' || argument.type === 'ArrowFunctionExpression',
+        (argument): argument is ArrowFunctionExpression | FunctionExpression => {
+            return (
+                argument.type === 'FunctionExpression' ||
+                argument.type === 'ArrowFunctionExpression'
+            );
+        },
     );
 }
 

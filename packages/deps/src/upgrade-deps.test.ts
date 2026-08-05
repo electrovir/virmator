@@ -213,8 +213,8 @@ describe(runArgBasedUpgrade.name, () => {
                 });
                 return Promise.resolve();
             },
-            listDirectDeps: () =>
-                Promise.resolve({
+            listDirectDeps: () => {
+                return Promise.resolve({
                     'htmlhint-a': [
                         {
                             requiredBy: '/repo/package.json',
@@ -231,7 +231,8 @@ describe(runArgBasedUpgrade.name, () => {
                             isWorkspace: false,
                         },
                     ],
-                }),
+                });
+            },
         });
 
         assert.deepEquals(commands, [
@@ -259,8 +260,8 @@ describe(runArgBasedUpgrade.name, () => {
                 commands.push(command);
                 return Promise.resolve();
             },
-            listDirectDeps: () =>
-                Promise.resolve({
+            listDirectDeps: () => {
+                return Promise.resolve({
                     react: [
                         {
                             requiredBy: '/repo/package.json',
@@ -269,7 +270,8 @@ describe(runArgBasedUpgrade.name, () => {
                             isWorkspace: false,
                         },
                     ],
-                }),
+                });
+            },
         });
 
         assert.deepEquals(commands, [
@@ -279,8 +281,8 @@ describe(runArgBasedUpgrade.name, () => {
 
     it('rejects a version specifier containing a single quote', async () => {
         await assert.throws(
-            () =>
-                runArgBasedUpgrade({
+            () => {
+                return runArgBasedUpgrade({
                     depPattern: "react@1.0.0'; rm -rf ~ #",
                     filteredArgs: [
                         "react@1.0.0'; rm -rf ~ #",
@@ -288,7 +290,8 @@ describe(runArgBasedUpgrade.name, () => {
                     monoRepoRootPath: '/repo',
                     runShellCommand: () => Promise.resolve(),
                     listDirectDeps: () => Promise.resolve({}),
-                }),
+                });
+            },
             {
                 matchMessage: 'Invalid version specifier',
             },
@@ -297,8 +300,8 @@ describe(runArgBasedUpgrade.name, () => {
 
     it('throws when nothing matches', async () => {
         await assert.throws(
-            () =>
-                runArgBasedUpgrade({
+            () => {
+                return runArgBasedUpgrade({
                     depPattern: '@no-such-scope/*',
                     filteredArgs: [
                         '@no-such-scope/*',
@@ -306,7 +309,8 @@ describe(runArgBasedUpgrade.name, () => {
                     monoRepoRootPath: '/repo',
                     runShellCommand: () => Promise.resolve(),
                     listDirectDeps: () => Promise.resolve({}),
-                }),
+                });
+            },
             {
                 matchMessage: 'No direct dependencies matching',
             },

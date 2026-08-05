@@ -36,13 +36,14 @@ function isThisNameMember(node: AssignmentExpression['left']) {
 
 /** Determine whether a class already declares a (non-computed) `name` member. */
 function hasNameMember(node: Readonly<Class>) {
-    return node.body.body.some(
-        (member) =>
+    return node.body.body.some((member) => {
+        return (
             (member.type === 'PropertyDefinition' || member.type === 'MethodDefinition') &&
             !member.computed &&
             member.key.type === 'Identifier' &&
-            member.key.name === 'name',
-    );
+            member.key.name === 'name'
+        );
+    });
 }
 
 const rule: Rule.RuleModule = {
@@ -119,9 +120,9 @@ const rule: Rule.RuleModule = {
                  * constructor body (e.g. a nested `class Inner { method() { this.name = 'x'; }
                  * }`).
                  */
-                const enclosingFunctionIndex = ancestors.findLastIndex((ancestor) =>
-                    functionNodeTypes.includes(ancestor.type),
-                );
+                const enclosingFunctionIndex = ancestors.findLastIndex((ancestor) => {
+                    return functionNodeTypes.includes(ancestor.type);
+                });
                 if (enclosingFunctionIndex < 0) {
                     return;
                 }

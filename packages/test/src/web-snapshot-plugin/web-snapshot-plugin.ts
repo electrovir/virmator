@@ -40,9 +40,9 @@ export function snapshotPlugin(repoPath: string): TestRunnerPlugin {
 
                     if (updatesAllowed) {
                         await Promise.all(
-                            testFilePaths.map((testFilePath) =>
-                                snapshotStore.finalizeSnapshotFile(testFilePath),
-                            ),
+                            testFilePaths.map((testFilePath) => {
+                                return snapshotStore.finalizeSnapshotFile(testFilePath);
+                            }),
                         );
                     }
                 }

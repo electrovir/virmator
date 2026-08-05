@@ -23,11 +23,11 @@ export async function withImportedTsFile<T>(
 
         return await callback(loadedConfig);
     } finally {
-        await wrapInTry(() =>
-            rm(compiledPath, {
+        await wrapInTry(() => {
+            return rm(compiledPath, {
                 force: true,
-            }),
-        );
+            });
+        });
     }
 }
 
@@ -48,11 +48,11 @@ export async function withCompiledTsFile<T>(
     try {
         return await callback(compiledPath);
     } finally {
-        await wrapInTry(() =>
-            rm(compiledPath, {
+        await wrapInTry(() => {
+            return rm(compiledPath, {
                 force: true,
-            }),
-        );
+            });
+        });
     }
 }
 

@@ -239,11 +239,12 @@ async function getMonoRepoDetails(cwdPackagePath: string, cwdPackageJson: Packag
 
 async function findMonoRepoDir(cwdPackagePath: string) {
     const parentPackageDir = await wrapInTry(
-        () =>
-            findClosestPackageDir({
+        () => {
+            return findClosestPackageDir({
                 startDirPath: cwdPackagePath,
                 requireWorkspaces: true,
-            }),
+            });
+        },
         {
             fallbackValue: undefined,
         },

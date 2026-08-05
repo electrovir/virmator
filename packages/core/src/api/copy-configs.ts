@@ -67,9 +67,9 @@ export async function copyPluginConfigs({
         /** `true` if the current package's `package.json` has `"private": true`. */
         isCwdPackagePrivate: boolean;
     }>) {
-    const configs = flattenConfigs(usedCommands, resolvedConfigs).sort((a, b) =>
-        basename(a.copyToPath).localeCompare(basename(b.copyToPath)),
-    );
+    const configs = flattenConfigs(usedCommands, resolvedConfigs).sort((a, b) => {
+        return basename(a.copyToPath).localeCompare(basename(b.copyToPath));
+    });
 
     await awaitedForEach(Object.values(configs), async (config) => {
         if ((config.configFlags || []).some((configFlag) => filteredArgs.includes(configFlag))) {

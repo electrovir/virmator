@@ -18,6 +18,7 @@ import preferArrowObjectBlockBodyRule from '../src/rules/prefer-arrow-object-blo
 import preferEnsureErrorRule from '../src/rules/prefer-ensure-error.lint.js';
 import preferIfElseChainRule from '../src/rules/prefer-if-else-chain.lint.js';
 import preferMapEnumToObjectRule from '../src/rules/prefer-map-enum-to-object.lint.js';
+import preferMultilineArrowBlockBodyRule from '../src/rules/prefer-multiline-arrow-block-body.lint.js';
 import preferParamsObjectRule from '../src/rules/prefer-params-object.lint.js';
 import preferParseUrlRule from '../src/rules/prefer-parse-url.lint.js';
 import preferProtectedOverPrivateRule from '../src/rules/prefer-protected-over-private.lint.js';
@@ -87,6 +88,7 @@ export function defineEslintConfig(repoDir: string) {
                         'prefer-ensure-error': preferEnsureErrorRule,
                         'prefer-if-else-chain': preferIfElseChainRule,
                         'prefer-map-enum-to-object': preferMapEnumToObjectRule,
+                        'prefer-multiline-arrow-block-body': preferMultilineArrowBlockBodyRule,
                         'prefer-params-object': preferParamsObjectRule,
                         'prefer-parse-url': preferParseUrlRule,
                         'prefer-protected-over-private': preferProtectedOverPrivateRule,
@@ -209,6 +211,7 @@ export function defineEslintConfig(repoDir: string) {
                 '@virmator/prefer-ensure-error': 'error',
                 '@virmator/prefer-if-else-chain': 'error',
                 '@virmator/prefer-map-enum-to-object': 'error',
+                '@virmator/prefer-multiline-arrow-block-body': 'error',
                 '@virmator/prefer-params-object': 'error',
                 '@virmator/prefer-parse-url': 'error',
                 '@virmator/prefer-protected-over-private': 'error',

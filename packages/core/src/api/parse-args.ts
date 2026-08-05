@@ -134,13 +134,14 @@ export function parseCliArgs({
         : cliCommand.split(' ');
 
     const relevantArgs: ReadonlyArray<string> = wrapInTry(
-        () =>
-            extractRelevantArgs({
+        () => {
+            return extractRelevantArgs({
                 binName: 'virmator',
                 rawArgs,
                 fileName: entryPointFilePath,
                 errorIfNotFound: true,
-            }),
+            });
+        },
         {
             fallbackValue: rawArgs,
         },
