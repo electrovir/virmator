@@ -35,15 +35,15 @@
         "@augment-vir/assert": "^32.2.1",
         "@augment-vir/common": "^32.2.1",
         "@augment-vir/node": "^32.2.1",
-        "mono-vir": "^2.5.0",
-        "runstorm": "^1.0.5",
+        "mono-vir": "^2.5.1",
+        "runstorm": "^1.0.6",
         "semver": "^7.8.5",
         "typescript": "^6.0.3"
     },
     "devDependencies": {
         "@augment-vir/test": "^32.2.1",
-        "@types/node": "^26.1.1",
-        "@types/semver": "^7.7.1",
+        "@types/node": "^26.1.2",
+        "@types/semver": "^7.8.0",
         "esbuild": "^0.28.1"
     },
     "peerDependencies": {

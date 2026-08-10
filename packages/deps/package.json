@@ -44,12 +44,12 @@
     },
     "devDependencies": {
         "@augment-vir/test": "^32.2.1",
-        "@types/node": "^26.1.1",
+        "@types/node": "^26.1.2",
         "c8": "^12.0.0",
-        "dependency-cruiser": "^18.1.0",
+        "dependency-cruiser": "^18.1.1",
         "esbuild": "^0.28.1",
         "istanbul-smart-text-reporter": "^1.1.5",
-        "npm-check-updates": "^22.2.9"
+        "npm-check-updates": "^23.0.1"
     },
     "peerDependencies": {
         "npm-check-updates": ">=19"

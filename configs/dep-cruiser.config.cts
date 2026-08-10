@@ -9,13 +9,6 @@ const baseConfig = defineConfig({
                 'src/index\\.ts$',
             ],
         },
-        'not-to-unresolvable': {
-            /** Idk why dep-cruiser thinks these are unresolvable. */
-            to: [
-                'typedoc',
-                'typescript-eslint',
-            ],
-        },
     },
     omitRules: [
         // enter rule names here to omit

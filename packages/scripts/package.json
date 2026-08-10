@@ -32,11 +32,11 @@
         "@augment-vir/common": "^32.2.1",
         "@augment-vir/node": "^32.2.1",
         "mri": "^1.2.0",
-        "tsx": "^4.23.1",
+        "tsx": "^4.23.5",
         "virmator": "^14.30.4"
     },
     "devDependencies": {
-        "@types/node": "^26.1.1"
+        "@types/node": "^26.1.2"
     },
     "engines": {
         "node": ">=22"

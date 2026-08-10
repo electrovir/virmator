@@ -52,12 +52,12 @@
         "@virmator/publish": "^14.30.4",
         "@virmator/spellcheck": "^14.30.4",
         "@virmator/test": "^14.30.4",
-        "tsx": "^4.23.1"
+        "tsx": "^4.23.5"
     },
     "devDependencies": {
         "@augment-vir/assert": "^32.2.1",
         "@augment-vir/test": "^32.2.1",
-        "@types/node": "^26.1.1",
+        "@types/node": "^26.1.2",
         "c8": "^12.0.0",
         "istanbul-smart-text-reporter": "^1.1.5"
     },

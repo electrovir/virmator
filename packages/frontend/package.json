@@ -43,9 +43,9 @@
     },
     "devDependencies": {
         "@augment-vir/test": "^32.2.1",
-        "@types/node": "^26.1.1",
+        "@types/node": "^26.1.2",
         "typescript": "^6.0.3",
-        "vite": "^8.1.5",
+        "vite": "^8.2.0",
         "vite-tsconfig-paths": "^6.1.1"
     },
     "engines": {

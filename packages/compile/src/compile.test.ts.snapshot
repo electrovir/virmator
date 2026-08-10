@@ -39,11 +39,11 @@ exports[`TS Compile > rejects an invalid project 1`] = `
 exports[`TS Compile > works in a mono-repo 1`] = `
 {
   "logs": {
-    "stdout": "Copied tsconfig.base.json\\nCopied tsconfig.json\\nCopied tsconfig.json\\nInstalling mono-vir@2.5.0...\\n[a] Deleting dist...\\n[a] Deleting tsconfig.tsbuildinfo...\\n[a] Compiling...\\n[a] > npx tsc -b --pretty\\n[b] Deleting dist...\\n[b] Deleting tsconfig.tsbuildinfo...\\n[b] Compiling...\\n[b] > npx tsc -b --pretty\\n[a] exited with exit code 0.\\n[b] exited with exit code 0.\\n\\n\\nRunStorm Summary:\\n[a] succeeded.\\n[b] succeeded.\\n\\n\\ncompile finished."
+    "stdout": "Copied tsconfig.base.json\\nCopied tsconfig.json\\nCopied tsconfig.json\\nInstalling mono-vir@2.5.1...\\n[a] Deleting dist...\\n[a] Deleting tsconfig.tsbuildinfo...\\n[a] Compiling...\\n[a] > npx tsc -b --pretty\\n[b] Deleting dist...\\n[b] Deleting tsconfig.tsbuildinfo...\\n[b] Compiling...\\n[b] > npx tsc -b --pretty\\n[a] exited with exit code 0.\\n[b] exited with exit code 0.\\n\\n\\nRunStorm Summary:\\n[a] succeeded.\\n[b] succeeded.\\n\\n\\ncompile finished."
   },
   "cwd": "packages/compile/test-files/mono-repo",
   "contentsDiff": {
-    "package.json": "{\\n    \\"private\\": true,\\n    \\"type\\": \\"module\\",\\n    \\"workspaces\\": [\\n        \\"packages/*\\"\\n    ],\\n    \\"devDependencies\\": {\\n        \\"mono-vir\\": \\"^2.5.0\\"\\n    }\\n}\\n",
+    "package.json": "{\\n    \\"private\\": true,\\n    \\"type\\": \\"module\\",\\n    \\"workspaces\\": [\\n        \\"packages/*\\"\\n    ],\\n    \\"devDependencies\\": {\\n        \\"mono-vir\\": \\"^2.5.1\\"\\n    }\\n}\\n",
     "packages": {
       "a": {
         "dist": {
