@@ -258,6 +258,18 @@ export function defineConfig({
                 exportsFields: [
                     'exports',
                 ],
+                /**
+                 * Enabling `exportsFields` above makes enhanced-resolve read `exports` maps, but
+                 * dependency-cruiser sets no `conditionNames`, so every conditional entry point
+                 * resolves to nothing without these.
+                 */
+                conditionNames: [
+                    'import',
+                    'require',
+                    'node',
+                    'default',
+                    'types',
+                ],
             },
             doNotFollow: {
                 dependencyTypes: [
