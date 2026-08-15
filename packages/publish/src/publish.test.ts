@@ -7,7 +7,69 @@ import {
     ChangeMarker,
     determineNextVersion,
     parseCommitChangeMarker,
+    updatePackageJsonVersions,
 } from './publish.js';
+
+describe(updatePackageJsonVersions.name, () => {
+    it('updates dependency maps without modifying bin', () => {
+        assert.deepEquals(
+            JSON.parse(
+                updatePackageJsonVersions({
+                    packageJsonContents: JSON.stringify({
+                        name: '@example/tool',
+                        version: '1.0.0',
+                        bin: {
+                            '@example/tool': 'dist/cli.js',
+                        },
+                        dependencies: {
+                            '@example/tool': '^1.0.0',
+                        },
+                        devDependencies: {
+                            '@example/tool': '^1.0.0',
+                        },
+                        peerDependencies: {
+                            '@example/tool': '^1.0.0',
+                        },
+                        peerDependenciesMeta: {
+                            '@example/tool': {
+                                optional: true,
+                            },
+                        },
+                        optionalDependencies: {
+                            '@example/tool': '^1.0.0',
+                        },
+                    }),
+                    packageName: '@example/tool',
+                    version: '2.0.0',
+                }),
+            ),
+            {
+                name: '@example/tool',
+                version: '2.0.0',
+                bin: {
+                    '@example/tool': 'dist/cli.js',
+                },
+                dependencies: {
+                    '@example/tool': '^2.0.0',
+                },
+                devDependencies: {
+                    '@example/tool': '^2.0.0',
+                },
+                peerDependencies: {
+                    '@example/tool': '^2.0.0',
+                },
+                peerDependenciesMeta: {
+                    '@example/tool': {
+                        optional: true,
+                    },
+                },
+                optionalDependencies: {
+                    '@example/tool': '^2.0.0',
+                },
+            },
+        );
+    });
+});
 
 describe(assertValidLicense.name, () => {
     it('accepts a simple SPDX identifier', () => {

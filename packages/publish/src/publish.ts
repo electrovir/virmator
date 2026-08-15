@@ -600,7 +600,11 @@ async function updateVersion({
     }
     await writeFile(
         packageJsonPath,
-        packageJsonContents.replace(/"version": "[^"]+"/, `"version": "${version}"`),
+        updatePackageJsonVersions({
+            packageJsonContents,
+            packageName,
+            version,
+        }),
     );
 
     await awaitedBlockingMap(monoPackages, async (monoPackage) => {
@@ -608,10 +612,40 @@ async function updateVersion({
         const monoPackageJsonContents = (await readFile(monoPackageJsonPath)).toString();
         await writeFile(
             monoPackageJsonPath,
-            monoPackageJsonContents.replace(
-                new RegExp(`"${packageName}": "[^"]+"`),
-                `"${packageName}": "^${version}"`,
-            ),
+            updatePackageJsonVersions({
+                packageJsonContents: monoPackageJsonContents,
+                packageName,
+                version,
+            }),
         );
     });
+}
+
+/**
+ * Updates a package's version and every dependency map that references the given package.
+ *
+ * @category Internal
+ */
+export function updatePackageJsonVersions({
+    packageJsonContents,
+    packageName,
+    version,
+}: Readonly<{
+    packageJsonContents: string;
+    packageName: string;
+    version: string;
+}>) {
+    const packageNameMatcher = new RegExp(
+        String.raw`("${escapeRegExp(packageName)}"\s*:\s*)"[^"]+"`,
+    );
+
+    return packageJsonContents
+        .replace(/"version"\s*:\s*"[^"]+"/, `"version": "${version}"`)
+        .replace(/"[^"]*dependencies"\s*:\s*\{[^{}]*}/gi, (dependencyPropertyContents) => {
+            return dependencyPropertyContents.replace(packageNameMatcher, `$1"^${version}"`);
+        });
+}
+
+function escapeRegExp(value: string) {
+    return value.replace(/[.*+?^${}()|[\]\\]/g, String.raw`\$&`);
 }
