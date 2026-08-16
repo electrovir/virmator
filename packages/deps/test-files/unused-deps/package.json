@@ -1,0 +1,16 @@
+{
+    "dependencies": {
+        "mri": "^1.2.0"
+    },
+    "devDependencies": {
+        "@types/node": "^26.1.2",
+        "mri": "^1.2.0",
+        "semver": "^7.8.5"
+    },
+    "peerDependencies": {
+        "@augment-vir/assert": "^32.2.1"
+    },
+    "optionalDependencies": {
+        "date-vir": "^8.6.2"
+    }
+}

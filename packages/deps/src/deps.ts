@@ -5,6 +5,7 @@ import {
     copyConfigFile,
     defineVirmatorPlugin,
     JsModuleType,
+    type MonoRepoPackage,
     NpmDepType,
     PackageType,
     VirmatorNoTraceError,
@@ -15,8 +16,45 @@ import mri from 'mri';
 import {rm} from 'node:fs/promises';
 import {join, relative} from 'node:path';
 import {type RunOptions} from 'npm-check-updates';
+import {findUnusedPackageDependencies} from './find-unused-package-dependencies.js';
 import {listRegenNodeModulesDirs} from './regen-node-modules.js';
 import {runArgBasedUpgrade} from './upgrade-deps.js';
+
+const dependencyCruiserNpmDeps = {
+    'dependency-cruiser': {
+        type: NpmDepType.Dev,
+        env: {
+            [RuntimeEnv.Node]: true,
+            [RuntimeEnv.Web]: true,
+        },
+        packageType: {
+            [PackageType.TopPackage]: true,
+            [PackageType.MonoRoot]: true,
+        },
+    },
+};
+
+/** Lists package directories that should be checked for unused dependencies. */
+export function getUnusedPackageDirPaths({
+    cwdPackagePath,
+    monoRepoPackages,
+    monoRepoRootPath,
+    packageType,
+}: Readonly<{
+    cwdPackagePath: string;
+    monoRepoPackages: ReadonlyArray<Readonly<MonoRepoPackage>>;
+    monoRepoRootPath: string;
+    packageType: PackageType;
+}>) {
+    return packageType === PackageType.MonoRoot
+        ? [
+              monoRepoRootPath,
+              ...monoRepoPackages.map(({fullPath}) => {
+                  return fullPath;
+              }),
+          ]
+        : [cwdPackagePath];
+}
 
 /** A virmator plugin for checking package TS dependencies. */
 export const virmatorDepsPlugin = defineVirmatorPlugin(
@@ -39,6 +77,10 @@ export const virmatorDepsPlugin = defineVirmatorPlugin(
                         {
                             title: 'upgrade npm dependencies',
                             content: 'virmator deps upgrade',
+                        },
+                        {
+                            title: 'list unused npm dependencies',
+                            content: 'virmator deps unused',
                         },
                         {
                             title: 'regenerate npm dependencies',
@@ -78,17 +120,7 @@ export const virmatorDepsPlugin = defineVirmatorPlugin(
                             },
                         },
                         npmDeps: {
-                            'dependency-cruiser': {
-                                type: NpmDepType.Dev,
-                                env: {
-                                    [RuntimeEnv.Node]: true,
-                                    [RuntimeEnv.Web]: true,
-                                },
-                                packageType: {
-                                    [PackageType.TopPackage]: true,
-                                    [PackageType.MonoRoot]: true,
-                                },
-                            },
+                            ...dependencyCruiserNpmDeps,
                             /** Needed to compile the TS dep-cruiser config file. */
                             esbuild: {
                                 type: NpmDepType.Dev,
@@ -102,6 +134,24 @@ export const virmatorDepsPlugin = defineVirmatorPlugin(
                                 },
                             },
                         },
+                    },
+                    unused: {
+                        doc: {
+                            sections: [
+                                `
+                                    Lists direct dependencies declared in package.json that are not
+                                    referenced by a static import in the package's code. Dependencies
+                                    used only by npm scripts or dynamically generated module names
+                                    may be reported as unused.
+                                `,
+                            ],
+                            examples: [
+                                {
+                                    content: 'virmator deps unused',
+                                },
+                            ],
+                        },
+                        npmDeps: dependencyCruiserNpmDeps,
                     },
                     upgrade: {
                         doc: {
@@ -274,6 +324,39 @@ export const virmatorDepsPlugin = defineVirmatorPlugin(
                     }
                 },
             );
+        } else if (usedCommands.deps?.subCommands.unused) {
+            const packageDirPaths = getUnusedPackageDirPaths({
+                cwdPackagePath,
+                monoRepoPackages,
+                monoRepoRootPath,
+                packageType,
+            });
+            const unusedPackageDependencyLines = (
+                await awaitedBlockingMap(packageDirPaths, async (packageDirPath) => {
+                    return {
+                        packageDirPath,
+                        unusedDependencies: await findUnusedPackageDependencies({
+                            packageDirPath,
+                        }),
+                    };
+                })
+            ).flatMap(({packageDirPath, unusedDependencies}) => {
+                if (!unusedDependencies.length) {
+                    return [];
+                }
+                return [
+                    `${toPosixPath(join(relative(cwd, packageDirPath), 'package.json'))}:`,
+                    ...unusedDependencies.map((dependencyName) => {
+                        return `  ${dependencyName}`;
+                    }),
+                ];
+            });
+
+            if (unusedPackageDependencyLines.length) {
+                log.plain(unusedPackageDependencyLines.join('\n'));
+            } else {
+                log.success('No unused package.json dependencies found.');
+            }
         } else if (usedCommands.deps?.subCommands.upgrade) {
             const upgradeArgs = mri(filteredArgs);
             const depPattern = upgradeArgs._[0];
@@ -356,7 +439,7 @@ export const virmatorDepsPlugin = defineVirmatorPlugin(
             await runShellCommand(installCommand);
         } else {
             throw new VirmatorNoTraceError(
-                "deps sub-command needed: 'virmator deps check', 'virmator deps upgrade', or 'virmator deps regen'",
+                "deps sub-command needed: 'virmator deps check', 'virmator deps unused', 'virmator deps upgrade', or 'virmator deps regen'",
             );
         }
     },

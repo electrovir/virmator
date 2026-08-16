@@ -1,13 +1,63 @@
+import {assert} from '@augment-vir/assert';
 import {runShellCommand} from '@augment-vir/node';
 import {describe, it, type UniversalTestContext} from '@augment-vir/test';
-import {virmatorFlags} from '@virmator/core';
+import {PackageType, virmatorFlags} from '@virmator/core';
 import {testPlugin} from '@virmator/plugin-testing';
 import {join, resolve} from 'node:path';
-import {virmatorDepsPlugin} from './deps.js';
+import {getUnusedPackageDirPaths, virmatorDepsPlugin} from './deps.js';
 
 const packageDir = resolve(import.meta.dirname, '..');
 
 const testFilesDir = join(packageDir, 'test-files');
+
+describe(getUnusedPackageDirPaths.name, () => {
+    it('selects the current package or every mono-repo package', () => {
+        assert.deepEquals(
+            getUnusedPackageDirPaths({
+                cwdPackagePath: '/repo/packages/a',
+                monoRepoPackages: [
+                    {
+                        packageName: 'a',
+                        relativePath: 'packages/a',
+                        fullPath: '/repo/packages/a',
+                        isPrivate: false,
+                    },
+                ],
+                monoRepoRootPath: '/repo',
+                packageType: PackageType.TopPackage,
+            }),
+            [
+                '/repo/packages/a',
+            ],
+        );
+        assert.deepEquals(
+            getUnusedPackageDirPaths({
+                cwdPackagePath: '/repo/packages/a',
+                monoRepoPackages: [
+                    {
+                        packageName: 'a',
+                        relativePath: 'packages/a',
+                        fullPath: '/repo/packages/a',
+                        isPrivate: false,
+                    },
+                    {
+                        packageName: 'b',
+                        relativePath: 'packages/b',
+                        fullPath: '/repo/packages/b',
+                        isPrivate: true,
+                    },
+                ],
+                monoRepoRootPath: '/repo',
+                packageType: PackageType.MonoRoot,
+            }),
+            [
+                '/repo',
+                '/repo/packages/a',
+                '/repo/packages/b',
+            ],
+        );
+    });
+});
 
 describe(virmatorDepsPlugin.name, () => {
     async function testDepsPlugin({
@@ -119,6 +169,33 @@ describe(virmatorDepsPlugin.name, () => {
             context,
             dir,
             extraCommand: 'check',
+        });
+    });
+
+    it('lists unused package dependencies', async (context) => {
+        await testDepsPlugin({
+            shouldPass: true,
+            context,
+            dir: join(testFilesDir, 'unused-deps'),
+            extraCommand: 'unused',
+        });
+    });
+
+    it('reports when no package dependencies are unused', async (context) => {
+        await testDepsPlugin({
+            shouldPass: true,
+            context,
+            dir: join(testFilesDir, 'valid-deps'),
+            extraCommand: 'unused',
+        });
+    });
+
+    it('reports when a mono repo has no unused package dependencies', async (context) => {
+        await testDepsPlugin({
+            shouldPass: true,
+            context,
+            dir: join(testFilesDir, 'valid-mono-repo'),
+            extraCommand: 'unused',
         });
     });
 

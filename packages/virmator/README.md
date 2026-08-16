@@ -37,6 +37,7 @@ Note that as of v13, this package is now in ESM.
     -   Examples
         -   check import dependencies: `virmator deps check`
         -   upgrade npm dependencies: `virmator deps upgrade`
+        -   list unused npm dependencies: `virmator deps unused`
         -   regenerate npm dependencies: `virmator deps regen`
     -   Sub Commands
 
@@ -51,6 +52,15 @@ Note that as of v13, this package is now in ESM.
             -   Deps
                 -   [dependency-cruiser](https://npmjs.com/package/dependency-cruiser)
                 -   [esbuild](https://npmjs.com/package/esbuild)
+
+        -   **unused**
+
+            Lists direct dependencies declared in package.json that are not referenced by a static import in the package's code. Dependencies used only by npm scripts or dynamically generated module names may be reported as unused.
+
+            -   Examples
+                -   `virmator deps unused`
+            -   Deps
+                -   [dependency-cruiser](https://npmjs.com/package/dependency-cruiser)
 
         -   **upgrade**
 

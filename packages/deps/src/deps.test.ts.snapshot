@@ -92,6 +92,15 @@ exports[`Deps > fails invalid mono repo deps 1`] = `
 }
 `;
 
+exports[`Deps > lists unused package dependencies 1`] = `
+{
+  "logs": {
+    "stdout": "package.json:\\n  @augment-vir/assert\\n  @types/node\\n  date-vir\\n  semver\\ndeps finished."
+  },
+  "cwd": "packages/deps/test-files/unused-deps"
+}
+`;
+
 exports[`Deps > passes valid deps 1`] = `
 {
   "logs": {
@@ -143,10 +152,28 @@ exports[`Deps > regenerates deps 1`] = `
 }
 `;
 
+exports[`Deps > reports when no package dependencies are unused 1`] = `
+{
+  "logs": {
+    "stdout": "No unused package.json dependencies found.\\ndeps finished."
+  },
+  "cwd": "packages/deps/test-files/valid-deps"
+}
+`;
+
+exports[`Deps > reports when a mono repo has no unused package dependencies 1`] = `
+{
+  "logs": {
+    "stdout": "No unused package.json dependencies found.\\ndeps finished."
+  },
+  "cwd": "packages/deps/test-files/valid-mono-repo"
+}
+`;
+
 exports[`Deps > rejects a missing sub command 1`] = `
 {
   "logs": {
-    "stderr": "deps sub-command needed: 'virmator deps check', 'virmator deps upgrade', or 'virmator deps regen'\\ndeps failed."
+    "stderr": "deps sub-command needed: 'virmator deps check', 'virmator deps unused', 'virmator deps upgrade', or 'virmator deps regen'\\ndeps failed."
   },
   "cwd": "packages/deps/test-files/valid-mono-repo",
   "error": {
