@@ -29,6 +29,9 @@ import semver, {type SemVer} from 'semver';
 import {simpleGit, type SimpleGit} from 'simple-git';
 import {isValidSpdxExpression} from 'spdx-vir';
 import {buildUrl} from 'url-vir';
+import {checkPackageJsonHealth} from './npm-publish-package-json-check.js';
+
+export * from './npm-publish-package-json-check.js';
 
 const inVirmatorEnvKey = 'IN_VIRMATOR';
 
@@ -279,6 +282,7 @@ export const virmatorPublishPlugin = defineVirmatorPlugin(
                     }
 
                     await alterPackageEntryPoints(packageCwd);
+                    await assertPackageJsonHealth(packageCwd);
 
                     return publishCommand;
                 });
@@ -290,6 +294,7 @@ export const virmatorPublishPlugin = defineVirmatorPlugin(
                     return;
                 }
                 await alterPackageEntryPoints(monoRepoRootPath);
+                await assertPackageJsonHealth(monoRepoRootPath);
 
                 await runShellCommand(publishCommand);
             }
@@ -329,6 +334,45 @@ export const virmatorPublishPlugin = defineVirmatorPlugin(
         }
     },
 );
+
+async function assertPackageJsonHealth(packageDirPath: string) {
+    const packageJsonHealth = await checkPackageJsonHealth({
+        packageDirPath,
+    });
+    const packageJsonHealthError = createPackageJsonHealthError({
+        packageDirPath,
+        ...packageJsonHealth,
+    });
+
+    if (packageJsonHealthError) {
+        throw packageJsonHealthError;
+    }
+}
+
+/** Creates the error that prevents publishing an unhealthy package.json. */
+export function createPackageJsonHealthError({
+    packageDirPath,
+    warnings,
+    errors,
+}: Readonly<{
+    packageDirPath: string;
+    warnings: ReadonlyArray<string>;
+    errors: ReadonlyArray<string>;
+}>) {
+    const healthProblems = [
+        ...errors.map((error) => `Error: ${error}`),
+        ...warnings.map((warning) => `Warning: ${warning}`),
+    ];
+
+    return healthProblems.length
+        ? new VirmatorNoTraceError(
+              [
+                  `npm publish package.json health check failed in '${packageDirPath}'.`,
+                  ...healthProblems,
+              ].join('\n'),
+          )
+        : undefined;
+}
 
 async function updateGit(packageDirPath: string): Promise<void> {
     const newVersion: string | undefined = (await readPackageJson(packageDirPath)).version;

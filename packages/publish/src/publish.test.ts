@@ -5,6 +5,7 @@ import {SemVer} from 'semver';
 import {
     assertValidLicense,
     ChangeMarker,
+    createPackageJsonHealthError,
     determineNextVersion,
     parseCommitChangeMarker,
     updatePackageJsonVersions,
@@ -184,6 +185,40 @@ describe(assertValidLicense.name, () => {
             {
                 matchConstructor: VirmatorNoTraceError,
                 matchMessage: "Invalid SPDX license expression '(MIT OR)' in 'pkg'.",
+            },
+        );
+    });
+});
+
+describe(createPackageJsonHealthError.name, () => {
+    it('allows a package.json without health issues', () => {
+        assert.isUndefined(
+            createPackageJsonHealthError({
+                packageDirPath: 'package',
+                warnings: [],
+                errors: [],
+            }),
+        );
+    });
+
+    it('blocks publishing when npm reports warnings or errors', () => {
+        assert.isError(
+            createPackageJsonHealthError({
+                packageDirPath: 'package',
+                warnings: [
+                    'repository field was normalized',
+                ],
+                errors: [
+                    'package.json could not be read',
+                ],
+            }),
+            {
+                matchConstructor: VirmatorNoTraceError,
+                matchMessage: [
+                    "npm publish package.json health check failed in 'package'.",
+                    'Error: package.json could not be read',
+                    'Warning: repository field was normalized',
+                ].join('\n'),
             },
         );
     });
