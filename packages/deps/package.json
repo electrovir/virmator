@@ -34,22 +34,22 @@
         "test:update": "npm test update"
     },
     "dependencies": {
-        "@augment-vir/assert": "^32.2.1",
-        "@augment-vir/common": "^32.2.1",
-        "@augment-vir/node": "^32.2.1",
+        "@augment-vir/assert": "^32.2.2",
+        "@augment-vir/common": "^32.2.2",
+        "@augment-vir/node": "^32.2.2",
         "@npm/types": "^2.1.0",
         "@virmator/core": "^14.31.0",
-        "date-vir": "^8.6.2",
+        "date-vir": "^9.1.0",
         "mri": "^1.2.0"
     },
     "devDependencies": {
-        "@augment-vir/test": "^32.2.1",
-        "@types/node": "^26.1.2",
+        "@augment-vir/test": "^32.2.2",
+        "@types/node": "^26.2.0",
         "c8": "^12.0.0",
-        "dependency-cruiser": "^18.1.1",
-        "esbuild": "^0.28.1",
+        "dependency-cruiser": "^18.2.0",
+        "esbuild": "^0.28.2",
         "istanbul-smart-text-reporter": "^1.1.5",
-        "npm-check-updates": "^23.0.1"
+        "npm-check-updates": "^23.0.2"
     },
     "peerDependencies": {
         "dependency-cruiser": ">=18",

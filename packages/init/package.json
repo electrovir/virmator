@@ -31,18 +31,18 @@
         "test:update": "npm test"
     },
     "dependencies": {
-        "@augment-vir/assert": "^32.2.1",
-        "@augment-vir/common": "^32.2.1",
-        "@augment-vir/node": "^32.2.1",
+        "@augment-vir/assert": "^32.2.2",
+        "@augment-vir/common": "^32.2.2",
+        "@augment-vir/node": "^32.2.2",
         "@virmator/core": "^14.31.0",
         "simple-git": "^3.36.0"
     },
     "devDependencies": {
-        "@types/node": "^26.1.2",
+        "@types/node": "^26.2.0",
         "element-vir": "^26.17.3",
         "mono-vir": "^2.5.1",
         "runstorm": "^1.0.6",
-        "tsx": "^4.23.5"
+        "tsx": "^4.23.12"
     },
     "engines": {
         "node": ">=22"

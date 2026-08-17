@@ -28,15 +28,15 @@
         "test:update": "npm start"
     },
     "dependencies": {
-        "@augment-vir/assert": "^32.2.1",
-        "@augment-vir/common": "^32.2.1",
-        "@augment-vir/node": "^32.2.1",
+        "@augment-vir/assert": "^32.2.2",
+        "@augment-vir/common": "^32.2.2",
+        "@augment-vir/node": "^32.2.2",
         "mri": "^1.2.0",
-        "tsx": "^4.23.5",
+        "tsx": "^4.23.12",
         "virmator": "^14.31.0"
     },
     "devDependencies": {
-        "@types/node": "^26.1.2"
+        "@types/node": "^26.2.0"
     },
     "engines": {
         "node": ">=22"
