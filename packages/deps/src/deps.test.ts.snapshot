@@ -1,8 +1,8 @@
 exports[`Deps > catches circular deps across packages via file-level imports 1`] = `
 {
   "logs": {
-    "stdout": "Copied dep-cruiser.config.cts\\n[a] > cd ../.. && npx depcruise --config node_modules/.virmator/dep-cruiser.config.cjs packages/a/src\\n[b] > cd ../.. && npx depcruise --config node_modules/.virmator/dep-cruiser.config.cjs packages/b/src\\n[a] \\n[a]   error no-circular: packages/a/src/a.ts → \\n[a]       packages/b/src/b.ts →\\n[a]       packages/a/src/a.ts\\n[a] \\n[a] x 1 dependency violations (1 errors, 0 warnings). 2 modules, 2 dependencies cruised.\\n[a] \\n\\n\\nRunStorm Summary:\\n[a] failed.\\n[b] cancelled.\\n\\n",
-    "stderr": "[a] exited with exit code 1.\\nExited with 1.\\ndeps failed."
+    "stdout": "Copied dep-cruiser.config.cts\\n> npx depcruise --config node_modules/.virmator/dep-cruiser.config.cjs packages/a/src packages/b/src\\n\\n  error no-circular: packages/a/src/a.ts → \\n      packages/b/src/b.ts →\\n      packages/a/src/a.ts\\n\\nx 1 dependency violations (1 errors, 0 warnings). 2 modules, 2 dependencies cruised.\\n",
+    "stderr": "deps failed."
   },
   "cwd": "packages/deps/test-files/circular-file-imports-mono-repo",
   "contentsDiff": {
@@ -19,7 +19,7 @@ exports[`Deps > catches circular deps across packages via file-level imports 1`]
 exports[`Deps > checks a custom mono repo path 1`] = `
 {
   "logs": {
-    "stdout": "Copied dep-cruiser.config.cts\\n[a] > cd ../.. && npx depcruise --config node_modules/.virmator/dep-cruiser.config.cjs packages/a/src\\n[b] > cd ../.. && npx depcruise --config node_modules/.virmator/dep-cruiser.config.cjs packages/a/src\\n[a] \\n[a] ✔ no dependency violations found (1 modules, 0 dependencies cruised)\\n[a] \\n[a] exited with exit code 0.\\n[b] \\n[b] ✔ no dependency violations found (1 modules, 0 dependencies cruised)\\n[b] \\n[b] exited with exit code 0.\\n\\n\\nRunStorm Summary:\\n[a] succeeded.\\n[b] succeeded.\\n\\n\\ndeps finished."
+    "stdout": "Copied dep-cruiser.config.cts\\n> npx depcruise --config node_modules/.virmator/dep-cruiser.config.cjs packages/a/src\\n\\n✔ no dependency violations found (1 modules, 0 dependencies cruised)\\n\\ndeps finished."
   },
   "cwd": "packages/deps/test-files/valid-mono-repo",
   "contentsDiff": {
@@ -77,8 +77,8 @@ exports[`Deps > fails invalid deps 1`] = `
 exports[`Deps > fails invalid mono repo deps 1`] = `
 {
   "logs": {
-    "stdout": "Copied dep-cruiser.config.cts\\n[a] > cd ../.. && npx depcruise --config node_modules/.virmator/dep-cruiser.config.cjs packages/a/src\\n[b] > cd ../.. && npx depcruise --config node_modules/.virmator/dep-cruiser.config.cjs packages/b/src\\n[a] \\n[a]   error no-circular: packages/a/src/a.ts → \\n[a]       packages/a/src/aa.ts →\\n[a]       packages/a/src/a.ts\\n[a] \\n[a] x 1 dependency violations (1 errors, 0 warnings). 2 modules, 2 dependencies cruised.\\n[a] \\n\\n\\nRunStorm Summary:\\n[a] failed.\\n[b] cancelled.\\n\\n",
-    "stderr": "[a] exited with exit code 1.\\nExited with 1.\\ndeps failed."
+    "stdout": "Copied dep-cruiser.config.cts\\n> npx depcruise --config node_modules/.virmator/dep-cruiser.config.cjs packages/a/src packages/b/src\\n\\n  error no-orphans: packages/b/src/b.ts\\n  error no-circular: packages/a/src/a.ts → \\n      packages/a/src/aa.ts →\\n      packages/a/src/a.ts\\n\\nx 2 dependency violations (2 errors, 0 warnings). 3 modules, 2 dependencies cruised.\\n",
+    "stderr": "deps failed."
   },
   "cwd": "packages/deps/test-files/invalid-mono-repo",
   "contentsDiff": {
@@ -118,7 +118,7 @@ exports[`Deps > passes valid deps 1`] = `
 exports[`Deps > passes valid mono repo deps 1`] = `
 {
   "logs": {
-    "stdout": "Copied dep-cruiser.config.cts\\n[a] > cd ../.. && npx depcruise --config node_modules/.virmator/dep-cruiser.config.cjs packages/a/src\\n[b] > cd ../.. && npx depcruise --config node_modules/.virmator/dep-cruiser.config.cjs packages/b/src\\n[a] \\n[a] ✔ no dependency violations found (1 modules, 0 dependencies cruised)\\n[a] \\n[a] exited with exit code 0.\\n[b] \\n[b] ✔ no dependency violations found (1 modules, 0 dependencies cruised)\\n[b] \\n[b] exited with exit code 0.\\n\\n\\nRunStorm Summary:\\n[a] succeeded.\\n[b] succeeded.\\n\\n\\ndeps finished."
+    "stdout": "Copied dep-cruiser.config.cts\\n> npx depcruise --config node_modules/.virmator/dep-cruiser.config.cjs packages/a/src packages/b/src\\n\\n✔ no dependency violations found (2 modules, 0 dependencies cruised)\\n\\ndeps finished."
   },
   "cwd": "packages/deps/test-files/valid-mono-repo",
   "contentsDiff": {
@@ -135,6 +135,20 @@ exports[`Deps > passes with custom config 1`] = `
     "stdout": "Copied dep-cruiser.config.cts\\n> npx depcruise src --config dep-cruiser.cjs\\n\\n✔ no dependency violations found (1 modules, 0 dependencies cruised)\\n\\ndeps finished."
   },
   "cwd": "packages/deps/test-files/with-config",
+  "contentsDiff": {
+    "configs": {
+      "dep-cruiser.config.cts": "import {defineConfig} from '@virmator/deps/configs/dep-cruiser.config.base.js';\\nimport {type IConfiguration} from 'dependency-cruiser';\\n\\nconst baseConfig = defineConfig({\\n    fileExceptions: {\\n        // enter file exceptions by rule name here\\n        'no-orphans': {\\n            from: [\\n                'src/index\\\\\\\\.ts$',\\n            ],\\n        },\\n    },\\n    omitRules: [\\n        // enter rule names here to omit\\n    ],\\n});\\n\\nconst depCruiserConfig: IConfiguration = {\\n    ...baseConfig,\\n};\\n\\nmodule.exports = depCruiserConfig;\\n"
+    }
+  }
+}
+`;
+
+exports[`Deps > recognizes source modules imported from another mono repo package 1`] = `
+{
+  "logs": {
+    "stdout": "Copied dep-cruiser.config.cts\\n> npx depcruise --config node_modules/.virmator/dep-cruiser.config.cjs packages/a/src packages/b/src\\n\\n✔ no dependency violations found (2 modules, 1 dependencies cruised)\\n\\ndeps finished."
+  },
+  "cwd": "packages/deps/test-files/cross-package-source-import-mono-repo",
   "contentsDiff": {
     "configs": {
       "dep-cruiser.config.cts": "import {defineConfig} from '@virmator/deps/configs/dep-cruiser.config.base.js';\\nimport {type IConfiguration} from 'dependency-cruiser';\\n\\nconst baseConfig = defineConfig({\\n    fileExceptions: {\\n        // enter file exceptions by rule name here\\n        'no-orphans': {\\n            from: [\\n                'src/index\\\\\\\\.ts$',\\n            ],\\n        },\\n    },\\n    omitRules: [\\n        // enter rule names here to omit\\n    ],\\n});\\n\\nconst depCruiserConfig: IConfiguration = {\\n    ...baseConfig,\\n};\\n\\nmodule.exports = depCruiserConfig;\\n"

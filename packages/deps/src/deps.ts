@@ -258,7 +258,6 @@ export const virmatorDepsPlugin = defineVirmatorPlugin(
         package: {monoRepoRootPath, packageType, cwdPackagePath, monoRepoPackages},
         configs,
         log,
-        runPerPackage,
         runShellCommand,
         cwd,
     }) => {
@@ -292,23 +291,21 @@ export const virmatorDepsPlugin = defineVirmatorPlugin(
                     }
 
                     if (packageType === PackageType.MonoRoot) {
-                        await runPerPackage(({packageCwd}) => {
-                            const relativeToRoot = toPosixPath(relative(packageCwd, cwd));
-                            const packageRelPath = toPosixPath(relative(cwd, packageCwd));
-
-                            return [
-                                'cd',
-                                relativeToRoot,
-                                '&&',
+                        await runShellCommand(
+                            [
                                 'npx',
                                 'depcruise',
                                 ...buildConfigFlags(cwd),
-                                pathToCheck ? toPosixPath(join(packageRelPath, pathToCheck)) : '',
+                                ...monoRepoPackages.map(({relativePath}) => {
+                                    return pathToCheck
+                                        ? toPosixPath(join(relativePath, pathToCheck))
+                                        : '';
+                                }),
                                 ...filteredArgs,
                             ]
                                 .filter(check.isTruthy)
-                                .join(' ');
-                        });
+                                .join(' '),
+                        );
                     } else {
                         await runShellCommand(
                             [

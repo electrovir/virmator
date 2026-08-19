@@ -129,6 +129,18 @@ describe(virmatorDepsPlugin.name, () => {
             extraCommand: 'check',
         });
     });
+    it('recognizes source modules imported from another mono repo package', async (context) => {
+        const dir = join(testFilesDir, 'cross-package-source-import-mono-repo');
+        await runShellCommand('npm i', {
+            cwd: dir,
+        });
+        await testDepsPlugin({
+            shouldPass: true,
+            context,
+            dir,
+            extraCommand: 'check',
+        });
+    });
     it('checks a custom mono repo path', async (context) => {
         const dir = join(testFilesDir, 'valid-mono-repo');
         await runShellCommand('npm i', {
