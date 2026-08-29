@@ -235,7 +235,7 @@ exports[`Deps > upgrades a single dep by exact name 1`] = `
 exports[`Deps > upgrades deps 1`] = `
 {
   "logs": {
-    "stdout": "deps finished."
+    "stdout": "> npx npm-check-updates --configFileName node_modules/.virmator/ncu.config.mjs --cwd . --format no-group\\nUsing config file packages/deps/test-files/upgrade/node_modules/.virmator/ncu.config.mjs\\nUsing min-release-age from .npmrc: 5 days (68 excluded patterns)\\nUpgrading packages/deps/test-files/upgrade/package.json\\n htmlhint-plugin-blocked-words  1.0.0  →  1.0.2\\ndeps finished."
   },
   "cwd": "packages/deps/test-files/upgrade",
   "contentsDiff": {

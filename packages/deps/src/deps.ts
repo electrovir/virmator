@@ -10,12 +10,10 @@ import {
     PackageType,
     VirmatorNoTraceError,
     withCompiledTsFile,
-    withImportedTsFile,
 } from '@virmator/core';
 import mri from 'mri';
-import {rm} from 'node:fs/promises';
+import {appendFile, rm} from 'node:fs/promises';
 import {join, relative} from 'node:path';
-import {type RunOptions} from 'npm-check-updates';
 import {findUnusedPackageDependencies} from './find-unused-package-dependencies.js';
 import {listRegenNodeModulesDirs} from './regen-node-modules.js';
 import {runArgBasedUpgrade} from './upgrade-deps.js';
@@ -371,7 +369,7 @@ export const virmatorDepsPlugin = defineVirmatorPlugin(
                     log,
                 });
 
-                await withImportedTsFile(
+                await withCompiledTsFile(
                     {
                         inputPath: join(
                             monoRepoRootPath,
@@ -381,27 +379,28 @@ export const virmatorDepsPlugin = defineVirmatorPlugin(
                             cwdPackagePath,
                             'node_modules',
                             '.virmator',
-                            'dep-cruiser.config.mjs',
+                            'ncu.config.mjs',
                         ),
                     },
                     JsModuleType.Esm,
-                    async (configFile) => {
-                        const config = configFile.ncuConfig as RunOptions;
+                    async (configPath) => {
+                        await appendFile(
+                            configPath,
+                            '\nconst {filter, ...ncuConfigWithoutFilter} = ncuConfig;\nexport default filter?.length ? ncuConfig : ncuConfigWithoutFilter;\n',
+                        );
 
-                        /** C8 incorrectly thinks these imports are uncovered branches. */
-                        /* node:coverage ignore next */
-                        const ncu = await import('npm-check-updates');
-
-                        await ncu.run(
-                            {
-                                ...config,
-                                cwd: monoRepoRootPath,
-                                workspaces: !!monoRepoPackages.length,
-                                format: [],
-                            },
-                            {
-                                cli: true,
-                            },
+                        await runShellCommand(
+                            [
+                                'npx',
+                                'npm-check-updates',
+                                '--configFileName',
+                                toPosixPath(relative(cwd, configPath)),
+                                '--cwd',
+                                toPosixPath(relative(cwd, monoRepoRootPath)) || '.',
+                                '--format',
+                                'no-group',
+                                ...(monoRepoPackages.length ? ['--workspaces'] : []),
+                            ].join(' '),
                         );
                     },
                 );
