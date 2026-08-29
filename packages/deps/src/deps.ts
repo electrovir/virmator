@@ -54,6 +54,31 @@ export function getUnusedPackageDirPaths({
         : [cwdPackagePath];
 }
 
+/** @category Internal */
+export function buildNcuCommand({
+    configPath,
+    cwd,
+    monoRepoPackages,
+    monoRepoRootPath,
+}: Readonly<{
+    configPath: string;
+    cwd: string;
+    monoRepoPackages: ReadonlyArray<Readonly<MonoRepoPackage>>;
+    monoRepoRootPath: string;
+}>) {
+    return [
+        'npx',
+        'npm-check-updates',
+        '--configFileName',
+        toPosixPath(relative(cwd, configPath)),
+        '--cwd',
+        toPosixPath(relative(cwd, monoRepoRootPath)) || '.',
+        '--format',
+        'no-group',
+        ...(monoRepoPackages.length ? ['--workspaces'] : []),
+    ].join(' ');
+}
+
 /** A virmator plugin for checking package TS dependencies. */
 export const virmatorDepsPlugin = defineVirmatorPlugin(
     import.meta.dirname,
@@ -390,17 +415,12 @@ export const virmatorDepsPlugin = defineVirmatorPlugin(
                         );
 
                         await runShellCommand(
-                            [
-                                'npx',
-                                'npm-check-updates',
-                                '--configFileName',
-                                toPosixPath(relative(cwd, configPath)),
-                                '--cwd',
-                                toPosixPath(relative(cwd, monoRepoRootPath)) || '.',
-                                '--format',
-                                'no-group',
-                                ...(monoRepoPackages.length ? ['--workspaces'] : []),
-                            ].join(' '),
+                            buildNcuCommand({
+                                configPath,
+                                cwd,
+                                monoRepoPackages,
+                                monoRepoRootPath,
+                            }),
                         );
                     },
                 );

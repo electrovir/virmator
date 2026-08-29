@@ -1,6 +1,6 @@
 {
     "name": "@virmator/lint",
-    "version": "14.32.0",
+    "version": "14.32.1",
     "description": "Default ESLint linting plugin for virmator.",
     "keywords": [
         "virmator",
@@ -32,16 +32,16 @@
         "test:update": "npm test update"
     },
     "dependencies": {
-        "@augment-vir/assert": "^32.2.2",
-        "@augment-vir/common": "^32.2.2",
-        "@augment-vir/node": "^32.2.2",
-        "@virmator/core": "^14.32.0",
+        "@augment-vir/assert": "^32.2.3",
+        "@augment-vir/common": "^32.2.3",
+        "@augment-vir/node": "^32.2.3",
+        "@virmator/core": "^14.32.1",
         "globals": "^17.11.0",
         "jiti": "^2.7.0",
         "mri": "^1.2.0"
     },
     "devDependencies": {
-        "@augment-vir/test": "^32.2.2",
+        "@augment-vir/test": "^32.2.3",
         "@eslint/js": "10.0.1",
         "@stylistic/eslint-plugin": "^5.10.0",
         "@stylistic/eslint-plugin-ts": "^4.4.1",
@@ -49,9 +49,9 @@
         "@types/node": "^26.2.0",
         "@typescript-eslint/eslint-plugin": "^8.67.0",
         "c8": "^12.0.0",
-        "eslint": "^10.8.1",
+        "eslint": "^10.9.0",
         "eslint-config-prettier": "^10.1.8",
-        "eslint-plugin-jsdoc": "^64.1.0",
+        "eslint-plugin-jsdoc": "^64.2.1",
         "eslint-plugin-playwright": "^2.11.0",
         "eslint-plugin-prettier": "^5.5.6",
         "eslint-plugin-sonarjs": "^4.2.0",

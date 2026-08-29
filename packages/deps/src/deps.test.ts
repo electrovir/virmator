@@ -4,7 +4,7 @@ import {describe, it, type UniversalTestContext} from '@augment-vir/test';
 import {PackageType, virmatorFlags} from '@virmator/core';
 import {testPlugin} from '@virmator/plugin-testing';
 import {join, resolve} from 'node:path';
-import {getUnusedPackageDirPaths, virmatorDepsPlugin} from './deps.js';
+import {buildNcuCommand, getUnusedPackageDirPaths, virmatorDepsPlugin} from './deps.js';
 
 const packageDir = resolve(import.meta.dirname, '..');
 
@@ -54,6 +54,40 @@ describe(getUnusedPackageDirPaths.name, () => {
                 '/repo',
                 '/repo/packages/a',
                 '/repo/packages/b',
+            ],
+        );
+    });
+});
+
+describe(buildNcuCommand.name, () => {
+    it('adds the workspace flag only for mono repos', () => {
+        const monoRepoPackages = [
+            {
+                packageName: 'a',
+                relativePath: 'packages/a',
+                fullPath: '/repo/packages/a',
+                isPrivate: false,
+            },
+        ];
+
+        assert.deepEquals(
+            [
+                buildNcuCommand({
+                    configPath: '/repo/node_modules/.virmator/ncu.config.mjs',
+                    cwd: '/repo',
+                    monoRepoPackages: [],
+                    monoRepoRootPath: '/repo',
+                }),
+                buildNcuCommand({
+                    configPath: '/repo/node_modules/.virmator/ncu.config.mjs',
+                    cwd: '/repo',
+                    monoRepoPackages,
+                    monoRepoRootPath: '/repo',
+                }),
+            ],
+            [
+                'npx npm-check-updates --configFileName node_modules/.virmator/ncu.config.mjs --cwd . --format no-group',
+                'npx npm-check-updates --configFileName node_modules/.virmator/ncu.config.mjs --cwd . --format no-group --workspaces',
             ],
         );
     });
