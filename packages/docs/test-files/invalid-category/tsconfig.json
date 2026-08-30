@@ -1,0 +1,16 @@
+{
+    "compilerOptions": {
+        "outDir": "./dist/",
+        "rootDir": "./src/"
+    },
+    "exclude": [
+        "./configs/",
+        "./coverage/",
+        "./dist-*/",
+        "./dist/",
+        "./node_modules/",
+        "./test-files/",
+        "eslint.config.ts"
+    ],
+    "extends": "@virmator/compile/configs/tsconfig.base.json"
+}

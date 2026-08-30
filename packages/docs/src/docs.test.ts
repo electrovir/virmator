@@ -2,10 +2,11 @@ import {assert} from '@augment-vir/assert';
 import {type MaybePromise, wrapString} from '@augment-vir/common';
 import {readAllDirContents, resetDirContents, runShellCommand} from '@augment-vir/node';
 import {describe, it, type UniversalTestContext} from '@augment-vir/test';
+import {VirmatorNoTraceError} from '@virmator/core';
 import {testPlugin} from '@virmator/plugin-testing';
 import {existsSync} from 'node:fs';
 import {join, resolve, sep} from 'node:path';
-import {virmatorDocsPlugin} from './docs.js';
+import {runTypedoc, virmatorDocsPlugin} from './docs.js';
 
 const packageDir = resolve(import.meta.dirname, '..');
 
@@ -46,6 +47,26 @@ describe(virmatorDocsPlugin.name, () => {
             },
         });
     }
+
+    it('fails when a public export is missing a category', async () => {
+        await assert.throws(
+            () => {
+                return runTypedoc({
+                    checkOnly: true,
+                    config: {
+                        entryPoints: [
+                            join(testFilesDir, 'invalid-category', 'src', 'index.ts'),
+                        ],
+                        treatWarningsAsErrors: true,
+                    },
+                    packageDir: join(testFilesDir, 'invalid-category'),
+                });
+            },
+            {
+                matchConstructor: VirmatorNoTraceError,
+            },
+        );
+    });
 
     it('runs typedoc and md-code', async (context) => {
         await testDocsPlugin({

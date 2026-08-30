@@ -5,7 +5,6 @@ import {
     RuntimeEnv,
     type AnyObject,
     type Logger,
-    type PartialDeep,
 } from '@augment-vir/common';
 import {readPackageJson} from '@augment-vir/node';
 import {defineVirmatorPlugin, NpmDepType, PackageType, VirmatorNoTraceError} from '@virmator/core';
@@ -15,7 +14,11 @@ import {pathToFileURL} from 'node:url';
 import {createCommandLogPrefix, type ColorKey} from 'runstorm';
 import type * as Typedoc from 'typedoc';
 
-/** A virmator plugin for checking and generating documentation. */
+/**
+ * A virmator plugin for checking and generating documentation.
+ *
+ * @category Main
+ */
 export const virmatorDocsPlugin = defineVirmatorPlugin(
     import.meta.dirname,
     {
@@ -177,7 +180,7 @@ export const virmatorDocsPlugin = defineVirmatorPlugin(
                         join(packageDir, configs.docs.configs.typedoc.copyToPath),
                     ).toString()
                 )
-            ).typeDocConfig as Typedoc.TypeDocOptionMap;
+            ).typeDocConfig as Partial<Typedoc.TypeDocOptions>;
 
             await runTypedoc({
                 checkOnly,
@@ -211,7 +214,11 @@ export const virmatorDocsPlugin = defineVirmatorPlugin(
     },
 );
 
-/** Runs TypeDoc with a TypeScript config file just like `@virmator/docs` does. */
+/**
+ * Runs TypeDoc with a TypeScript config file just like `@virmator/docs` does.
+ *
+ * @category Main
+ */
 export async function runTypedoc({
     config,
     packageDir,
@@ -219,7 +226,7 @@ export async function runTypedoc({
     log = logImport,
 }: {
     /** Full typedoc options object. */
-    config: PartialDeep<Typedoc.TypeDocOptionMap>;
+    config: Partial<Typedoc.TypeDocOptions>;
     /**
      * Path to the npm package which is running typedoc. This should be a path to a directory that
      * directly contains a `package.json` file.
@@ -261,6 +268,13 @@ async function runTypedocInternal(
         new typeDoc.PackageJsonReader(),
         new typeDoc.TSConfigReader(),
     ]);
+    app.on(typeDoc.Application.EVENT_VALIDATE_PROJECT, (project) => {
+        validatePublicExportCategories({
+            app,
+            project,
+            typeDoc,
+        });
+    });
     if (app.options.getValue('version')) {
         log.plain(app.toString());
         return true;
@@ -313,4 +327,33 @@ async function runTypedocInternal(
         }
     }
     return true;
+}
+
+function validatePublicExportCategories({
+    app,
+    project,
+    typeDoc,
+}: Readonly<{
+    app: Typedoc.Application;
+    project: Typedoc.ProjectReflection;
+    typeDoc: typeof Typedoc;
+}>) {
+    (project.children || [])
+        .filter((reflection) => {
+            return ![
+                reflection.comment,
+                ...reflection.getNonIndexSignatures().map((signature) => {
+                    return signature.comment;
+                }),
+            ].some((comment) => {
+                return comment?.getTags('@category').some((tag) => {
+                    return typeDoc.Comment.combineDisplayParts(tag.content).trim().length;
+                });
+            });
+        })
+        .forEach((reflection) => {
+            app.logger.validationWarning(
+                `Export '${reflection.getFriendlyFullName()}' is missing a non-empty @category tag.`,
+            );
+        });
 }
