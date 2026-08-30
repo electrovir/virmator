@@ -73,7 +73,11 @@ const deps: PluginNpmDeps = {
     },
 };
 
-/** A virmator plugin for initializing entire repositories or just npm packages within them. */
+/**
+ * A virmator plugin for initializing entire repositories or just npm packages within them.
+ *
+ * @category Main
+ */
 export const virmatorInitPlugin = defineVirmatorPlugin(
     import.meta.dirname,
     {

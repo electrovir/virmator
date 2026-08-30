@@ -1,7 +1,11 @@
 import {type RuntimeEnv} from '@augment-vir/common';
 import {type PackageType} from './plugin-env.js';
 
-/** Definition for a plugin's config file. */
+/**
+ * Definition for a plugin's config file.
+ *
+ * @category Util
+ */
 export type VirmatorPluginConfigFile = {
     /**
      * The path from which the config file resides within the virmator plugin itself. Relative to
@@ -33,7 +37,11 @@ export type VirmatorPluginConfigFile = {
     configFlags?: string[];
 };
 
-/** {@link VirmatorPluginConfigFile} but with resolved paths too. */
+/**
+ * {@link VirmatorPluginConfigFile} but with resolved paths too.
+ *
+ * @category Util
+ */
 export type VirmatorPluginResolvedConfigFile = VirmatorPluginConfigFile & {
     /** Absolute path to the config's copy to location. */
     fullCopyToPath: string;

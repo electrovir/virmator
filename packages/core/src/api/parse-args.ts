@@ -16,7 +16,11 @@ import {
 import {type VirmatorPlugin} from '../plugin/plugin.js';
 import {virmatorFlags, type SetVirmatorFlags} from './virmator-flags.js';
 
-/** All supported sets of args for virmator. */
+/**
+ * All supported sets of args for virmator.
+ *
+ * @category Util
+ */
 export type ParsedArgs = {
     virmatorFlags: SetVirmatorFlags;
     commands: [
@@ -28,10 +32,18 @@ export type ParsedArgs = {
     usedCommands: UsedVirmatorPluginCommands;
 };
 
-/** Arbitrarily nested arbitrary virmator plugin commands. */
+/**
+ * Arbitrarily nested arbitrary virmator plugin commands.
+ *
+ * @category Util
+ */
 export type NestedSubCommands = Readonly<{[SubCommand in string]: NestedSubCommands}>;
 
-/** A mapping from command strings to plugins. */
+/**
+ * A mapping from command strings to plugins.
+ *
+ * @category Util
+ */
 export type PluginsMappedByCommand = Readonly<{
     [Command in string]: Readonly<{
         plugin: Readonly<VirmatorPlugin>;
@@ -51,7 +63,11 @@ function extractNestedCommands(
     });
 }
 
-/** Map a set of plugins from their top level commands to the plugins themselves. */
+/**
+ * Map a set of plugins from their top level commands to the plugins themselves.
+ *
+ * @category Util
+ */
 export function mapPluginsByCommand(
     plugins: ReadonlyArray<Readonly<VirmatorPlugin>>,
 ): PluginsMappedByCommand {
@@ -90,7 +106,11 @@ export function mapPluginsByCommand(
     return mappedPlugins;
 }
 
-/** Determine the path of used commands from a plugin's nested cli command definition. */
+/**
+ * Determine the path of used commands from a plugin's nested cli command definition.
+ *
+ * @category Util
+ */
 export function calculateUsedCommands(
     pluginCliCommands: Readonly<VirmatorPluginCliCommands>,
     commands: ReadonlyArray<string>,
@@ -117,7 +137,11 @@ export function calculateUsedCommands(
     return usedCommands;
 }
 
-/** Parses a raw cli command into supported virmator args. */
+/**
+ * Parses a raw cli command into supported virmator args.
+ *
+ * @category Util
+ */
 export function parseCliArgs({
     cliCommand,
     entryPointFilePath,

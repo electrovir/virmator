@@ -21,7 +21,11 @@ import {
     type VirmatorPluginInit,
 } from './plugin-init.js';
 
-/** A picked nesting of commands based on which commands are currently in use. */
+/**
+ * A picked nesting of commands based on which commands are currently in use.
+ *
+ * @category Util
+ */
 export type UsedVirmatorPluginCommands<
     Commands extends VirmatorPluginCliCommands = VirmatorPluginCliCommands,
 > = Partial<
@@ -38,7 +42,11 @@ export type UsedVirmatorPluginCommands<
     }>
 >;
 
-/** The resolved configs from a virmator plugin. */
+/**
+ * The resolved configs from a virmator plugin.
+ *
+ * @category Util
+ */
 export type VirmatorPluginResolvedConfigs<
     Commands extends VirmatorPluginCliCommands = VirmatorPluginCliCommands,
 > = Readonly<{
@@ -57,7 +65,11 @@ export type VirmatorPluginResolvedConfigs<
             : {subCommands?: never});
 }>;
 
-/** An npm package nested within a mono repo. */
+/**
+ * An npm package nested within a mono repo.
+ *
+ * @category Util
+ */
 export type MonoRepoPackage = {
     packageName: string;
     relativePath: string;
@@ -66,7 +78,11 @@ export type MonoRepoPackage = {
     isPrivate: boolean;
 };
 
-/** Run a command per npm package nested within a mono repo. */
+/**
+ * Run a command per npm package nested within a mono repo.
+ *
+ * @category Util
+ */
 export type RunPerPackage = (
     generateCliCommandString: (params: {
         packageCwd: string;
@@ -76,7 +92,11 @@ export type RunPerPackage = (
     maxProcesses?: number | undefined | 'tree',
 ) => Promise<void>;
 
-/** Extra, optional options for a plugin's `runShellCommand` param. */
+/**
+ * Extra, optional options for a plugin's `runShellCommand` param.
+ *
+ * @category Util
+ */
 export type ExtraRunShellCommandOptions = {
     /** Optional prefix before every log. */
     logPrefix: string | undefined;
@@ -97,10 +117,18 @@ export type ExtraRunShellCommandOptions = {
     prefixCommandOnly: boolean;
 };
 
-/** A parsed `package.json` with `name` and `version` properties required. */
+/**
+ * A parsed `package.json` with `name` and `version` properties required.
+ *
+ * @category Util
+ */
 export type ValidPackageJson = SetRequired<PackageJson, 'name' | 'version'>;
 
-/** A generic virmator plugin definition. */
+/**
+ * A generic virmator plugin definition.
+ *
+ * @category Util
+ */
 export type VirmatorPlugin<Commands extends VirmatorPluginCliCommands = any> = Readonly<
     VirmatorPluginInit<NoInfer<Commands>> & {
         pluginPackageRootPath: string;
@@ -108,7 +136,11 @@ export type VirmatorPlugin<Commands extends VirmatorPluginCliCommands = any> = R
     }
 >;
 
-/** All parameters required by a virmator plugin definition's executor. */
+/**
+ * All parameters required by a virmator plugin definition's executor.
+ *
+ * @category Util
+ */
 export type VirmatorPluginExecutorParams<
     Commands extends VirmatorPluginCliCommands = VirmatorPluginCliCommands,
 > = Readonly<{
@@ -159,7 +191,11 @@ export type VirmatorPluginExecutorParams<
     }>;
 }>;
 
-/** A virmator plugin definition's executor. This will call called by the virmator CLI. */
+/**
+ * A virmator plugin definition's executor. This will call called by the virmator CLI.
+ *
+ * @category Util
+ */
 export type VirmatorPluginExecutor<
     Commands extends VirmatorPluginCliCommands = VirmatorPluginCliCommands,
 > = (params: VirmatorPluginExecutorParams<Commands>) => MaybePromise<void | {noLog: true}>;

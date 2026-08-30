@@ -1,4 +1,8 @@
-/** The different npm package types that virmator supports. */
+/**
+ * The different npm package types that virmator supports.
+ *
+ * @category Util
+ */
 export enum PackageType {
     /** The root of an npm mono repo package. */
     MonoRoot = 'mono-root',

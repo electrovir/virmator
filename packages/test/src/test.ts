@@ -16,7 +16,11 @@ import {rm, writeFile} from 'node:fs/promises';
 import {extname, join, relative, sep} from 'node:path';
 import {pathToFileURL} from 'node:url';
 
-/** A virmator plugin for running tests. */
+/**
+ * A virmator plugin for running tests.
+ *
+ * @category Main
+ */
 export const virmatorTestPlugin = defineVirmatorPlugin(
     import.meta.dirname,
     {

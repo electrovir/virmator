@@ -1,7 +1,11 @@
 import {check} from '@augment-vir/assert';
 import NpmPackageJson from '@npmcli/package-json';
 
-/** JSON-serializable results from npm's publish-time package.json checks. */
+/**
+ * JSON-serializable results from npm's publish-time package.json checks.
+ *
+ * @category Util
+ */
 export type NpmPublishPackageJsonCheckResult = {
     /** The corrections npm would report as publish warnings. */
     warnings: string[];

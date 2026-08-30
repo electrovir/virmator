@@ -2,19 +2,31 @@ import {type RuntimeEnv} from '@augment-vir/common';
 import {type VirmatorPluginConfigFile} from './plugin-configs.js';
 import {type PackageType} from './plugin-env.js';
 
-/** A single doc entry for {@link PluginCommandDocs}. */
+/**
+ * A single doc entry for {@link PluginCommandDocs}.
+ *
+ * @category Util
+ */
 export type PluginDocEntry = Readonly<{
     title?: string;
     content: string;
 }>;
 
-/** Documentation for a virmator plugin command. */
+/**
+ * Documentation for a virmator plugin command.
+ *
+ * @category Util
+ */
 export type PluginCommandDocs = {
     sections: ReadonlyArray<string>;
     examples: ReadonlyArray<PluginDocEntry>;
 };
 
-/** A list of npm deps. Used for virmator plugin command lists. */
+/**
+ * A list of npm deps. Used for virmator plugin command lists.
+ *
+ * @category Util
+ */
 export type PluginNpmDeps = Record<
     string,
     {
@@ -24,7 +36,11 @@ export type PluginNpmDeps = Record<
     }
 >;
 
-/** An individual virmator plugin cli command definition. Can nest recursive commands. */
+/**
+ * An individual virmator plugin cli command definition. Can nest recursive commands.
+ *
+ * @category Util
+ */
 export type IndividualPluginCommand = {
     /**
      * Documentation for this command which will be printed to the terminal when `virmator help` is
@@ -39,7 +55,11 @@ export type IndividualPluginCommand = {
     npmDeps?: Readonly<PluginNpmDeps>;
 };
 
-/** The base type for a virmator plugin's collection of cli commands. */
+/**
+ * The base type for a virmator plugin's collection of cli commands.
+ *
+ * @category Util
+ */
 export type VirmatorPluginCliCommands = Readonly<{
     /**
      * The `CliCommand` defines the argument passed to `virmator` to execute this plugin. This name
@@ -55,13 +75,21 @@ export type VirmatorPluginCliCommands = Readonly<{
     [CliCommand in string]: IndividualPluginCommand;
 }>;
 
-/** The supported types of npm deps for virmator plugins to require. */
+/**
+ * The supported types of npm deps for virmator plugins to require.
+ *
+ * @category Util
+ */
 export enum NpmDepType {
     Regular = 'regular',
     Dev = 'dev',
 }
 
-/** All init properties for a virmator plugin definition. */
+/**
+ * All init properties for a virmator plugin definition.
+ *
+ * @category Util
+ */
 export type VirmatorPluginInit<
     Commands extends VirmatorPluginCliCommands = VirmatorPluginCliCommands,
 > = Readonly<{

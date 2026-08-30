@@ -217,7 +217,7 @@ export const virmatorDocsPlugin = defineVirmatorPlugin(
 /**
  * Runs TypeDoc with a TypeScript config file just like `@virmator/docs` does.
  *
- * @category Main
+ * @category Util
  */
 export async function runTypedoc({
     config,

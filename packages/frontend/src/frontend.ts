@@ -8,7 +8,11 @@ import {join, relative, resolve} from 'node:path';
 import {pathToFileURL} from 'node:url';
 import {type UserConfig} from 'vite';
 
-/** A virmator plugin for running and building frontend packages. */
+/**
+ * A virmator plugin for running and building frontend packages.
+ *
+ * @category Main
+ */
 export const virmatorFrontendPlugin = defineVirmatorPlugin(
     import.meta.dirname,
     {

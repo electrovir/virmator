@@ -1,6 +1,8 @@
 /**
  * An error that aborts execution but should not get stack traced: only the error message should get
  * logged.
+ *
+ * @category Util
  */
 export class VirmatorNoTraceError extends Error {
     public override readonly name = 'VirmatorNoTraceError';
@@ -13,5 +15,7 @@ export class VirmatorNoTraceError extends Error {
 /**
  * Used for debugging. Set to `false` to see error traces. Should always be set back to `true` for
  * publishing.
+ *
+ * @category Util
  */
 export const hideNoTraceTraces = true as boolean;

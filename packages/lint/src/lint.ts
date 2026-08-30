@@ -5,7 +5,11 @@ import {defineVirmatorPlugin, NpmDepType, PackageType} from '@virmator/core';
 import mri from 'mri';
 import {join, relative} from 'node:path';
 
-/** A virmator plugin for running ESLint. */
+/**
+ * A virmator plugin for running ESLint.
+ *
+ * @category Main
+ */
 export const virmatorLintPlugin = defineVirmatorPlugin(
     import.meta.dirname,
     {

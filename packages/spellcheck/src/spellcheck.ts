@@ -5,7 +5,11 @@ import {defineVirmatorPlugin, NpmDepType, PackageType} from '@virmator/core';
 import mri from 'mri';
 import {join, relative} from 'node:path';
 
-/** A virmator package for checking spelling. */
+/**
+ * A virmator package for checking spelling.
+ *
+ * @category Main
+ */
 export const virmatorSpellcheckPlugin = defineVirmatorPlugin(
     import.meta.dirname,
     {

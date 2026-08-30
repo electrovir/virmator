@@ -3,7 +3,11 @@ import {findAncestor, readJsonFile} from '@augment-vir/node';
 import {existsSync} from 'node:fs';
 import {join} from 'node:path';
 
-/** Finds the closest ancestor directory with a `package.json` file. */
+/**
+ * Finds the closest ancestor directory with a `package.json` file.
+ *
+ * @category Util
+ */
 export async function findClosestPackageDir({
     requireWorkspaces,
     startDirPath,
@@ -28,7 +32,11 @@ export async function findClosestPackageDir({
     return ancestor;
 }
 
-/** Finds the closest ancestor `node_modules` directory. */
+/**
+ * Finds the closest ancestor `node_modules` directory.
+ *
+ * @category Util
+ */
 export function findClosestNodeModulesDir(startDirPath: string): string {
     const ancestor = findAncestor(startDirPath, (dir) => {
         return existsSync(join(dir, 'node_modules'));

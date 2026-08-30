@@ -9,7 +9,11 @@ import {
     sys,
 } from 'typescript';
 
-/** Parsed the nearest ancestor TS Config file, if one can be found. */
+/**
+ * Parsed the nearest ancestor TS Config file, if one can be found.
+ *
+ * @category Util
+ */
 export function parseTsConfig(cwd: string): ParsedCommandLine | undefined {
     try {
         // eslint-disable-next-line @typescript-eslint/unbound-method

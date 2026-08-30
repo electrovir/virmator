@@ -7,7 +7,11 @@ import {type VirmatorPluginCliCommands, type VirmatorPluginInit} from './plugin-
 
 export type {VirmatorPlugin} from './plugin-executor.js';
 
-/** Define a virmator plugin. */
+/**
+ * Define a virmator plugin.
+ *
+ * @category Util
+ */
 export function defineVirmatorPlugin<const Commands extends VirmatorPluginCliCommands>(
     /** Should be `import.meta.dirname`. Used to determine the directory of the plugin's package. */
     currentDir: string,

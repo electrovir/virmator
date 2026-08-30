@@ -12,7 +12,11 @@ const rawVirmatorFlags = {
     },
 } as const;
 
-/** Supported virmator flags. */
+/**
+ * Supported virmator flags.
+ *
+ * @category Util
+ */
 export const virmatorFlags = mapObjectValues(rawVirmatorFlags, (flag, value) => {
     return {
         ...value,
@@ -25,5 +29,9 @@ export const virmatorFlags = mapObjectValues(rawVirmatorFlags, (flag, value) => 
     };
 };
 
-/** Each supported virmator flag mapped to a boolean. */
+/**
+ * Each supported virmator flag mapped to a boolean.
+ *
+ * @category Util
+ */
 export type SetVirmatorFlags = Partial<{-readonly [FlagName in keyof typeof virmatorFlags]: true}>;

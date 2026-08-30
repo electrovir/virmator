@@ -1,7 +1,11 @@
 import {check} from '@augment-vir/assert';
 import {type AnyObject} from '@augment-vir/common';
 
-/** Gets the nested value within an object with the provided chain of keys. */
+/**
+ * Gets the nested value within an object with the provided chain of keys.
+ *
+ * @category Util
+ */
 export function accessAtKeys<T>(
     parent: Readonly<AnyObject> | undefined,
     keys: ReadonlyArray<PropertyKey>,

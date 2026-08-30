@@ -32,7 +32,11 @@ const dependencyCruiserNpmDeps = {
     },
 };
 
-/** Lists package directories that should be checked for unused dependencies. */
+/**
+ * Lists package directories that should be checked for unused dependencies.
+ *
+ * @category Util
+ */
 export function getUnusedPackageDirPaths({
     cwdPackagePath,
     monoRepoPackages,
@@ -79,7 +83,11 @@ export function buildNcuCommand({
     ].join(' ');
 }
 
-/** A virmator plugin for checking package TS dependencies. */
+/**
+ * A virmator plugin for checking package TS dependencies.
+ *
+ * @category Main
+ */
 export const virmatorDepsPlugin = defineVirmatorPlugin(
     import.meta.dirname,
     {

@@ -41,7 +41,11 @@ import {copyPluginConfigs} from './copy-configs.js';
 import {installNpmDeps, installPluginNpmDeps} from './install-deps.js';
 import {parseCliArgs} from './parse-args.js';
 
-/** Params for executing a plugin command. */
+/**
+ * Params for executing a plugin command.
+ *
+ * @category Util
+ */
 export type ExecuteCommandParams = {
     /**
      * An array of {@link VirmatorPlugin} definitions to use. There is no default list of plugins
@@ -282,7 +286,11 @@ function writeLog({
     }
 }
 
-/** The entry point to virmator. Runs a virmator plugin command. */
+/**
+ * The entry point to virmator. Runs a virmator plugin command.
+ *
+ * @category Util
+ */
 export async function executeVirmatorCommand({
     log: logParam,
     entryPointFilePath = '',

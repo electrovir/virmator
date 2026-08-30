@@ -12,7 +12,11 @@ import {rm} from 'node:fs/promises';
 import {basename, join} from 'node:path';
 import {type ColorKey, createCommandLogPrefix} from 'runstorm';
 
-/** A virmator plugin for compiling TypeScript. */
+/**
+ * A virmator plugin for compiling TypeScript.
+ *
+ * @category Main
+ */
 export const virmatorCompilePlugin = defineVirmatorPlugin(
     import.meta.dirname,
     {

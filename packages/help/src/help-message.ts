@@ -16,7 +16,11 @@ import {
 } from '@virmator/core';
 import {type PluginDocEntry} from '@virmator/core/src/plugin/plugin-init.js';
 
-/** Different syntaxes for each supported help message target environment. */
+/**
+ * Different syntaxes for each supported help message target environment.
+ *
+ * @category Util
+ */
 export enum HelpMessageSyntax {
     Cli = 'cli',
     Markdown = 'markdown',
@@ -31,7 +35,11 @@ function flattenCommands(
     }, {});
 }
 
-/** Inputs for {@link generateHelpMessageFromPlugins}. */
+/**
+ * Inputs for {@link generateHelpMessageFromPlugins}.
+ *
+ * @category Util
+ */
 export type GenerateHelpMessageFromPluginsParams = {
     plugins: ReadonlyArray<Readonly<Pick<VirmatorPlugin, 'cliCommands'>>>;
     syntax: HelpMessageSyntax;
@@ -40,7 +48,11 @@ export type GenerateHelpMessageFromPluginsParams = {
     cliWrapIfMoreThanThisManyColumns: number;
 }>;
 
-/** Generate a help message from a list of `VirmatorPlugin` instances. */
+/**
+ * Generate a help message from a list of `VirmatorPlugin` instances.
+ *
+ * @category Util
+ */
 export function generateHelpMessageFromPlugins({
     plugins,
     syntax,
@@ -55,7 +67,11 @@ export function generateHelpMessageFromPlugins({
     });
 }
 
-/** Inputs for {@link generateHelpMessage}. */
+/**
+ * Inputs for {@link generateHelpMessage}.
+ *
+ * @category Util
+ */
 export type GenerateHelpMessageParams = {
     cliCommands: ReadonlyArray<Readonly<VirmatorPluginCliCommands>>;
     syntax: HelpMessageSyntax;
@@ -67,6 +83,8 @@ export type GenerateHelpMessageParams = {
 /**
  * Generate a help message directly from `VirmatorPluginCliCommands`. Used by
  * {@link generateHelpMessageFromPlugins}.
+ *
+ * @category Util
  */
 export function generateHelpMessage({
     cliCommands,
@@ -108,7 +126,11 @@ export function generateHelpMessage({
         : helpMessage;
 }
 
-/** All supported formats for help messages. */
+/**
+ * All supported formats for help messages.
+ *
+ * @category Util
+ */
 export const formats = {
     h1: {
         [HelpMessageSyntax.Cli]: logColors.info,
@@ -152,10 +174,18 @@ export const formats = {
     },
 } as const;
 
-/** Help message formatter. */
+/**
+ * Help message formatter.
+ *
+ * @category Util
+ */
 export type Formatter = Record<keyof typeof formats, string>;
 
-/** Create a help message formatter based on a specific syntax. */
+/**
+ * Create a help message formatter based on a specific syntax.
+ *
+ * @category Util
+ */
 export function createFormatter(syntax: HelpMessageSyntax): Formatter {
     return mapObjectValues(formats, (key, entry) => {
         return entry[syntax];
@@ -330,7 +360,11 @@ function getIndent(line: string, format: Formatter): string {
     ].join('');
 }
 
-/** Wrap lines to within the specified limit. */
+/**
+ * Wrap lines to within the specified limit.
+ *
+ * @category Util
+ */
 export function wrapLines(input: string, limit: number, format: Formatter): string {
     const lines = input.split('\n');
 

@@ -44,7 +44,11 @@ const inVirmatorEnvKey = 'IN_VIRMATOR';
  */
 const useStagedPublishing = false as boolean;
 
-/** A virmator plugin for publishing a package to npm. */
+/**
+ * A virmator plugin for publishing a package to npm.
+ *
+ * @category Main
+ */
 export const virmatorPublishPlugin = defineVirmatorPlugin(
     import.meta.dirname,
     {
@@ -349,7 +353,11 @@ async function assertPackageJsonHealth(packageDirPath: string) {
     }
 }
 
-/** Creates the error that prevents publishing an unhealthy package.json. */
+/**
+ * Creates the error that prevents publishing an unhealthy package.json.
+ *
+ * @category Util
+ */
 export function createPackageJsonHealthError({
     packageDirPath,
     warnings,
@@ -454,7 +462,11 @@ async function isPublished({name, version}: {name: string; version: string}) {
 }
 const gitCommitFormatDelimiter = '<**..**>';
 
-/** Commit message version tags that bump the published version. */
+/**
+ * Commit message version tags that bump the published version.
+ *
+ * @category Util
+ */
 export enum ChangeMarker {
     Patch = 'patch',
     Minor = 'minor',
@@ -476,6 +488,8 @@ const allowedVersionTags: ReadonlyArray<string> = [
  * {@link ChangeMarker}, or `undefined` when there is no tag or the tag is an allowed non-bumping one
  * (e.g. `dev`). Throws a `VirmatorNoTraceError` for any tag outside the allowed set so the publish
  * aborts.
+ *
+ * @category Util
  */
 export function parseCommitChangeMarker(commitMessage: string): ChangeMarker | undefined {
     const [
@@ -572,6 +586,8 @@ async function findChangeMarkersSinceVersion(git: Readonly<SimpleGit>): Promise<
  * The next semver version to publish, derived from the highest-priority bump marker found since the
  * last version (major > minor > patch). Returns `undefined` when no version was found or no bump
  * marker is present, in which case the caller asks for a version manually.
+ *
+ * @category Util
  */
 export function determineNextVersion({
     latestVersion,

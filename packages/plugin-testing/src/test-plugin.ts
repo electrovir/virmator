@@ -29,10 +29,18 @@ import {
 import {relative, sep} from 'node:path';
 import {monoRepoDir} from './file-paths.js';
 
-/** Log string transformer. */
+/**
+ * Log string transformer.
+ *
+ * @category Testing
+ */
 export type LogTransform = (logType: LogOutputType, arg: string) => string;
 
-/** Results of a plugin test. */
+/**
+ * Results of a plugin test.
+ *
+ * @category Testing
+ */
 export type TestPluginResult = {
     /**
      * The logs of the plugin execution. Note that this won't catch _all_ logs, as some logged
@@ -81,7 +89,11 @@ const defaultContentsExcludeList = [
     }),
 ];
 
-/** Optional options for {@link testPlugin}. */
+/**
+ * Optional options for {@link testPlugin}.
+ *
+ * @category Testing
+ */
 export type TestPluginOptions = PartialWithUndefined<{
     /** Transforms the final log string output of a plugin's command. */
     logTransform: LogTransform;
@@ -93,7 +105,11 @@ export type TestPluginOptions = PartialWithUndefined<{
 
 const defaultLogTransform: LogTransform = (logType, arg) => arg;
 
-/** Tests a virmator plugin and saves a snapshot of the results. */
+/**
+ * Tests a virmator plugin and saves a snapshot of the results.
+ *
+ * @category Testing
+ */
 export async function testPlugin({
     shouldPass,
     context,
