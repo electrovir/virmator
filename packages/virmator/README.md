@@ -250,8 +250,11 @@ Note that as of v13, this package is now in ESM.
 
     This cannot be run in a mono-repo root, it can only be run for mono-repo sub-packages or a top-level singular package.
 
+    Pass --footprint to record which functions each test file actually ran, as raw v8 coverage in node_modules/.cache/virmator/footprints. Tests still run normally, coverage is not calculated. This cannot be combined with the coverage command, which needs the same v8 output.
+
     -   Examples
         -   Run tests in a browser: `virmator test web`
+        -   Record what each test ran: `virmator test node --footprint`
         -   Run tests in Node: `virmator test node`
     -   Deps
         -   [@augment-vir/test](https://npmjs.com/package/@augment-vir/test)
