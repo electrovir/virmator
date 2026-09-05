@@ -12,9 +12,36 @@ import {type TestRunnerConfig} from '@web/test-runner';
 import {glob} from 'glob';
 import mri from 'mri';
 import {existsSync} from 'node:fs';
-import {rm, writeFile} from 'node:fs/promises';
+import {mkdir, rm, writeFile} from 'node:fs/promises';
 import {extname, join, relative, sep} from 'node:path';
 import {pathToFileURL} from 'node:url';
+import {footprintDirEnvVarName} from './footprint-dir-env-var.js';
+
+/** Turns on per-test coverage recording. */
+const footprintFlag = '--footprint';
+
+/** Clear out stale dumps. */
+async function prepareFootprintDumpDir(footprintDumpDir: string): Promise<void> {
+    await rm(footprintDumpDir, {
+        recursive: true,
+        force: true,
+    });
+    await mkdir(footprintDumpDir, {
+        recursive: true,
+    });
+}
+
+/** Both claim v8's coverage output, so running them together breaks rather than merges. */
+function assertFootprintWithoutCoverage({
+    isFootprintRun,
+    includeCoverage,
+}: Readonly<{isFootprintRun: boolean; includeCoverage: boolean}>): void {
+    if (isFootprintRun && includeCoverage) {
+        throw new VirmatorNoTraceError(
+            `'${footprintFlag}' cannot be combined with the 'coverage' command: both need v8's coverage output.`,
+        );
+    }
+}
 
 /**
  * A virmator plugin for running tests.
@@ -35,11 +62,18 @@ export const virmatorTestPlugin = defineVirmatorPlugin(
                         `
                             This cannot be run in a mono-repo root, it can only be run for mono-repo sub-packages or a top-level singular package.
                         `,
+                        `
+                            Pass --footprint to record which functions each test file actually ran, as raw v8 coverage in node_modules/.cache/virmator/footprints. Tests still run normally, coverage is not calculated. This cannot be combined with the coverage command, which needs the same v8 output.
+                        `,
                     ],
                     examples: [
                         {
                             title: 'Run tests in a browser',
                             content: 'virmator test web',
+                        },
+                        {
+                            title: 'Record what each test ran',
+                            content: 'virmator test node --footprint',
                         },
                         {
                             title: 'Run tests in Node',
@@ -320,6 +354,17 @@ export const virmatorTestPlugin = defineVirmatorPlugin(
             },
         );
 
+        const isFootprintRun = filteredArgs.includes(footprintFlag);
+        /** Filter out the virmator footprint flag so it snot passed . */
+        const runnerArgs = otherArgs.filter((arg) => arg !== footprintFlag);
+        const footprintDumpDir = join(
+            cwdPackagePath,
+            'node_modules',
+            '.cache',
+            'virmator',
+            'footprints',
+        );
+
         const fileArgs = rawFileArgs.map((arg) => {
             const monoRepoRelativePath = join(monoRepoRootPath, arg);
             /**
@@ -412,6 +457,15 @@ export const virmatorTestPlugin = defineVirmatorPlugin(
                 const includeCoverage = usedCommands.test.subCommands.web.subCommands.coverage;
                 const updateTestArgs = shouldUpdateTest ? ['--update'] : [];
 
+                assertFootprintWithoutCoverage({
+                    isFootprintRun,
+                    includeCoverage: !!includeCoverage,
+                });
+
+                if (isFootprintRun) {
+                    await prepareFootprintDumpDir(footprintDumpDir);
+                }
+
                 if (includeCoverage) {
                     await createTestThatImportsAllFilesForCoverage({
                         webTestRunnerConfig,
@@ -425,7 +479,7 @@ export const virmatorTestPlugin = defineVirmatorPlugin(
                     'web-test-runner',
                     '--color',
                     ...configArgs,
-                    ...otherArgs,
+                    ...runnerArgs,
                     ...updateTestArgs,
                     includeCoverage ? '--coverage' : '',
                     ...fileArgs,
@@ -433,7 +487,16 @@ export const virmatorTestPlugin = defineVirmatorPlugin(
                     .filter(check.isTruthy)
                     .join(' ');
 
-                await runShellCommand(interpolationSafeWindowsPath(testCommand));
+                await runShellCommand(interpolationSafeWindowsPath(testCommand), {
+                    env: {
+                        ...process.env,
+                        ...(isFootprintRun
+                            ? {
+                                  [footprintDirEnvVarName]: footprintDumpDir,
+                              }
+                            : {}),
+                    },
+                });
             } finally {
                 await rm(allFilesTestFilePath, {
                     force: true,
@@ -442,6 +505,15 @@ export const virmatorTestPlugin = defineVirmatorPlugin(
         } else if (usedCommands.test?.subCommands.node) {
             const includeCoverage = usedCommands.test.subCommands.node.subCommands.coverage;
             const shouldUpdateSnapshots = usedCommands.test.subCommands.node.subCommands.update;
+
+            assertFootprintWithoutCoverage({
+                isFootprintRun,
+                includeCoverage: !!includeCoverage,
+            });
+
+            if (isFootprintRun) {
+                await prepareFootprintDumpDir(footprintDumpDir);
+            }
 
             const coverageArgs = includeCoverage
                 ? [
@@ -471,7 +543,7 @@ export const virmatorTestPlugin = defineVirmatorPlugin(
                 '--experimental-test-snapshots',
                 '--test-reporter',
                 'spec',
-                ...otherArgs,
+                ...runnerArgs,
                 ...updateSnapshotsArgs,
                 ...testFiles,
             ]
@@ -482,6 +554,12 @@ export const virmatorTestPlugin = defineVirmatorPlugin(
                 env: {
                     ...process.env,
                     FORCE_COLOR: '2',
+                    /** One process per test file, so v8 writes one dump per test file. */
+                    ...(isFootprintRun
+                        ? {
+                              NODE_V8_COVERAGE: footprintDumpDir,
+                          }
+                        : {}),
                 },
             });
         } else {
@@ -617,3 +695,5 @@ async function createTestThatImportsAllFilesForCoverage({
         throw new Error('No files found for code coverage calculations.');
     }
 }
+
+export {footprintDirEnvVarName} from './footprint-dir-env-var.js';

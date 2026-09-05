@@ -1,3 +1,31 @@
+exports[`Test > keeps --footprint out of the web-test-runner command 1`] = `
+{
+  "logs": {
+    "stdout": "Installing @augment-vir/test@32.2.3 @web/dev-server-esbuild@2.0.0 @web/test-runner-playwright@1.0.0 @web/test-runner@1.0.0 istanbul-smart-text-reporter@1.1.5 typescript@6.0.3... Installing @augment-vir/assert@32.2.3... > npx playwright install --with-deps > npx web-test-runner --color --config configs/web-test-runner.config.mjs --one-browser src/good.test.ts Running 1 test files... src/good.test.ts: fake test [Webkit] ✓ tests a thing test finished."
+  },
+  "cwd": "packages/test/test-files/browser-tests",
+  "contentsDiff": {
+    "package.json": "{\\n    \\"type\\": \\"module\\",\\n    \\"devDependencies\\": {\\n        \\"@augment-vir/test\\": \\"^32.2.3\\",\\n        \\"@web/dev-server-esbuild\\": \\"^2.0.0\\",\\n        \\"@web/test-runner\\": \\"^1.0.0\\",\\n        \\"@web/test-runner-playwright\\": \\"^1.0.0\\",\\n        \\"istanbul-smart-text-reporter\\": \\"^1.1.5\\",\\n        \\"typescript\\": \\"^6.0.3\\"\\n    },\\n    \\"dependencies\\": {\\n        \\"@augment-vir/assert\\": \\"^32.2.3\\"\\n    }\\n}\\n"
+  }
+}
+`;
+
+exports[`Test > refuses to record footprints alongside coverage 1`] = `
+{
+  "logs": {
+    "stdout": "Installing @augment-vir/test@32.2.3 @web/dev-server-esbuild@2.0.0 @web/test-runner-playwright@1.0.0 @web/test-runner@1.0.0 istanbul-smart-text-reporter@1.1.5 typescript@6.0.3... Installing @augment-vir/assert@32.2.3... > npx playwright install --with-deps",
+    "stderr": "'--footprint' cannot be combined with the 'coverage' command: both need v8's coverage output. test failed."
+  },
+  "cwd": "packages/test/test-files/browser-tests",
+  "contentsDiff": {
+    "package.json": "{\\n    \\"type\\": \\"module\\",\\n    \\"devDependencies\\": {\\n        \\"@augment-vir/test\\": \\"^32.2.3\\",\\n        \\"@web/dev-server-esbuild\\": \\"^2.0.0\\",\\n        \\"@web/test-runner\\": \\"^1.0.0\\",\\n        \\"@web/test-runner-playwright\\": \\"^1.0.0\\",\\n        \\"istanbul-smart-text-reporter\\": \\"^1.1.5\\",\\n        \\"typescript\\": \\"^6.0.3\\"\\n    },\\n    \\"dependencies\\": {\\n        \\"@augment-vir/assert\\": \\"^32.2.3\\"\\n    }\\n}\\n"
+  },
+  "error": {
+    "name": "VirmatorNoTraceError"
+  }
+}
+`;
+
 exports[`Test > rejects missing env 1`] = `
 {
   "logs": {

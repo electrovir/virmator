@@ -1,11 +1,72 @@
+import {footprintDirEnvVarName} from '@virmator/test/dist/footprint-dir-env-var.js';
 import {screenshotPlugin} from '@virmator/test/dist/web-screenshot-plugin/web-screenshot-plugin.js';
 import {snapshotPlugin} from '@virmator/test/dist/web-snapshot-plugin/web-snapshot-plugin.js';
 import {esbuildPlugin} from '@web/dev-server-esbuild';
 import {defaultReporter, summaryReporter} from '@web/test-runner';
 import {playwrightLauncher} from '@web/test-runner-playwright';
+import {writeFile} from 'node:fs/promises';
 import {cpus} from 'node:os';
+import {join} from 'node:path';
 
 const allChildTestFilesGlob = '**/*.test.ts';
+
+/** Set by `virmator test --footprint`. Absent for a normal run, which records nothing. */
+const footprintDumpDir = process.env[footprintDirEnvVarName];
+
+/**
+ * Writes each test session's raw v8 coverage to disk just before the session's page is closed.
+ *
+ * Chromium only: `page.coverage` is a Chrome DevTools Protocol feature and does not exist on webkit
+ * or firefox pages.
+ *
+ * Replaces the one method rather than wrapping the launcher in a new object, because plugins reach
+ * for launcher methods beyond the documented interface. `screenshotPlugin` calls `getPage`.
+ */
+function recordFootprints(launcher) {
+    const stopSession = launcher.stopSession.bind(launcher);
+
+    launcher.stopSession = async (sessionId) => {
+        const result = await launcher.getPage(sessionId).coverage.stopJSCoverage();
+
+        await writeFile(
+            join(footprintDumpDir, `${sessionId}.json`),
+            JSON.stringify({
+                result,
+            }),
+        );
+
+        return await stopSession(sessionId);
+    };
+
+    return launcher;
+}
+
+/**
+ * A chromium launcher, recording per-test coverage when `--footprint` asked for it.
+ *
+ * Recording starts in `createPage` because `startSession` navigates before it returns, by which
+ * point the modules under test have already run.
+ */
+function createChromiumLauncher() {
+    if (!footprintDumpDir) {
+        return playwrightLauncher({
+            product: 'chromium',
+        });
+    }
+
+    return recordFootprints(
+        playwrightLauncher({
+            product: 'chromium',
+            createPage: async ({context}) => {
+                const page = await context.newPage();
+
+                await page.coverage.startJSCoverage();
+
+                return page;
+            },
+        }),
+    );
+}
 
 /**
  * Maps the current working directory to a stable port in the unprivileged range so that different
@@ -40,20 +101,18 @@ const testFiles = specificTests.length
 const oneMinuteMs = 60_000;
 
 export function defineConfig({coveragePercent = 0, packageRootDirPath = ''}) {
-    const singleBrowser = process.argv.includes('--coverage')
-        ? playwrightLauncher({
-              product: 'chromium',
-          })
-        : playwrightLauncher({
-              product: 'webkit',
-          });
+    /** Both need v8 coverage, so both force chromium instead of the usual webkit. */
+    const singleBrowser =
+        process.argv.includes('--coverage') || footprintDumpDir
+            ? createChromiumLauncher()
+            : playwrightLauncher({
+                  product: 'webkit',
+              });
 
     const browsers = process.argv.includes('--one-browser')
         ? [singleBrowser]
         : [
-              playwrightLauncher({
-                  product: 'chromium',
-              }),
+              createChromiumLauncher(),
               playwrightLauncher({
                   product: 'webkit',
               }),
