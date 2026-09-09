@@ -15,7 +15,7 @@
 /src/
 /www-static/
 bash-scripts/
-dist-docs/
+dist-*/
 eslint.config.ts
 generated-config-*
 index.html

@@ -1,7 +1,7 @@
 exports[`Test > keeps --footprint out of the web-test-runner command 1`] = `
 {
   "logs": {
-    "stdout": "Installing @augment-vir/test@32.2.4 @web/dev-server-esbuild@2.0.0 @web/test-runner-playwright@1.0.0 @web/test-runner@1.0.0 istanbul-smart-text-reporter@1.1.5 typescript@6.0.3... Installing @augment-vir/assert@32.2.4... > npx playwright install --with-deps > npx web-test-runner --color --config configs/web-test-runner.config.mjs --one-browser src/good.test.ts Running 1 test files... src/good.test.ts: fake test [Webkit] ✓ tests a thing test finished."
+    "stdout": "Installing @augment-vir/test@32.2.4 @web/dev-server-esbuild@2.0.0 @web/test-runner-playwright@1.0.0 @web/test-runner@1.0.0 istanbul-smart-text-reporter@1.1.5 typescript@6.0.3... Installing @augment-vir/assert@32.2.4... > npx playwright install --with-deps > npx web-test-runner --color --config configs/web-test-runner.config.mjs --one-browser src/good.test.ts Running 1 test files... src/good.test.ts: fake test [Chromium] ✓ tests a thing test finished."
   },
   "cwd": "packages/test/test-files/browser-tests",
   "contentsDiff": {
