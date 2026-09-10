@@ -244,6 +244,11 @@ export const virmatorPublishPlugin = defineVirmatorPlugin(
                     `"types": "${packageJson.types.replace('src', outDir).replace('.ts', '.d.ts')}"`,
                 );
             }
+            packageJsonContents = updatePackageJsonBinPaths({
+                packageJsonContents,
+                bin: packageJson.bin,
+                outDir,
+            });
 
             if (packageJsonContents !== alteredJsonFile.original) {
                 alteredPackageJsonFiles.push(alteredJsonFile);
@@ -273,6 +278,18 @@ export const virmatorPublishPlugin = defineVirmatorPlugin(
                 throw new Error(
                     `Missing 'types' file '${updatedPackageJson.types}' from '${relative(monoRepoRootPath, packageJsonPath)}'.`,
                 );
+            } else {
+                const missingBinPath = getPackageBinPaths(updatedPackageJson.bin).find(
+                    (binPath) => {
+                        return !existsSync(join(packagePath, binPath));
+                    },
+                );
+
+                if (missingBinPath) {
+                    throw new Error(
+                        `Missing 'bin' file '${missingBinPath}' from '${relative(monoRepoRootPath, packageJsonPath)}'.`,
+                    );
+                }
             }
         }
         try {
@@ -338,6 +355,47 @@ export const virmatorPublishPlugin = defineVirmatorPlugin(
         }
     },
 );
+
+/**
+ * Rewrites TypeScript bin entry points to their compiled JavaScript paths.
+ *
+ * @category Internal
+ */
+export function updatePackageJsonBinPaths({
+    packageJsonContents,
+    bin,
+    outDir,
+}: Readonly<{
+    packageJsonContents: string;
+    bin: PackageJson['bin'];
+    outDir: string;
+}>) {
+    const binScriptPaths = getPackageBinPaths(bin).filter((binPath) => binPath.endsWith('.ts'));
+
+    if (!binScriptPaths.length) {
+        return packageJsonContents;
+    } else if (check.isString(bin)) {
+        return packageJsonContents.replace(
+            new RegExp(String.raw`("bin"\s*:\s*)"${escapeRegExp(bin)}"`),
+            (binProperty) => {
+                return binProperty.replace(bin, bin.replace('src', outDir).replace('.ts', '.js'));
+            },
+        );
+    } else {
+        return packageJsonContents.replace(/"bin"\s*:\s*\{[^{}]*}/, (binProperty) => {
+            return binScriptPaths.reduce((updatedBinProperty, binScriptPath) => {
+                return updatedBinProperty.replaceAll(
+                    `"${binScriptPath}"`,
+                    `"${binScriptPath.replace('src', outDir).replace('.ts', '.js')}"`,
+                );
+            }, binProperty);
+        });
+    }
+}
+
+function getPackageBinPaths(bin: PackageJson['bin']) {
+    return check.isString(bin) ? [bin] : getObjectTypedValues(bin || {}).filter(check.isString);
+}
 
 async function assertPackageJsonHealth(packageDirPath: string) {
     const packageJsonHealth = await checkPackageJsonHealth({

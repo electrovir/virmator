@@ -8,8 +8,46 @@ import {
     createPackageJsonHealthError,
     determineNextVersion,
     parseCommitChangeMarker,
+    updatePackageJsonBinPaths,
     updatePackageJsonVersions,
 } from './publish.js';
+
+describe(updatePackageJsonBinPaths.name, () => {
+    it('updates TypeScript bin paths in both supported forms', () => {
+        assert.deepEquals(
+            [
+                {
+                    bin: 'src/cli.script.ts',
+                },
+                {
+                    bin: {
+                        example: 'src/cli.script.ts',
+                        existing: 'dist/existing.js',
+                    },
+                },
+            ].map((packageJson) => {
+                return JSON.parse(
+                    updatePackageJsonBinPaths({
+                        packageJsonContents: JSON.stringify(packageJson),
+                        bin: packageJson.bin,
+                        outDir: 'dist',
+                    }),
+                );
+            }),
+            [
+                {
+                    bin: 'dist/cli.script.js',
+                },
+                {
+                    bin: {
+                        example: 'dist/cli.script.js',
+                        existing: 'dist/existing.js',
+                    },
+                },
+            ],
+        );
+    });
+});
 
 describe(updatePackageJsonVersions.name, () => {
     it('updates dependency maps without modifying bin', () => {
