@@ -10,6 +10,7 @@ const wordsDirectiveRegExp = /\bcspell:words?\b[\t :]*(.*)/i;
 
 type WordsComment = {
     comment: Comment;
+    hasNonLowercaseWords: boolean;
     range: [
         number,
         number,
@@ -25,13 +26,15 @@ function parseWordsComment(comment: Comment): WordsComment | undefined {
         return undefined;
     }
 
-    const words = (directiveMatch[1] ?? '')
+    const unnormalizedWords = (directiveMatch[1] ?? '')
         .trim()
         .split(/[\s,]+/)
         .filter((word) => word !== '');
+    const words = unnormalizedWords.map((word) => word.toLowerCase());
 
     return {
         comment,
+        hasNonLowercaseWords: unnormalizedWords.some((word) => word !== word.toLowerCase()),
         range,
         words,
     };
@@ -93,6 +96,7 @@ const rule: Rule.RuleModule = {
             description: 'Require all cspell word allow-list comments in a file to be combined.',
         },
         messages: {
+            lowercaseWords: 'Lowercase all words in `cspell:words` comments.',
             singleWordsComment:
                 'Combine all `cspell:words` comments in a file into a single comment.',
         },
@@ -112,7 +116,10 @@ const rule: Rule.RuleModule = {
                     ...extraWordsComments
                 ] = wordsComments;
 
-                if (!firstWordsComment || !extraWordsComments.length) {
+                if (
+                    !firstWordsComment ||
+                    (!extraWordsComments.length && !firstWordsComment.hasNonLowercaseWords)
+                ) {
                     return;
                 }
 
@@ -122,6 +129,25 @@ const rule: Rule.RuleModule = {
                 const uniqueWords = combinedWords.filter((word, wordIndex) => {
                     return combinedWords.indexOf(word) === wordIndex;
                 });
+
+                if (!extraWordsComments.length) {
+                    context.report({
+                        loc: firstWordsComment.comment.loc ?? {
+                            start: sourceCode.getLocFromIndex(firstWordsComment.range[0]),
+                            end: sourceCode.getLocFromIndex(firstWordsComment.range[1]),
+                        },
+                        messageId: 'lowercaseWords',
+                        fix(fixer) {
+                            return fixer.replaceTextRange(
+                                firstWordsComment.range,
+                                createCombinedCommentText({
+                                    comment: firstWordsComment.comment,
+                                    words: uniqueWords,
+                                }),
+                            );
+                        },
+                    });
+                }
 
                 extraWordsComments.forEach((extraWordsComment, extraIndex) => {
                     context.report({

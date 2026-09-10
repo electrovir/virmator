@@ -44,11 +44,21 @@ describe('single-cspell-words-comment', () => {
             invalid: [
                 {
                     name: 'two line comments',
-                    code: '// cspell:words ensocare\n// cspell:words aidin\nexport const value = 4;',
+                    code: '// cspell:words EnsoCare\n// cspell:words AIDIN\nexport const value = 4;',
                     output: '// cspell:words ensocare aidin\nexport const value = 4;',
                     errors: [
                         {
                             messageId: 'singleWordsComment',
+                        },
+                    ],
+                },
+                {
+                    name: 'mixed-case words in one comment',
+                    code: '// cspell:words EnsoCare AIDIN\nexport const value = 4;',
+                    output: '// cspell:words ensocare aidin\nexport const value = 4;',
+                    errors: [
+                        {
+                            messageId: 'lowercaseWords',
                         },
                     ],
                 },
