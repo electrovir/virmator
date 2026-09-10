@@ -19,6 +19,7 @@ import preferArrowObjectBlockBodyRule from '../src/rules/prefer-arrow-object-blo
 import preferEnsureErrorRule from '../src/rules/prefer-ensure-error.lint.js';
 import preferFunctionKeywordRule from '../src/rules/prefer-function-keyword.lint.js';
 import preferIfElseChainRule from '../src/rules/prefer-if-else-chain.lint.js';
+import preferLooseNullishEqualityRule from '../src/rules/prefer-loose-nullish-equality.lint.js';
 import preferMapEnumToObjectRule from '../src/rules/prefer-map-enum-to-object.lint.js';
 import preferMultilineArrowBlockBodyRule from '../src/rules/prefer-multiline-arrow-block-body.lint.js';
 import preferParamsObjectRule from '../src/rules/prefer-params-object.lint.js';
@@ -92,6 +93,7 @@ export function defineEslintConfig(repoDir: string) {
                         'prefer-ensure-error': preferEnsureErrorRule,
                         'prefer-function-keyword': preferFunctionKeywordRule,
                         'prefer-if-else-chain': preferIfElseChainRule,
+                        'prefer-loose-nullish-equality': preferLooseNullishEqualityRule,
                         'prefer-map-enum-to-object': preferMapEnumToObjectRule,
                         'prefer-multiline-arrow-block-body': preferMultilineArrowBlockBodyRule,
                         'prefer-params-object': preferParamsObjectRule,
@@ -222,6 +224,7 @@ export function defineEslintConfig(repoDir: string) {
                 '@virmator/prefer-ensure-error': 'error',
                 '@virmator/prefer-function-keyword': 'error',
                 '@virmator/prefer-if-else-chain': 'error',
+                '@virmator/prefer-loose-nullish-equality': 'error',
                 '@virmator/prefer-map-enum-to-object': 'error',
                 '@virmator/prefer-multiline-arrow-block-body': 'error',
                 '@virmator/prefer-params-object': 'error',
