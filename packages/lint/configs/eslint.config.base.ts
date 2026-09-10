@@ -8,6 +8,7 @@ import globals from 'globals';
 import tsEslint from 'typescript-eslint';
 import assertionsInTestsRule from '../src/rules/assertions-in-tests.lint.js';
 import errorNameAsClassFieldRule from '../src/rules/error-name-as-class-field.lint.js';
+import noJsdocCategoryRule from '../src/rules/no-jsdoc-category.lint.js';
 import noRawDateRule from '../src/rules/no-raw-date.lint.js';
 import noReadonlyPrimitiveRule from '../src/rules/no-readonly-primitive.lint.js';
 import noRelativeImportOutsidePackageRule from '../src/rules/no-relative-import-outside-package.lint.js';
@@ -79,6 +80,7 @@ export function defineEslintConfig(repoDir: string) {
                     rules: {
                         'assertions-in-tests': assertionsInTestsRule,
                         'error-name-as-class-field': errorNameAsClassFieldRule,
+                        'no-jsdoc-category': noJsdocCategoryRule,
                         'no-raw-date': noRawDateRule,
                         'no-readonly-primitive': noReadonlyPrimitiveRule,
                         'no-relative-import-outside-package': noRelativeImportOutsidePackageRule,
@@ -203,6 +205,11 @@ export function defineEslintConfig(repoDir: string) {
                 '@typescript-eslint/no-unused-vars': 'error',
                 '@virmator/assertions-in-tests': 'error',
                 '@virmator/error-name-as-class-field': 'error',
+                /**
+                 * `@virmator/no-jsdoc-category` is deliberately left off here: Typedoc categories
+                 * are useful in published packages. Consumers that do not use Typedoc enable it
+                 * themselves.
+                 */
                 '@virmator/no-raw-date': 'error',
                 '@virmator/no-readonly-primitive': 'error',
                 '@virmator/no-relative-import-outside-package': 'error',
