@@ -8,6 +8,7 @@ import globals from 'globals';
 import tsEslint from 'typescript-eslint';
 import assertionsInTestsRule from '../src/rules/assertions-in-tests.lint.js';
 import errorNameAsClassFieldRule from '../src/rules/error-name-as-class-field.lint.js';
+import knownFileSuffixesRule from '../src/rules/known-file-suffixes.lint.js';
 import noJsdocCategoryRule from '../src/rules/no-jsdoc-category.lint.js';
 import noRawDateRule from '../src/rules/no-raw-date.lint.js';
 import noReadonlyPrimitiveRule from '../src/rules/no-readonly-primitive.lint.js';
@@ -31,6 +32,21 @@ import preferToSortedRule from '../src/rules/prefer-to-sorted.lint.js';
 import requireElseForTerminalBranchRule from '../src/rules/require-else-for-terminal-branch.lint.js';
 import requireImportExtensionsRule from '../src/rules/require-import-extensions.lint.js';
 import singleCspellWordsCommentRule from '../src/rules/single-cspell-words-comment.lint.js';
+
+/**
+ * File name suffixes that any repo using this config may use. A repo with more of its own adds them
+ * by overriding `@virmator/known-file-suffixes` with this list spread into its own.
+ */
+export const defaultAllowedFileSuffixes = [
+    'config',
+    'e2e',
+    'element',
+    'error',
+    'example',
+    'mock',
+    'script',
+    'test',
+];
 
 export const globalVars = {
     ...globals.node,
@@ -82,6 +98,7 @@ export function defineEslintConfig(repoDir: string) {
                     rules: {
                         'assertions-in-tests': assertionsInTestsRule,
                         'error-name-as-class-field': errorNameAsClassFieldRule,
+                        'known-file-suffixes': knownFileSuffixesRule,
                         'no-jsdoc-category': noJsdocCategoryRule,
                         'no-raw-date': noRawDateRule,
                         'no-readonly-primitive': noReadonlyPrimitiveRule,
@@ -209,6 +226,12 @@ export function defineEslintConfig(repoDir: string) {
                 '@typescript-eslint/no-unused-vars': 'error',
                 '@virmator/assertions-in-tests': 'error',
                 '@virmator/error-name-as-class-field': 'error',
+                '@virmator/known-file-suffixes': [
+                    'error',
+                    {
+                        suffixes: defaultAllowedFileSuffixes,
+                    },
+                ],
                 /**
                  * `@virmator/no-jsdoc-category` is deliberately left off here: Typedoc categories
                  * are useful in published packages. Consumers that do not use Typedoc enable it
