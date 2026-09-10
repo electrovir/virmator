@@ -104,6 +104,16 @@ describe('prefer-function-keyword', () => {
                     ],
                 },
                 {
+                    name: 'trailing comma in the parameter list',
+                    code: 'const combine = (first: string, second: string,): string => first + second;',
+                    output: 'function combine(first: string, second: string,): string { return first + second; }',
+                    errors: [
+                        {
+                            messageId: 'useFunctionDeclaration',
+                        },
+                    ],
+                },
+                {
                     name: 'nested regular function this does not prevent conversion',
                     code: 'const callback = () => function nested() { return this.value; };',
                     output: 'function callback() { return function nested() { return this.value; }; }',

@@ -56,7 +56,12 @@ function getParameterText({
     }
 
     const openParen = sourceCode.getTokenBefore(firstParam);
-    const closeParen = sourceCode.getTokenAfter(lastParam);
+    /** The parameter list may end with a trailing comma, which sits between the last param and `)`. */
+    const closeParen = sourceCode.getTokenAfter(lastParam, {
+        filter(token) {
+            return token.value !== ',';
+        },
+    });
 
     if (openParen?.value === '(' && closeParen?.value === ')') {
         return sourceCode.text.slice(openParen.range[0], closeParen.range[1]);
