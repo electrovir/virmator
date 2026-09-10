@@ -29,6 +29,7 @@ import preferSingleQuotesRule from '../src/rules/prefer-single-quotes.lint.js';
 import preferToSortedRule from '../src/rules/prefer-to-sorted.lint.js';
 import requireElseForTerminalBranchRule from '../src/rules/require-else-for-terminal-branch.lint.js';
 import requireImportExtensionsRule from '../src/rules/require-import-extensions.lint.js';
+import singleCspellWordsCommentRule from '../src/rules/single-cspell-words-comment.lint.js';
 
 export const globalVars = {
     ...globals.node,
@@ -101,6 +102,7 @@ export function defineEslintConfig(repoDir: string) {
                         'prefer-to-sorted': preferToSortedRule,
                         'require-else-for-terminal-branch': requireElseForTerminalBranchRule,
                         'require-import-extensions': requireImportExtensionsRule,
+                        'single-cspell-words-comment': singleCspellWordsCommentRule,
                     },
                 },
             },
@@ -230,6 +232,7 @@ export function defineEslintConfig(repoDir: string) {
                 '@virmator/prefer-to-sorted': 'error',
                 '@virmator/require-else-for-terminal-branch': 'error',
                 '@virmator/require-import-extensions': 'error',
+                '@virmator/single-cspell-words-comment': 'error',
                 'no-lonely-if': 'error',
                 curly: 'error',
                 'object-shorthand': 'error',
