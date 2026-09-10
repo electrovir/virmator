@@ -206,14 +206,14 @@ describe(runArgBasedUpgrade.name, () => {
                 'silent',
             ],
             monoRepoRootPath: '/repo',
-            runShellCommand: (command, options) => {
+            runShellCommand(command, options) {
                 commands.push({
                     command,
                     cwd: options.cwd,
                 });
                 return Promise.resolve();
             },
-            listDirectDeps: () => {
+            listDirectDeps() {
                 return Promise.resolve({
                     'htmlhint-a': [
                         {
@@ -256,11 +256,11 @@ describe(runArgBasedUpgrade.name, () => {
                 'react',
             ],
             monoRepoRootPath: '/repo',
-            runShellCommand: (command) => {
+            runShellCommand(command) {
                 commands.push(command);
                 return Promise.resolve();
             },
-            listDirectDeps: () => {
+            listDirectDeps() {
                 return Promise.resolve({
                     react: [
                         {
@@ -288,8 +288,12 @@ describe(runArgBasedUpgrade.name, () => {
                         "react@1.0.0'; rm -rf ~ #",
                     ],
                     monoRepoRootPath: '/repo',
-                    runShellCommand: () => Promise.resolve(),
-                    listDirectDeps: () => Promise.resolve({}),
+                    runShellCommand() {
+                        return Promise.resolve();
+                    },
+                    listDirectDeps() {
+                        return Promise.resolve({});
+                    },
                 });
             },
             {
@@ -307,8 +311,12 @@ describe(runArgBasedUpgrade.name, () => {
                         '@no-such-scope/*',
                     ],
                     monoRepoRootPath: '/repo',
-                    runShellCommand: () => Promise.resolve(),
-                    listDirectDeps: () => Promise.resolve({}),
+                    runShellCommand() {
+                        return Promise.resolve();
+                    },
+                    listDirectDeps() {
+                        return Promise.resolve({});
+                    },
                 });
             },
             {

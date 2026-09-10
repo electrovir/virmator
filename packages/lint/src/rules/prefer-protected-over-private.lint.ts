@@ -19,10 +19,14 @@ function findPrivateToken(node: AccessibilityNode, sourceCode: Readonly<SourceCo
      */
     return lastDecorator
         ? sourceCode.getTokenAfter(lastDecorator, {
-              filter: (token) => token.value === 'private',
+              filter(token) {
+                  return token.value === 'private';
+              },
           })
         : sourceCode.getFirstToken(node, {
-              filter: (token) => token.value === 'private',
+              filter(token) {
+                  return token.value === 'private';
+              },
           });
 }
 

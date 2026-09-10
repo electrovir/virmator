@@ -39,7 +39,7 @@ export function alwaysReloadPlugin(
     return {
         name: 'alwaysReloadPlugin',
         apply: 'serve',
-        config: () => {
+        config() {
             return {
                 server: {
                     watch: {

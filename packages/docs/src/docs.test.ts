@@ -73,7 +73,7 @@ describe(virmatorDocsPlugin.name, () => {
             shouldPass: true,
             context,
             dir: join(testFilesDir, 'unfinished-readme'),
-            beforeCleanupCallback: (cwd) => {
+            beforeCleanupCallback(cwd) {
                 assert.strictEquals(existsSync(join(cwd, 'dist-docs', 'index.html')), true);
             },
         });
@@ -84,7 +84,7 @@ describe(virmatorDocsPlugin.name, () => {
             context,
             dir: join(testFilesDir, 'unfinished-readme'),
             extraCommand: 'check',
-            beforeCleanupCallback: (cwd) => {
+            beforeCleanupCallback(cwd) {
                 assert.strictEquals(existsSync(join(cwd, 'dist-docs', 'index.html')), false);
             },
         });
@@ -100,7 +100,7 @@ describe(virmatorDocsPlugin.name, () => {
             shouldPass: false,
             context,
             dir,
-            beforeCleanupCallback: (cwd) => {
+            beforeCleanupCallback(cwd) {
                 assert.deepEquals(
                     {
                         a: existsSync(join(cwd, 'packages', 'a', 'configs', 'typedoc.config.ts')),
@@ -128,7 +128,7 @@ describe(virmatorDocsPlugin.name, () => {
             shouldPass: true,
             context,
             dir: join(monoDir, 'packages', 'b'),
-            beforeCleanupCallback: (cwd) => {
+            beforeCleanupCallback(cwd) {
                 assert.deepEquals(
                     {
                         docs: existsSync(join(cwd, 'dist-docs', 'index.html')),
@@ -165,7 +165,7 @@ describe(virmatorDocsPlugin.name, () => {
             context,
             dir: join(testFilesDir, 'valid-docs'),
             extraCommand: 'check',
-            beforeCleanupCallback: (cwd) => {
+            beforeCleanupCallback(cwd) {
                 assert.strictEquals(existsSync(join(cwd, 'dist-docs', 'index.html')), false);
             },
         });
@@ -176,7 +176,7 @@ describe(virmatorDocsPlugin.name, () => {
             context,
             dir: join(testFilesDir, 'valid-docs'),
             extraCommand: 'check something-else.md',
-            beforeCleanupCallback: (cwd) => {
+            beforeCleanupCallback(cwd) {
                 assert.strictEquals(existsSync(join(cwd, 'dist-docs', 'index.html')), false);
             },
         });
@@ -188,7 +188,7 @@ describe(virmatorDocsPlugin.name, () => {
             context,
             dir: join(testFilesDir, 'invalid-typedoc'),
             extraCommand: 'check',
-            beforeCleanupCallback: (cwd) => {
+            beforeCleanupCallback(cwd) {
                 assert.strictEquals(existsSync(join(cwd, 'dist-docs', 'index.html')), false);
             },
         });

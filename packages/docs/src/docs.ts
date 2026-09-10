@@ -152,7 +152,7 @@ export const virmatorDocsPlugin = defineVirmatorPlugin(
                                   })
                                 : undefined,
                         logTransform: {
-                            stderr: (stderrInput) => {
+                            stderr(stderrInput) {
                                 return stderrInput.replace(
                                     'Run without --check to update.',
                                     'Run without the "check" sub-command to update.',

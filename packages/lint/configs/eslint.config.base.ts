@@ -16,6 +16,7 @@ import noSwitchRule from '../src/rules/no-switch.lint.js';
 import noUnderscoreVariableRule from '../src/rules/no-underscore-variable.lint.js';
 import preferArrowObjectBlockBodyRule from '../src/rules/prefer-arrow-object-block-body.lint.js';
 import preferEnsureErrorRule from '../src/rules/prefer-ensure-error.lint.js';
+import preferFunctionKeywordRule from '../src/rules/prefer-function-keyword.lint.js';
 import preferIfElseChainRule from '../src/rules/prefer-if-else-chain.lint.js';
 import preferMapEnumToObjectRule from '../src/rules/prefer-map-enum-to-object.lint.js';
 import preferMultilineArrowBlockBodyRule from '../src/rules/prefer-multiline-arrow-block-body.lint.js';
@@ -86,6 +87,7 @@ export function defineEslintConfig(repoDir: string) {
                         'no-underscore-variable': noUnderscoreVariableRule,
                         'prefer-arrow-object-block-body': preferArrowObjectBlockBodyRule,
                         'prefer-ensure-error': preferEnsureErrorRule,
+                        'prefer-function-keyword': preferFunctionKeywordRule,
                         'prefer-if-else-chain': preferIfElseChainRule,
                         'prefer-map-enum-to-object': preferMapEnumToObjectRule,
                         'prefer-multiline-arrow-block-body': preferMultilineArrowBlockBodyRule,
@@ -209,6 +211,7 @@ export function defineEslintConfig(repoDir: string) {
                 '@virmator/no-underscore-variable': 'error',
                 '@virmator/prefer-arrow-object-block-body': 'error',
                 '@virmator/prefer-ensure-error': 'error',
+                '@virmator/prefer-function-keyword': 'error',
                 '@virmator/prefer-if-else-chain': 'error',
                 '@virmator/prefer-map-enum-to-object': 'error',
                 '@virmator/prefer-multiline-arrow-block-body': 'error',
