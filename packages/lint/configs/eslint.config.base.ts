@@ -65,6 +65,8 @@ export const defaultAllowedFileExtensions = [
     '.script.ts',
     '.test.e2e.ts',
     '.test.node.ts',
+    '.test.ts.snapshot.web.mjs',
+    '.test.ts.snapshot',
     '.test.ts',
     '.test.web.ts',
     '.ts',
