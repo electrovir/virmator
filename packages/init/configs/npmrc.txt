@@ -7,6 +7,7 @@ min-release-age-exclude[]=@date-vir/*
 min-release-age-exclude[]=@electrovir/*
 min-release-age-exclude[]=@rest-vir/*
 min-release-age-exclude[]=@review-vir/*
+min-release-age-exclude[]=@theme-vir/*
 min-release-age-exclude[]=@updating-secrets/*
 min-release-age-exclude[]=@virmator/*
 min-release-age-exclude[]=antha
