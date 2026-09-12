@@ -1,5 +1,5 @@
 import {
-    defaultAllowedFileSuffixes,
+    defaultAllowedFileExtensions,
     defineEslintConfig,
 } from '@virmator/lint/configs/eslint.config.base.js';
 import {dirname} from 'node:path';
@@ -35,19 +35,20 @@ export default [
                 },
             ],
             /**
-             * These suffixes only make sense inside virmator itself: `.lint.` for its ESLint rules
-             * and `.vite.` for its Vite plugins, plus the `.config.base.` / `.config.share.` split
-             * that its shipped tool configs use.
+             * These extensions only make sense inside virmator itself: `.lint.` for its ESLint
+             * rules and `.vite.` for its Vite plugins, plus the `.config.base.` / `.config.share.`
+             * split that its shipped tool configs use.
              */
-            '@virmator/known-file-suffixes': [
+            '@virmator/allowed-file-extensions': [
                 'error',
                 {
-                    suffixes: [
-                        ...defaultAllowedFileSuffixes,
-                        'config.base',
-                        'config.share',
-                        'lint',
-                        'vite',
+                    extensions: [
+                        ...defaultAllowedFileExtensions,
+                        '.config.base.ts',
+                        '.config.share.ts',
+                        '.lint.test.ts',
+                        '.lint.ts',
+                        '.vite.ts',
                     ],
                 },
             ],

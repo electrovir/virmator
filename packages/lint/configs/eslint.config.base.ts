@@ -6,9 +6,9 @@ import sonarJsEslint from 'eslint-plugin-sonarjs';
 import eslintPluginUnicorn from 'eslint-plugin-unicorn';
 import globals from 'globals';
 import tsEslint from 'typescript-eslint';
+import allowedFileExtensionsRule from '../src/rules/allowed-file-extensions.lint.js';
 import assertionsInTestsRule from '../src/rules/assertions-in-tests.lint.js';
 import errorNameAsClassFieldRule from '../src/rules/error-name-as-class-field.lint.js';
-import knownFileSuffixesRule from '../src/rules/known-file-suffixes.lint.js';
 import noJsdocCategoryRule from '../src/rules/no-jsdoc-category.lint.js';
 import noRawDateRule from '../src/rules/no-raw-date.lint.js';
 import noReadonlyPrimitiveRule from '../src/rules/no-readonly-primitive.lint.js';
@@ -34,18 +34,40 @@ import requireImportExtensionsRule from '../src/rules/require-import-extensions.
 import singleCspellWordsCommentRule from '../src/rules/single-cspell-words-comment.lint.js';
 
 /**
- * File name suffixes that any repo using this config may use. A repo with more of its own adds them
- * by overriding `@virmator/known-file-suffixes` with this list spread into its own.
+ * File extensions that any repo using this config may use. A repo with more of its own adds them by
+ * overriding `@virmator/allowed-file-extensions` with this list spread into its own.
  */
-export const defaultAllowedFileSuffixes = [
-    'config',
-    'e2e',
-    'element',
-    'error',
-    'example',
-    'mock',
-    'script',
-    'test',
+export const defaultAllowedFileExtensions = [
+    '.api.ts',
+    '.book.ts',
+    '.client.ts',
+    '.config.mjs',
+    '.config.ts',
+    '.e2e.ts',
+    '.element.book.ts',
+    '.element.example.ts',
+    '.element.mock.ts',
+    '.element.test.e2e.ts',
+    '.element.test.ts',
+    '.element.ts',
+    '.endpoint.implementation.ts',
+    '.endpoint.test.ts',
+    '.endpoint.ts',
+    '.error.test.ts',
+    '.error.ts',
+    '.example.ts',
+    '.js',
+    '.mock.script.ts',
+    '.mock.test.ts',
+    '.mock.ts',
+    '.script.mock.ts',
+    '.script.test.ts',
+    '.script.ts',
+    '.test.e2e.ts',
+    '.test.node.ts',
+    '.test.ts',
+    '.test.web.ts',
+    '.ts',
 ];
 
 export const globalVars = {
@@ -98,7 +120,7 @@ export function defineEslintConfig(repoDir: string) {
                     rules: {
                         'assertions-in-tests': assertionsInTestsRule,
                         'error-name-as-class-field': errorNameAsClassFieldRule,
-                        'known-file-suffixes': knownFileSuffixesRule,
+                        'allowed-file-extensions': allowedFileExtensionsRule,
                         'no-jsdoc-category': noJsdocCategoryRule,
                         'no-raw-date': noRawDateRule,
                         'no-readonly-primitive': noReadonlyPrimitiveRule,
@@ -226,10 +248,10 @@ export function defineEslintConfig(repoDir: string) {
                 '@typescript-eslint/no-unused-vars': 'error',
                 '@virmator/assertions-in-tests': 'error',
                 '@virmator/error-name-as-class-field': 'error',
-                '@virmator/known-file-suffixes': [
+                '@virmator/allowed-file-extensions': [
                     'error',
                     {
-                        suffixes: defaultAllowedFileSuffixes,
+                        extensions: defaultAllowedFileExtensions,
                     },
                 ],
                 /**
