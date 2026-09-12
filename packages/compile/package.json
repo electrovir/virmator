@@ -36,11 +36,11 @@
         "@augment-vir/common": "^32.2.4",
         "@augment-vir/node": "^32.2.4",
         "@virmator/core": "^14.35.2",
-        "runstorm": "^1.0.6"
+        "runstorm": "^1.1.0"
     },
     "devDependencies": {
         "@augment-vir/test": "^32.2.4",
-        "@types/node": "^26.4.0",
+        "@types/node": "^26.4.1",
         "@virmator/plugin-testing": "^14.35.2",
         "c8": "^12.0.0",
         "istanbul-smart-text-reporter": "^1.1.5",

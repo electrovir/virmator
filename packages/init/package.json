@@ -38,10 +38,10 @@
         "simple-git": "^3.36.0"
     },
     "devDependencies": {
-        "@types/node": "^26.4.0",
+        "@types/node": "^26.4.1",
         "element-vir": "^26.17.3",
         "mono-vir": "^2.5.1",
-        "runstorm": "^1.0.6",
+        "runstorm": "^1.1.0",
         "tsx": "^4.23.13"
     },
     "engines": {

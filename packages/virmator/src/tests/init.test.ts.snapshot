@@ -25,7 +25,7 @@ exports[`Init > errors without package type 1`] = `
 exports[`Init > initializes a mono-package node package 1`] = `
 {
   "logs": {
-    "stdout": "Installing runstorm@1.0.6 tsx@4.23.13...\\nCopied .npmignore\\nCopied c8.config.json\\nCopied LICENSE-CC0\\nCopied LICENSE-MIT\\nCopied package.json\\nCopied tsconfig.json\\nCopied typedoc.config.ts\\ninit finished."
+    "stdout": "Installing runstorm@1.1.0 tsx@4.23.13...\\nCopied .npmignore\\nCopied c8.config.json\\nCopied LICENSE-CC0\\nCopied LICENSE-MIT\\nCopied package.json\\nCopied tsconfig.json\\nCopied typedoc.config.ts\\ninit finished."
   },
   "cwd": "packages/virmator/test-files/mono-package",
   "contentsDiff": {
@@ -43,7 +43,7 @@ exports[`Init > initializes a mono-package node package 1`] = `
 exports[`Init > initializes a mono-package web package 1`] = `
 {
   "logs": {
-    "stdout": "Installing runstorm@1.0.6...\\nInstalling element-vir@26.17.3...\\nCopied _redirects\\nCopied .npmignore\\nCopied index.css\\nCopied index.html\\nCopied LICENSE-CC0\\nCopied LICENSE-MIT\\nCopied package.json\\nCopied tsconfig.json\\nCopied typedoc.config.ts\\nCopied vir-app.element.ts\\nCopied vite.config.ts\\nCopied web-test-runner.config.mjs\\ninit finished."
+    "stdout": "Installing runstorm@1.1.0...\\nInstalling element-vir@26.17.3...\\nCopied _redirects\\nCopied .npmignore\\nCopied index.css\\nCopied index.html\\nCopied LICENSE-CC0\\nCopied LICENSE-MIT\\nCopied package.json\\nCopied tsconfig.json\\nCopied typedoc.config.ts\\nCopied vir-app.element.ts\\nCopied vite.config.ts\\nCopied web-test-runner.config.mjs\\ninit finished."
   },
   "cwd": "packages/virmator/test-files/mono-package",
   "contentsDiff": {
@@ -74,7 +74,7 @@ exports[`Init > initializes a mono-package web package 1`] = `
 exports[`Init > initializes a mono-root node package 1`] = `
 {
   "logs": {
-    "stdout": "Installing runstorm@1.0.6 tsx@4.23.13...\\nCopied .gitattributes\\nCopied .gitignore\\nCopied .npmrc\\nCopied .nvmrc\\nCopied .prettierignore\\nCopied build-for-gh-pages.yml\\nCopied cspell.config.cjs\\nCopied dep-cruiser.config.cts\\nCopied eslint.config.ts\\nCopied LICENSE-CC0\\nCopied LICENSE-MIT\\nCopied ncu.config.ts\\nCopied package.json\\nCopied prettier.config.mjs\\nCopied settings.json\\nCopied tagged-release.yml\\nCopied tests.yml\\nCopied tsconfig.base.json\\ninit finished."
+    "stdout": "Installing runstorm@1.1.0 tsx@4.23.13...\\nCopied .gitattributes\\nCopied .gitignore\\nCopied .npmrc\\nCopied .nvmrc\\nCopied .prettierignore\\nCopied build-for-gh-pages.yml\\nCopied cspell.config.cjs\\nCopied dep-cruiser.config.cts\\nCopied eslint.config.ts\\nCopied LICENSE-CC0\\nCopied LICENSE-MIT\\nCopied ncu.config.ts\\nCopied package.json\\nCopied prettier.config.mjs\\nCopied settings.json\\nCopied tagged-release.yml\\nCopied tests.yml\\nCopied tsconfig.base.json\\ninit finished."
   },
   "cwd": "packages/virmator/test-files/mono-root",
   "contentsDiff": {
@@ -100,7 +100,7 @@ exports[`Init > initializes a mono-root node package 1`] = `
 exports[`Init > initializes a mono-root web package 1`] = `
 {
   "logs": {
-    "stdout": "Installing runstorm@1.0.6...\\nInstalling element-vir@26.17.3...\\nCopied .gitattributes\\nCopied .gitignore\\nCopied .npmrc\\nCopied .nvmrc\\nCopied .prettierignore\\nCopied build-for-gh-pages.yml\\nCopied cspell.config.cjs\\nCopied dep-cruiser.config.cts\\nCopied eslint.config.ts\\nCopied LICENSE-CC0\\nCopied LICENSE-MIT\\nCopied ncu.config.ts\\nCopied package.json\\nCopied prettier.config.mjs\\nCopied settings.json\\nCopied tagged-release.yml\\nCopied tests.yml\\nCopied tsconfig.base.json\\ninit finished."
+    "stdout": "Installing runstorm@1.1.0...\\nInstalling element-vir@26.17.3...\\nCopied .gitattributes\\nCopied .gitignore\\nCopied .npmrc\\nCopied .nvmrc\\nCopied .prettierignore\\nCopied build-for-gh-pages.yml\\nCopied cspell.config.cjs\\nCopied dep-cruiser.config.cts\\nCopied eslint.config.ts\\nCopied LICENSE-CC0\\nCopied LICENSE-MIT\\nCopied ncu.config.ts\\nCopied package.json\\nCopied prettier.config.mjs\\nCopied settings.json\\nCopied tagged-release.yml\\nCopied tests.yml\\nCopied tsconfig.base.json\\ninit finished."
   },
   "cwd": "packages/virmator/test-files/mono-root",
   "contentsDiff": {
@@ -126,7 +126,7 @@ exports[`Init > initializes a mono-root web package 1`] = `
 exports[`Init > initializes a top-level node package 1`] = `
 {
   "logs": {
-    "stdout": "Installing runstorm@1.0.6 tsx@4.23.13...\\nCopied .gitattributes\\nCopied .gitignore\\nCopied .npmignore\\nCopied .npmrc\\nCopied .nvmrc\\nCopied .prettierignore\\nCopied build-for-gh-pages.yml\\nCopied c8.config.json\\nCopied cspell.config.cjs\\nCopied dep-cruiser.config.cts\\nCopied eslint.config.ts\\nCopied LICENSE-CC0\\nCopied LICENSE-MIT\\nCopied ncu.config.ts\\nCopied package.json\\nCopied prettier.config.mjs\\nCopied settings.json\\nCopied tagged-release.yml\\nCopied tests.yml\\nCopied tsconfig.json\\nCopied typedoc.config.ts\\ninit finished."
+    "stdout": "Installing runstorm@1.1.0 tsx@4.23.13...\\nCopied .gitattributes\\nCopied .gitignore\\nCopied .npmignore\\nCopied .npmrc\\nCopied .nvmrc\\nCopied .prettierignore\\nCopied build-for-gh-pages.yml\\nCopied c8.config.json\\nCopied cspell.config.cjs\\nCopied dep-cruiser.config.cts\\nCopied eslint.config.ts\\nCopied LICENSE-CC0\\nCopied LICENSE-MIT\\nCopied ncu.config.ts\\nCopied package.json\\nCopied prettier.config.mjs\\nCopied settings.json\\nCopied tagged-release.yml\\nCopied tests.yml\\nCopied tsconfig.json\\nCopied typedoc.config.ts\\ninit finished."
   },
   "cwd": "packages/virmator/test-files/top-package",
   "contentsDiff": {
@@ -155,7 +155,7 @@ exports[`Init > initializes a top-level node package 1`] = `
 exports[`Init > initializes a top-level web package 1`] = `
 {
   "logs": {
-    "stdout": "Installing runstorm@1.0.6...\\nInstalling element-vir@26.17.3...\\nCopied _redirects\\nCopied .gitattributes\\nCopied .gitignore\\nCopied .npmignore\\nCopied .npmrc\\nCopied .nvmrc\\nCopied .prettierignore\\nCopied build-for-gh-pages.yml\\nCopied cspell.config.cjs\\nCopied dep-cruiser.config.cts\\nCopied eslint.config.ts\\nCopied index.css\\nCopied index.html\\nCopied LICENSE-CC0\\nCopied LICENSE-MIT\\nCopied ncu.config.ts\\nCopied package.json\\nCopied prettier.config.mjs\\nCopied settings.json\\nCopied tagged-release.yml\\nCopied tests.yml\\nCopied tsconfig.json\\nCopied typedoc.config.ts\\nCopied vir-app.element.ts\\nCopied vite.config.ts\\nCopied web-test-runner.config.mjs\\ninit finished."
+    "stdout": "Installing runstorm@1.1.0...\\nInstalling element-vir@26.17.3...\\nCopied _redirects\\nCopied .gitattributes\\nCopied .gitignore\\nCopied .npmignore\\nCopied .npmrc\\nCopied .nvmrc\\nCopied .prettierignore\\nCopied build-for-gh-pages.yml\\nCopied cspell.config.cjs\\nCopied dep-cruiser.config.cts\\nCopied eslint.config.ts\\nCopied index.css\\nCopied index.html\\nCopied LICENSE-CC0\\nCopied LICENSE-MIT\\nCopied ncu.config.ts\\nCopied package.json\\nCopied prettier.config.mjs\\nCopied settings.json\\nCopied tagged-release.yml\\nCopied tests.yml\\nCopied tsconfig.json\\nCopied typedoc.config.ts\\nCopied vir-app.element.ts\\nCopied vite.config.ts\\nCopied web-test-runner.config.mjs\\ninit finished."
   },
   "cwd": "packages/virmator/test-files/top-package",
   "contentsDiff": {

@@ -36,13 +36,13 @@
         "@augment-vir/common": "^32.2.4",
         "@augment-vir/node": "^32.2.4",
         "mono-vir": "^2.5.1",
-        "runstorm": "^1.0.6",
+        "runstorm": "^1.1.0",
         "semver": "^7.8.5",
         "typescript": "^6.0.3"
     },
     "devDependencies": {
         "@augment-vir/test": "^32.2.4",
-        "@types/node": "^26.4.0",
+        "@types/node": "^26.4.1",
         "@types/semver": "^7.8.0",
         "esbuild": "^0.28.2"
     },

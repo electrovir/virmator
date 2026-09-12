@@ -47,7 +47,7 @@
     },
     "devDependencies": {
         "@augment-vir/test": "^32.2.4",
-        "@types/node": "^26.4.0",
+        "@types/node": "^26.4.1",
         "@types/npmcli__package-json": "^4.0.4",
         "@types/semver": "^7.8.0",
         "markdown-code-example-inserter": "^3.0.6",

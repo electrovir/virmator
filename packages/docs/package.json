@@ -38,11 +38,11 @@
         "@augment-vir/node": "^32.2.4",
         "@virmator/core": "^14.35.2",
         "mri": "^1.2.0",
-        "runstorm": "^1.0.6"
+        "runstorm": "^1.1.0"
     },
     "devDependencies": {
         "@augment-vir/test": "^32.2.4",
-        "@types/node": "^26.4.0",
+        "@types/node": "^26.4.1",
         "c8": "^12.0.0",
         "esbuild": "^0.28.2",
         "istanbul-smart-text-reporter": "^1.1.5",

@@ -54,7 +54,7 @@
         "@augment-vir/test": "^32.2.4",
         "@open-wc/testing": "^5.0.0",
         "@types/mocha": "^10.0.10",
-        "@types/node": "^26.4.0",
+        "@types/node": "^26.4.1",
         "@web/dev-server-esbuild": "^2.0.0",
         "@web/test-runner": "^1.0.0",
         "@web/test-runner-commands": "^1.0.1",
@@ -62,7 +62,7 @@
         "c8": "^12.0.0",
         "element-vir": "^26.17.3",
         "istanbul-smart-text-reporter": "^1.1.5",
-        "runstorm": "^1.0.6",
+        "runstorm": "^1.1.0",
         "tsx": "^4.23.13",
         "typescript": "^6.0.3"
     },

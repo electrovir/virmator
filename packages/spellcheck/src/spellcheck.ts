@@ -80,7 +80,7 @@ export const virmatorSpellcheckPlugin = defineVirmatorPlugin(
             : toPosixPath(
                   relative(cwd, join(cwdPackagePath, configs.spellcheck.configs.cspell.copyToPath)),
               );
-        const filesArg = args.file ? '' : args._.length ? `--file ${args._.join(' ')}` : '.';
+        const filesArg = args.file || args._.length ? '' : '.';
 
         const fullCommand = [
             'npx',
