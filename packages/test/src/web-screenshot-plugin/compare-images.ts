@@ -102,11 +102,11 @@ export async function readImageDimensions(imageFilePath: string): Promise<Dimens
 export async function compareImages({
     baseImageBuffer,
     currentImageBuffer,
-    userOptions,
+    options: userOptions,
 }: Readonly<{
     baseImageBuffer: Buffer;
     currentImageBuffer: Buffer;
-    userOptions?: Readonly<ImageComparisonOptions> | undefined;
+    options?: Readonly<ImageComparisonOptions> | undefined;
 }>): Promise<ImageComparisonResult> {
     const options = mergeDefinedProperties(defaultImageComparisonOptions, userOptions);
 

@@ -198,7 +198,7 @@ export function screenshotPlugin(
                         const result = await compareImages({
                             baseImageBuffer: baseScreenshot,
                             currentImageBuffer: newScreenshot,
-                            userOptions: payload,
+                            options: payload,
                         });
 
                         if (!result.passed) {
