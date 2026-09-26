@@ -106,7 +106,7 @@ export async function installNpmDeps({
             ],
         ) => {
             const matchesPackageType = depOptions.packageType[packageType];
-            const matchesPackageEnv = packageEnv ? depOptions.env[packageEnv] : true;
+            const matchesPackageEnv = !packageEnv || depOptions.env[packageEnv];
 
             if (!matchesPackageType || !matchesPackageEnv) {
                 return accum;

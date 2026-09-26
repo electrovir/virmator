@@ -23,7 +23,7 @@ export async function findClosestPackageDir({
         } else if (requireWorkspaces) {
             const contents = await readJsonFile(jsonFilePath);
 
-            return check.isObject(contents) ? 'workspaces' in contents : false;
+            return check.isObject(contents) && 'workspaces' in contents;
         } else {
             return true;
         }

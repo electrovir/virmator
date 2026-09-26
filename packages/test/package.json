@@ -1,6 +1,6 @@
 {
     "name": "@virmator/test",
-    "version": "14.36.3",
+    "version": "14.37.0",
     "description": "Default test plugin for virmator.",
     "keywords": [
         "virmator",
@@ -36,34 +36,34 @@
         "test:web": "npm run compile && virmator test web src/web-snapshot-plugin/web-snapshot-plugin.test.ts src/web-screenshot-plugin/web-screenshot-plugin.test.ts"
     },
     "dependencies": {
-        "@augment-vir/assert": "^32.2.4",
-        "@augment-vir/common": "^32.2.4",
-        "@augment-vir/node": "^32.2.4",
-        "@virmator/core": "^14.36.3",
+        "@augment-vir/assert": "^32.4.1",
+        "@augment-vir/common": "^32.4.1",
+        "@augment-vir/node": "^32.4.1",
+        "@virmator/core": "^14.37.0",
         "@web/dev-server-core": "^1.0.1",
         "@web/test-runner-core": "^1.0.0",
         "glob": "^13.0.6",
         "mri": "^1.2.0",
-        "object-shape-tester": "^6.15.0",
+        "object-shape-tester": "^6.15.1",
         "pixelmatch": "^7.2.0",
         "pngjs": "^7.0.0",
         "sharp": "^0.35.4",
-        "typed-event-target": "^4.3.3"
+        "typed-event-target": "^4.3.4"
     },
     "devDependencies": {
-        "@augment-vir/test": "^32.2.4",
+        "@augment-vir/test": "^32.4.1",
         "@open-wc/testing": "^5.0.0",
         "@types/mocha": "^10.0.10",
-        "@types/node": "^26.4.1",
+        "@types/node": "^26.6.2",
         "@web/dev-server-esbuild": "^2.0.0",
         "@web/test-runner": "^1.0.0",
         "@web/test-runner-commands": "^1.0.1",
         "@web/test-runner-playwright": "^1.0.0",
         "c8": "^12.0.0",
-        "element-vir": "^26.17.3",
+        "element-vir": "^27.0.2",
         "istanbul-smart-text-reporter": "^1.1.5",
         "runstorm": "^1.1.0",
-        "tsx": "^4.23.13",
+        "tsx": "^4.23.15",
         "typescript": "^6.0.3"
     },
     "peerDependencies": {

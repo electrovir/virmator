@@ -1,6 +1,6 @@
 {
     "name": "@virmator/format",
-    "version": "14.36.3",
+    "version": "14.37.0",
     "description": "Default format plugin for virmator.",
     "keywords": [
         "virmator",
@@ -32,14 +32,14 @@
         "test:update": "npm test update"
     },
     "dependencies": {
-        "@augment-vir/assert": "^32.2.4",
-        "@augment-vir/common": "^32.2.4",
-        "@virmator/core": "^14.36.3",
+        "@augment-vir/assert": "^32.4.1",
+        "@augment-vir/common": "^32.4.1",
+        "@virmator/core": "^14.37.0",
         "mri": "^1.2.0"
     },
     "devDependencies": {
-        "@augment-vir/test": "^32.2.4",
-        "@types/node": "^26.4.1",
+        "@augment-vir/test": "^32.4.1",
+        "@types/node": "^26.6.2",
         "c8": "^12.0.0",
         "istanbul-smart-text-reporter": "^1.1.5",
         "prettier": "3.3.3",
