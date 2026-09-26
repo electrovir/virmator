@@ -1,12 +1,25 @@
-import {log, logColors} from '@augment-vir/common';
+import {log, logColors, replaceExtension} from '@augment-vir/common';
 import {alwaysReloadPlugin} from '@virmator/frontend/src/always-reload.vite.js';
 import {existsSync} from 'node:fs';
+import {readFile} from 'node:fs/promises';
 import {basename, dirname, join, relative} from 'node:path';
 import {type UserConfig, type UserConfigExport} from 'vite';
 
 export const basePlugins = [
     alwaysReloadPlugin(),
 ] as const;
+
+const httpsOptions = process.env.VITE_HTTPS_CERT_PATH
+    ? {
+          cert: await readFile(process.env.VITE_HTTPS_CERT_PATH),
+          key: await readFile(
+              replaceExtension({
+                  path: process.env.VITE_HTTPS_CERT_PATH,
+                  newExtension: '.key',
+              }),
+          ),
+      }
+    : undefined;
 
 export function findGitRepoRoot(dir: string): string {
     if (existsSync(join(dir, '.git'))) {
@@ -78,6 +91,11 @@ export function createBaseConfig({forGitHubPages, packageDirPath}: BaseConfigOpt
         baseConfig: {
             server: {
                 host: true,
+                ...(httpsOptions
+                    ? {
+                          https: httpsOptions,
+                      }
+                    : {}),
                 watch: {
                     ignored: [
                         '**/node_modules/**',
