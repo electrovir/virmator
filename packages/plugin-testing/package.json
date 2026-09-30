@@ -1,6 +1,6 @@
 {
     "name": "@virmator/plugin-testing",
-    "version": "14.37.0",
+    "version": "14.37.1",
     "description": "Testing for virmator plugins.",
     "keywords": [
         "virmator",
@@ -35,7 +35,7 @@
         "@augment-vir/common": "^32.4.1",
         "@augment-vir/node": "^32.4.1",
         "@augment-vir/test": "^32.4.1",
-        "@virmator/core": "^14.37.0"
+        "@virmator/core": "^14.37.1"
     },
     "devDependencies": {
         "@types/node": "^26.6.2",

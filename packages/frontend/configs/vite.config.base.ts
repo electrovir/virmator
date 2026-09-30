@@ -9,12 +9,12 @@ export const basePlugins = [
     alwaysReloadPlugin(),
 ] as const;
 
-const httpsOptions = process.env.VITE_HTTPS_CERT_PATH
+const httpsOptions = process.env.HTTPS_CERT_PATH
     ? {
-          cert: await readFile(process.env.VITE_HTTPS_CERT_PATH),
+          cert: await readFile(process.env.HTTPS_CERT_PATH),
           key: await readFile(
               replaceExtension({
-                  path: process.env.VITE_HTTPS_CERT_PATH,
+                  path: process.env.HTTPS_CERT_PATH,
                   newExtension: '.key',
               }),
           ),
