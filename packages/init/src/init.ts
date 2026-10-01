@@ -40,6 +40,17 @@ const deps: PluginNpmDeps = {
         },
         type: NpmDepType.Dev,
     },
+    'pull-request-vir': {
+        env: {
+            [RuntimeEnv.Node]: true,
+            [RuntimeEnv.Web]: true,
+        },
+        packageType: {
+            [PackageType.TopPackage]: true,
+            [PackageType.MonoRoot]: true,
+        },
+        type: NpmDepType.Dev,
+    },
     runstorm: {
         env: {
             [RuntimeEnv.Node]: true,
@@ -121,6 +132,55 @@ export const virmatorInitPlugin = defineVirmatorPlugin(
                     ghTaggedRelease: {
                         copyFromPath: join('configs', 'github', 'workflows', 'tagged-release.yml'),
                         copyToPath: join('.github', 'workflows', 'tagged-release.yml'),
+                        env: {
+                            [RuntimeEnv.Node]: true,
+                            [RuntimeEnv.Web]: true,
+                        },
+                        packageType: {
+                            [PackageType.TopPackage]: true,
+                            [PackageType.MonoRoot]: true,
+                        },
+                        required: false,
+                    },
+                    ghPrReviewStatus: {
+                        copyFromPath: join(
+                            'configs',
+                            'github',
+                            'workflows',
+                            'pr-review-status.yml',
+                        ),
+                        copyToPath: join('.github', 'workflows', 'pr-review-status.yml'),
+                        env: {
+                            [RuntimeEnv.Node]: true,
+                            [RuntimeEnv.Web]: true,
+                        },
+                        packageType: {
+                            [PackageType.TopPackage]: true,
+                            [PackageType.MonoRoot]: true,
+                        },
+                        required: false,
+                    },
+                    ghPrReviewUpdate: {
+                        copyFromPath: join(
+                            'configs',
+                            'github',
+                            'workflows',
+                            'pr-review-update.yml',
+                        ),
+                        copyToPath: join('.github', 'workflows', 'pr-review-update.yml'),
+                        env: {
+                            [RuntimeEnv.Node]: true,
+                            [RuntimeEnv.Web]: true,
+                        },
+                        packageType: {
+                            [PackageType.TopPackage]: true,
+                            [PackageType.MonoRoot]: true,
+                        },
+                        required: false,
+                    },
+                    pullRequestVirConfig: {
+                        copyFromPath: join('configs', 'pull-request-vir.config.ts'),
+                        copyToPath: join('configs', 'pull-request-vir.config.ts'),
                         env: {
                             [RuntimeEnv.Node]: true,
                             [RuntimeEnv.Web]: true,
