@@ -1,0 +1,71 @@
+name: pr-review-update
+'on':
+    pull_request_review:
+        types:
+            - submitted
+            - dismissed
+permissions:
+    contents: read
+concurrency:
+    group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
+    cancel-in-progress: true
+jobs:
+    refresh-review-status:
+        name: Refresh Review Status
+        permissions:
+            actions: write
+            contents: read
+            pull-requests: read
+        runs-on: ubuntu-latest
+        timeout-minutes: 30
+        steps:
+            - name: Re-run the review status check on the pull request head
+              env:
+                  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  HEAD_REF: ${{ github.event.pull_request.head.ref }}
+                  HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+                  JOB_NAME: Check Review Status
+                  PR_NUMBER: ${{ github.event.pull_request.number }}
+                  WORKFLOW_FILE: pr-review-status.yml
+              run: |
+                  function latestRunId() {
+                      gh api -X GET "repos/${GITHUB_REPOSITORY}/actions/workflows/${WORKFLOW_FILE}/runs" -f event=pull_request_target -f branch="${HEAD_REF}" -f head_sha="${HEAD_SHA}" -f per_page=1 --jq '.workflow_runs[0].id // ""'
+                  }
+
+                  jobId=''
+                  jobStatus=''
+                  # The workflows API answers 404 for a workflow file that is not on the default branch yet, and `gh` prints that error body to stdout.
+                  if ! runId="$(latestRunId 2>/dev/null)"; then
+                      runId=''
+                  fi
+                  if [[ -n "$runId" ]]; then
+                      read -r jobId jobStatus <<<"$(gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${runId}/jobs" --jq '.jobs[] | select(.name == env.JOB_NAME) | "\(.id) \(.status)"')"
+                  fi
+
+                  if [[ -z "$jobId" ]]; then
+                      echo "No ${JOB_NAME} job for ${HEAD_SHA} yet; its own run will publish the verdict."
+                      exit 0
+                  fi
+
+                  # A job still in flight queries the review state after this event, so its own verdict is current.
+                  if [[ "$jobStatus" != 'completed' ]]; then
+                      echo "${JOB_NAME} in run ${runId} is ${jobStatus}; its pending verdict already covers this review."
+                      exit 0
+                  fi
+
+                  # GitHub refuses (HTTP 403) to re-run a finished job while other jobs in its run are still going.
+                  until [[ "$(gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${runId}" --jq .status)" == 'completed' ]]; do
+                      sleep 20
+                  done
+
+                  # A newer run for this pull request cancels this one, and re-running a job here would cancel that newer run in turn.
+                  # Assigned first so a failed lookup stops the script under `bash -e` rather than reading as a newer run.
+                  currentHeadSha="$(gh api "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}" --jq .head.sha)"
+                  newestRunId="$(latestRunId)"
+                  if [[ "$currentHeadSha" != "$HEAD_SHA" || "$newestRunId" != "$runId" ]]; then
+                      echo "A newer ${WORKFLOW_FILE} run replaced ${runId}; its own ${JOB_NAME} publishes the verdict."
+                      exit 0
+                  fi
+
+                  gh api -X POST "repos/${GITHUB_REPOSITORY}/actions/jobs/${jobId}/rerun" --silent
+                  echo "Re-ran ${JOB_NAME} in run ${runId}."

@@ -1,0 +1,39 @@
+name: pr-review-status
+'on':
+    pull_request_target:
+        types:
+            - opened
+            - reopened
+            - assigned
+            - unassigned
+            - labeled
+            - edited
+            - synchronize
+            - ready_for_review
+            - review_requested
+            - review_request_removed
+permissions:
+    contents: read
+concurrency:
+    group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
+    cancel-in-progress: true
+jobs:
+    check-reviews:
+        name: Check Review Status
+        permissions:
+            actions: write
+            contents: read
+            pull-requests: write
+            issues: write
+        runs-on: ubuntu-latest
+        timeout-minutes: 5
+        steps:
+            - name: Checkout trusted workflow source
+              uses: actions/checkout@v6.0.2
+              with:
+                  fetch-depth: 0
+                  ref: ${{ github.event.pull_request.base.sha || github.sha }}
+            - name: Run Checks
+              uses: electrovir/pull-request-vir@35b21b57c8c40460e583d3ce1cb9b5b26168bb88
+              with:
+                  config_file: ./configs/pull-request-vir.config.ts
