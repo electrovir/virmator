@@ -1,0 +1,15 @@
+name: pr-review-trigger
+'on':
+    pull_request_review:
+        types:
+            - submitted
+            - dismissed
+permissions: {}
+jobs:
+    review-changed:
+        name: Review Changed
+        runs-on: ubuntu-latest
+        timeout-minutes: 5
+        steps:
+            # Fork pull requests get a read-only token here, so pr-review-update does the rerun from a `workflow_run` trigger instead.
+            - run: echo "Review ${{ github.event.action }} on pull request ${{ github.event.pull_request.number }}."
