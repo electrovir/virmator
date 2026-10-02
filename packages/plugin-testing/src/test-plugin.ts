@@ -63,11 +63,19 @@ function handleWrite(
     const fixed = removeColor(text)
         .split('\n')
         /** Newer npm versions (installed on the Windows CI runner) log these to stderr. */
-        .filter((line) => !line.startsWith('npm notice '))
+        .filter((line) => !/^(\[[^\]]+\] *)?npm notice /.test(line))
         .join('\n')
         .replaceAll(
             addSuffix({
                 value: monoRepoDir,
+                suffix: '/',
+            }),
+            '',
+        )
+        /** Windows tools often log the repo path with forward slashes (`D:/a/...`). */
+        .replaceAll(
+            addSuffix({
+                value: monoRepoDir.replaceAll('\\', '/'),
                 suffix: '/',
             }),
             '',
