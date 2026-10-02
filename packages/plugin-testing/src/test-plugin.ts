@@ -60,13 +60,23 @@ function handleWrite(
     logType: LogOutputType,
     text: string,
 ): true {
-    const fixed = removeColor(text).replaceAll(
-        addSuffix({
-            value: monoRepoDir,
-            suffix: '/',
-        }),
-        '',
-    );
+    const fixed = removeColor(text)
+        .split('\n')
+        /** Newer npm versions (installed on the Windows CI runner) log these to stderr. */
+        .filter((line) => !/^(\[[^\]]+\] *)?npm notice /.test(line))
+        .join('\n')
+        /**
+         * Windows paths show up with single, escaped (`D:\\\\a`), or forward slashes, so normalize
+         * them all before stripping the repo dir. `toPosixPath` does the same to the final logs.
+         */
+        .replaceAll(/\\+/g, '/')
+        .replaceAll(
+            addSuffix({
+                value: monoRepoDir.replaceAll(/\\+/g, '/'),
+                suffix: '/',
+            }),
+            '',
+        );
 
     if (fixed.length) {
         getOrSet(logs, logType, () => []).push(fixed);

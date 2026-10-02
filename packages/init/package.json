@@ -41,6 +41,7 @@
         "@types/node": "^26.6.2",
         "element-vir": "^27.0.2",
         "mono-vir": "^2.5.1",
+        "pull-request-vir": "^1.8.4",
         "runstorm": "^1.1.0",
         "tsx": "^4.23.15"
     },

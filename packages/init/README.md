@@ -14,6 +14,10 @@ A default plugin for [virmator](https://www.npmjs.com/package/virmator).
     -   Configs
         -   .github/workflows/build-for-gh-pages.yml
         -   .github/workflows/tagged-release.yml
+        -   .github/workflows/pr-review-status.yml
+        -   .github/workflows/pr-review-trigger.yml
+        -   .github/workflows/pr-review-update.yml
+        -   configs/pull-request-vir.config.ts
         -   .github/workflows/tests.yml
         -   .vscode/settings.json
         -   src/ui/elements/vir-app.element.ts

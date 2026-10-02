@@ -1,5 +1,6 @@
 import {assert} from '@augment-vir/assert';
 import {describe, it} from '@augment-vir/test';
+import {join} from 'node:path';
 import {listRegenNodeModulesDirs} from './regen-node-modules.js';
 
 describe(listRegenNodeModulesDirs.name, () => {
@@ -17,9 +18,9 @@ describe(listRegenNodeModulesDirs.name, () => {
                 ],
             }),
             [
-                '/repo/packages/a/node_modules',
-                '/repo/packages/b/node_modules',
-                '/repo/node_modules',
+                join('/repo', 'packages', 'a', 'node_modules'),
+                join('/repo', 'packages', 'b', 'node_modules'),
+                join('/repo', 'node_modules'),
             ],
         );
     });
@@ -31,7 +32,7 @@ describe(listRegenNodeModulesDirs.name, () => {
                 monoRepoPackages: [],
             }),
             [
-                '/repo/node_modules',
+                join('/repo', 'node_modules'),
             ],
         );
     });
