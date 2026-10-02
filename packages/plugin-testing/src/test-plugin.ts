@@ -60,13 +60,18 @@ function handleWrite(
     logType: LogOutputType,
     text: string,
 ): true {
-    const fixed = removeColor(text).replaceAll(
-        addSuffix({
-            value: monoRepoDir,
-            suffix: '/',
-        }),
-        '',
-    );
+    const fixed = removeColor(text)
+        .split('\n')
+        /** Newer npm versions (installed on the Windows CI runner) log these to stderr. */
+        .filter((line) => !line.startsWith('npm notice '))
+        .join('\n')
+        .replaceAll(
+            addSuffix({
+                value: monoRepoDir,
+                suffix: '/',
+            }),
+            '',
+        );
 
     if (fixed.length) {
         getOrSet(logs, logType, () => []).push(fixed);
