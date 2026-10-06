@@ -1,6 +1,6 @@
 {
     "name": "@virmator/publish",
-    "version": "14.37.1",
+    "version": "14.37.2",
     "description": "Default publish plugin for virmator.",
     "keywords": [
         "virmator",
@@ -34,23 +34,23 @@
         "test:update": "npm test"
     },
     "dependencies": {
-        "@augment-vir/assert": "^32.4.1",
-        "@augment-vir/common": "^32.4.1",
-        "@augment-vir/node": "^32.4.1",
+        "@augment-vir/assert": "^32.5.0",
+        "@augment-vir/common": "^32.5.0",
+        "@augment-vir/node": "^32.5.0",
         "@npmcli/package-json": "^8.0.0",
-        "@virmator/core": "^14.37.1",
+        "@virmator/core": "^14.37.2",
         "mri": "^1.2.0",
         "semver": "^7.8.5",
-        "simple-git": "^3.36.0",
+        "simple-git": "^4.0.2",
         "spdx-vir": "^1.0.0",
         "url-vir": "^2.2.2"
     },
     "devDependencies": {
-        "@augment-vir/test": "^32.4.1",
-        "@types/node": "^26.6.2",
+        "@augment-vir/test": "^32.5.0",
+        "@types/node": "^26.6.3",
         "@types/npmcli__package-json": "^4.0.4",
         "@types/semver": "^7.8.0",
-        "markdown-code-example-inserter": "^3.0.6",
+        "markdown-code-example-inserter": "^3.1.0",
         "typedoc": "^0.28.20"
     },
     "engines": {
