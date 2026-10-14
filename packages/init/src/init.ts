@@ -178,24 +178,6 @@ export const virmatorInitPlugin = defineVirmatorPlugin(
                         },
                         required: false,
                     },
-                    ghPrReviewUpdate: {
-                        copyFromPath: join(
-                            'configs',
-                            'github',
-                            'workflows',
-                            'pr-review-update.yml',
-                        ),
-                        copyToPath: join('.github', 'workflows', 'pr-review-update.yml'),
-                        env: {
-                            [RuntimeEnv.Node]: true,
-                            [RuntimeEnv.Web]: true,
-                        },
-                        packageType: {
-                            [PackageType.TopPackage]: true,
-                            [PackageType.MonoRoot]: true,
-                        },
-                        required: false,
-                    },
                     pullRequestVirConfig: {
                         copyFromPath: join('configs', 'pull-request-vir.config.ts'),
                         copyToPath: join('configs', 'pull-request-vir.config.ts'),

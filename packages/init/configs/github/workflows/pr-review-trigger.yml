@@ -1,3 +1,5 @@
+# Fork pull requests get a read-only token on `pull_request_review`, so this only signals pr-review-status,
+# which re-runs its review check from a `workflow_run` trigger instead.
 name: pr-review-trigger
 'on':
     pull_request_review:
@@ -11,5 +13,4 @@ jobs:
         runs-on: ubuntu-latest
         timeout-minutes: 5
         steps:
-            # Fork pull requests get a read-only token here, so pr-review-update does the rerun from a `workflow_run` trigger instead.
             - run: echo "Review ${{ github.event.action }} on pull request ${{ github.event.pull_request.number }}."
