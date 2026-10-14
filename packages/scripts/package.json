@@ -1,6 +1,6 @@
 {
     "name": "@virmator/scripts",
-    "version": "14.37.2",
+    "version": "14.38.0",
     "private": true,
     "description": "Internal virmator scripts.",
     "keywords": [
@@ -33,10 +33,10 @@
         "@augment-vir/node": "^32.5.0",
         "mri": "^1.2.0",
         "tsx": "^4.23.15",
-        "virmator": "^14.37.2"
+        "virmator": "^14.38.0"
     },
     "devDependencies": {
-        "@types/node": "^26.6.3"
+        "@types/node": "^26.6.5"
     },
     "engines": {
         "node": ">=22"

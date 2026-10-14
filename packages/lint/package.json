@@ -1,6 +1,6 @@
 {
     "name": "@virmator/lint",
-    "version": "14.37.2",
+    "version": "14.38.0",
     "description": "Default ESLint linting plugin for virmator.",
     "keywords": [
         "virmator",
@@ -35,7 +35,7 @@
         "@augment-vir/assert": "^32.5.0",
         "@augment-vir/common": "^32.5.0",
         "@augment-vir/node": "^32.5.0",
-        "@virmator/core": "^14.37.2",
+        "@virmator/core": "^14.38.0",
         "globals": "^17.13.0",
         "jiti": "^2.7.0",
         "mri": "^1.2.0"
@@ -46,18 +46,18 @@
         "@stylistic/eslint-plugin": "^5.10.0",
         "@stylistic/eslint-plugin-ts": "^4.4.1",
         "@types/estree": "^1.0.9",
-        "@types/node": "^26.6.3",
-        "@typescript-eslint/eslint-plugin": "^8.71.0",
+        "@types/node": "^26.6.5",
+        "@typescript-eslint/eslint-plugin": "^8.71.1",
         "c8": "^12.0.0",
-        "eslint": "^10.11.0",
+        "eslint": "^10.12.0",
         "eslint-config-prettier": "^10.1.8",
-        "eslint-plugin-jsdoc": "^65.0.1",
-        "eslint-plugin-playwright": "^2.12.0",
+        "eslint-plugin-jsdoc": "^65.2.2",
+        "eslint-plugin-playwright": "^2.12.1",
         "eslint-plugin-prettier": "^5.5.6",
         "eslint-plugin-sonarjs": "^4.2.2",
-        "eslint-plugin-unicorn": "^76.0.0",
+        "eslint-plugin-unicorn": "^77.0.0",
         "istanbul-smart-text-reporter": "^1.1.5",
-        "typescript-eslint": "^8.71.0"
+        "typescript-eslint": "^8.71.1"
     },
     "engines": {
         "node": ">=22"
