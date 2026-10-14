@@ -178,19 +178,6 @@ export const virmatorInitPlugin = defineVirmatorPlugin(
                         },
                         required: false,
                     },
-                    pullRequestVirConfig: {
-                        copyFromPath: join('configs', 'pull-request-vir.config.ts'),
-                        copyToPath: join('configs', 'pull-request-vir.config.ts'),
-                        env: {
-                            [RuntimeEnv.Node]: true,
-                            [RuntimeEnv.Web]: true,
-                        },
-                        packageType: {
-                            [PackageType.TopPackage]: true,
-                            [PackageType.MonoRoot]: true,
-                        },
-                        required: false,
-                    },
                     ghTestsNode: {
                         copyFromPath: join('configs', 'github', 'workflows', 'tests-node.yml'),
                         copyToPath: join('.github', 'workflows', 'tests.yml'),
@@ -207,6 +194,19 @@ export const virmatorInitPlugin = defineVirmatorPlugin(
                         copyFromPath: join('configs', 'github', 'workflows', 'tests-web.yml'),
                         copyToPath: join('.github', 'workflows', 'tests.yml'),
                         env: {
+                            [RuntimeEnv.Web]: true,
+                        },
+                        packageType: {
+                            [PackageType.TopPackage]: true,
+                            [PackageType.MonoRoot]: true,
+                        },
+                        required: false,
+                    },
+                    pullRequestVirConfig: {
+                        copyFromPath: join('configs', 'pull-request-vir.config.ts'),
+                        copyToPath: join('configs', 'pull-request-vir.config.ts'),
+                        env: {
+                            [RuntimeEnv.Node]: true,
                             [RuntimeEnv.Web]: true,
                         },
                         packageType: {

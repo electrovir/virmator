@@ -16,8 +16,8 @@ A default plugin for [virmator](https://www.npmjs.com/package/virmator).
         -   .github/workflows/tagged-release.yml
         -   .github/workflows/pr-review-status.yml
         -   .github/workflows/pr-review-trigger.yml
-        -   configs/pull-request-vir.config.ts
         -   .github/workflows/tests.yml
+        -   configs/pull-request-vir.config.ts
         -   .vscode/settings.json
         -   src/ui/elements/vir-app.element.ts
         -   src/index.html

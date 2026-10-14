@@ -39,6 +39,12 @@ jobs:
               with:
                   fetch-depth: 0
                   ref: ${{ github.event.pull_request.base.sha || github.sha }}
+            # pull-request-vir runs `git merge-base` on the pull request head, which checkout does not fetch for fork pull requests.
+            # Only the git objects are fetched; nothing from the pull request is checked out or run.
+            - name: Fetch pull request head commits
+              env:
+                  PR_NUMBER: ${{ github.event.pull_request.number }}
+              run: git fetch --no-tags origin "refs/pull/${PR_NUMBER}/head"
             - name: Run Checks
               uses: electrovir/pull-request-vir@v1.8.4
               with:
@@ -51,7 +57,7 @@ jobs:
             contents: read
             pull-requests: read
         runs-on: ubuntu-latest
-        timeout-minutes: 30
+        timeout-minutes: 10
         steps:
             - name: Re-run the review status check on the pull request head
               env:
